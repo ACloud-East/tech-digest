@@ -117,9 +117,7 @@ const API = {
         { key: 'geekpark', name: '极客公园', color: '#00c4ff' },
         { key: 'pingwest', name: '品玩', color: '#ff5722' },
         { key: 'cnbeta', name: 'cnBeta', color: '#009a61' },
-        { key: 'zaeke', name: '知客', color: '#9c27b0' },
-        { key: 'odaily', name: 'Odaily星球日报', color: '#ffb300' },
-        { key: 'wallstreetcn', name: '华尔街见闻·科技', color: '#d32f2f' },
+        { key: 'wallstreetcn', name: '华尔街见闻', color: '#d32f2f' },
         { key: 'jiqizhixin', name: '机器之心', color: '#512da8' },
         { key: 'quantamagazine', name: '量子位', color: '#00796b' },
         { key: 'infoq', name: 'InfoQ', color: '#0277bd' },
@@ -127,29 +125,38 @@ const API = {
         { key: 'solidot', name: 'Solidot', color: '#546e7a' },
         { key: 'xinhua', name: '新华网科技', color: '#003d8c' },
         { key: 'tmtpost', name: '钛媒体', color: '#ff9800' },
-        { key: 'kejilie', name: '科技猎', color: '#795548' },
-        { key: 'thepaper', name: '澎湃科技', color: '#1e88e5' },
+        { key: 'thepaper', name: '澎湃新闻', color: '#1e88e5' },
         { key: '9to5mac', name: '9to5Mac', color: '#0a84ff' },
         { key: 'wired', name: 'Wired', color: '#000000' },
         { key: 'ars', name: 'ArsTechnica', color: '#ff4e00' },
         { key: 'macrumors', name: 'MacRumors', color: '#1d4ed8' },
         { key: 'expreview', name: '超能网', color: '#00a0e9' },
+        { key: 'theverge', name: 'The Verge', color: '#e2127a' },
+        { key: 'techcrunch', name: 'TechCrunch', color: '#0f9d58' },
+        { key: 'engadget', name: 'Engadget', color: '#2b2d32' },
+        { key: 'zdnet', name: 'ZDNet', color: '#0066cc' },
+        { key: 'lobsters', name: 'Lobsters', color: '#b22222' },
+        { key: 'devto', name: 'Dev.to', color: '#4b3e99' },
+        { key: 'gsmarena', name: 'GSMArena', color: '#d32f2f' },
     ],
 
     async fetchAllTechNews() {
-        const cacheKey = 'tech_all_v35';
+        const cacheKey = 'tech_all_v36';
         const cached = this.getCache(cacheKey);
         if (cached) return cached;
 
         try {
-            const data = await this.fetchJSON('data/news.json');
+            // 直接fetch，不用AbortController避免超时问题
+            const r = await fetch('data/news.json?' + Date.now());
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const data = await r.json();
             if (data && data.articles && Array.isArray(data.articles)) {
                 const articles = data.articles.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
                 this.setCache(cacheKey, articles);
                 return articles;
             }
         } catch (e) {
-            console.warn('读取本地新闻数据失败:', e.message);
+            console.warn('读取新闻数据失败:', e.message);
         }
         return [];
     }
