@@ -1,0 +1,25 @@
+{
+  "name": "tech-digest",
+  "version": "1.0.0",
+  "description": "一站式聚合科技数码领域热点资讯的平台，涵盖社交媒体热搜和科技媒体资讯。",
+  "main": "index.js",
+  "scripts": {
+    "fetch": "node scripts/fetch-news.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ACloud-East/tech-digest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ACloud-East/tech-digest/issues"
+  },
+  "homepage": "https://acloud-east.github.io/tech-digest/",
+  "dependencies": {
+    "node-fetch": "^2.7.0",
+    "rss-parser": "^3.13.0"
+  }
+}
