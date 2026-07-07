@@ -99,7 +99,7 @@
                                 <button @click="fetchSocialHotlist">重试</button>
                             </div>
                             <ul class="hot-list" v-if="!socialLoading && !socialError">
-                                <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index">
+                                <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index" :class="{ 'tech-highlight': item.isTech }">
                                     <span class="hot-rank" :class="{ 'top3': index < 3 }">{{ index + 1 }}</span>
                                     <div class="hot-content">
                                         <a :href="item.url" target="_blank" class="hot-title">{{ item.title }}</a>
@@ -107,6 +107,9 @@
                                             <i class="fa-solid fa-chart-simple"></i> {{ item.heat }}
                                         </span>
                                     </div>
+                                    <span class="hot-tech-badge" v-if="item.isTech" title="科技相关">
+                                        <i class="fa-solid fa-microchip"></i>
+                                    </span>
                                     <span class="hot-tag" v-if="item.tag" :class="getTagClass(item.tag)">{{ item.tag }}</span>
                                 </li>
                             </ul>
