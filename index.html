@@ -27,16 +27,15 @@
             <!-- 左侧面板 -->
             <aside class="sidebar">
                 <nav class="sidebar-nav">
-                    <div class="nav-item active" @click="activePanel = 'hotboard'">
+                    <div class="nav-item" :class="{ active: activePanel === 'hotboard' }" @click="activePanel = 'hotboard'">
                         <i class="fa-solid fa-fire"></i>
                         <span>热点看板</span>
                     </div>
-                    <div class="nav-item" @click="activePanel = 'ai-writer'">
+                    <div class="nav-item" :class="{ active: activePanel === 'ai-writer' }" @click="activePanel = 'ai-writer'">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>AI文案生成</span>
-                        <span class="badge badge-coming">即将上线</span>
                     </div>
-                    <div class="nav-item" @click="activePanel = 'ppt-maker'">
+                    <div class="nav-item" :class="{ active: activePanel === 'ppt-maker' }" @click="activePanel = 'ppt-maker'">
                         <i class="fa-solid fa-file-powerpoint"></i>
                         <span>PPT生成</span>
                         <span class="badge badge-coming">即将上线</span>
