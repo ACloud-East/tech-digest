@@ -1,68 +1,18 @@
 /**
- * fetch-news.js
- * 抓取各科技媒体RSS，生成静态数据文件 data/news.json
- * 供前端直接读取（绕过浏览器CORS限制）
+ * fetch-news-v3.js - 终极版
+ * 标准RSS + 手动XML + Cheerio HTML解析 三位一体
  */
 const Parser = require('rss-parser');
+const fetch = require('node-fetch');
+const { parseStringPromise } = require('xml2js');
+const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
 
-const parser = new Parser({
-    timeout: 10000,
-    headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/rss+xml, application/xml, text/xml, */*'
-    },
-    requestOptions: { rejectUnauthorized: false }
-});
+const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+const parser = new Parser({ timeout: 15000, headers: { 'User-Agent': UA, 'Accept': 'application/rss+xml, application/xml, text/xml, */*' }, requestOptions: { rejectUnauthorized: false } });
 
-// 数据源配置：名称 + 主RSS地址 + 备用RSSHub地址 + 颜色
-const sources = [
-    { name: 'IT之家', rss: 'https://www.ithome.com/rss/', rsshub: 'https://rsshub.app/ithome/rss', color: '#e13b3f' },
-    { name: '36氪', rss: 'https://36kr.com/feed', rsshub: 'https://rsshub.app/36kr/hot-list', color: '#0066ff' },
-    { name: '少数派', rss: 'https://sspai.com/feed', rsshub: null, color: '#d93b3b' },
-    { name: '爱范儿', rss: 'https://www.ifanr.com/feed', rsshub: 'https://rsshub.app/ifanr', color: '#d4233a' },
-    { name: '虎嗅', rss: 'https://www.huxiu.com/rss/0.xml', rsshub: 'https://rsshub.app/huxiu/article', color: '#374151' },
-    { name: '雷锋网', rss: 'https://www.leiphone.com/rss', rsshub: 'https://rsshub.app/leiphone/latest', color: '#1890ff' },
-    { name: '网易科技', rss: 'https://www.163.com/dy/media/T1348631808562.rss', rsshub: 'https://rsshub.app/163/dy/T1348631808562', color: '#e60012' },
-    { name: '快科技', rss: 'https://rss.mydrivers.com/', rsshub: 'https://rsshub.app/mydrivers/new', color: '#ff6600' },
-    { name: 'DoNews', rss: 'https://www.donews.com/rss', rsshub: 'https://rsshub.app/donews', color: '#00a971' },
-    { name: '极客公园', rss: 'https://www.geekpark.net/rss', rsshub: 'https://rsshub.app/geekpark/breakingnews', color: '#00c4ff' },
-    { name: '品玩', rss: 'https://www.pingwest.com/feed', rsshub: 'https://rsshub.app/pingwest/status', color: '#ff5722' },
-    { name: 'cnBeta', rss: 'https://www.cnbeta.com/backend.php', rsshub: 'https://rsshub.app/cnbeta', color: '#009a61' },
-    { name: '知客', rss: 'https://www.zaeke.com/feed', rsshub: null, color: '#9c27b0' },
-    { name: 'Odaily', rss: 'https://www.odaily.news/feed', rsshub: null, color: '#ffb300' },
-    { name: '华尔街见闻', rss: 'https://wallstreetcn.com/rss/tech', rsshub: 'https://rsshub.app/wallstreetcn/news/global', color: '#d32f2f' },
-    { name: '机器之心', rss: 'https://www.jiqizhixin.com/rss', rsshub: 'https://rsshub.app/jiqizhixin', color: '#512da8' },
-    { name: '量子位', rss: 'https://www.qbitai.com/feed', rsshub: null, color: '#00796b' },
-    { name: 'InfoQ', rss: 'https://www.infoq.cn/feed', rsshub: null, color: '#0277bd' },
-    { name: '开源中国', rss: 'https://www.oschina.net/news/rss', rsshub: null, color: '#43a047' },
-    { name: 'Solidot', rss: 'https://www.solidot.org/index.rss', rsshub: null, color: '#546e7a' },
-    { name: '新华网科技', rss: 'https://www.xinhuanet.com/tech/xhxtech.xml', rsshub: null, color: '#003d8c' },
-    { name: '钛媒体', rss: 'https://www.tmtpost.com/rss.xml', rsshub: null, color: '#ff9800' },
-    { name: '科技猎', rss: 'https://www.kejilie.com/feed', rsshub: null, color: '#795548' },
-    { name: '澎湃科技', rss: 'https://www.thepaper.cn/rss_24.xml', rsshub: 'https://rsshub.app/thepaper/featured', color: '#1e88e5' },
-    // 新增更多源
-    { name: '知乎热榜', rss: null, rsshub: 'https://rsshub.app/zhihu/hot', color: '#0084ff' },
-    { name: 'V2EX', rss: null, rsshub: 'https://rsshub.app/v2ex/topics/latest', color: '#e8a719' },
-    { name: '掘金前端', rss: null, rsshub: 'https://rsshub.app/juejin/category/frontend', color: '#1e80ff' },
-    { name: 'TechCrunch中国', rss: null, rsshub: 'https://rsshub.app/techcrunch/latest', color: '#0f9d58' },
-    { name: 'Wired', rss: 'https://www.wired.com/feed/rss', rsshub: null, color: '#000000' },
-    { name: 'TheVerge', rss: 'https://www.theverge.com/rss/index.xml', rsshub: null, color: '#e2127a' },
-    { name: 'ArsTechnica', rss: 'http://feeds.arstechnica.com/arstechnica/index', rsshub: null, color: '#ff4e00' },
-    { name: 'Engadget中文', rss: null, rsshub: 'https://rsshub.app/engadget/cn', color: '#2b2d32' },
-    { name: '9to5Mac', rss: 'https://9to5mac.com/feed/', rsshub: null, color: '#0a84ff' },
-    { name: 'MacRumors', rss: 'https://www.macrumors.com/macrumors.xml', rsshub: null, color: '#1d4ed8' },
-    { name: 'AndroidPolice', rss: 'https://www.androidpolice.com/feed/', rsshub: null, color: '#3ddc84' },
-    { name: 'Gizmodo', rss: 'https://gizmodo.com/rss', rsshub: null, color: '#ff6b6b' },
-    { name: '数字尾巴', rss: 'https://www.dgtle.com/rss', rsshub: null, color: '#ff7a00' },
-    { name: 'ZEALER', rss: 'https://www.zealer.com/rss', rsshub: null, color: '#ff0050' },
-    { name: '超能网', rss: 'https://www.expreview.com/rss.php', rsshub: null, color: '#00a0e9' },
-    { name: '什么值得买', rss: 'https://www.smzdm.com/feed', rsshub: 'https://rsshub.app/smzdm/ranking/pinlei/11/3', color: '#ff6b00' },
-    { name: '中关村在线', rss: 'http://desk.zol.com.cn/rss.xml', rsshub: 'https://rsshub.app/zol/diy', color: '#315efb' },
-];
-
-// 科技领域关键词
+// ========== 关键词 ==========
 const techKeywords = [
     '人工智能','AI','大模型','GPT','ChatGPT','深度学习','机器学习','神经网络','LLM','AIGC','AGI',
     'OpenAI','Claude','Gemini','Copilot','Sora','DeepSeek','通义千问','文心一言','混元','豆包','kimi',
@@ -82,13 +32,7 @@ const techKeywords = [
     '区块链','Web3','比特币','以太坊','NFT','DeFi','加密','数字货币','DAO','智能合约','Solana','数字人民币','元宇宙',
     'Tech','Technology','Apple','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC'
 ];
-
-function isRelevant(text) {
-    if (!text) return false;
-    const t = text.toLowerCase();
-    return techKeywords.some(k => t.includes(k.toLowerCase()));
-}
-
+function isRelevant(text) { if (!text) return false; const t = text.toLowerCase(); return techKeywords.some(k => t.includes(k.toLowerCase())); }
 function extractTags(text) {
     if (!text) return [];
     const map = {
@@ -104,56 +48,269 @@ function extractTags(text) {
         '智能硬件': ['智能硬件','iot','可穿戴','智能家居','ar','vr','xr','vision pro','quest','机器人','无人机','3d打印','智能手表','airpods'],
         '区块链/Web3': ['区块链','web3','比特币','以太坊','nft','defi','加密','数字货币','dao','智能合约','元宇宙']
     };
-    const tags = [];
-    const lt = text.toLowerCase();
-    for (const [cat, kws] of Object.entries(map)) {
-        if (kws.some(k => lt.includes(k))) tags.push(cat);
-    }
+    const tags = []; const lt = text.toLowerCase();
+    for (const [cat, kws] of Object.entries(map)) { if (kws.some(k => lt.includes(k))) tags.push(cat); }
     return tags.slice(0, 3);
 }
-
-function stripHtml(html) {
-    if (!html) return '';
-    return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+function stripHtml(html) { if (!html) return ''; return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+function makeArticle(source, item) {
+    return {
+        source: source.name, sourceColor: source.color,
+        title: (item.title || '').trim(),
+        description: stripHtml(item.description || ''),
+        url: item.url || '', time: item.time || new Date().toISOString(),
+        tags: extractTags(item.title + ' ' + (item.description || ''))
+    };
 }
 
-async function fetchOneSource(source) {
-    const urls = [source.rss, source.rsshub].filter(Boolean);
-    let lastError = null;
-    for (const url of urls) {
+// ========== 1. 标准RSS ==========
+const standardSources = [
+    { name: 'IT之家', url: 'https://www.ithome.com/rss/', color: '#e13b3f' },
+    { name: '36氪', url: 'https://36kr.com/feed', color: '#0066ff' },
+    { name: '少数派', url: 'https://sspai.com/feed', color: '#d93b3b' },
+    { name: '爱范儿', url: 'https://www.ifanr.com/feed', color: '#d4233a' },
+    { name: '量子位', url: 'https://www.qbitai.com/feed', color: '#00796b' },
+    { name: 'InfoQ', url: 'https://www.infoq.cn/feed', color: '#0277bd' },
+    { name: '开源中国', url: 'https://www.oschina.net/news/rss', color: '#43a047' },
+    { name: 'Solidot', url: 'https://www.solidot.org/index.rss', color: '#546e7a' },
+    { name: '钛媒体', url: 'https://www.tmtpost.com/rss.xml', color: '#ff9800' },
+    { name: 'Wired', url: 'https://www.wired.com/feed/rss', color: '#000000' },
+    { name: 'ArsTechnica', url: 'http://feeds.arstechnica.com/arstechnica/index', color: '#ff4e00' },
+    { name: '9to5Mac', url: 'https://9to5mac.com/feed/', color: '#0a84ff' },
+    { name: 'MacRumors', url: 'https://www.macrumors.com/macrumors.xml', color: '#1d4ed8' },
+    { name: '超能网', url: 'https://www.expreview.com/rss.php', color: '#00a0e9' },
+    // RSSHub 公共实例路由（反爬/无RSS网站替代源）
+    { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
+    { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
+    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
+    { name: '机器之心', url: 'https://rsshub.rssforever.com/jiqizhixin', color: '#512da8' },
+    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', color: '#00c4ff' },
+    { name: '网易科技', url: 'https://rsshub.rssforever.com/163/dy/T1348631808562', color: '#e60012' },
+    { name: 'cnBeta', url: 'https://rsshub.rssforever.com/cnbeta', color: '#009a61' },
+    { name: '澎湃新闻', url: 'https://rsshub.rssforever.com/thepaper/featured', color: '#1e88e5' },
+    // 使用不同RSSHub实例分散负载
+    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', url2: 'https://rsshub.app/pingwest/status', color: '#ff5722' },
+    { name: '机器之心', url: 'https://rsshub.rssforever.com/jiqizhixin', url2: 'https://rsshub.app/jiqizhixin', color: '#512da8' },
+    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', url2: 'https://rsshub.app/geekpark/breakingnews', color: '#00c4ff' },
+    { name: '网易科技', url: 'https://rsshub.rssforever.com/163/dy/T1348631808562', url2: 'https://rsshub.app/163/dy/T1348631808562', color: '#e60012' },
+];
+
+async function fetchStandard(src) {
+    try {
+        console.log(`[RSS ] ${src.name}`);
+        let feed;
         try {
-            console.log(`[Fetch] ${source.name} <- ${url}`);
-            const feed = await parser.parseURL(url);
-            const items = (feed.items || []).map(item => ({
-                source: source.name,
-                sourceColor: source.color,
-                title: item.title || '',
-                description: stripHtml(item.contentSnippet || item.content || item.summary || ''),
-                url: item.link || item.guid || '',
-                time: item.pubDate || item.isoDate || '',
-                tags: extractTags(item.title + ' ' + (item.contentSnippet || item.content || ''))
-            }));
-            const filtered = items.filter(i => isRelevant(i.title + ' ' + i.description));
-            console.log(`[OK] ${source.name}: ${items.length} 条，科技相关 ${filtered.length} 条`);
-            return filtered;
-        } catch (e) {
-            lastError = e;
-            console.log(`[Retry] ${source.name} 主源失败，尝试备用: ${e.message}`);
+            feed = await parser.parseURL(src.url);
+        } catch(e1) {
+            // 主URL失败，尝试备用URL
+            if (src.url2) {
+                console.log(`  -> 主源失败，尝试备用`);
+                feed = await parser.parseURL(src.url2);
+            } else throw e1;
         }
-    }
-    console.log(`[FAIL] ${source.name}: ${lastError ? lastError.message : 'no url'}`);
-    return [];
+        const items = (feed.items || []).map(item => makeArticle(src, {
+            title: item.title, description: item.contentSnippet || item.content || item.summary || '',
+            url: item.link || item.guid || '', time: item.pubDate || item.isoDate || ''
+        }));
+        const filtered = items.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        return filtered;
+    } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
 
-async function main() {
-    console.log('开始抓取科技资讯...\n');
+// ========== 2. 手动XML解析 ==========
+async function fetchAndParseXML(url) {
+    const resp = await fetch(url, { headers: { 'User-Agent': UA }, timeout: 15000 });
+    let xml = await resp.text();
+    xml = xml.replace(/&(?!(amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;))/g, '&amp;');
+    xml = xml.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+    return await parseStringPromise(xml, { explicitArray: false, mergeAttrs: true });
+}
 
-    // 串行抓取，避免网络拥堵
-    const allArticles = [];
-    for (const source of sources) {
-        const articles = await fetchOneSource(source);
-        allArticles.push(...articles);
-    }
+function extractRSSItems(parsed) {
+    let channel = parsed.rss && parsed.rss.channel;
+    if (!channel) channel = parsed.feed;
+    if (!channel) return [];
+    let items = channel.item || channel.entry || [];
+    if (!Array.isArray(items)) items = [items];
+    return items.map(item => ({
+        title: item.title || '',
+        description: item.description || item.summary || item.content || '',
+        url: item.link || '', time: item.pubDate || item.published || item.updated || item['dc:date'] || ''
+    }));
+}
+
+const manualSources = [
+    { name: 'Odaily', url: 'https://www.odaily.news/feed', color: '#ffb300' },
+    { name: '澎湃', url: 'https://www.thepaper.cn/rss_24.xml', color: '#1e88e5' },
+];
+
+async function fetchManual(src) {
+    try {
+        console.log(`[XML ] ${src.name}`);
+        const parsed = await fetchAndParseXML(src.url);
+        const items = extractRSSItems(parsed).map(item => makeArticle(src, item));
+        const filtered = items.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        return filtered;
+    } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
+}
+
+// ========== 3. Cheerio HTML页面抓取 ==========
+async function scrapeHTML(name, url, color, extractFn) {
+    try {
+        console.log(`[HTML] ${name}`);
+        const resp = await fetch(url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: 15000 });
+        const html = await resp.text();
+        const $ = cheerio.load(html);
+        const items = extractFn($, url);
+        const articles = items.map(item => makeArticle({ name, color }, item));
+        const filtered = articles.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        return filtered;
+    } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
+}
+
+const htmlSources = [
+    {
+        name: '快科技', url: 'https://www.mydrivers.com/', color: '#ff6600',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && href && !title.match(/^(首页|登录|注册|更多|下一页|上一页|搜索)$/)) {
+                    if (href.startsWith('/')) href = 'https://www.mydrivers.com' + href;
+                    if (!href.startsWith('http')) return;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 40);
+        }
+    },
+    {
+        name: '雷锋网', url: 'https://www.leiphone.com/', color: '#1890ff',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && href.includes('leiphone.com') && !title.match(/^(首页|登录|注册|更多|下一页)$/)) {
+                    if (href.startsWith('/')) href = 'https://www.leiphone.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 40);
+        }
+    },
+    {
+        name: 'DoNews', url: 'https://www.donews.com/', color: '#00a971',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && (href.startsWith('/article/') || href.includes('donews.com'))) {
+                    if (href.startsWith('/')) href = 'https://www.donews.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 30);
+        }
+    },
+    {
+        name: '新华网科技', url: 'http://www.news.cn/tech/', color: '#003d8c',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && (href.startsWith('/tech/') || href.includes('news.cn/tech'))) {
+                    if (href.startsWith('/')) href = 'http://www.news.cn' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 30);
+        }
+    },
+    {
+        name: '虎嗅', url: 'https://www.huxiu.com/', color: '#374151',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && href.includes('huxiu.com/article')) {
+                    if (href.startsWith('/')) href = 'https://www.huxiu.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 30);
+        }
+    },
+    {
+        name: '华尔街见闻', url: 'https://wallstreetcn.com/news/tech', color: '#d32f2f',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && (href.includes('wallstreetcn.com/articles') || href.startsWith('/articles/'))) {
+                    if (href.startsWith('/')) href = 'https://wallstreetcn.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 30);
+        }
+    },
+    {
+        name: '品玩', url: 'https://www.pingwest.com/', color: '#ff5722',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && href.includes('pingwest.com')) {
+                    if (href.startsWith('/')) href = 'https://www.pingwest.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 25);
+        }
+    },
+    {
+        name: '机器之心', url: 'https://www.jiqizhixin.com/', color: '#512da8',
+        extract: ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim();
+                let href = $el.attr('href') || '';
+                if (title.length > 15 && title.length < 120 && href.includes('jiqizhixin.com/articles')) {
+                    if (href.startsWith('/')) href = 'https://www.jiqizhixin.com' + href;
+                    items.push({ title, url: href, time: new Date().toISOString() });
+                }
+            });
+            return items.slice(0, 25);
+        }
+    },
+];
+
+// ========== 主流程 ==========
+async function main() {
+    console.log('=== TechDigest 新闻抓取 v3 ===\n');
+    let allArticles = [];
+
+    for (const src of standardSources) allArticles.push(...(await fetchStandard(src)));
+    for (const src of manualSources) allArticles.push(...(await fetchManual(src)));
+    for (const src of htmlSources) allArticles.push(...(await scrapeHTML(src.name, src.url, src.color, src.extract)));
 
     // 去重
     const seen = new Set();
@@ -163,25 +320,18 @@ async function main() {
         if (!seen.has(key)) { seen.add(key); unique.push(a); }
     }
 
-    // 按时间排序
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
-    const output = {
-        updateTime: new Date().toISOString(),
-        total: unique.length,
-        articles: unique
-    };
-
+    const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
 
-    // 统计
     const bySource = {};
     unique.forEach(a => { bySource[a.source] = (bySource[a.source] || 0) + 1; });
-    console.log('\n===== 统计 =====');
+    console.log('\n===== 最终统计 =====');
     console.log('总文章数:', unique.length);
     Object.entries(bySource).sort((a,b) => b[1] - a[1]).forEach(([k, v]) => console.log(`  ${k}: ${v}`));
-    console.log('数据已保存:', outPath);
+    console.log('\n已保存:', outPath);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
