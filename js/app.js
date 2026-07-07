@@ -277,6 +277,161 @@ const app = createApp({
             return text.length <= len ? text : text.slice(0, len) + '...';
         }
 
+        // ========== PPT 生成 ==========
+        const pptForm = ref({
+            title: '',
+            subtitle: '',
+            content: '',
+            pptType: 'product',
+            theme: 'tech',
+            maxSlides: 10,
+            layout: 'list',
+            includeCover: true,
+            includeToc: true,
+            includeEnd: true,
+            wordFileName: '',
+            pdfFileName: '',
+        });
+
+        const pptInputMode = ref('paste');
+        const pptGenerating = ref(false);
+
+        const pptOptions = ref({
+            types: [
+                { value: 'product', label: '产品发布' },
+                { value: 'tech', label: '技术方案' },
+                { value: 'report', label: '行业报告' },
+                { value: 'marketing', label: '营销策划' },
+                { value: 'education', label: '培训课件' },
+                { value: 'summary', label: '工作总结' },
+            ],
+            pageCounts: [5, 10, 15, 20, 30],
+            layouts: [
+                { value: 'list', label: '要点列表' },
+                { value: 'grid', label: '网格卡片' },
+                { value: 'text', label: '纯文排版' },
+            ],
+        });
+
+        const pptThemes = {
+            tech: { name: '科技蓝', gradient: 'linear-gradient(135deg, #1A73E8, #00BCD4)' },
+            dark: { name: '暗夜黑', gradient: 'linear-gradient(135deg, #1E1E2E, #2D2D3F)' },
+            light: { name: '简约白', gradient: 'linear-gradient(135deg, #2563EB, #06B6D4)' },
+            nature: { name: '清新绿', gradient: 'linear-gradient(135deg, #059669, #34D399)' },
+            warm: { name: '暖橙', gradient: 'linear-gradient(135deg, #EA580C, #FB923C)' },
+        };
+
+        // 预估页数
+        const estimatedSlides = computed(() => {
+            const content = pptForm.value.content;
+            if (!content || content.length < 20) return 0;
+            const headings = (content.match(/^#{1,3}\s/gm) || []).length;
+            const lines = content.split('\n').filter(l => l.trim()).length;
+            return Math.max(headings || 1, Math.ceil(lines / 5));
+        });
+
+        // Word 上传
+        async function handleWordUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            pptForm.value.wordFileName = file.name;
+            const text = await file.text();
+            // 简单提取文本（docx是zip格式，这里用基础方式）
+            pptForm.value.content = extractPlainText(text) || '无法解析 Word 内容，请尝试粘贴文案方式';
+        }
+
+        function handleWordDrop(e) {
+            const file = e.dataTransfer.files[0];
+            if (file && (file.name.endsWith('.docx') || file.name.endsWith('.doc'))) {
+                pptForm.value.wordFileName = file.name;
+                const reader = new FileReader();
+                reader.onload = async (ev) => {
+                    const text = ev.target.result;
+                    pptForm.value.content = extractPlainText(text) || '无法解析 Word 内容，请尝试粘贴文案方式';
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // PDF 上传
+        async function handlePDFUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            pptForm.value.pdfFileName = file.name;
+            // 使用 pdf.js 提取文本（从 CDN 加载）
+            await extractPDFText(file);
+        }
+
+        function handlePDFDrop(e) {
+            const file = e.dataTransfer.files[0];
+            if (file && file.name.endsWith('.pdf')) {
+                pptForm.value.pdfFileName = file.name;
+                extractPDFText(file);
+            }
+        }
+
+        async function extractPDFText(file) {
+            try {
+                // 动态加载 pdf.js
+                if (!window.pdfjsLib) {
+                    await new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                }
+                const arrayBuffer = await file.arrayBuffer();
+                const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                let fullText = '';
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    const page = await pdf.getPage(i);
+                    const content = await page.getTextContent();
+                    const pageText = content.items.map(item => item.str).join(' ');
+                    fullText += pageText + '\n';
+                }
+                pptForm.value.content = fullText.trim();
+            } catch (e) {
+                pptForm.value.content = 'PDF 解析失败，请尝试粘贴文案方式。错误：' + e.message;
+            }
+        }
+
+        function extractPlainText(text) {
+            // 去除 XML/二进制噪音，保留中文和常见字符
+            return text
+                .replace(/<[^>]+>/g, '')
+                .replace(/[^\u4e00-\u9fa5a-zA-Z0-9\s\.\,\!\?\;\:\#\-\*\/\(\)\[\]\{\}，。！？；：""''、…—\n]/g, '')
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+        }
+
+        async function generatePPT() {
+            if (!pptForm.value.title && !pptForm.value.content) {
+                alert('请至少输入标题或内容');
+                return;
+            }
+            pptGenerating.value = true;
+            try {
+                await PPTGenerator.generate({
+                    title: pptForm.value.title || '科技数码演示文稿',
+                    subtitle: pptForm.value.subtitle,
+                    content: pptForm.value.content,
+                    theme: pptForm.value.theme,
+                    pptType: pptForm.value.pptType,
+                    maxSlides: pptForm.value.maxSlides,
+                    layout: pptForm.value.layout,
+                    includeCover: pptForm.value.includeCover,
+                    includeToc: pptForm.value.includeToc,
+                    includeEnd: pptForm.value.includeEnd,
+                });
+            } catch (e) {
+                alert('PPT 生成失败：' + (e.message || '未知错误'));
+            } finally {
+                pptGenerating.value = false;
+            }
+        }
+
         onMounted(() => { fetchSocialHotlist(); });
 
         return {
@@ -289,6 +444,9 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
             generateArticle, regenerateArticle, copyResult, downloadResult,
+            // PPT 生成
+            pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
+            handleWordUpload, handleWordDrop, handlePDFUpload, handlePDFDrop, generatePPT,
         };
     }
 });

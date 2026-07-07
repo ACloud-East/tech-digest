@@ -22,6 +22,7 @@
     "cheerio": "^1.2.0",
     "node-fetch": "^2.7.0",
     "playwright": "^1.61.1",
+    "pptxgenjs": "^4.0.1",
     "rss-parser": "^3.13.0",
     "xml2js": "^0.6.2"
   }

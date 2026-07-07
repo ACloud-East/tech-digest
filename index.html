@@ -371,17 +371,166 @@
                     </div>
                 </div>
 
-                <!-- ========== PPT生成（占位） ========== -->
-                <div class="panel placeholder-panel" v-show="activePanel === 'ppt-maker'">
-                    <div class="placeholder-content">
-                        <div class="placeholder-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
-                        <h2>PPT 生成</h2>
-                        <p class="placeholder-desc">基于AI自动生成科技数码类演示文稿，支持多种模板</p>
-                        <div class="coming-soon-badge"><i class="fa-solid fa-clock"></i><span>功能开发中，敬请期待...</span></div>
-                        <div class="feature-preview">
-                            <div class="feature-item"><i class="fa-solid fa-file-lines"></i><span>一键生成PPT</span></div>
-                            <div class="feature-item"><i class="fa-solid fa-chart-pie"></i><span>数据可视化</span></div>
-                            <div class="feature-item"><i class="fa-solid fa-download"></i><span>多格式导出</span></div>
+                <!-- ========== PPT生成 ========== -->
+                <div class="panel ppt-panel" v-show="activePanel === 'ppt-maker'">
+                    <div class="ppt-container">
+                        <div class="ppt-header">
+                            <i class="fa-solid fa-file-powerpoint"></i>
+                            <h2>PPT 智能生成</h2>
+                            <span class="ppt-badge">一键导出 .pptx</span>
+                        </div>
+
+                        <div class="ppt-body">
+                            <!-- 左栏：输入区 -->
+                            <div class="ppt-input-section">
+                                <!-- 标题 -->
+                                <div class="ppt-field">
+                                    <label class="ppt-label"><i class="fa-solid fa-heading"></i> PPT 标题</label>
+                                    <input type="text" class="ppt-input" v-model="pptForm.title" placeholder="输入演示文稿标题...">
+                                </div>
+
+                                <!-- 副标题 -->
+                                <div class="ppt-field">
+                                    <label class="ppt-label"><i class="fa-solid fa-subscript"></i> 副标题（可选）</label>
+                                    <input type="text" class="ppt-input" v-model="pptForm.subtitle" placeholder="补充说明...">
+                                </div>
+
+                                <!-- 内容输入方式切换 -->
+                                <div class="ppt-field">
+                                    <label class="ppt-label"><i class="fa-solid fa-pen-to-square"></i> 内容输入方式</label>
+                                    <div class="ppt-input-tabs">
+                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'paste' }" @click="pptInputMode = 'paste'">
+                                            <i class="fa-solid fa-paste"></i> 粘贴文案
+                                        </button>
+                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'word' }" @click="pptInputMode = 'word'">
+                                            <i class="fa-solid fa-file-word"></i> 上传Word
+                                        </button>
+                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'pdf' }" @click="pptInputMode = 'pdf'">
+                                            <i class="fa-solid fa-file-pdf"></i> 上传PDF
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 粘贴文案 -->
+                                <div class="ppt-field" v-show="pptInputMode === 'paste'">
+                                    <textarea class="ppt-textarea" v-model="pptForm.content" placeholder="在此粘贴文案内容...&#10;&#10;支持以下格式：&#10;# 一级标题&#10;## 二级标题&#10;- 要点列表&#10;1. 编号列表&#10;&#10;系统将自动按标题和段落分页生成PPT" rows="12"></textarea>
+                                    <span class="ppt-char-count">{{ pptForm.content.length }} 字 · 约 {{ estimatedSlides }} 页</span>
+                                </div>
+
+                                <!-- 上传Word -->
+                                <div class="ppt-field ppt-upload-zone" v-show="pptInputMode === 'word'"
+                                    @dragover.prevent @drop.prevent="handleWordDrop"
+                                    @click="$refs.wordInput.click()">
+                                    <input type="file" ref="wordInput" accept=".docx,.doc" @change="handleWordUpload" hidden>
+                                    <div v-if="!pptForm.wordFileName">
+                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i>
+                                        <p>点击或拖拽上传 Word 文件</p>
+                                        <span class="ppt-upload-hint">支持 .docx / .doc 格式</span>
+                                    </div>
+                                    <div v-else class="ppt-upload-done">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>{{ pptForm.wordFileName }}</span>
+                                        <button class="ppt-upload-remove" @click.stop="pptForm.wordFileName = ''; pptForm.content = ''">✕</button>
+                                    </div>
+                                </div>
+
+                                <!-- 上传PDF -->
+                                <div class="ppt-field ppt-upload-zone" v-show="pptInputMode === 'pdf'"
+                                    @dragover.prevent @drop.prevent="handlePDFDrop"
+                                    @click="$refs.pdfInput.click()">
+                                    <input type="file" ref="pdfInput" accept=".pdf" @change="handlePDFUpload" hidden>
+                                    <div v-if="!pptForm.pdfFileName">
+                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i>
+                                        <p>点击或拖拽上传 PDF 文件</p>
+                                        <span class="ppt-upload-hint">自动提取文本内容生成PPT</span>
+                                    </div>
+                                    <div v-else class="ppt-upload-done">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>{{ pptForm.pdfFileName }}</span>
+                                        <button class="ppt-upload-remove" @click.stop="pptForm.pdfFileName = ''; pptForm.content = ''">✕</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 右栏：参数 + 生成 -->
+                            <div class="ppt-control-section">
+                                <div class="ppt-params-card">
+                                    <h3 class="ppt-params-title"><i class="fa-solid fa-sliders"></i> 生成参数</h3>
+
+                                    <!-- PPT 类型 -->
+                                    <div class="ppt-field">
+                                        <label class="ppt-label"><i class="fa-solid fa-layer-group"></i> PPT 类型</label>
+                                        <div class="ppt-radio-group">
+                                            <label class="ppt-radio" v-for="t in pptOptions.types" :key="t.value"
+                                                :class="{ active: pptForm.pptType === t.value }">
+                                                <input type="radio" v-model="pptForm.pptType" :value="t.value">
+                                                <span>{{ t.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 模板风格 -->
+                                    <div class="ppt-field">
+                                        <label class="ppt-label"><i class="fa-solid fa-palette"></i> 模板风格</label>
+                                        <div class="ppt-theme-grid">
+                                            <div class="ppt-theme-item" v-for="(t, key) in pptThemes" :key="key"
+                                                :class="{ active: pptForm.theme === key }"
+                                                @click="pptForm.theme = key">
+                                                <div class="ppt-theme-preview" :style="{ background: t.gradient }"></div>
+                                                <span>{{ t.name }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 最大页数 -->
+                                    <div class="ppt-field">
+                                        <label class="ppt-label"><i class="fa-solid fa-copy"></i> 最大页数</label>
+                                        <div class="ppt-radio-group">
+                                            <label class="ppt-radio" v-for="n in pptOptions.pageCounts" :key="n"
+                                                :class="{ active: pptForm.maxSlides === n }">
+                                                <input type="radio" v-model="pptForm.maxSlides" :value="n">
+                                                <span>{{ n }}页</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 布局风格 -->
+                                    <div class="ppt-field">
+                                        <label class="ppt-label"><i class="fa-solid fa-table-columns"></i> 布局风格</label>
+                                        <div class="ppt-radio-group">
+                                            <label class="ppt-radio" v-for="l in pptOptions.layouts" :key="l.value"
+                                                :class="{ active: pptForm.layout === l.value }">
+                                                <input type="radio" v-model="pptForm.layout" :value="l.value">
+                                                <span>{{ l.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 是否含封面/目录/结尾 -->
+                                    <div class="ppt-field">
+                                        <label class="ppt-label"><i class="fa-solid fa-toggle-on"></i> 附加页面</label>
+                                        <div class="ppt-check-group">
+                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeCover"> 封面页</label>
+                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeToc"> 目录页</label>
+                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeEnd"> 结尾页</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 生成按钮 -->
+                                    <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating">
+                                        <i v-if="!pptGenerating" class="fa-solid fa-bolt"></i>
+                                        <i v-if="pptGenerating" class="fa-solid fa-spinner spinning"></i>
+                                        {{ pptGenerating ? '正在生成 PPT...' : '生成并下载 PPT' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 预览提示 -->
+                        <div class="ppt-preview-bar" v-if="pptForm.content.length > 20">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>系统将根据你的内容自动分页。标题行（以 # 开头）会作为每页的标题，正文作为要点列表。</span>
+                            <span class="ppt-preview-count">预估 <strong>{{ estimatedSlides }}</strong> 页内容</span>
                         </div>
                     </div>
                 </div>
@@ -390,9 +539,11 @@
     </div>
 
     <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+    <script src="js/pptxgen.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/ai-generator.js"></script>
+    <script src="js/ppt-generator.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
