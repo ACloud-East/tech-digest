@@ -93,6 +93,15 @@ const standardSources = [
     { name: '机器之心', url: 'https://rsshub.rssforever.com/jiqizhixin', url2: 'https://rsshub.app/jiqizhixin', color: '#512da8' },
     { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', url2: 'https://rsshub.app/geekpark/breakingnews', color: '#00c4ff' },
     { name: '网易科技', url: 'https://rsshub.rssforever.com/163/dy/T1348631808562', url2: 'https://rsshub.app/163/dy/T1348631808562', color: '#e60012' },
+    // 新增国际科技媒体
+    { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
+    { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
+    { name: 'Engadget', url: 'https://www.engadget.com/rss.xml', color: '#2b2d32' },
+    { name: 'ZDNet', url: 'https://www.zdnet.com/news/rss.xml', color: '#0066cc' },
+    { name: 'Hacker News', url: 'https://hnrss.org/frontpage', color: '#ff6600' },
+    { name: 'Lobsters', url: 'https://lobste.rs/rss', color: '#b22222' },
+    { name: 'Dev.to', url: 'https://dev.to/feed', color: '#4b3e99' },
+    { name: 'GSMArena', url: 'https://www.gsmarena.com/rss-news-reviews.php3', color: '#d32f2f' },
 ];
 
 async function fetchStandard(src) {
