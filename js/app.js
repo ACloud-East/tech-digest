@@ -1,16 +1,15 @@
 /**
- * TechDigest - 科技数码文案聚合网站 v2
- * Vue 3 主应用
+ * TechDigest v3 - 主应用
  */
 const { createApp, ref, computed, onMounted } = Vue;
 
 const app = createApp({
     setup() {
-        // ========== 导航状态 ==========
+        // ========== 导航 ==========
         const activePanel = ref('hotboard');
         const hotboardTab = ref('social');
 
-        // ========== 社交媒体热搜 ==========
+        // ========== 热搜 ==========
         const socialPlatform = ref('weibo');
         const socialHotlist = ref([]);
         const socialLoading = ref(false);
@@ -22,21 +21,24 @@ const app = createApp({
         const techError = ref('');
         const techSourceFilter = ref('all');
         const techSearchQuery = ref('');
+        const techPageSize = 50;
+        const techDisplayCount = ref(50);
 
-        // ========== 全局状态 ==========
+        // ========== 全局 ==========
         const loading = computed(() => socialLoading.value || techLoading.value);
         const lastUpdate = ref('');
-
         const techSources = API.techSourceConfig;
 
         const totalArticles = computed(() => socialHotlist.value.length + techNews.value.length);
-
         const sourcesCount = computed(() => {
-            const activeSources = new Set();
-            techNews.value.forEach(item => { if (item.source) activeSources.add(item.source); });
-            if (socialHotlist.value.length > 0) activeSources.add(socialPlatform.value);
-            return activeSources.size;
+            const s = new Set();
+            techNews.value.forEach(i => { if (i.source) s.add(i.source); });
+            if (socialHotlist.value.length > 0) s.add(socialPlatform.value);
+            return s.size;
         });
+
+        const displayedTechNews = computed(() => techNews.value.slice(0, techDisplayCount.value));
+        const hasMoreTech = computed(() => techDisplayCount.value < techNews.value.length);
 
         // ========== 方法 ==========
         function switchHotboardTab(tab) {
@@ -50,13 +52,8 @@ const app = createApp({
             fetchSocialHotlist();
         }
 
-        /**
-         * 获取社交媒体热搜 - 科技相关优先，但全部展示
-         */
         async function fetchSocialHotlist() {
-            socialLoading.value = true;
-            socialError.value = '';
-
+            socialLoading.value = true; socialError.value = '';
             try {
                 let data;
                 switch (socialPlatform.value) {
@@ -66,37 +63,29 @@ const app = createApp({
                     case 'baidu': data = await API.fetchBaiduHot(); break;
                     default: data = await API.fetchWeiboHot();
                 }
-
-                // 给每条标注是否科技相关，然后科技相关的排前面
-                data.forEach(item => {
-                    item.isTech = TechFilter.isRelevant(item.title);
-                });
-                // 排序：科技相关优先，保持原有顺序
-                const techItems = data.filter(item => item.isTech);
-                const otherItems = data.filter(item => !item.isTech);
-                socialHotlist.value = [...techItems, ...otherItems];
+                socialHotlist.value = data;
                 updateTimestamp();
-            } catch (e) {
+            } catch(e) {
                 socialError.value = e.message || '数据加载失败';
                 socialHotlist.value = [];
-            } finally {
-                socialLoading.value = false;
-            }
+            } finally { socialLoading.value = false; }
         }
 
         async function fetchTechNews() {
-            techLoading.value = true;
-            techError.value = '';
+            techLoading.value = true; techError.value = '';
+            techDisplayCount.value = techPageSize;
             try {
                 const data = await API.fetchAllTechNews();
                 techNews.value = data;
                 updateTimestamp();
-            } catch (e) {
+            } catch(e) {
                 techError.value = e.message || '科技资讯加载失败';
                 techNews.value = [];
-            } finally {
-                techLoading.value = false;
-            }
+            } finally { techLoading.value = false; }
+        }
+
+        function loadMoreTech() {
+            techDisplayCount.value += techPageSize;
         }
 
         function refreshCurrentTab() {
@@ -107,21 +96,20 @@ const app = createApp({
         }
 
         function updateTimestamp() {
-            const now = new Date();
-            lastUpdate.value = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            lastUpdate.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
 
         const filteredTechNews = computed(() => {
-            let articles = techNews.value;
+            let articles = displayedTechNews.value;
             if (techSourceFilter.value !== 'all') {
-                const sourceName = techSources.find(s => s.key === techSourceFilter.value)?.name;
-                if (sourceName) articles = articles.filter(a => a.source === sourceName);
+                const srcName = techSources.find(s => s.key === techSourceFilter.value)?.name;
+                if (srcName) articles = articles.filter(a => a.source === srcName);
             }
             if (techSearchQuery.value.trim()) {
-                const query = techSearchQuery.value.toLowerCase();
+                const q = techSearchQuery.value.toLowerCase();
                 articles = articles.filter(a =>
-                    a.title.toLowerCase().includes(query) ||
-                    (a.description && a.description.toLowerCase().includes(query))
+                    a.title.toLowerCase().includes(q) ||
+                    (a.description && a.description.toLowerCase().includes(q))
                 );
             }
             return articles;
@@ -135,34 +123,23 @@ const app = createApp({
             if (tag === '商') return 'tag-ad';
             return '';
         }
-
-        function getSourceColor(sourceName) {
-            const source = techSources.find(s => s.name === sourceName);
-            return source ? source.color : '#64748b';
+        function getSourceColor(name) {
+            const s = techSources.find(x => x.name === name);
+            return s ? s.color : '#64748b';
         }
-
-        function formatTime(timeStr) {
-            if (!timeStr) return '';
+        function formatTime(ts) {
+            if (!ts) return '';
             try {
-                const date = new Date(timeStr);
-                const now = new Date();
-                const diff = now - date;
-                if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
-                if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
-                if (diff < 604800000) return `${Math.floor(diff / 86400000)}天前`;
-                return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
-            } catch { return timeStr; }
+                const d = new Date(ts), n = new Date(), diff = n - d;
+                if (diff < 3600000) return `${Math.floor(diff/60000)}分钟前`;
+                if (diff < 86400000) return `${Math.floor(diff/3600000)}小时前`;
+                if (diff < 604800000) return `${Math.floor(diff/86400000)}天前`;
+                return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+            } catch { return ts; }
         }
-
-        function truncate(text, maxLen) {
+        function truncate(text, len) {
             if (!text) return '';
-            if (text.length <= maxLen) return text;
-            return text.slice(0, maxLen) + '...';
-        }
-
-        function formatHeatDisplay(heat) {
-            if (!heat) return '';
-            return heat;
+            return text.length <= len ? text : text.slice(0, len) + '...';
         }
 
         onMounted(() => { fetchSocialHotlist(); });
@@ -170,11 +147,11 @@ const app = createApp({
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
-            loading, lastUpdate, techSources, totalArticles, sourcesCount, filteredTechNews,
+            loading, lastUpdate, techSources, totalArticles, sourcesCount,
+            filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
-            refreshCurrentTab, getTagClass, getSourceColor, formatTime, truncate, formatHeatDisplay
+            refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate
         };
     }
 });
-
 app.mount('#app');

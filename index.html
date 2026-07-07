@@ -87,7 +87,6 @@
                             </button>
                         </div>
 
-                        <!-- 热搜列表 -->
                         <div class="hot-list-container">
                             <div class="loading-overlay" v-if="socialLoading">
                                 <div class="spinner"></div>
@@ -99,23 +98,16 @@
                                 <button @click="fetchSocialHotlist">重试</button>
                             </div>
                             <ul class="hot-list" v-if="!socialLoading && !socialError">
-                                <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index" :class="{ 'tech-highlight': item.isTech }">
+                                <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index">
                                     <span class="hot-rank" :class="{ 'top3': index < 3 }">{{ index + 1 }}</span>
                                     <div class="hot-content">
                                         <a :href="item.url" target="_blank" class="hot-title">{{ item.title }}</a>
-                                        <span class="hot-heat" v-if="item.heat">
-                                            <i class="fa-solid fa-chart-simple"></i> {{ item.heat }}
-                                        </span>
                                     </div>
-                                    <span class="hot-tech-badge" v-if="item.isTech" title="科技相关">
-                                        <i class="fa-solid fa-microchip"></i>
-                                    </span>
                                     <span class="hot-tag" v-if="item.tag" :class="getTagClass(item.tag)">{{ item.tag }}</span>
                                 </li>
                             </ul>
-                            <div class="empty-state" v-if="!socialLoading && !socialError && socialHotlist.length === 0">
-                                <i class="fa-solid fa-inbox"></i>
-                                <p>暂无热搜数据</p>
+                            <div class="hot-empty-note" v-if="!socialLoading && !socialError && socialHotlist.length === 0">
+                                <p>该平台暂无科技相关热搜</p>
                             </div>
                         </div>
                     </div>
@@ -140,34 +132,39 @@
                         <div class="tech-list-container">
                             <div class="loading-overlay" v-if="techLoading">
                                 <div class="spinner"></div>
-                                <p>正在加载科技资讯...</p>
+                                <p>正在从 {{ techSources.length }} 个数据源加载科技资讯...</p>
                             </div>
                             <div class="error-message" v-if="techError">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                 <span>{{ techError }}</span>
                                 <button @click="fetchTechNews">重试</button>
                             </div>
-                            <div class="tech-grid" v-if="!techLoading && !techError">
-                                <article class="tech-card" v-for="(item, index) in filteredTechNews" :key="index">
-                                    <div class="tech-card-header">
-                                        <span class="tech-source-badge" :style="{ background: getSourceColor(item.source) }">
-                                            {{ item.source }}
-                                        </span>
-                                        <span class="tech-time">{{ formatTime(item.time) }}</span>
-                                    </div>
-                                    <h3 class="tech-card-title">
-                                        <a :href="item.url" target="_blank">{{ item.title }}</a>
-                                    </h3>
-                                    <p class="tech-card-desc" v-if="item.description">{{ truncate(item.description, 120) }}</p>
-                                    <div class="tech-card-tags" v-if="item.tags && item.tags.length">
-                                        <span class="tech-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</span>
-                                    </div>
-                                </article>
+                            <div v-if="!techLoading && !techError">
+                                <div class="tech-grid">
+                                    <article class="tech-card" v-for="(item, index) in filteredTechNews" :key="index">
+                                        <div class="tech-card-header">
+                                            <span class="tech-source-badge" :style="{ background: getSourceColor(item.source) }">
+                                                {{ item.source }}
+                                            </span>
+                                            <span class="tech-time">{{ formatTime(item.time) }}</span>
+                                        </div>
+                                        <h3 class="tech-card-title">
+                                            <a :href="item.url" target="_blank">{{ item.title }}</a>
+                                        </h3>
+                                        <p class="tech-card-desc" v-if="item.description">{{ truncate(item.description, 120) }}</p>
+                                        <div class="tech-card-tags" v-if="item.tags && item.tags.length">
+                                            <span class="tech-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</span>
+                                        </div>
+                                    </article>
+                                </div>
+                                <div class="tech-load-more" v-if="hasMoreTech">
+                                    <button @click="loadMoreTech">加载更多（已显示 {{ techDisplayCount }} / {{ techNews.length }} 条）</button>
+                                </div>
                             </div>
                             <div class="empty-state" v-if="!techLoading && !techError && filteredTechNews.length === 0">
                                 <i class="fa-solid fa-newspaper"></i>
                                 <p v-if="techSearchQuery">未找到匹配 "{{ techSearchQuery }}" 的资讯</p>
-                                <p v-else>暂无科技资讯数据</p>
+                                <p v-else>暂无科技资讯数据，请点击刷新重试</p>
                             </div>
                         </div>
                     </div>
@@ -176,28 +173,14 @@
                 <!-- ========== AI文案生成（占位） ========== -->
                 <div class="panel placeholder-panel" v-show="activePanel === 'ai-writer'">
                     <div class="placeholder-content">
-                        <div class="placeholder-icon">
-                            <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        </div>
+                        <div class="placeholder-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                         <h2>AI 文案生成</h2>
                         <p class="placeholder-desc">智能生成科技数码类营销文案、产品评测、新闻稿等</p>
-                        <div class="coming-soon-badge">
-                            <i class="fa-solid fa-clock"></i>
-                            <span>功能开发中，敬请期待...</span>
-                        </div>
+                        <div class="coming-soon-badge"><i class="fa-solid fa-clock"></i><span>功能开发中，敬请期待...</span></div>
                         <div class="feature-preview">
-                            <div class="feature-item">
-                                <i class="fa-solid fa-robot"></i>
-                                <span>AI智能写作</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fa-solid fa-palette"></i>
-                                <span>多风格模板</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fa-solid fa-language"></i>
-                                <span>SEO优化建议</span>
-                            </div>
+                            <div class="feature-item"><i class="fa-solid fa-robot"></i><span>AI智能写作</span></div>
+                            <div class="feature-item"><i class="fa-solid fa-palette"></i><span>多风格模板</span></div>
+                            <div class="feature-item"><i class="fa-solid fa-language"></i><span>SEO优化建议</span></div>
                         </div>
                     </div>
                 </div>
@@ -205,28 +188,14 @@
                 <!-- ========== PPT生成（占位） ========== -->
                 <div class="panel placeholder-panel" v-show="activePanel === 'ppt-maker'">
                     <div class="placeholder-content">
-                        <div class="placeholder-icon">
-                            <i class="fa-solid fa-file-powerpoint"></i>
-                        </div>
+                        <div class="placeholder-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
                         <h2>PPT 生成</h2>
                         <p class="placeholder-desc">基于AI自动生成科技数码类演示文稿，支持多种模板</p>
-                        <div class="coming-soon-badge">
-                            <i class="fa-solid fa-clock"></i>
-                            <span>功能开发中，敬请期待...</span>
-                        </div>
+                        <div class="coming-soon-badge"><i class="fa-solid fa-clock"></i><span>功能开发中，敬请期待...</span></div>
                         <div class="feature-preview">
-                            <div class="feature-item">
-                                <i class="fa-solid fa-file-lines"></i>
-                                <span>一键生成PPT</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fa-solid fa-chart-pie"></i>
-                                <span>数据可视化</span>
-                            </div>
-                            <div class="feature-item">
-                                <i class="fa-solid fa-download"></i>
-                                <span>多格式导出</span>
-                            </div>
+                            <div class="feature-item"><i class="fa-solid fa-file-lines"></i><span>一键生成PPT</span></div>
+                            <div class="feature-item"><i class="fa-solid fa-chart-pie"></i><span>数据可视化</span></div>
+                            <div class="feature-item"><i class="fa-solid fa-download"></i><span>多格式导出</span></div>
                         </div>
                     </div>
                 </div>
@@ -234,9 +203,7 @@
         </div>
     </div>
 
-    <!-- Vue 3 CDN -->
     <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
-    <!-- 应用脚本 -->
     <script src="js/api.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/app.js"></script>
