@@ -170,17 +170,204 @@
                     </div>
                 </div>
 
-                <!-- ========== AI文案生成（占位） ========== -->
-                <div class="panel placeholder-panel" v-show="activePanel === 'ai-writer'">
-                    <div class="placeholder-content">
-                        <div class="placeholder-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h2>AI 文案生成</h2>
-                        <p class="placeholder-desc">智能生成科技数码类营销文案、产品评测、新闻稿等</p>
-                        <div class="coming-soon-badge"><i class="fa-solid fa-clock"></i><span>功能开发中，敬请期待...</span></div>
-                        <div class="feature-preview">
-                            <div class="feature-item"><i class="fa-solid fa-robot"></i><span>AI智能写作</span></div>
-                            <div class="feature-item"><i class="fa-solid fa-palette"></i><span>多风格模板</span></div>
-                            <div class="feature-item"><i class="fa-solid fa-language"></i><span>SEO优化建议</span></div>
+                <!-- ========== AI文案生成 ========== -->
+                <div class="panel ai-writer-panel" v-show="activePanel === 'ai-writer'">
+                    <div class="ai-writer-container">
+                        <div class="ai-writer-header">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <h2>AI 智能文案生成</h2>
+                            <span class="ai-badge">DeepSeek / OpenAI 驱动</span>
+                        </div>
+
+                        <!-- 两栏布局 -->
+                        <div class="ai-writer-body">
+                            <!-- 左栏：输入区 -->
+                            <div class="ai-input-section">
+                                <!-- 标题输入 -->
+                                <div class="ai-field">
+                                    <label class="ai-label">
+                                        <i class="fa-solid fa-heading"></i> 文章标题
+                                    </label>
+                                    <input type="text" class="ai-input" v-model="aiForm.title" placeholder="输入已有文章标题，或留空让AI自动生成...">
+                                </div>
+
+                                <!-- 原文内容 -->
+                                <div class="ai-field">
+                                    <label class="ai-label">
+                                        <i class="fa-solid fa-file-lines"></i> 参考原文内容
+                                    </label>
+                                    <textarea class="ai-textarea ai-textarea-main" v-model="aiForm.content" placeholder="粘贴已有文章内容，AI将基于此重新创作优化..." rows="8"></textarea>
+                                    <span class="ai-char-count">{{ aiForm.content.length }} 字</span>
+                                </div>
+
+                                <!-- 参考模板 -->
+                                <div class="ai-field">
+                                    <label class="ai-label">
+                                        <i class="fa-solid fa-copy"></i> 参考模板（可选）
+                                    </label>
+                                    <textarea class="ai-textarea" v-model="aiForm.template" placeholder="输入你期望的文章模板或参考范例，AI将模仿其风格..." rows="4"></textarea>
+                                </div>
+
+                                <!-- 关键词 -->
+                                <div class="ai-field">
+                                    <label class="ai-label">
+                                        <i class="fa-solid fa-tags"></i> 核心关键词（逗号分隔）
+                                    </label>
+                                    <input type="text" class="ai-input" v-model="aiForm.keywords" placeholder="例如：iPhone 16, A18芯片, 评测, 对比">
+                                </div>
+                            </div>
+
+                            <!-- 右栏：控制区 + 输出区 -->
+                            <div class="ai-control-section">
+                                <!-- 控制参数 -->
+                                <div class="ai-params-card">
+                                    <h3 class="ai-params-title">
+                                        <i class="fa-solid fa-sliders"></i> 生成参数
+                                    </h3>
+
+                                    <!-- 文本类型 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-layer-group"></i> 文本类型
+                                        </label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="t in aiOptions.types" :key="t.value"
+                                                :class="{ active: aiForm.type === t.value }">
+                                                <input type="radio" v-model="aiForm.type" :value="t.value">
+                                                <span>{{ t.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 文本风格 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-paintbrush"></i> 文本风格
+                                        </label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="s in aiOptions.styles" :key="s.value"
+                                                :class="{ active: aiForm.style === s.value }">
+                                                <input type="radio" v-model="aiForm.style" :value="s.value">
+                                                <span>{{ s.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 字数 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-text-width"></i> 目标字数
+                                        </label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="w in aiOptions.wordCounts" :key="w"
+                                                :class="{ active: aiForm.wordCount === w }">
+                                                <input type="radio" v-model="aiForm.wordCount" :value="w">
+                                                <span>{{ w }}字</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 目标受众 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-users"></i> 目标受众
+                                        </label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="a in aiOptions.audiences" :key="a.value"
+                                                :class="{ active: aiForm.audience === a.value }">
+                                                <input type="radio" v-model="aiForm.audience" :value="a.value">
+                                                <span>{{ a.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 语言风格 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-language"></i> 语言风格
+                                        </label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="l in aiOptions.languages" :key="l.value"
+                                                :class="{ active: aiForm.language === l.value }">
+                                                <input type="radio" v-model="aiForm.language" :value="l.value">
+                                                <span>{{ l.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- 额外指令 -->
+                                    <div class="ai-field">
+                                        <label class="ai-label">
+                                            <i class="fa-solid fa-comment-dots"></i> 额外指令（可选）
+                                        </label>
+                                        <textarea class="ai-textarea ai-textarea-sm" v-model="aiForm.extraInstructions"
+                                            placeholder="例如：请重点对比性能参数、加入幽默元素、使用第一人称..." rows="3"></textarea>
+                                    </div>
+
+                                    <!-- 生成按钮 -->
+                                    <button class="ai-generate-btn" @click="generateArticle" :disabled="aiGenerating">
+                                        <i v-if="!aiGenerating" class="fa-solid fa-bolt"></i>
+                                        <i v-if="aiGenerating" class="fa-solid fa-spinner spinning"></i>
+                                        {{ aiGenerating ? 'AI 生成中...' : '开始 AI 生成文章' }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 输出结果区 -->
+                        <div class="ai-output-section" v-if="aiResult">
+                            <div class="ai-output-header">
+                                <h3><i class="fa-solid fa-file-check"></i> 生成结果</h3>
+                                <div class="ai-output-actions">
+                                    <button class="ai-action-btn" @click="copyResult">
+                                        <i class="fa-solid fa-copy"></i> 复制
+                                    </button>
+                                    <button class="ai-action-btn" @click="downloadResult">
+                                        <i class="fa-solid fa-download"></i> 下载
+                                    </button>
+                                    <button class="ai-action-btn" @click="regenerateArticle">
+                                        <i class="fa-solid fa-rotate-right"></i> 重新生成
+                                    </button>
+                                    <button class="ai-action-btn" @click="aiResult = ''">
+                                        <i class="fa-solid fa-xmark"></i> 清除
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="ai-output-content">
+                                <div class="ai-output-meta">
+                                    <span><i class="fa-solid fa-file-alt"></i> {{ aiForm.typeLabel }}</span>
+                                    <span><i class="fa-solid fa-palette"></i> {{ aiForm.styleLabel }}</span>
+                                    <span><i class="fa-solid fa-text-width"></i> {{ aiForm.wordCount }}字</span>
+                                    <span><i class="fa-solid fa-clock"></i> {{ aiResultTime }}</span>
+                                </div>
+                                <div class="ai-output-title" v-if="aiResultTitle">
+                                    <h2>{{ aiResultTitle }}</h2>
+                                </div>
+                                <div class="ai-output-body" v-html="aiResultHtml"></div>
+                            </div>
+                        </div>
+
+                        <!-- 空状态提示 -->
+                        <div class="ai-empty-state" v-if="!aiResult && !aiGenerating">
+                            <div class="ai-empty-icon">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <h3>准备好生成科技文案了吗？</h3>
+                            <p>填入参考内容，选择参数，点击生成按钮即可获得AI撰写的专业科技文案</p>
+                            <div class="ai-tips">
+                                <div class="ai-tip-item">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <span>粘贴产品参数，AI自动生成评测文章</span>
+                                </div>
+                                <div class="ai-tip-item">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <span>输入旧文章，AI改写优化提升质量</span>
+                                </div>
+                                <div class="ai-tip-item">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <span>提供大纲和关键词，AI扩展完整内容</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,6 +393,7 @@
     <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
     <script src="js/api.js"></script>
     <script src="js/filter.js"></script>
+    <script src="js/ai-generator.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>
