@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科技数码文案 - TechDigest</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="top-bar">
+            <div class="logo">
+                <i class="fa-solid fa-microchip"></i>
+                <span>TechDigest</span>
+            </div>
+            <div class="top-bar-right">
+                <span class="update-time" v-if="lastUpdate">更新于 {{ lastUpdate }}</span>
+                <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading">
+                    <i class="fa-solid fa-rotate" :class="{ spinning: loading }"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-container">
+            <!-- 左侧面板 -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <div class="nav-item active" @click="activePanel = 'hotboard'">
+                        <i class="fa-solid fa-fire"></i>
+                        <span>热点看板</span>
+                    </div>
+                    <div class="nav-item" @click="activePanel = 'ai-writer'">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>AI文案生成</span>
+                        <span class="badge badge-coming">即将上线</span>
+                    </div>
+                    <div class="nav-item" @click="activePanel = 'ppt-maker'">
+                        <i class="fa-solid fa-file-powerpoint"></i>
+                        <span>PPT生成</span>
+                        <span class="badge badge-coming">即将上线</span>
+                    </div>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="sidebar-stats">
+                        <div class="stat-item">
+                            <span class="stat-num">{{ totalArticles }}</span>
+                            <span class="stat-label">文章总数</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-num">{{ sourcesCount }}</span>
+                            <span class="stat-label">数据源</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- 主内容区 -->
+            <main class="content">
+                <!-- ========== 热点看板 ========== -->
+                <div class="panel hotboard-panel" v-show="activePanel === 'hotboard'">
+                    <!-- 二级Tab切换 -->
+                    <div class="sub-tabs">
+                        <button class="sub-tab" :class="{ active: hotboardTab === 'social' }" @click="switchHotboardTab('social')">
+                            <i class="fa-solid fa-hashtag"></i> 社交媒体热点看板
+                        </button>
+                        <button class="sub-tab" :class="{ active: hotboardTab === 'tech' }" @click="switchHotboardTab('tech')">
+                            <i class="fa-solid fa-newspaper"></i> 科技资讯热点看板
+                        </button>
+                    </div>
+
+                    <!-- ===== 社交媒体热点看板 ===== -->
+                    <div class="social-hotboard" v-show="hotboardTab === 'social'">
+                        <div class="platform-buttons">
+                            <button class="platform-btn weibo" :class="{ active: socialPlatform === 'weibo' }" @click="switchSocialPlatform('weibo')">
+                                <i class="fa-brands fa-weibo"></i> 微博热搜
+                            </button>
+                            <button class="platform-btn douyin" :class="{ active: socialPlatform === 'douyin' }" @click="switchSocialPlatform('douyin')">
+                                <i class="fa-brands fa-tiktok"></i> 抖音热搜
+                            </button>
+                            <button class="platform-btn toutiao" :class="{ active: socialPlatform === 'toutiao' }" @click="switchSocialPlatform('toutiao')">
+                                <i class="fa-solid fa-newspaper"></i> 今日头条热搜
+                            </button>
+                            <button class="platform-btn baidu" :class="{ active: socialPlatform === 'baidu' }" @click="switchSocialPlatform('baidu')">
+                                <i class="fa-solid fa-magnifying-glass"></i> 百度热搜
+                            </button>
+                        </div>
+
+                        <!-- 热搜列表 -->
+                        <div class="hot-list-container">
+                            <div class="loading-overlay" v-if="socialLoading">
+                                <div class="spinner"></div>
+                                <p>正在加载热搜数据...</p>
+                            </div>
+                            <div class="error-message" v-if="socialError">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>{{ socialError }}</span>
+                                <button @click="fetchSocialHotlist">重试</button>
+                            </div>
+                            <ul class="hot-list" v-if="!socialLoading && !socialError">
+                                <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index">
+                                    <span class="hot-rank" :class="{ 'top3': index < 3 }">{{ index + 1 }}</span>
+                                    <div class="hot-content">
+                                        <a :href="item.url" target="_blank" class="hot-title">{{ item.title }}</a>
+                                        <span class="hot-heat" v-if="item.heat">
+                                            <i class="fa-solid fa-chart-simple"></i> {{ item.heat }}
+                                        </span>
+                                    </div>
+                                    <span class="hot-tag" v-if="item.tag" :class="getTagClass(item.tag)">{{ item.tag }}</span>
+                                </li>
+                            </ul>
+                            <div class="empty-state" v-if="!socialLoading && !socialError && socialHotlist.length === 0">
+                                <i class="fa-solid fa-inbox"></i>
+                                <p>暂无热搜数据</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== 科技资讯热点看板 ===== -->
+                    <div class="tech-hotboard" v-show="hotboardTab === 'tech'">
+                        <div class="tech-controls">
+                            <div class="source-filter">
+                                <span class="filter-label">筛选来源：</span>
+                                <button class="source-tag" :class="{ active: techSourceFilter === 'all' }" @click="techSourceFilter = 'all'">全部</button>
+                                <button class="source-tag" v-for="src in techSources" :key="src.key"
+                                    :class="{ active: techSourceFilter === src.key }"
+                                    @click="techSourceFilter = src.key">
+                                    {{ src.name }}
+                                </button>
+                            </div>
+                            <div class="tech-search">
+                                <input type="text" v-model="techSearchQuery" placeholder="搜索科技资讯..." class="search-input">
+                            </div>
+                        </div>
+
+                        <div class="tech-list-container">
+                            <div class="loading-overlay" v-if="techLoading">
+                                <div class="spinner"></div>
+                                <p>正在加载科技资讯...</p>
+                            </div>
+                            <div class="error-message" v-if="techError">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>{{ techError }}</span>
+                                <button @click="fetchTechNews">重试</button>
+                            </div>
+                            <div class="tech-grid" v-if="!techLoading && !techError">
+                                <article class="tech-card" v-for="(item, index) in filteredTechNews" :key="index">
+                                    <div class="tech-card-header">
+                                        <span class="tech-source-badge" :style="{ background: getSourceColor(item.source) }">
+                                            {{ item.source }}
+                                        </span>
+                                        <span class="tech-time">{{ formatTime(item.time) }}</span>
+                                    </div>
+                                    <h3 class="tech-card-title">
+                                        <a :href="item.url" target="_blank">{{ item.title }}</a>
+                                    </h3>
+                                    <p class="tech-card-desc" v-if="item.description">{{ truncate(item.description, 120) }}</p>
+                                    <div class="tech-card-tags" v-if="item.tags && item.tags.length">
+                                        <span class="tech-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</span>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="empty-state" v-if="!techLoading && !techError && filteredTechNews.length === 0">
+                                <i class="fa-solid fa-newspaper"></i>
+                                <p v-if="techSearchQuery">未找到匹配 "{{ techSearchQuery }}" 的资讯</p>
+                                <p v-else>暂无科技资讯数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== AI文案生成（占位） ========== -->
+                <div class="panel placeholder-panel" v-show="activePanel === 'ai-writer'">
+                    <div class="placeholder-content">
+                        <div class="placeholder-icon">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h2>AI 文案生成</h2>
+                        <p class="placeholder-desc">智能生成科技数码类营销文案、产品评测、新闻稿等</p>
+                        <div class="coming-soon-badge">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>功能开发中，敬请期待...</span>
+                        </div>
+                        <div class="feature-preview">
+                            <div class="feature-item">
+                                <i class="fa-solid fa-robot"></i>
+                                <span>AI智能写作</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-palette"></i>
+                                <span>多风格模板</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-language"></i>
+                                <span>SEO优化建议</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== PPT生成（占位） ========== -->
+                <div class="panel placeholder-panel" v-show="activePanel === 'ppt-maker'">
+                    <div class="placeholder-content">
+                        <div class="placeholder-icon">
+                            <i class="fa-solid fa-file-powerpoint"></i>
+                        </div>
+                        <h2>PPT 生成</h2>
+                        <p class="placeholder-desc">基于AI自动生成科技数码类演示文稿，支持多种模板</p>
+                        <div class="coming-soon-badge">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>功能开发中，敬请期待...</span>
+                        </div>
+                        <div class="feature-preview">
+                            <div class="feature-item">
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>一键生成PPT</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <span>数据可视化</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fa-solid fa-download"></i>
+                                <span>多格式导出</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
+    <!-- 应用脚本 -->
+    <script src="js/api.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
