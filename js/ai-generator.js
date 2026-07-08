@@ -23,89 +23,187 @@ const AIGenerator = {
         return await this.generateLocal(form);
     },
 
-    // ========== 本地生成（核心） ==========
+    // ========== 本地生成（核心 - v3 重写） ==========
     async generateLocal(form) {
-        await this.delay(1500 + Math.random() * 1500);
-
+        await this.delay(1200 + Math.random() * 800);
         const typeConfig = this.getTypeConfig(form.type);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
-        const language = this.getLanguageConfig(form.language);
-        const keywords = (form.keywords || '').split(/[,，]/).map(k => k.trim()).filter(Boolean);
 
-        // 确定标题
-        let title = form.title && form.title.trim() ? form.title.trim() : this.generateTitle(form, typeConfig, keywords);
+        // Step 1: 深度解析原文，提取结构化信息
+        const source = form.content && form.content.length > 30
+            ? this.parseSource(form.content, typeConfig)
+            : null;
 
-        // 提取原文核心事实
-        let sourceFacts = [];
-        if (form.content && form.content.length > 30) {
-            sourceFacts = this.extractFacts(form.content);
-        }
+        // Step 2: 确定标题（优先用原文提取，其次用户输入，最后模板生成）
+        let title = (source && source.product) 
+            ? this.buildTitle(source, typeConfig, form.title)
+            : (form.title || this.generateTitle(form, typeConfig, []));
 
-        // 生成正文
-        const content = this.composeArticle({
-            title,
-            typeConfig,
-            style,
-            audience,
-            language,
-            keywords,
-            sourceFacts,
-            template: form.template || '',
+        // Step 3: 构建文章骨架并逐段填充
+        let content = this.composeArticle({
+            title, typeConfig, style, audience,
+            source, form, wordCount: form.wordCount,
             extraInstructions: form.extraInstructions || '',
-            wordCount: form.wordCount
+            template: form.template || ''
         });
+
+        // Step 4: 全文润色（清除残留模板变量、替换通用占位词）
+        content = this.polish(content, source);
 
         return { title, content };
     },
 
-    // 提取原文核心事实
-    extractFacts(text) {
-        const sentences = text
-            .replace(/[\n\r]+/g, ' ')
-            .split(/[。！？]/)
-            .map(s => s.trim())
-            .filter(s => s.length > 8 && s.length < 120);
-        // 选择与科技、产品、公司、数据相关的句子
-        return sentences.filter(s => {
+    /**
+     * Step 1: 深度解析原文
+     * 提取：产品名、公司名、版本号、日期、核心功能、技术参数、背景
+     */
+    parseSource(text, typeConfig) {
+        const result = {
+            product: '', company: '', versions: [], date: '',
+            features: [], specs: [], background: [], allFacts: []
+        };
+
+        // 提取产品名和公司名
+        const brands = ['索尼', '佳能', '尼康', '苹果', '华为', '小米', '三星', '特斯拉', '英伟达', 'NVIDIA',
+            '英特尔', 'AMD', '高通', '联发科', '谷歌', '微软', 'Meta', '字节跳动', '阿里', '腾讯', '百度', '大疆',
+            '蔚来', '小鹏', '理想', '比亚迪', 'OPPO', 'vivo', '荣耀', 'DJI', 'GoPro'];
+        const productPatterns = [
+            /((?:ILME-)?[A-Z]{2,3}[-\s]?\d{1,3}[A-Za-z]*)/g,
+            /([A-Z][a-z]+\s[A-Z][a-z]+\s?[A-Za-z]?\d*)/g,
+            /(iPhone\s?\d{1,2}\s?(?:Pro|Plus|Max)?)/gi,
+            /(Mate\s?\d{1,2})/gi,
+        ];
+
+        // 找产品名
+        for (const p of productPatterns) {
+            const m = text.match(p);
+            if (m) { result.product = m[0]; break; }
+        }
+        // 找型号列表
+        const modelMatches = text.match(/[A-Z]+[\-]?\d{2,3}/g) || [];
+        result.versions = [...new Set(modelMatches)].slice(0, 4);
+
+        // 找公司名
+        for (const b of brands) {
+            if (text.includes(b)) { result.company = b; break; }
+        }
+
+        // 找日期
+        const dateMatch = text.match(/(\d{4}年\d{1,2}月\d{1,2}日)/);
+        if (dateMatch) result.date = dateMatch[1];
+
+        // 提取版本号
+        const verMatches = text.match(/Ver\.?\s*\d+\.\d+/g) || [];
+        result.versions = [...new Set([...result.versions, ...verMatches])].slice(0, 5);
+
+        // 提取所有句子
+        const sentences = text.replace(/[\n\r]+/g, ' ').split(/[。！？；]/).map(s => s.trim()).filter(s => s.length > 8);
+
+        // 分类句子
+        sentences.forEach(s => {
+            result.allFacts.push(s);
             const t = s.toLowerCase();
-            return /\d+/.test(s) ||
-                   ['公司','产品','发布','上市','芯片','手机','科技','市场','股价','投资','融资','AI','人工智能','半导体','新能源','电动车'].some(k => t.includes(k)) ||
-                   [' apple','iphone','xiaomi','huawei','tesla','nvidia','amd','intel','tsmc','qualcomm'].some(k => t.toLowerCase().includes(k));
-        }).slice(0, 8);
+            if (/新增|支持|允许|提升|优化|升级|改进|增加|加入|可以|能够/.test(s)) {
+                result.features.push(s);
+            } else if (/\d+[%倍档级]|ISO|fps|K\s*120|动态范围|分辨率|像素|Watt|功耗|mAh/.test(s)) {
+                result.specs.push(s);
+            } else if (/公司|品牌|产品线|系统|系列|愿景|致力于|一直|创作者|行业/.test(s)) {
+                result.background.push(s);
+            }
+        });
+
+        // 兜底：如果产品名没识别到，用标题或前几个关键词
+        if (!result.product && result.versions.length > 0) {
+            result.product = result.company + ' ' + result.versions.join('/');
+        }
+        if (!result.product) {
+            result.product = text.substring(0, 30).replace(/[,，。\s]+$/, '');
+        }
+
+        return result;
     },
 
-    // 标题生成
+    /** 用提取的真实信息构建标题 */
+    buildTitle(source, typeConfig, userTitle) {
+        if (userTitle && userTitle.length > 3) return userTitle;
+        const prefix = source.date ? source.date + '，' : '';
+        const action = typeConfig.type === 'release' ? '正式发布' : typeConfig.label;
+        if (source.product && source.company) {
+            return prefix + source.company + action + source.product;
+        }
+        if (source.company && source.versions.length) {
+            return prefix + source.company + action + source.versions.join('/') + '固件升级';
+        }
+        return source.product || source.company + typeConfig.label;
+    },
+
+    // 兜底标题生成
     generateTitle(form, typeConfig, keywords) {
         const main = keywords[0] || typeConfig.keyword;
-        const templates = typeConfig.templates || [
-            `${main}深度观察：从${typeConfig.angle}看行业变局`,
-            `${main}：${typeConfig.label}视角下的关键信号`,
-        ];
-        return templates[Math.floor(Math.random() * templates.length)].replace(/\$\{main\}/g, main);
+        const tmpl = (typeConfig.templates || ['${main}：${secondary}深度分析'])[0];
+        return tmpl.replace(/\$\{main\}/g, main).replace(/\$\{secondary\}/g, keywords[1] || '行业洞察');
     },
 
-    // 文章合成
+    // Step 3: 文章合成（使用结构化 source 而非通用 main/secondary）
     composeArticle(ctx) {
-        const { title, typeConfig, style, audience, language, keywords, sourceFacts, template, extraInstructions, wordCount } = ctx;
-        const main = keywords[0] || typeConfig.keyword;
-        const secondary = keywords[1] || (sourceFacts[0] ? this.extractKeyword(sourceFacts[0]) : '行业');
+        const { title, typeConfig, style, audience, source, form, wordCount, extraInstructions, template } = ctx;
+        const main = (source && source.product) || form.title || typeConfig.keyword;
+        const company = (source && source.company) || '';
+        const secondary = (source && source.versions.length > 1)
+            ? source.versions.join('、')
+            : (source && source.features[0]) ? source.features[0].substring(0, 20) : '';
+        const facts = source ? source.allFacts : [];
 
         // 引言
-        let article = this.writeIntro({ typeConfig, style, audience, language, main, secondary, sourceFacts, extraInstructions });
+        let article = this.writeIntroNew({ typeConfig, style, audience, main, company, source, extraInstructions });
 
-        // 正文段落：根据类型配置生成
+        // 正文段落：每个 section 匹配相关事实
+        const usedFacts = new Set();
         typeConfig.sections.forEach((sectionName, idx) => {
+            // 选择与本节主题最匹配的事实
+            const matchedFact = this.pickBestFact(sectionName, facts, usedFacts, idx);
+            if (matchedFact) usedFacts.add(matchedFact);
+
             const section = this.writeSection({
-                sectionName, idx, typeConfig, style, audience, language, main, secondary, keywords, sourceFacts, template, extraInstructions, wordCount
+                sectionName, idx, typeConfig, style, audience,
+                main, secondary, company, fact: matchedFact,
+                source, template, extraInstructions, wordCount
             });
             article += '\n\n' + section;
         });
 
         // 结论
-        article += '\n\n' + this.writeConclusion({ typeConfig, style, audience, language, main, secondary, keywords, sourceFacts, extraInstructions });
+        article += '\n\n' + this.writeConclusionNew({ typeConfig, style, audience, main, company, source, extraInstructions });
 
         return article;
+    },
+
+    /** 按主题匹配选择最佳事实 */
+    pickBestFact(sectionName, facts, usedFacts, fallbackIdx) {
+        const topicKeywords = {
+            '核心参数': ['ISO', '分辨率', 'fps', '帧率', 'K ', '像素', 'mm', '英寸', '背照', '堆栈'],
+            '功能亮点': ['新增', '支持', '允许', '可以', '能够', '升级', '改进', '提升'],
+            '产品亮点': ['新增', '支持', '允许', '可以', '能够', '升级', '改进', '提升'],
+            '影像系统': ['ISO', '感光', '高感', '色彩', 'LUT', '画质', '动态范围', '影像', '图像', 'CMOS'],
+            '性能体验': ['性能', '速度', '稳定', '对焦', '响应', '处理'],
+            '市场定位': ['市场', '竞争', '定位', '价格', '区间'],
+            '技术解析': ['技术', '架构', '算法', '芯片', '处理器', '引擎'],
+            '未来趋势': ['未来', '趋势', '后续', '规划', '展望'],
+        };
+        const keywords = topicKeywords[sectionName] || [];
+
+        // 先找主题匹配且未使用的
+        for (const f of facts) {
+            if (usedFacts.has(f)) continue;
+            if (keywords.some(k => f.includes(k))) return f;
+        }
+        // 再找任意未使用的
+        for (const f of facts) {
+            if (!usedFacts.has(f)) return f;
+        }
+        // 兜底：按索引
+        return facts[fallbackIdx % facts.length] || '';
     },
 
     writeIntro({ typeConfig, style, audience, language, main, secondary, sourceFacts, extraInstructions }) {
@@ -170,9 +268,12 @@ const AIGenerator = {
         return text;
     },
 
-    writeSection({ sectionName, idx, typeConfig, style, audience, language, main, secondary, keywords, sourceFacts, template, extraInstructions, wordCount }) {
-        const fact = sourceFacts[idx] || sourceFacts[sourceFacts.length - 1] || '';
-        const kw = keywords[idx] || secondary || main;
+    writeSection({ sectionName, idx, typeConfig, style, audience, main, secondary, company, fact, source, template, extraInstructions, wordCount }) {
+        const kw = secondary || main;
+
+        // 简写的"产品名" = 如果 source 有产品，用产品+公司名，否则用 main
+        const productName = (source && source.product) || main;
+        const companyRef = (source && source.company) || company || '';
 
         const builders = {
             '外观设计': () => this.sectionDesign({ main, secondary, style, audience, fact }),
@@ -185,7 +286,7 @@ const AIGenerator = {
             '产品亮点': () => this.sectionHighlights({ main, secondary, style, audience, fact }),
             '市场定位': () => this.sectionMarket({ main, secondary, style, audience, fact }),
             '竞品对比': () => this.sectionCompetition({ main, secondary, style, audience, fact }),
-            '购买建议': () => this.sectionBuying({ main, secondary, style, audience, fact, keywords }),
+            '购买建议': () => this.sectionBuying({ main, secondary, style, audience, fact }),
             '活动概况': () => this.sectionOverview({ main, secondary, style, audience, fact }),
             '重要发布': () => this.sectionKeyReleases({ main, secondary, style, audience, fact }),
             '现场亮点': () => this.sectionHighlights({ main, secondary, style, audience, fact }),
@@ -260,9 +361,9 @@ const AIGenerator = {
                `与${secondary || '同价位主流产品'}相比，${main}的优势在于${this.randomPick(['更精准的场景定位','更完整的功能体验','更成熟的生态支持','更直接的用户价值'])}。而需要提升的，则是在${this.randomPick(['极限性能','品牌溢价','渠道覆盖','用户教育'])}等方面仍有空间。`;
     },
 
-    sectionBuying({ main, secondary, style, audience, fact, keywords }) {
+    sectionBuying({ main, secondary, style, audience, fact }) {
         return `综合以上分析，${main}适合哪类人群？${fact ? '结合市场反馈，' + fact + '。' : ''}\n\n` +
-               `如果你是${audience.label}，并且对${keywords[0] || secondary || '这款产品'}有明确需求，那么${main}是一个值得纳入候选清单的选项。\n\n` +
+               `如果你是${audience.label}，并且对${secondary || main}有明确需求，那么${main}是一个值得纳入候选清单的选项。\n\n` +
                `购买建议方面：追求性价比的用户可以关注首发优惠；对配置要求较高的用户建议优先选择高配版本；而持币观望的用户，则可以等待更多真实评测出炉后再做决定。`;
     },
 
@@ -347,6 +448,61 @@ const AIGenerator = {
     writeConclusion({ typeConfig, style, audience, language, main, secondary, keywords, sourceFacts, extraInstructions }) {
         const conclusion = typeConfig.conclusion(main, secondary, keywords, audience);
         return `## 总结\n\n` + conclusion;
+    },
+
+    // ========== v3 新增方法 ==========
+
+    /** 引言（使用真实产品信息） */
+    writeIntroNew({ typeConfig, style, audience, main, company, source, extraInstructions }) {
+        const product = (source && source.product) || main;
+        const comp = (source && source.company) || '';
+        const date = (source && source.date) || '';
+
+        if (typeConfig.type === 'release') {
+            return date
+                ? `${date}，${comp}正式推出${product}。作为面向${audience.label}的一款产品，它的发布引发了行业内外的广泛关注。本文将第一时间从${typeConfig.sections.slice(0,3).join('、')}等维度，为你梳理${product}的核心亮点与潜在价值。`
+                : `日前，${comp ? comp + '推出' : ''}${product}的消息引发了${audience.label}的广泛关注。从产品定位到具体配置，${product}试图用一系列创新重新定义市场预期。让我们一起来看看，这次发布究竟带来了什么。`;
+        }
+        if (typeConfig.type === 'review') {
+            return `在${audience.label}的期待中，${product}终于在近期与我们见面。${comp ? '作为' + comp + '旗下的重磅产品，' : ''}${product}在${typeConfig.sections.slice(0,3).join('、')}等方面拿出了怎样的表现？经过一段时间的深入体验，本文带来客观、真实的深度解析。`;
+        }
+        if (typeConfig.type === 'analysis') {
+            return `${product}的出现，让${audience.label}看到了新的可能。本文从${typeConfig.sections.slice(0,3).join('、')}三个层面深入分析，探讨其背后的技术逻辑与市场意义。`;
+        }
+        return `${product}值得关注。以下是关于它的详细${typeConfig.label}。`;
+    },
+
+    /** 结论（使用真实产品信息） */
+    writeConclusionNew({ typeConfig, style, audience, main, company, source, extraInstructions }) {
+        const product = (source && source.product) || main;
+        if (typeConfig.type === 'release') {
+            return `## 总结\n\n${product}的发布是${company || '品牌'}在影像创作领域持续投入的又一次体现。对于${audience.label}而言，${product}不仅提供了新的选择，也展示了技术迭代的切实方向。随着固件升级和后期支持的推进，${product}的实际价值将进一步释放。`;
+        }
+        if (typeConfig.type === 'review') {
+            return `## 总结\n\n综合来看，${product}在多个维度上表现出了足够的诚意。对于${audience.label}而言，${product}是一个值得考虑的选择。关键在于明确自己的核心需求，找到产品与你使用场景的最佳契合点。`;
+        }
+        return `## 总结\n\n${product}代表了${company || '行业'}在这一赛道上的最新探索。它的真正价值，或许不在于现在做了什么，而在于它打开了一个怎样的可能性空间。`;
+    },
+
+    /** Step 4: 全文润色——清除所有残留模板变量和占位词 */
+    polish(text, source) {
+        let t = text;
+        // 清除所有未替换的 ${xxx} 模板变量
+        t = t.replace(/\$\{[^}]+\}/g, '');
+        // 清除孤立的 "undefined" 或 "null"
+        t = t.replace(/\bundefined\b/g, '').replace(/\bnull\b/g, '');
+        // 如果有 source，替换通用占位词
+        if (source && source.company) {
+            t = t.replace(/\b公司\b(?!\S)/g, source.company);
+            t = t.replace(/\b品牌\b(?!\S)/g, source.company);
+        }
+        if (source && source.product) {
+            t = t.replace(/\b新品\b(?!\S)/g, source.product);
+            t = t.replace(/\b产品\b(?!\S)/g, (match) => source.product || match);
+        }
+        // 清理多余空格和空行
+        t = t.replace(/  +/g, ' ').replace(/\n{4,}/g, '\n\n\n');
+        return t.trim();
     },
 
     // ========== 配置表 ==========
