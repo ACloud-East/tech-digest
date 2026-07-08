@@ -520,8 +520,21 @@
                                     <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating">
                                         <i v-if="!pptGenerating" class="fa-solid fa-bolt"></i>
                                         <i v-if="pptGenerating" class="fa-solid fa-spinner spinning"></i>
-                                        {{ pptGenerating ? '正在生成 PPT...' : '生成并下载 PPT' }}
+                                        {{ pptGenerating ? '正在生成 PPT...' : '生成 PPT' }}
                                     </button>
+
+                                    <!-- 下载按钮 -->
+                                    <button class="ppt-download-btn" @click="downloadPPT" :disabled="!pptReady || pptDownloading">
+                                        <i v-if="!pptDownloading" class="fa-solid fa-download"></i>
+                                        <i v-if="pptDownloading" class="fa-solid fa-spinner spinning"></i>
+                                        {{ pptDownloading ? '下载中...' : pptReady ? '下载 PPT' : '请先生成 PPT' }}
+                                    </button>
+
+                                    <!-- 生成状态提示 -->
+                                    <div class="ppt-status-bar" v-if="pptReady && !pptGenerating">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                        <span>PPT 已生成，共 {{ pptSlideCount }} 页，点击下载保存到本地</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

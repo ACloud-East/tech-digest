@@ -295,6 +295,9 @@ const app = createApp({
 
         const pptInputMode = ref('paste');
         const pptGenerating = ref(false);
+        const pptReady = ref(false);
+        const pptDownloading = ref(false);
+        const pptSlideCount = ref(0);
 
         const pptOptions = ref({
             types: [
@@ -412,8 +415,12 @@ const app = createApp({
                 return;
             }
             pptGenerating.value = true;
+            pptReady.value = false;
+            pptSlideCount.value = 0;
+            PPTGenerator.clearCache();
+
             try {
-                await PPTGenerator.generate({
+                const result = await PPTGenerator.generate({
                     title: pptForm.value.title || '科技数码演示文稿',
                     subtitle: pptForm.value.subtitle,
                     content: pptForm.value.content,
@@ -425,10 +432,29 @@ const app = createApp({
                     includeToc: pptForm.value.includeToc,
                     includeEnd: pptForm.value.includeEnd,
                 });
+                // 计算总页数
+                let count = 0;
+                if (pptForm.value.includeCover) count++;
+                if (pptForm.value.includeEnd) count++;
+                pptSlideCount.value = count + result.pptx.slides.length;
+                pptReady.value = true;
             } catch (e) {
                 alert('PPT 生成失败：' + (e.message || '未知错误'));
+                pptReady.value = false;
             } finally {
                 pptGenerating.value = false;
+            }
+        }
+
+        async function downloadPPT() {
+            if (!pptReady.value || pptDownloading.value) return;
+            pptDownloading.value = true;
+            try {
+                await PPTGenerator.downloadCurrent();
+            } catch (e) {
+                alert('PPT 下载失败：' + (e.message || '未知错误'));
+            } finally {
+                pptDownloading.value = false;
             }
         }
 
@@ -446,7 +472,8 @@ const app = createApp({
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
-            handleWordUpload, handleWordDrop, handlePDFUpload, handlePDFDrop, generatePPT,
+            pptReady, pptDownloading, pptSlideCount,
+            handleWordUpload, handleWordDrop, handlePDFUpload, handlePDFDrop, generatePPT, downloadPPT,
         };
     }
 });

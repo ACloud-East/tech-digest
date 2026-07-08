@@ -653,6 +653,31 @@ ul { list-style: none; }
 .ppt-generate-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(210,71,38,0.4); }
 .ppt-generate-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+/* 下载按钮 */
+.ppt-download-btn {
+    width: 100%; padding: 14px; border-radius: var(--radius-md);
+    background: linear-gradient(135deg, #059669, #10B981); color: #fff;
+    font-size: 1rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    border: none; cursor: pointer; transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(5,150,105,0.3);
+}
+.ppt-download-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 25px rgba(5,150,105,0.4); }
+.ppt-download-btn:disabled {
+    opacity: 0.45; cursor: not-allowed; transform: none;
+    background: var(--bg-tertiary); color: var(--text-muted);
+    box-shadow: none; border: 1px solid var(--border-color);
+}
+
+/* 生成状态提示 */
+.ppt-status-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; background: rgba(5,150,105,0.08);
+    border: 1px solid rgba(5,150,105,0.25); border-radius: var(--radius-sm);
+    font-size: 0.8rem; color: #10B981;
+}
+.ppt-status-bar i { font-size: 0.9rem; }
+
 /* 预览提示条 */
 .ppt-preview-bar {
     display: flex; align-items: center; gap: 10px;
