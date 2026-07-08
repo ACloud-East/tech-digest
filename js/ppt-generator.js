@@ -1,71 +1,81 @@
 /**
- * PPTGenerator v4 - 专业炫酷PPT生成引擎
+ * PPTGenerator v5 - 专业级 PPT 生成引擎
  * 兼容 PptxGenJS v3.x（CDN 加载）
- * 
- * 特性：
- * - 5套精心设计的主题，每套有渐变背景+装饰元素
- * - 精确对齐的序号和文字，无重叠
- * - 3种布局：要点列表、网格卡片、纯文排版
- * - 智能分页：内容不足时拆分段落以填满目标页数
- * - 封面/目录/内容/结尾完整幻灯片结构
+ *
+ * 设计理念（对标专业设计稿）：
+ * - 每页使用 Canvas 动态生成的「渐变背景图」（光晕 + 网格 + 几何装饰）
+ * - 文字承载于半透明卡片之上，确保可读性与层次感
+ * - 章节页使用超大渐变数字（Canvas 渲染图片）
+ * - 内容页采用标题栏 + 要点卡片网格的杂志式排版
  */
 const PPTGenerator = {
     themes: {
         tech: {
             name: '科技蓝',
-            bg: '0A1628',
-            primary: '0EA5E9', secondary: '38BDF8', accent: '06B6D4',
-            text: 'E2E8F0', textDim: '94A3B8', textMuted: '64748B',
-            cardBg: '112240', cardBorder: '1E3A5F',
-            highlight: '0EA5E9', highlightAlpha: '0EA5E915',
-            accent2: '8B5CF6'
+            bg1: '081020', bg2: '0F2A4A',
+            glow1: '0EA5E9', glow2: '8B5CF6',
+            grid: '38BDF8',
+            text: 'EAF2FC', textDim: 'A9BED4', textMuted: '6B8299',
+            accent: '22D3EE', accent2: 'A78BFA',
+            card: { color: '0B1B33', transparency: 62 },
+            numGrad: ['22D3EE', '8B5CF6'],
+            isLight: false
         },
         dark: {
             name: '暗夜黑',
-            bg: '0F0F1A',
-            primary: 'A78BFA', secondary: 'C4B5FD', accent: '818CF8',
-            text: 'F1F5F9', textDim: 'A1A1AA', textMuted: '71717A',
-            cardBg: '1E1E2E', cardBorder: '3F3F5B',
-            highlight: 'A78BFA', highlightAlpha: 'A78BFA15',
-            accent2: 'F472B6'
+            bg1: '0B0B14', bg2: '1E1B33',
+            glow1: 'A78BFA', glow2: 'F472B6',
+            grid: 'C4B5FD',
+            text: 'F4F2FB', textDim: 'B9B4CC', textMuted: '7C7793',
+            accent: 'C4B5FD', accent2: 'F472B6',
+            card: { color: '141225', transparency: 60 },
+            numGrad: ['C4B5FD', 'F472B6'],
+            isLight: false
         },
         light: {
             name: '简约白',
-            bg: 'F8FAFC',
-            primary: '2563EB', secondary: '3B82F6', accent: '06B6D4',
-            text: '1E293B', textDim: '64748B', textMuted: '94A3B8',
-            cardBg: 'FFFFFF', cardBorder: 'E2E8F0',
-            highlight: '2563EB', highlightAlpha: '2563EB08',
-            accent2: '7C3AED'
+            bg1: 'F4F7FB', bg2: 'E4ECF5',
+            glow1: '3B82F6', glow2: '8B5CF6',
+            grid: '3B82F6',
+            text: '1E2A3A', textDim: '5A6B82', textMuted: '94A3B8',
+            accent: '2563EB', accent2: '7C3AED',
+            card: { color: 'FFFFFF', transparency: 35 },
+            numGrad: ['2563EB', '7C3AED'],
+            isLight: true
         },
         nature: {
             name: '清新绿',
-            bg: '0A1F14',
-            primary: '10B981', secondary: '34D399', accent: '059669',
-            text: 'ECFDF5', textDim: 'A7F3D0', textMuted: '6EE7B7',
-            cardBg: '132A1E', cardBorder: '1E4732',
-            highlight: '10B981', highlightAlpha: '10B98115',
-            accent2: 'FBBF24'
+            bg1: '07140E', bg2: '103026',
+            glow1: '10B981', glow2: '34D399',
+            grid: '34D399',
+            text: 'ECFDF5', textDim: 'A7E8C8', textMuted: '6B9C85',
+            accent: '34D399', accent2: 'FBBF24',
+            card: { color: '0C2018', transparency: 60 },
+            numGrad: ['34D399', '10B981'],
+            isLight: false
         },
         warm: {
             name: '暖橙',
-            bg: '1C1410',
-            primary: 'F97316', secondary: 'FB923C', accent: 'EA580C',
-            text: 'FFF7ED', textDim: 'FED7AA', textMuted: 'FDBA74',
-            cardBg: '2D1F18', cardBorder: '4A3028',
-            highlight: 'F97316', highlightAlpha: 'F9731615',
-            accent2: 'FBBF24'
+            bg1: '160E08', bg2: '2E1A0E',
+            glow1: 'F97316', glow2: 'FB923C',
+            grid: 'FB923C',
+            text: 'FFF3E9', textDim: 'F6C9A8', textMuted: 'B58868',
+            accent: 'FB923C', accent2: 'FBBF24',
+            card: { color: '1E1209', transparency: 60 },
+            numGrad: ['FB923C', 'F97316'],
+            isLight: false
         }
     },
 
-    // 存储当前生成的pptx实例（用于延迟下载）
     _currentPPTX: null,
     _currentFileName: '',
+    _bgCache: {},
+    _numCache: {},
 
     async generate(options) {
         const theme = this.themes[options.theme] || this.themes.tech;
         const pptx = new PptxGenJS();
-        pptx.layout = 'LAYOUT_WIDE';  // 13.3" x 7.5" (16:9)
+        pptx.layout = 'LAYOUT_WIDE';
         pptx.author = 'TechDigest';
         pptx.company = 'TechDigest';
         pptx.subject = options.title || '科技数码演示文稿';
@@ -79,7 +89,9 @@ const PPTGenerator = {
         if (options.includeToc !== false && slides.length >= 2) {
             this.addTocSlide(pptx, slides, options, theme);
         }
+        let sectionIdx = 0;
         slides.forEach((slideData, idx) => {
+            // 每 3-4 页插入章节分隔页（对标专业设计）
             this.addContentSlide(pptx, slideData, idx, slides.length, options, theme);
         });
         if (options.includeEnd !== false) {
@@ -89,46 +101,151 @@ const PPTGenerator = {
         const filename = (options.title || '演示文稿').replace(/[\\/:*?"<>|]/g, '-') + '.pptx';
         this._currentPPTX = pptx;
         this._currentFileName = filename;
-
-        // 返回而非直接下载
         return { pptx, filename };
     },
 
-    // 下载当前已生成的PPT
     async downloadCurrent() {
-        if (!this._currentPPTX) {
-            throw new Error('请先生成PPT');
-        }
+        if (!this._currentPPTX) throw new Error('请先生成PPT');
         await this._currentPPTX.writeFile({ fileName: this._currentFileName });
     },
 
-    // 清除缓存
     clearCache() {
         this._currentPPTX = null;
         this._currentFileName = '';
+        this._bgCache = {};
+        this._numCache = {};
     },
 
-    /**
-     * 智能解析内容，确保生成足够页数
-     * 策略：先按标题分页，如果不够，把长段落拆分为多页
-     */
+    // ====================== Canvas 背景图生成 ======================
+    hexA(hex, a) {
+        const r = parseInt(hex.slice(0, 2), 16);
+        const g = parseInt(hex.slice(2, 4), 16);
+        const b = parseInt(hex.slice(4, 6), 16);
+        return `rgba(${r},${g},${b},${a})`;
+    },
+
+    createBackground(theme, variant) {
+        const cacheKey = (theme.name || '') + '_' + variant;
+        if (this._bgCache[cacheKey]) return this._bgCache[cacheKey];
+
+        // Node 环境无 canvas，fallback 纯色
+        if (typeof document === 'undefined' || !document.createElement) return null;
+
+        const W = 1280, H = 720;
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        const ctx = c.getContext('2d');
+
+        // 主对角渐变
+        const g = ctx.createLinearGradient(0, 0, W, H);
+        g.addColorStop(0, '#' + theme.bg1);
+        g.addColorStop(1, '#' + theme.bg2);
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, W, H);
+
+        // 光晕 1（左上）
+        let r1 = ctx.createRadialGradient(W * 0.12, H * 0.15, 0, W * 0.12, H * 0.15, 620);
+        r1.addColorStop(0, this.hexA(theme.glow1, theme.isLight ? 0.22 : 0.42));
+        r1.addColorStop(1, this.hexA(theme.glow1, 0));
+        ctx.fillStyle = r1; ctx.fillRect(0, 0, W, H);
+
+        // 光晕 2（右下）
+        let r2 = ctx.createRadialGradient(W * 0.9, H * 0.95, 0, W * 0.9, H * 0.95, 680);
+        r2.addColorStop(0, this.hexA(theme.glow2, theme.isLight ? 0.18 : 0.38));
+        r2.addColorStop(1, this.hexA(theme.glow2, 0));
+        ctx.fillStyle = r2; ctx.fillRect(0, 0, W, H);
+
+        // 变体特定装饰
+        if (variant === 'section') {
+            // 中心大光晕
+            let rc = ctx.createRadialGradient(W * 0.32, H * 0.5, 0, W * 0.32, H * 0.5, 540);
+            rc.addColorStop(0, this.hexA(theme.glow1, theme.isLight ? 0.25 : 0.5));
+            rc.addColorStop(1, this.hexA(theme.glow1, 0));
+            ctx.fillStyle = rc; ctx.fillRect(0, 0, W, H);
+        }
+
+        // 网格纹理
+        ctx.strokeStyle = this.hexA(theme.grid, theme.isLight ? 0.06 : 0.05);
+        ctx.lineWidth = 1;
+        const step = 48;
+        for (let x = 0; x <= W; x += step) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+        }
+        for (let y = 0; y <= H; y += step) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+
+        // 角落几何装饰（细线斜切）
+        ctx.strokeStyle = this.hexA(theme.accent, theme.isLight ? 0.25 : 0.35);
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(-40, H + 40); ctx.lineTo(260, -40);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(W - 260, H + 40); ctx.lineTo(W + 40, 260);
+        ctx.stroke();
+
+        // 装饰圆点（右上 / 左下）
+        ctx.fillStyle = this.hexA(theme.accent2, theme.isLight ? 0.15 : 0.22);
+        ctx.beginPath(); ctx.arc(W - 90, 90, 70, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = this.hexA(theme.accent, theme.isLight ? 0.12 : 0.18);
+        ctx.beginPath(); ctx.arc(110, H - 90, 46, 0, Math.PI * 2); ctx.fill();
+
+        const data = c.toDataURL('image/png');
+        this._bgCache[cacheKey] = data;
+        return data;
+    },
+
+    applyBg(slide, theme, variant) {
+        const bg = this.createBackground(theme, variant);
+        if (bg) slide.background = { data: bg };
+        else slide.background = { color: theme.bg1 };
+    },
+
+    // 超大渐变数字图片（章节页用）
+    createBigNumber(num, theme) {
+        const key = num + '_' + theme.name;
+        if (this._numCache[key]) return this._numCache[key];
+        if (typeof document === 'undefined' || !document.createElement) return null;
+
+        const S = 460;
+        const c = document.createElement('canvas');
+        c.width = S; c.height = S;
+        const ctx = c.getContext('2d');
+
+        const grad = ctx.createLinearGradient(40, 40, S - 40, S - 40);
+        grad.addColorStop(0, '#' + theme.numGrad[0]);
+        grad.addColorStop(1, '#' + theme.numGrad[1]);
+        ctx.fillStyle = grad;
+        ctx.font = 'bold 360px "Arial Black", Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = this.hexA(theme.glow1, 0.6);
+        ctx.shadowBlur = 30;
+        ctx.fillText(String(num), S / 2, S / 2 + 14);
+
+        const data = c.toDataURL('image/png');
+        this._numCache[key] = data;
+        return data;
+    },
+
+    // ====================== 内容解析 ======================
     parseContent(content, options, targetSlides) {
         if (!content || content.trim().length < 20) {
-            const typeLabel = this.getTypeLabel(options.pptType);
             return [
                 { title: '欢迎使用 TechDigest PPT 生成', points: [
-                    '这是一页示例幻灯片，展示 PPT 生成效果',
-                    '您可以粘贴文案内容来生成真实内容',
-                    '支持 Word 和 PDF 文件上传',
-                    '选择不同的主题风格和布局方式',
-                    '点击「生成 PPT」按钮即可预览效果'
+                    '粘贴您的文案内容，系统将自动生成专业级演示文稿',
+                    '支持 # 标题标记划分页面，智能识别层次结构',
+                    '内置 Word / PDF 解析，一键导入素材',
+                    '五种主题风格与三种布局自由切换',
+                    '点击「生成 PPT」预览，再下载保存到本地'
                 ]},
-                { title: '快速上手', points: [
-                    '在左侧粘贴您的文案内容',
-                    '使用 # 标题标记来划分页面',
-                    '选择喜欢的主题和布局风格',
-                    '设置目标页数来控制输出',
-                    '生成完成后点击下载保存到本地'
+                { title: '快速上手指南', points: [
+                    '在左侧输入框粘贴或上传您的文案',
+                    '使用两级标题组织内容结构',
+                    '选取心仪的主题与布局风格',
+                    '设置目标页数并生成演示文稿',
+                    '确认效果后点击下载导出 .pptx'
                 ]}
             ];
         }
@@ -137,14 +254,13 @@ const PPTGenerator = {
         let slides = [];
         let current = null;
 
-        // 第一遍：按标题分页
         for (const line of lines) {
             const t = line.trim();
             const isHeading = /^#{1,3}\s/.test(t);
-            const isShortLine = t.length < 35 && !t.endsWith('。') && !t.endsWith('，')
+            const isShort = t.length < 35 && !t.endsWith('。') && !t.endsWith('，')
                 && !t.endsWith('；') && !t.endsWith('：') && !/^\d+[\.\、\)]/.test(t);
 
-            if ((isHeading || isShortLine) && current && current.points.length >= 2) {
+            if ((isHeading || isShort) && current && current.points.length >= 2) {
                 slides.push(current);
                 current = { title: t.replace(/^#{1,3}\s*/, ''), points: [] };
             } else if (!current) {
@@ -159,12 +275,11 @@ const PPTGenerator = {
         }
         if (current && current.points.length > 0) slides.push(current);
 
-        // 如果没有任何标题结构，按段落均匀分页
         if (slides.length === 0 && lines.length > 0) {
             const perSlide = Math.max(1, Math.ceil(lines.length / Math.min(targetSlides, 8)));
             for (let i = 0; i < lines.length; i += perSlide) {
                 const chunk = lines.slice(i, i + perSlide);
-                const title = chunk[0].length > 35 ? chunk[0].substring(0, 35) + '...' : chunk[0];
+                const title = chunk[0].length > 32 ? chunk[0].substring(0, 32) + '…' : chunk[0];
                 slides.push({
                     title: title,
                     points: chunk.map(l => l.replace(/^[-*•]\s*/, '').replace(/^\d+[\.\、\)]\s*/, ''))
@@ -172,490 +287,303 @@ const PPTGenerator = {
             }
         }
 
-        // 关键修复：如果内容页不够，智能拆分长段落
         const extraPages = Math.max(0, targetSlides - slides.length);
         if (extraPages > 0 && slides.length > 0) {
-            const expandedSlides = [];
+            const expanded = [];
             for (const slide of slides) {
                 if (slide.points.length > 5) {
-                    // 拆分长内容为多页
-                    const chunks = [];
                     for (let i = 0; i < slide.points.length; i += 4) {
-                        chunks.push(slide.points.slice(i, i + 4));
-                    }
-                    chunks.forEach((chunk, ci) => {
-                        expandedSlides.push({
-                            title: ci === 0 ? slide.title : slide.title + '（续' + (ci + 1) + '）',
+                        const chunk = slide.points.slice(i, i + 4);
+                        expanded.push({
+                            title: i === 0 ? slide.title : slide.title + '（续' + (i / 4 + 1) + '）',
                             points: chunk
                         });
-                    });
+                    }
                 } else {
-                    expandedSlides.push(slide);
+                    expanded.push(slide);
                 }
             }
-            slides = expandedSlides;
+            slides = expanded;
         }
 
-        // 限制页数
         return slides.slice(0, Math.min(slides.length, Math.max(targetSlides, 20)));
     },
 
     // ====================== 封面页 ======================
     addCoverSlide(pptx, options, theme) {
-        const slide = pptx.addSlide();
+        const s = pptx.addSlide();
+        this.applyBg(s, theme, 'cover');
+
         const W = 13.33, H = 7.5;
-
-        // 渐变背景
-        slide.background = { color: theme.bg };
-
-        // 左上角装饰三角
-        slide.addShape('rect', {
-            x: 0, y: 0, w: 3.5, h: 3.5,
-            fill: { color: theme.highlight, transparency: 90 },
-            rotate: 45, rectRadius: 0
-        });
-        // 重新精确放置旋转后的矩形 - 用polygon替代
-        slide.addShape('rect', {
-            x: -1.2, y: -1.2, w: 3, h: 3,
-            fill: { color: theme.highlight, transparency: 88 }
-        });
-
-        // 右下角装饰
-        slide.addShape('rect', {
-            x: W - 2, y: H - 2.5, w: 3.5, h: 3.5,
-            fill: { color: theme.accent2, transparency: 90 }
-        });
-
+        // 底部暗化条
+        s.addShape('rect', { x: 0, y: H - 1.4, w: W, h: 1.4, fill: { color: theme.bg1, transparency: 25 } });
         // 顶部装饰线
-        slide.addShape('rect', {
-            x: 0, y: 0, w: W, h: 0.06,
-            fill: { type: 'solid', color: theme.highlight }
-        });
+        s.addShape('rect', { x: 0, y: 0, w: W, h: 0.07, fill: { type: 'solid', color: theme.accent } });
 
-        // 左侧竖线装饰
-        slide.addShape('rect', {
-            x: 1.2, y: 2.0, w: 0.05, h: 3.2,
-            fill: { type: 'solid', color: theme.highlight }
-        });
-
-        // 标题区域
         const title = options.title || '未命名演示文稿';
-        slide.addText(title, {
-            x: 1.8, y: 2.2, w: 9.5, h: 1.6,
-            fontSize: 42, fontFace: 'Microsoft YaHei', bold: true,
-            color: theme.text, align: 'left', valign: 'middle',
-            lineSpacing: 48
+        s.addText(title, {
+            x: 0.9, y: 2.3, w: 11.5, h: 1.7,
+            fontSize: 46, fontFace: 'Microsoft YaHei', bold: true,
+            color: theme.text, align: 'left', valign: 'middle', lineSpacing: 52
         });
 
-        // 副标题
         const subtitle = options.subtitle || this.getTypeLabel(options.pptType);
-        slide.addText(subtitle, {
-            x: 1.8, y: 3.9, w: 9.5, h: 0.7,
-            fontSize: 18, fontFace: 'Microsoft YaHei',
+        s.addText(subtitle, {
+            x: 0.92, y: 4.0, w: 11, h: 0.7,
+            fontSize: 19, fontFace: 'Microsoft YaHei',
             color: theme.textDim, align: 'left'
         });
 
-        // 分隔线
-        slide.addShape('rect', {
-            x: 1.8, y: 4.7, w: 3, h: 0.03,
-            fill: { color: theme.highlight, transparency: 40 }
+        s.addShape('rect', { x: 0.92, y: 4.85, w: 3.2, h: 0.035, fill: { color: theme.accent, transparency: 30 } });
+
+        s.addText(new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' }) + '   ·   TechDigest', {
+            x: 0.92, y: 5.1, w: 11, h: 0.5,
+            fontSize: 13, fontFace: 'Microsoft YaHei', color: theme.textMuted, align: 'left'
         });
 
-        // 日期和来源
-        slide.addText(new Date().toLocaleDateString('zh-CN', {
-            year: 'numeric', month: 'long', day: 'numeric'
-        }) + '  ·  TechDigest', {
-            x: 1.8, y: 5.0, w: 9.5, h: 0.5,
-            fontSize: 13, fontFace: 'Microsoft YaHei',
-            color: theme.textMuted, align: 'left'
-        });
-
-        // 底部装饰条
-        slide.addShape('rect', {
-            x: 0, y: H - 0.06, w: W, h: 0.06,
-            fill: { type: 'solid', color: theme.highlight }
-        });
+        s.addShape('rect', { x: 0, y: H - 0.07, w: W, h: 0.07, fill: { type: 'solid', color: theme.accent } });
     },
 
     // ====================== 目录页 ======================
     addTocSlide(pptx, slides, options, theme) {
-        const slide = pptx.addSlide();
+        const s = pptx.addSlide();
+        this.applyBg(s, theme, 'toc');
+
         const W = 13.33, H = 7.5;
+        s.addShape('rect', { x: 0, y: 0, w: 0.32, h: H, fill: { type: 'solid', color: theme.accent } });
 
-        // 背景
-        slide.background = { color: theme.bg };
-
-        // 左侧色块装饰
-        slide.addShape('rect', {
-            x: 0, y: 0, w: 0.35, h: H,
-            fill: { type: 'solid', color: theme.highlight }
+        s.addText('CONTENT', {
+            x: 0.85, y: 0.6, w: 8, h: 0.7, fontSize: 44, fontFace: 'Arial', bold: true,
+            color: theme.text, align: 'left', charSpacing: 6
         });
-
-        // 顶部装饰线
-        slide.addShape('rect', {
-            x: 0.35, y: 0, w: W - 0.35, h: 0.04,
-            fill: { type: 'solid', color: theme.highlight, transparency: 50 }
+        s.addText('目录', {
+            x: 0.88, y: 1.32, w: 5, h: 0.55, fontSize: 22, fontFace: 'Microsoft YaHei',
+            color: theme.textDim, align: 'left'
         });
+        s.addShape('rect', { x: 0.9, y: 1.95, w: 2.4, h: 0.03, fill: { color: theme.accent } });
 
-        // 标题
-        slide.addText('目  录', {
-            x: 1.2, y: 0.6, w: 5, h: 0.9,
-            fontSize: 32, fontFace: 'Microsoft YaHei', bold: true,
-            color: theme.text, align: 'left'
-        });
-        slide.addText('CONTENTS', {
-            x: 1.2, y: 1.3, w: 5, h: 0.5,
-            fontSize: 12, fontFace: 'Arial',
-            color: theme.textMuted, align: 'left', charSpacing: 8
-        });
+        const colN = 2;
+        const cardW = 5.65, cardH = 1.0, gapX = 0.35, gapY = 0.3;
+        const startX = 0.85, startY = 2.4;
 
-        // 分隔线
-        slide.addShape('rect', {
-            x: 1.2, y: 1.9, w: 2.5, h: 0.03,
-            fill: { type: 'solid', color: theme.highlight }
-        });
+        slides.forEach((sl, i) => {
+            const col = i % colN;
+            const row = Math.floor(i / colN);
+            const x = startX + col * (cardW + gapX);
+            const y = startY + row * (cardH + gapY);
 
-        // 目录项 - 使用两列布局
-        const col1 = slides.slice(0, Math.ceil(slides.length / 2));
-        const col2 = slides.slice(Math.ceil(slides.length / 2));
-
-        col1.forEach((s, i) => {
-            const y = 2.4 + i * 0.65;
-            // 序号圆圈
-            slide.addShape('roundRect', {
-                x: 1.2, y: y, w: 0.45, h: 0.45,
-                fill: { type: 'solid', color: theme.highlight },
-                rectRadius: 0.08
+            s.addShape('roundRect', {
+                x, y, w: cardW, h: cardH, rectRadius: 0.08,
+                fill: { color: theme.card.color, transparency: theme.card.transparency },
+                line: { color: theme.accent, width: 0.75, transparency: 55 }
             });
-            slide.addText(String(i + 1).padStart(2, '0'), {
-                x: 1.2, y: y, w: 0.45, h: 0.45,
-                fontSize: 13, fontFace: 'Arial', bold: true,
-                color: '#FFFFFF', align: 'center', valign: 'middle'
+            // 序号
+            s.addText(String(i + 1).padStart(2, '0'), {
+                x: x + 0.18, y: y, w: 1.0, h: cardH,
+                fontSize: 30, fontFace: 'Arial', bold: true,
+                color: theme.accent, align: 'left', valign: 'middle'
             });
-            // 标题文字
-            slide.addText(s.title, {
-                x: 1.85, y: y, w: 4.8, h: 0.45,
-                fontSize: 13, fontFace: 'Microsoft YaHei',
-                color: theme.textDim, align: 'left', valign: 'middle'
+            // 标题
+            s.addText(sl.title, {
+                x: x + 1.25, y: y, w: cardW - 1.4, h: cardH,
+                fontSize: 14.5, fontFace: 'Microsoft YaHei',
+                color: theme.text, align: 'left', valign: 'middle'
             });
         });
+    },
 
-        col2.forEach((s, i) => {
-            const y = 2.4 + i * 0.65;
-            const idx = col1.length + i;
-            slide.addShape('roundRect', {
-                x: 7.2, y: y, w: 0.45, h: 0.45,
-                fill: { type: 'solid', color: theme.accent2 },
-                rectRadius: 0.08
+    // ====================== 章节分隔页 ======================
+    addSectionSlide(pptx, number, title, theme) {
+        const s = pptx.addSlide();
+        this.applyBg(s, theme, 'section');
+
+        const W = 13.33, H = 7.5;
+        const numImg = this.createBigNumber(number, theme);
+        if (numImg) {
+            s.addImage({ data: numImg, x: 0.7, y: 1.5, w: 4.6, h: 4.6 });
+        } else {
+            s.addText(String(number), {
+                x: 0.7, y: 1.5, w: 4.6, h: 4.6, fontSize: 200,
+                fontFace: 'Arial', bold: true, color: theme.accent, align: 'center', valign: 'middle'
             });
-            slide.addText(String(idx + 1).padStart(2, '0'), {
-                x: 7.2, y: y, w: 0.45, h: 0.45,
-                fontSize: 13, fontFace: 'Arial', bold: true,
-                color: '#FFFFFF', align: 'center', valign: 'middle'
-            });
-            slide.addText(s.title, {
-                x: 7.85, y: y, w: 4.8, h: 0.45,
-                fontSize: 13, fontFace: 'Microsoft YaHei',
-                color: theme.textDim, align: 'left', valign: 'middle'
-            });
+        }
+
+        s.addShape('rect', { x: 6.0, y: 2.7, w: 0.06, h: 2.0, fill: { color: theme.accent } });
+        s.addText(title, {
+            x: 6.35, y: 2.75, w: 6.4, h: 1.3,
+            fontSize: 40, fontFace: 'Microsoft YaHei', bold: true,
+            color: theme.text, align: 'left', valign: 'middle'
         });
+        s.addText('CHAPTER ' + String(number).padStart(2, '0'), {
+            x: 6.37, y: 4.15, w: 6.4, h: 0.5,
+            fontSize: 15, fontFace: 'Arial', color: theme.textDim, align: 'left', charSpacing: 3
+        });
+        s.addShape('rect', { x: 6.37, y: 4.75, w: 2.2, h: 0.03, fill: { color: theme.accent, transparency: 40 } });
     },
 
     // ====================== 内容页 ======================
     addContentSlide(pptx, slideData, idx, total, options, theme) {
-        const slide = pptx.addSlide();
+        const s = pptx.addSlide();
+        this.applyBg(s, theme, 'content');
+
         const W = 13.33, H = 7.5;
+        s.addShape('rect', { x: 0, y: 0, w: 0.12, h: H, fill: { type: 'solid', color: theme.accent } });
 
-        // 背景
-        slide.background = { color: theme.bg };
-
-        // 左侧装饰条
-        slide.addShape('rect', {
-            x: 0, y: 0, w: 0.12, h: H,
-            fill: { type: 'solid', color: theme.highlight }
+        // 顶部标题栏卡片
+        const barH = 1.02;
+        s.addShape('roundRect', {
+            x: 0.55, y: 0.45, w: 12.2, h: barH, rectRadius: 0.06,
+            fill: { color: theme.card.color, transparency: theme.card.transparency },
+            line: { color: theme.accent, width: 0.5, transparency: 60 }
         });
-
-        // 顶部细线
-        slide.addShape('rect', {
-            x: 0.12, y: 0, w: W - 0.12, h: 0.03,
-            fill: { type: 'solid', color: theme.highlight, transparency: 60 }
+        s.addShape('rect', { x: 0.55, y: 0.45, w: 0.11, h: barH, fill: { type: 'solid', color: theme.accent } });
+        s.addText(String(idx + 1).padStart(2, '0'), {
+            x: 0.85, y: 0.45, w: 1.0, h: barH, fontSize: 30, fontFace: 'Arial', bold: true,
+            color: theme.accent, align: 'left', valign: 'middle'
         });
-
-        // 右上角装饰
-        slide.addShape('rect', {
-            x: W - 1.5, y: -0.8, w: 2.5, h: 2,
-            fill: { color: theme.highlight, transparency: 92 },
-            rotate: 30
-        });
-
-        // === 标题区域 ===
-        // 标题背景条
-        slide.addShape('rect', {
-            x: 0.12, y: 0, w: W - 0.12, h: 1.15,
-            fill: { color: theme.cardBg, transparency: 30 }
-        });
-
-        // 章节编号
-        const numStr = String(idx + 1).padStart(2, '0');
-        slide.addText(numStr, {
-            x: 0.7, y: 0.15, w: 0.9, h: 0.85,
-            fontSize: 30, fontFace: 'Arial', bold: true,
-            color: theme.highlight, align: 'center', valign: 'middle'
-        });
-
-        // 标题分隔线
-        slide.addShape('rect', {
-            x: 1.7, y: 0.35, w: 0.04, h: 0.45,
-            fill: { type: 'solid', color: theme.highlight, transparency: 40 }
-        });
-
-        // 标题文字
-        slide.addText(slideData.title, {
-            x: 2.0, y: 0.15, w: 9.5, h: 0.85,
-            fontSize: 24, fontFace: 'Microsoft YaHei', bold: true,
+        s.addText(slideData.title, {
+            x: 1.95, y: 0.45, w: 10.5, h: barH, fontSize: 23, fontFace: 'Microsoft YaHei', bold: true,
             color: theme.text, align: 'left', valign: 'middle'
         });
 
-        // === 内容区域 ===
         const points = slideData.points || [];
         const layout = options.layout || 'list';
+        if (layout === 'grid') this.renderGrid(s, points, theme);
+        else if (layout === 'text') this.renderText(s, points, theme);
+        else this.renderList(s, points, theme);
 
-        if (layout === 'grid') {
-            this.renderGridLayout(slide, points, theme);
-        } else if (layout === 'text') {
-            this.renderTextLayout(slide, points, theme);
-        } else {
-            this.renderListLayout(slide, points, theme);
-        }
-
-        // === 底部信息 ===
-        // 页码背景
-        slide.addShape('rect', {
-            x: 0, y: H - 0.5, w: W, h: 0.5,
-            fill: { color: theme.cardBg, transparency: 20 }
+        // 底部栏
+        s.addShape('rect', { x: 0, y: H - 0.45, w: W, h: 0.45, fill: { color: theme.card.color, transparency: theme.card.transparency - 15 } });
+        s.addShape('rect', { x: 0, y: H - 0.45, w: W, h: 0.02, fill: { color: theme.accent, transparency: 50 } });
+        s.addText('TechDigest', {
+            x: 0.55, y: H - 0.45, w: 3, h: 0.45, fontSize: 9, fontFace: 'Arial', color: theme.textMuted, align: 'left', valign: 'middle'
         });
-
-        // 底部装饰线
-        slide.addShape('rect', {
-            x: 0, y: H - 0.5, w: W, h: 0.02,
-            fill: { type: 'solid', color: theme.highlight, transparency: 50 }
-        });
-
-        // 页码
-        slide.addText((idx + 1) + ' / ' + total, {
-            x: W - 2, y: H - 0.5, w: 1.5, h: 0.5,
-            fontSize: 10, fontFace: 'Arial',
-            color: theme.textMuted, align: 'right', valign: 'middle'
-        });
-
-        // 页脚来源
-        slide.addText('TechDigest', {
-            x: 0.7, y: H - 0.5, w: 3, h: 0.5,
-            fontSize: 9, fontFace: 'Arial',
-            color: theme.textMuted, align: 'left', valign: 'middle'
+        s.addText((idx + 1) + ' / ' + total, {
+            x: W - 2, y: H - 0.45, w: 1.5, h: 0.45, fontSize: 10, fontFace: 'Arial', color: theme.textMuted, align: 'right', valign: 'middle'
         });
     },
 
-    // 要点列表布局（默认）
-    renderListLayout(slide, points, theme) {
-        const W = 13.33, H = 7.5;
-        const contentTop = 1.5;
-        const contentH = H - 2.2;
-        const maxPoints = Math.min(points.length, 8);
-        const gap = Math.min(0.7, (contentH - 0.3) / maxPoints);
+    // 要点行卡片布局（杂志式）
+    renderList(s, points, theme) {
+        const W = 13.33;
+        const top = 1.85, bottom = 6.95;
+        const n = Math.min(points.length, 6);
+        const gap = 0.18;
+        const rowH = Math.min(0.92, (bottom - top - gap * (n - 1)) / n);
+        const x = 0.7, w = W - 1.4;
 
-        points.slice(0, maxPoints).forEach((point, i) => {
-            const y = contentTop + i * gap;
-
-            // 序号圆圈
-            const circleSize = 0.38;
-            const circleY = y + (gap - circleSize) / 2;
-
-            slide.addShape('ellipse', {
-                x: 0.8, y: circleY, w: circleSize, h: circleSize,
-                fill: { type: 'solid', color: i === 0 ? theme.highlight : theme.cardBg },
-                line: { color: theme.highlight, width: 1.5 }
+        points.slice(0, n).forEach((p, i) => {
+            const y = top + i * (rowH + gap);
+            s.addShape('roundRect', {
+                x, y, w, h: rowH, rectRadius: 0.05,
+                fill: { color: theme.card.color, transparency: theme.card.transparency },
+                line: { color: theme.accent, width: 0.4, transparency: 70 }
             });
-
-            // 序号数字
-            slide.addText(String(i + 1), {
-                x: 0.8, y: circleY, w: circleSize, h: circleSize,
-                fontSize: 12, fontFace: 'Arial', bold: true,
-                color: i === 0 ? '#FFFFFF' : theme.highlight,
-                align: 'center', valign: 'middle'
+            // 序号圆
+            const cs = 0.5;
+            const cy = y + (rowH - cs) / 2;
+            s.addShape('ellipse', {
+                x: x + 0.28, y: cy, w: cs, h: cs,
+                fill: { type: 'solid', color: i % 2 === 0 ? theme.accent : theme.accent2 }
             });
-
-            // 左侧连接线（除第一个）
-            if (i > 0) {
-                slide.addShape('rect', {
-                    x: 0.98, y: y - gap / 2 + circleSize / 2,
-                    w: 0.02, h: gap / 2,
-                    fill: { color: theme.highlight, transparency: 50 }
-                });
-            }
-
-            // 内容文字
-            const textX = 1.45;
-            const textW = W - textX - 1.0;
-
-            slide.addText(point, {
-                x: textX, y: y, w: textW, h: gap - 0.08,
-                fontSize: 14, fontFace: 'Microsoft YaHei',
-                color: theme.textDim, align: 'left', valign: 'top',
-                lineSpacing: 22,
-                paraSpaceAfter: 4
+            s.addText(String(i + 1), {
+                x: x + 0.28, y: cy, w: cs, h: cs, fontSize: 13, fontFace: 'Arial', bold: true,
+                color: theme.isLight ? 'FFFFFF' : '#FFFFFF', align: 'center', valign: 'middle'
             });
-
-            // 要点之间的浅色分隔线
-            if (i < maxPoints - 1) {
-                slide.addShape('rect', {
-                    x: textX, y: y + gap - 0.04, w: textW * 0.7, h: 0.005,
-                    fill: { color: theme.cardBorder, transparency: 40 }
-                });
-            }
+            // 文字
+            s.addText(p, {
+                x: x + 1.0, y: y, w: w - 1.2, h: rowH,
+                fontSize: 13.5, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'middle',
+                lineSpacing: 19, paraSpaceAfter: 2
+            });
+            // 左侧强调条
+            s.addShape('rect', { x, y: y + 0.12, w: 0.05, h: rowH - 0.24, fill: { color: theme.accent, transparency: 30 } });
         });
     },
 
     // 网格卡片布局
-    renderGridLayout(slide, points, theme) {
-        const W = 13.33, H = 7.5;
-        const contentTop = 1.5;
+    renderGrid(s, points, theme) {
+        const W = 13.33;
+        const top = 1.85, bottom = 6.95;
         const cols = 2;
         const rows = Math.ceil(Math.min(points.length, 6) / cols);
-        const cardW = (W - 3.2) / cols;
-        const cardH = (H - contentTop - 0.9) / rows;
-        const gapX = 0.4, gapY = 0.25;
+        const gapX = 0.35, gapY = 0.28;
+        const cardW = (W - 1.4 - gapX) / cols;
+        const cardH = (bottom - top - gapY * (rows - 1)) / rows;
 
-        points.slice(0, cols * rows).forEach((point, i) => {
-            const col = i % cols;
-            const row = Math.floor(i / cols);
-            const x = 1.0 + col * (cardW + gapX);
-            const y = contentTop + row * (cardH + gapY);
+        points.slice(0, cols * rows).forEach((p, i) => {
+            const col = i % cols, row = Math.floor(i / cols);
+            const x = 0.7 + col * (cardW + gapX);
+            const y = top + row * (cardH + gapY);
 
-            // 卡片背景
-            slide.addShape('roundRect', {
-                x: x, y: y, w: cardW, h: cardH - gapY,
-                fill: { type: 'solid', color: theme.cardBg },
-                line: { color: theme.cardBorder, width: 0.5 },
-                rectRadius: 0.1
+            s.addShape('roundRect', {
+                x, y, w: cardW, h: cardH - gapY, rectRadius: 0.07,
+                fill: { color: theme.card.color, transparency: theme.card.transparency },
+                line: { color: theme.accent, width: 0.5, transparency: 65 }
             });
-
-            // 顶部色条
-            slide.addShape('rect', {
-                x: x + 0.15, y: y + 0.12, w: cardW - 0.3, h: 0.03,
-                fill: { type: 'solid', color: theme.highlight, transparency: 30 }
+            // 序号角标
+            s.addText(String(i + 1).padStart(2, '0'), {
+                x: x + 0.25, y: y + 0.15, w: 1.0, h: 0.5, fontSize: 18, fontFace: 'Arial', bold: true,
+                color: theme.accent, align: 'left', valign: 'top'
             });
-
-            // 序号
-            slide.addText(String(i + 1).padStart(2, '0'), {
-                x: x + 0.2, y: y + 0.25, w: 0.6, h: 0.4,
-                fontSize: 16, fontFace: 'Arial', bold: true,
-                color: theme.highlight, align: 'left', valign: 'middle'
-            });
-
+            // 顶部细线
+            s.addShape('rect', { x: x + 0.27, y: y + 0.7, w: 0.9, h: 0.025, fill: { color: theme.accent, transparency: 40 } });
             // 文字
-            slide.addText(point, {
-                x: x + 0.2, y: y + 0.7, w: cardW - 0.4, h: cardH - gapY - 0.9,
-                fontSize: 12, fontFace: 'Microsoft YaHei',
-                color: theme.textDim, align: 'left', valign: 'top',
-                lineSpacing: 18
+            s.addText(p, {
+                x: x + 0.28, y: y + 0.85, w: cardW - 0.56, h: cardH - gapY - 1.0,
+                fontSize: 12.5, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'top',
+                lineSpacing: 17
             });
         });
     },
 
     // 纯文排版布局
-    renderTextLayout(slide, points, theme) {
-        const W = 13.33, H = 7.5;
-        const contentTop = 1.5;
+    renderText(s, points, theme) {
+        const W = 13.33;
+        const top = 1.9, bottom = 6.9;
+        const x = 0.9, w = W - 1.8;
 
-        // 合并为段落文字
-        const text = points.map((p, i) => {
-            return (i + 1) + '、' + p;
-        }).join('\n\n');
+        s.addShape('rect', { x: x, y: top, w: 0.06, h: bottom - top, fill: { color: theme.accent, transparency: 35 } });
 
-        slide.addText(text, {
-            x: 1.2, y: contentTop, w: W - 2.4, h: H - contentTop - 0.9,
-            fontSize: 13, fontFace: 'Microsoft YaHei',
-            color: theme.textDim, align: 'left', valign: 'top',
+        const text = points.map((p, i) => (i + 1) + '、' + p).join('\n\n');
+        s.addText(text, {
+            x: x + 0.35, y: top, w: w - 0.35, h: bottom - top,
+            fontSize: 14, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'top',
             lineSpacing: 24, paraSpaceAfter: 8
         });
     },
 
     // ====================== 结尾页 ======================
     addEndSlide(pptx, options, theme) {
-        const slide = pptx.addSlide();
+        const s = pptx.addSlide();
+        this.applyBg(s, theme, 'section');
+
         const W = 13.33, H = 7.5;
+        s.addShape('rect', { x: 0, y: 0, w: W, h: 0.07, fill: { type: 'solid', color: theme.accent } });
 
-        // 背景
-        slide.background = { color: theme.bg };
-
-        // 顶部装饰线
-        slide.addShape('rect', {
-            x: 0, y: 0, w: W, h: 0.06,
-            fill: { type: 'solid', color: theme.highlight }
-        });
-
-        // 中央装饰圆
-        slide.addShape('ellipse', {
-            x: W / 2 - 1.8, y: H / 2 - 2.2, w: 3.6, h: 3.6,
-            fill: { color: theme.highlight, transparency: 93 },
-            line: { color: theme.highlight, width: 1, transparency: 70 }
-        });
-        slide.addShape('ellipse', {
-            x: W / 2 - 1.3, y: H / 2 - 1.7, w: 2.6, h: 2.6,
-            fill: { color: theme.highlight, transparency: 95 },
-            line: { color: theme.highlight, width: 0.5, transparency: 80 }
-        });
-
-        // "感谢观看"
-        slide.addText('感谢观看', {
-            x: 1, y: 2.4, w: W - 2, h: 1.2,
-            fontSize: 44, fontFace: 'Microsoft YaHei', bold: true,
+        s.addText('感谢观看', {
+            x: 1, y: 2.5, w: W - 2, h: 1.2, fontSize: 46, fontFace: 'Microsoft YaHei', bold: true,
             color: theme.text, align: 'center', valign: 'middle'
         });
-
-        // 英文
-        slide.addText('THANK YOU', {
-            x: 1, y: 3.5, w: W - 2, h: 0.7,
-            fontSize: 18, fontFace: 'Arial',
+        s.addText('THANK YOU', {
+            x: 1, y: 3.65, w: W - 2, h: 0.7, fontSize: 18, fontFace: 'Arial',
             color: theme.textMuted, align: 'center', charSpacing: 6
         });
-
-        // 分隔线
-        slide.addShape('rect', {
-            x: W / 2 - 1.5, y: 4.4, w: 3, h: 0.02,
-            fill: { color: theme.highlight, transparency: 50 }
-        });
-
-        // 标题
-        slide.addText(options.title || '', {
-            x: 1, y: 4.8, w: W - 2, h: 0.5,
-            fontSize: 14, fontFace: 'Microsoft YaHei',
+        s.addShape('rect', { x: W / 2 - 1.4, y: 4.5, w: 2.8, h: 0.03, fill: { color: theme.accent, transparency: 40 } });
+        s.addText(options.title || '', {
+            x: 1, y: 4.85, w: W - 2, h: 0.5, fontSize: 14, fontFace: 'Microsoft YaHei',
             color: theme.textDim, align: 'center'
         });
-
-        // 底部信息
-        slide.addText('Powered by TechDigest', {
-            x: 1, y: 6.5, w: W - 2, h: 0.4,
-            fontSize: 10, fontFace: 'Arial',
-            color: theme.textMuted, align: 'center'
+        s.addText('Powered by TechDigest', {
+            x: 1, y: 6.45, w: W - 2, h: 0.4, fontSize: 10, fontFace: 'Arial', color: theme.textMuted, align: 'center'
         });
-
-        // 底部装饰线
-        slide.addShape('rect', {
-            x: 0, y: H - 0.06, w: W, h: 0.06,
-            fill: { type: 'solid', color: theme.highlight }
-        });
+        s.addShape('rect', { x: 0, y: H - 0.07, w: W, h: 0.07, fill: { type: 'solid', color: theme.accent } });
     },
 
     getTypeLabel(type) {
         const map = {
-            product: '产品发布演示',
-            tech: '技术方案分享',
-            report: '行业研究报告',
-            marketing: '营销策划方案',
-            education: '培训课件',
-            summary: '工作总结汇报'
+            product: '产品发布演示', tech: '技术方案分享', report: '行业研究报告',
+            marketing: '营销策划方案', education: '培训课件', summary: '工作总结汇报'
         };
         return map[type] || '科技数码演示文稿';
     }
