@@ -229,6 +229,23 @@ const PPTGenerator = {
         return data;
     },
 
+    // 标题截断（超过指定长度加省略号）
+    truncTitle(title, maxLen) {
+        if (!title || title.length <= maxLen) return title;
+        return title.substring(0, maxLen - 1) + '…';
+    },
+
+    // 从要点中提取关键词作为副标题
+    extractSubTitle(points, baseTitle) {
+        if (!points || points.length === 0) return '';
+        const first = points[0];
+        // 取第一个要点的关键词（前18字或到第一个句号/逗号）
+        const kw = (first.split(/[。；\n]/)[0] || first).trim().substring(0, 18);
+        // 如果提取到的和原标题太像就不加了
+        if (baseTitle && baseTitle.includes(kw.substring(0, 6))) return '';
+        return '——' + kw;
+    },
+
     // ====================== 内容解析 ======================
     parseContent(content, options, targetSlides) {
         if (!content || content.trim().length < 20) {
@@ -294,8 +311,9 @@ const PPTGenerator = {
                 if (slide.points.length > 5) {
                     for (let i = 0; i < slide.points.length; i += 4) {
                         const chunk = slide.points.slice(i, i + 4);
+                        const sub = this.extractSubTitle(chunk, slide.title);
                         expanded.push({
-                            title: i === 0 ? slide.title : slide.title + '（续' + (i / 4 + 1) + '）',
+                            title: i === 0 ? slide.title : slide.title + sub,
                             points: chunk
                         });
                     }
@@ -384,7 +402,7 @@ const PPTGenerator = {
                 color: theme.accent, align: 'left', valign: 'middle'
             });
             // 标题
-            s.addText(sl.title, {
+            s.addText(this.truncTitle(sl.title, 18), {
                 x: x + 1.25, y: y, w: cardW - 1.4, h: cardH,
                 fontSize: 14.5, fontFace: 'Microsoft YaHei',
                 color: theme.text, align: 'left', valign: 'middle'
@@ -441,7 +459,7 @@ const PPTGenerator = {
             x: 0.85, y: 0.45, w: 1.0, h: barH, fontSize: 30, fontFace: 'Arial', bold: true,
             color: theme.accent, align: 'left', valign: 'middle'
         });
-        s.addText(slideData.title, {
+        s.addText(this.truncTitle(slideData.title, 22), {
             x: 1.95, y: 0.45, w: 10.5, h: barH, fontSize: 23, fontFace: 'Microsoft YaHei', bold: true,
             color: theme.text, align: 'left', valign: 'middle'
         });
@@ -469,35 +487,45 @@ const PPTGenerator = {
         const top = 1.85, bottom = 6.95;
         const n = Math.min(points.length, 6);
         const gap = 0.18;
-        const rowH = Math.min(0.92, (bottom - top - gap * (n - 1)) / n);
+        const baseRowH = 0.92;
+        const totalGap = gap * (n - 1);
+        const availH = bottom - top - totalGap;
+
+        // 按文本长度动态分配行高（长文本自动拉高）
+        const weights = points.slice(0, n).map(p => Math.min(Math.max(p.length / 55, 0.7), 1.8));
+        const totalW = weights.reduce((a, b) => a + b, 0);
+
+        let yCursor = top;
         const x = 0.7, w = W - 1.4;
 
         points.slice(0, n).forEach((p, i) => {
-            const y = top + i * (rowH + gap);
+            const rowH = Math.max(baseRowH * 1.15, (availH * weights[i] / totalW));
+            const y = yCursor;
             s.addShape('roundRect', {
                 x, y, w, h: rowH, rectRadius: 0.05,
                 fill: { color: theme.card.color, transparency: theme.card.transparency },
                 line: { color: theme.accent, width: 0.4, transparency: 70 }
             });
-            // 序号圆
-            const cs = 0.5;
-            const cy = y + (rowH - cs) / 2;
+            // 序号圆（顶部对齐）
+            const cs = 0.48;
             s.addShape('ellipse', {
-                x: x + 0.28, y: cy, w: cs, h: cs,
+                x: x + 0.28, y: y + 0.12, w: cs, h: cs,
                 fill: { type: 'solid', color: i % 2 === 0 ? theme.accent : theme.accent2 }
             });
             s.addText(String(i + 1), {
-                x: x + 0.28, y: cy, w: cs, h: cs, fontSize: 13, fontFace: 'Arial', bold: true,
-                color: theme.isLight ? 'FFFFFF' : '#FFFFFF', align: 'center', valign: 'middle'
+                x: x + 0.28, y: y + 0.12, w: cs, h: cs, fontSize: 13, fontFace: 'Arial', bold: true,
+                color: '#FFFFFF', align: 'center', valign: 'middle'
             });
-            // 文字
+            // 文字 — wrap 自动换行，长文本不溢出
             s.addText(p, {
-                x: x + 1.0, y: y, w: w - 1.2, h: rowH,
-                fontSize: 13.5, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'middle',
-                lineSpacing: 19, paraSpaceAfter: 2
+                x: x + 1.0, y: y + 0.12, w: w - 1.2, h: rowH - 0.24,
+                fontSize: 13.5, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'top',
+                lineSpacing: 20, paraSpaceAfter: 2, wrap: true
             });
             // 左侧强调条
-            s.addShape('rect', { x, y: y + 0.12, w: 0.05, h: rowH - 0.24, fill: { color: theme.accent, transparency: 30 } });
+            s.addShape('rect', { x, y: y + 0.14, w: 0.05, h: rowH - 0.28, fill: { color: theme.accent, transparency: 30 } });
+
+            yCursor += rowH + gap;
         });
     },
 
@@ -532,7 +560,7 @@ const PPTGenerator = {
             s.addText(p, {
                 x: x + 0.28, y: y + 0.85, w: cardW - 0.56, h: cardH - gapY - 1.0,
                 fontSize: 12.5, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'top',
-                lineSpacing: 17
+                lineSpacing: 17, wrap: true
             });
         });
     },
@@ -549,7 +577,7 @@ const PPTGenerator = {
         s.addText(text, {
             x: x + 0.35, y: top, w: w - 0.35, h: bottom - top,
             fontSize: 14, fontFace: 'Microsoft YaHei', color: theme.textDim, align: 'left', valign: 'top',
-            lineSpacing: 24, paraSpaceAfter: 8
+            lineSpacing: 24, paraSpaceAfter: 8, wrap: true
         });
     },
 
