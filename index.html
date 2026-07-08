@@ -380,102 +380,78 @@
                             <span class="ppt-badge">一键导出 .pptx</span>
                         </div>
 
-                        <div class="ppt-body">
-                            <!-- 左栏：输入区 -->
-                            <div class="ppt-input-section">
-                                <!-- 标题 -->
+                        <div class="ppt-body ppt-body-3col">
+                            <!-- ===== 左栏：输入区 ===== -->
+                            <div class="ppt-col ppt-col-input">
+                                <div class="ppt-col-header"><i class="fa-solid fa-pen-to-square"></i> 内容输入</div>
                                 <div class="ppt-field">
-                                    <label class="ppt-label"><i class="fa-solid fa-heading"></i> PPT 标题</label>
-                                    <input type="text" class="ppt-input" v-model="pptForm.title" placeholder="输入演示文稿标题...">
+                                    <input type="text" class="ppt-input" v-model="pptForm.title" placeholder="PPT标题...">
                                 </div>
-
-                                <!-- 副标题 -->
                                 <div class="ppt-field">
-                                    <label class="ppt-label"><i class="fa-solid fa-subscript"></i> 副标题（可选）</label>
-                                    <input type="text" class="ppt-input" v-model="pptForm.subtitle" placeholder="补充说明...">
+                                    <input type="text" class="ppt-input" v-model="pptForm.subtitle" placeholder="副标题（可选）...">
                                 </div>
-
-                                <!-- 内容输入方式切换 -->
-                                <div class="ppt-field">
-                                    <label class="ppt-label"><i class="fa-solid fa-pen-to-square"></i> 内容输入方式</label>
-                                    <div class="ppt-input-tabs">
-                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'paste' }" @click="pptInputMode = 'paste'">
-                                            <i class="fa-solid fa-paste"></i> 粘贴文案
-                                        </button>
-                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'word' }" @click="pptInputMode = 'word'">
-                                            <i class="fa-solid fa-file-word"></i> 上传Word
-                                        </button>
-                                        <button class="ppt-input-tab" :class="{ active: pptInputMode === 'pdf' }" @click="pptInputMode = 'pdf'">
-                                            <i class="fa-solid fa-file-pdf"></i> 上传PDF
-                                        </button>
-                                    </div>
+                                <div class="ppt-input-tabs">
+                                    <button class="ppt-input-tab" :class="{ active: pptInputMode === 'paste' }" @click="pptInputMode = 'paste'">
+                                        <i class="fa-solid fa-paste"></i> 粘贴
+                                    </button>
+                                    <button class="ppt-input-tab" :class="{ active: pptInputMode === 'word' }" @click="pptInputMode = 'word'">
+                                        <i class="fa-solid fa-file-word"></i> Word
+                                    </button>
+                                    <button class="ppt-input-tab" :class="{ active: pptInputMode === 'pdf' }" @click="pptInputMode = 'pdf'">
+                                        <i class="fa-solid fa-file-pdf"></i> PDF
+                                    </button>
                                 </div>
-
-                                <!-- 粘贴文案 -->
                                 <div class="ppt-field" v-show="pptInputMode === 'paste'">
-                                    <textarea class="ppt-textarea" v-model="pptForm.content" placeholder="在此粘贴文案内容...&#10;&#10;支持以下格式：&#10;# 一级标题&#10;## 二级标题&#10;- 要点列表&#10;1. 编号列表&#10;&#10;系统将自动按标题和段落分页生成PPT" rows="12"></textarea>
-                                    <span class="ppt-char-count">{{ pptForm.content.length }} 字 · 约 {{ estimatedSlides }} 页</span>
+                                    <textarea class="ppt-textarea ppt-textarea-3col" v-model="pptForm.content" placeholder="在此粘贴文案内容...&#10;&#10;AI将自动分析内容结构生成专业大纲" rows="10"></textarea>
+                                    <span class="ppt-char-count">{{ pptForm.content.length }} 字</span>
                                 </div>
-
-                                <!-- 上传Word -->
                                 <div class="ppt-field ppt-upload-zone" v-show="pptInputMode === 'word'"
-                                    @dragover.prevent @drop.prevent="handleWordDrop"
-                                    @click="$refs.wordInput.click()">
+                                    @dragover.prevent @drop.prevent="handleWordDrop" @click="$refs.wordInput.click()">
                                     <input type="file" ref="wordInput" accept=".docx,.doc" @change="handleWordUpload" hidden>
                                     <div v-if="!pptForm.wordFileName">
-                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i>
-                                        <p>点击或拖拽上传 Word 文件</p>
-                                        <span class="ppt-upload-hint">支持 .docx / .doc 格式</span>
+                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i><p>上传 Word</p>
                                     </div>
                                     <div v-else class="ppt-upload-done">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span>{{ pptForm.wordFileName }}</span>
+                                        <i class="fa-solid fa-circle-check"></i><span>{{ pptForm.wordFileName }}</span>
                                         <button class="ppt-upload-remove" @click.stop="pptForm.wordFileName = ''; pptForm.content = ''">✕</button>
                                     </div>
                                 </div>
-
-                                <!-- 上传PDF -->
                                 <div class="ppt-field ppt-upload-zone" v-show="pptInputMode === 'pdf'"
-                                    @dragover.prevent @drop.prevent="handlePDFDrop"
-                                    @click="$refs.pdfInput.click()">
+                                    @dragover.prevent @drop.prevent="handlePDFDrop" @click="$refs.pdfInput.click()">
                                     <input type="file" ref="pdfInput" accept=".pdf" @change="handlePDFUpload" hidden>
                                     <div v-if="!pptForm.pdfFileName">
-                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i>
-                                        <p>点击或拖拽上传 PDF 文件</p>
-                                        <span class="ppt-upload-hint">自动提取文本内容生成PPT</span>
+                                        <i class="fa-solid fa-cloud-arrow-up ppt-upload-icon"></i><p>上传 PDF</p>
                                     </div>
                                     <div v-else class="ppt-upload-done">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span>{{ pptForm.pdfFileName }}</span>
+                                        <i class="fa-solid fa-circle-check"></i><span>{{ pptForm.pdfFileName }}</span>
                                         <button class="ppt-upload-remove" @click.stop="pptForm.pdfFileName = ''; pptForm.content = ''">✕</button>
                                     </div>
                                 </div>
-
-                                <!-- 生成大纲按钮 -->
                                 <button class="ppt-outline-gen-btn" @click="generateOutline" :disabled="!pptForm.content.trim()">
                                     <i class="fa-solid fa-list-check"></i>
-                                    {{ outlineSlides.length ? '重新生成大纲' : '生成大纲' }}
+                                    {{ outlineSlides.length ? 'AI 重新生成大纲' : 'AI 生成大纲' }}
                                 </button>
                             </div>
 
-                            <!-- ===== 大纲编辑区 ===== -->
-                            <div class="ppt-outline-section" v-if="outlineSlides.length > 0">
-                                <div class="ppt-outline-header">
-                                    <h3><i class="fa-solid fa-list-check"></i> PPT大纲</h3>
-                                    <span class="ppt-outline-meta">{{ outlineSlides.length }}章节 · {{ totalOutlinePoints }}要点</span>
+                            <!-- ===== 中栏：大纲编辑区 ===== -->
+                            <div class="ppt-col ppt-col-outline" v-if="outlineSlides.length > 0">
+                                <div class="ppt-col-header">
+                                    <i class="fa-solid fa-list-check"></i> PPT大纲
+                                    <span class="ppt-outline-meta">{{ outlineSlides.length }}章 · {{ totalOutlinePoints }}要点</span>
                                 </div>
                                 <div class="ppt-outline-list">
                                     <div class="outline-slide" v-for="(slide, si) in outlineSlides" :key="si">
-                                        <div class="outline-slide-header">
+                                        <div class="outline-slide-header" @click="toggleOutlineCollapse(si)">
                                             <span class="outline-num">{{ si + 1 }}</span>
-                                            <input :value="slide.title" @input="updateOutlineTitle(si, $event.target.value)" class="outline-title-input">
-                                            <button @click="removeOutlineSlide(si)" class="outline-btn-del" title="删除章节">✕</button>
+                                            <input :value="slide.title" @input="updateOutlineTitle(si, $event.target.value)" @click.stop class="outline-title-input" placeholder="章节标题">
+                                            <i class="outline-toggle" :class="slide.collapsed ? 'fa-solid fa-chevron-down' : 'fa-solid fa-chevron-up'"></i>
+                                            <button @click.stop="removeOutlineSlide(si)" class="outline-btn-del" title="删除">✕</button>
                                         </div>
-                                        <div class="outline-points">
+                                        <div class="outline-points" v-show="!slide.collapsed">
                                             <div class="outline-point" v-for="(pt, pi) in slide.points" :key="pi">
                                                 <span class="outline-bullet">•</span>
                                                 <textarea :value="pt" @input="updateOutlinePoint(si, pi, $event.target.value)" rows="1" class="outline-point-input"></textarea>
-                                                <button @click="removeOutlinePoint(si, pi)" class="outline-btn-del-sm" title="删除要点">✕</button>
+                                                <button @click="removeOutlinePoint(si, pi)" class="outline-btn-del-sm">✕</button>
                                             </div>
                                             <button @click="addOutlinePoint(si)" class="outline-btn-add"><i class="fa-solid fa-plus"></i> 添加要点</button>
                                         </div>
@@ -484,92 +460,65 @@
                                 </div>
                             </div>
 
-                            <!-- 右栏：参数 + 生成 -->
-                            <div class="ppt-control-section">
-                                <div class="ppt-params-card">
-                                    <h3 class="ppt-params-title"><i class="fa-solid fa-sliders"></i> 生成参数</h3>
-
-                                    <!-- PPT 类型 -->
-                                    <div class="ppt-field">
-                                        <label class="ppt-label"><i class="fa-solid fa-layer-group"></i> PPT 类型</label>
-                                        <div class="ppt-radio-group">
-                                            <label class="ppt-radio" v-for="t in pptOptions.types" :key="t.value"
-                                                :class="{ active: pptForm.pptType === t.value }">
-                                                <input type="radio" v-model="pptForm.pptType" :value="t.value">
-                                                <span>{{ t.label }}</span>
-                                            </label>
+                            <!-- ===== 右栏：参数 + 生成 ===== -->
+                            <div class="ppt-col ppt-col-params">
+                                <div class="ppt-col-header"><i class="fa-solid fa-sliders"></i> 生成参数</div>
+                                <div class="ppt-field">
+                                    <label class="ppt-label-sm">类型</label>
+                                    <div class="ppt-radio-group">
+                                        <label class="ppt-radio" v-for="t in pptOptions.types.slice(0,3)" :key="t.value" :class="{ active: pptForm.pptType === t.value }">
+                                            <input type="radio" v-model="pptForm.pptType" :value="t.value"><span>{{ t.label }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="ppt-field">
+                                    <label class="ppt-label-sm">风格</label>
+                                    <div class="ppt-theme-grid">
+                                        <div class="ppt-theme-item" v-for="(t, key) in pptThemes" :key="key" :class="{ active: pptForm.theme === key }" @click="pptForm.theme = key">
+                                            <div class="ppt-theme-preview" :style="{ background: t.gradient }"></div><span>{{ t.name }}</span>
                                         </div>
                                     </div>
-
-                                    <!-- 模板风格 -->
-                                    <div class="ppt-field">
-                                        <label class="ppt-label"><i class="fa-solid fa-palette"></i> 模板风格</label>
-                                        <div class="ppt-theme-grid">
-                                            <div class="ppt-theme-item" v-for="(t, key) in pptThemes" :key="key"
-                                                :class="{ active: pptForm.theme === key }"
-                                                @click="pptForm.theme = key">
-                                                <div class="ppt-theme-preview" :style="{ background: t.gradient }"></div>
-                                                <span>{{ t.name }}</span>
-                                            </div>
-                                        </div>
+                                </div>
+                                <div class="ppt-field">
+                                    <label class="ppt-label-sm">布局</label>
+                                    <div class="ppt-radio-group">
+                                        <label class="ppt-radio" v-for="l in pptOptions.layouts" :key="l.value" :class="{ active: pptForm.layout === l.value }">
+                                            <input type="radio" v-model="pptForm.layout" :value="l.value"><span>{{ l.label }}</span>
+                                        </label>
                                     </div>
-
-                                    <!-- 最大页数 -->
-                                    <div class="ppt-field">
-                                        <label class="ppt-label"><i class="fa-solid fa-copy"></i> 最大页数</label>
-                                        <div class="ppt-radio-group">
-                                            <label class="ppt-radio" v-for="n in pptOptions.pageCounts" :key="n"
-                                                :class="{ active: pptForm.maxSlides === n }">
-                                                <input type="radio" v-model="pptForm.maxSlides" :value="n">
-                                                <span>{{ n }}页</span>
-                                            </label>
-                                        </div>
+                                </div>
+                                <div class="ppt-field">
+                                    <label class="ppt-label-sm">页数</label>
+                                    <div class="ppt-radio-group">
+                                        <label class="ppt-radio" v-for="n in pptOptions.pageCounts" :key="n" :class="{ active: pptForm.maxSlides === n }">
+                                            <input type="radio" v-model="pptForm.maxSlides" :value="n"><span>{{ n }}页</span>
+                                        </label>
                                     </div>
-
-                                    <!-- 布局风格 -->
-                                    <div class="ppt-field">
-                                        <label class="ppt-label"><i class="fa-solid fa-table-columns"></i> 布局风格</label>
-                                        <div class="ppt-radio-group">
-                                            <label class="ppt-radio" v-for="l in pptOptions.layouts" :key="l.value"
-                                                :class="{ active: pptForm.layout === l.value }">
-                                                <input type="radio" v-model="pptForm.layout" :value="l.value">
-                                                <span>{{ l.label }}</span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <!-- 是否含封面/目录/结尾 -->
-                                    <div class="ppt-field">
-                                        <label class="ppt-label"><i class="fa-solid fa-toggle-on"></i> 附加页面</label>
-                                        <div class="ppt-check-group">
-                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeCover"> 封面页</label>
-                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeToc"> 目录页</label>
-                                            <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeEnd"> 结尾页</label>
-                                        </div>
-                                    </div>
-
-                                    <!-- 生成按钮 -->
-                                    <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating || !outlineSlides.length">
-                                        <i v-if="!pptGenerating" class="fa-solid fa-bolt"></i>
-                                        <i v-if="pptGenerating" class="fa-solid fa-spinner spinning"></i>
-                                        {{ pptGenerating ? '正在生成 PPT...' : outlineSlides.length ? '根据大纲生成 PPT' : '请先生成大纲' }}
-                                    </button>
-
-                                    <!-- 下载按钮 -->
-                                    <button class="ppt-download-btn" @click="downloadPPT" :disabled="!pptReady || pptDownloading">
-                                        <i v-if="!pptDownloading" class="fa-solid fa-download"></i>
-                                        <i v-if="pptDownloading" class="fa-solid fa-spinner spinning"></i>
-                                        {{ pptDownloading ? '下载中...' : pptReady ? '下载 PPT' : '请先生成 PPT' }}
-                                    </button>
-
-                                    <!-- 生成状态提示 -->
-                                    <div class="ppt-status-bar" v-if="pptReady && !pptGenerating">
-                                        <i class="fa-solid fa-circle-check"></i>
-                                        <span>PPT 已生成，共 {{ pptSlideCount }} 页，点击下载保存到本地</span>
-                                    </div>
+                                </div>
+                                <div class="ppt-check-group">
+                                    <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeCover"> 封面</label>
+                                    <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeToc"> 目录</label>
+                                    <label class="ppt-check"><input type="checkbox" v-model="pptForm.includeEnd"> 结尾</label>
+                                </div>
+                                <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating || !outlineSlides.length">
+                                    <i v-if="!pptGenerating" class="fa-solid fa-bolt"></i>
+                                    <i v-if="pptGenerating" class="fa-solid fa-spinner spinning"></i>
+                                    {{ pptGenerating ? '生成中...' : outlineSlides.length ? '生成 PPT' : '先生成大纲' }}
+                                </button>
+                                <button class="ppt-download-btn" @click="downloadPPT" :disabled="!pptReady || pptDownloading">
+                                    <i v-if="!pptDownloading" class="fa-solid fa-download"></i>
+                                    <i v-if="pptDownloading" class="fa-solid fa-spinner spinning"></i>
+                                    {{ pptDownloading ? '下载中...' : pptReady ? '下载 PPT' : '请先生成' }}
+                                </button>
+                                <div class="ppt-status-bar" v-if="pptReady && !pptGenerating">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    <span>已生成 {{ pptSlideCount }} 页</span>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 预览提示 -->
+                        <div class="ppt-preview-bar"                        </div>
 
                         <!-- 预览提示 -->
                         <div class="ppt-preview-bar" v-if="pptForm.content.length > 20">

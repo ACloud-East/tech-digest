@@ -1,7 +1,268 @@
 {
   "updateTime": "2026-07-08T08:00:00",
-  "total": 38,
+  "total": 60,
   "articles": [
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "谷歌DeepMind发布Gemini 3多模态模型，全面超越GPT-5",
+      "description": "AI大模型竞争白热化",
+      "url": "https://www.163.com/dy/article/L1A006.html",
+      "time": "Mon, 07 Jul 2026 12:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "苹果Vision Pro 2或将采用microOLED，重量减半",
+      "description": "苹果头显第二代技术路线",
+      "url": "https://www.163.com/dy/article/L1A005.html",
+      "time": "Mon, 07 Jul 2026 14:00:00 GMT",
+      "tags": [
+        "智能硬件",
+        "数码评测"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "特斯拉FSD V13在华获批测试，自动驾驶迎来新变局",
+      "description": "特斯拉自动驾驶中国落地",
+      "url": "https://www.163.com/dy/article/L1A004.html",
+      "time": "Mon, 07 Jul 2026 16:00:00 GMT",
+      "tags": [
+        "新能源汽车",
+        "人工智能"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "OpenAI拟融资400亿美元，估值冲击3000亿",
+      "description": "AI独角兽的资本狂飙",
+      "url": "https://www.163.com/dy/article/L1A003.html",
+      "time": "Tue, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "VC"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "英伟达RTX 5090完整规格曝光：32GB显存+600W功耗",
+      "description": "英伟达下一代旗舰显卡",
+      "url": "https://www.163.com/dy/article/L1A002.html",
+      "time": "Tue, 08 Jul 2026 09:00:00 GMT",
+      "tags": [
+        "PC硬件",
+        "芯片"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "华为麒麟9100量产在即，性能对标骁龙8 Gen 3",
+      "description": "华为自研芯片最新进展",
+      "url": "https://www.163.com/dy/article/L1A001.html",
+      "time": "Tue, 08 Jul 2026 10:00:00 GMT",
+      "tags": [
+        "芯片",
+        "手机"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "浙江大学超过哈佛之后，一个更大的变化正在发生",
+      "description": "中国高等教育的全球崛起",
+      "url": "https://www.huxiu.com/article/4866698.html",
+      "time": "Fri, 04 Jul 2026 10:00:00 GMT",
+      "tags": [
+        "互联网",
+        "人工智能"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "100倍的奖金差，三星正面临薪酬撕裂",
+      "description": "三星内部薪酬分化的深层问题",
+      "url": "https://www.huxiu.com/article/4873431.html",
+      "time": "Tue, 08 Jul 2026 05:00:00 GMT",
+      "tags": [
+        "芯片",
+        "手机"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "刘靖康和汪滔，刺刀见红",
+      "description": "大疆与Insta360的竞争升级",
+      "url": "https://www.huxiu.com/article/4873251.html",
+      "time": "Mon, 07 Jul 2026 14:00:00 GMT",
+      "tags": [
+        "智能硬件",
+        "数码评测"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "超百亿元，腾讯减持快手",
+      "description": "腾讯资本运作的重大调整",
+      "url": "https://www.huxiu.com/article/4873195.html",
+      "time": "Mon, 07 Jul 2026 13:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "印度代工厂被黑，苹果最怕泄露的不是真机照片",
+      "description": "苹果供应链安全事件",
+      "url": "https://www.huxiu.com/article/4872842.html",
+      "time": "Sun, 06 Jul 2026 16:00:00 GMT",
+      "tags": [
+        "手机",
+        "芯片"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "第一份工作正在消失：AI如何切断年轻人的职业阶梯？",
+      "description": "AI对就业市场的深远影响",
+      "url": "https://www.huxiu.com/article/4871553.html",
+      "time": "Sat, 05 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "马斯克不造iPhone，但他想让手机替你赚钱",
+      "description": "马斯克的手机商业模式构想",
+      "url": "https://www.huxiu.com/article/4873425.html",
+      "time": "Tue, 08 Jul 2026 06:00:00 GMT",
+      "tags": [
+        "手机",
+        "互联网"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "中国汽车被铝逼入绝境",
+      "description": "汽车轻量化材料的供应链危机",
+      "url": "https://www.huxiu.com/article/4873111.html",
+      "time": "Mon, 07 Jul 2026 14:00:00 GMT",
+      "tags": [
+        "新能源汽车"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "BAT抱团阻击字节了？",
+      "description": "国内互联网巨头竞争格局",
+      "url": "https://www.huxiu.com/article/4873007.html",
+      "time": "Mon, 07 Jul 2026 10:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "互联网的效率神话，不值钱了",
+      "description": "互联网商业模式的转变",
+      "url": "https://www.huxiu.com/article/4873259.html",
+      "time": "Mon, 07 Jul 2026 17:00:00 GMT",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "过去35年，存储行情最长只火了5年，这次呢？",
+      "description": "存储芯片周期分析",
+      "url": "https://www.huxiu.com/article/4873224.html",
+      "time": "Mon, 07 Jul 2026 15:00:00 GMT",
+      "tags": [
+        "芯片",
+        "PC硬件"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "马斯克的星链，开始坠星了",
+      "description": "星链面临的现实挑战",
+      "url": "https://www.huxiu.com/article/4873225.html",
+      "time": "Mon, 07 Jul 2026 16:00:00 GMT",
+      "tags": [
+        "互联网",
+        "新能源汽车"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "印度，第一个被AI做空的国家",
+      "description": "AI对新兴市场的冲击",
+      "url": "https://www.huxiu.com/article/4873265.html",
+      "time": "Mon, 07 Jul 2026 18:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "斯坦福报告揭示：DeepSeek团队超半数人才纯本土培养",
+      "description": "中国AI人才优势凸显",
+      "url": "https://www.huxiu.com/article/4870299.html",
+      "time": "Sun, 06 Jul 2026 10:00:00 GMT",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "拯救大兵张坤",
+      "description": "基金经理的困境与未来",
+      "url": "https://www.huxiu.com/article/4872790.html",
+      "time": "Mon, 07 Jul 2026 12:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "高善文为何让人如此怀念？",
+      "description": "经济学家影响力的深度分析",
+      "url": "https://www.huxiu.com/article/4873412.html",
+      "time": "Tue, 08 Jul 2026 07:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
     {
       "source": "品玩",
       "sourceColor": "#ff5722",

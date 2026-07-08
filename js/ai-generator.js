@@ -507,5 +507,172 @@ const AIGenerator = {
         let content = lines.slice(1).join('\n').trim();
         if (!content) content = text;
         return { title, content };
+    },
+
+    /**
+     * AI 生成 PPT 大纲
+     * 分析内容结构，提取逻辑章节和要点，生成可编辑的结构化大纲
+     * @param {Object} form - { title, content, keywords, type, style, wordCount }
+     * @returns {Array} slides - [{ title, points }]
+     */
+    generatePPTOutline(form) {
+        const text = form.content || '';
+        const title = form.title || '';
+
+        // 提取原文中的所有句子和段落
+        const paragraphs = text.split(/\n\n+/).filter(p => p.trim());
+        const allLines = text.split(/\n+/).filter(l => l.trim());
+
+        // 第一步：提取原文中已有的标题作为章节候选
+        const headingLines = allLines.filter(l => /^#{1,3}\s/.test(l));
+        const rawHeadings = headingLines.map(h => h.replace(/^#{1,3}\s*/, '').trim()).filter(h => h.length > 2 && h.length < 50);
+
+        // 第二步：如果原文没有足够标题，AI 自动生成章节结构
+        let chapters = [];
+
+        if (rawHeadings.length >= 3) {
+            // 原文有足够的标题，直接使用
+            chapters = rawHeadings.map(h => ({
+                title: h,
+                points: []
+            }));
+
+            // 为每个章节分配内容（标题后的段落作为要点）
+            let currentCh = -1;
+            for (const line of allLines) {
+                const t = line.trim();
+                if (/^#{1,3}\s/.test(t)) {
+                    const ht = t.replace(/^#{1,3}\s*/, '').trim();
+                    const idx = rawHeadings.indexOf(ht);
+                    if (idx >= 0) currentCh = idx;
+                } else if (currentCh >= 0) {
+                    const clean = t.replace(/^[-*•]\s*/, '').replace(/^\d+[\.\、\)]\s*/, '');
+                    if (clean.length > 5 && chapters[currentCh].points.length < 6) {
+                        chapters[currentCh].points.push(clean);
+                    }
+                }
+            }
+        } else {
+            // AI 生成章节结构
+            const keywords = this.extractKeywords(text);
+            const topic = title || keywords.slice(0, 3).join('、') || '科技数码';
+
+            // 确定章节模板
+            const typeTemplates = {
+                '产品发布': ['产品背景与市场定位', '核心功能与技术创新', '产品优势与竞品对比', '用户体验与应用场景', '发布计划与行业影响'],
+                '技术方案': ['背景与痛点分析', '技术架构设计', '核心实现方案', '性能与可靠性', '落地部署与未来规划'],
+                '行业报告': ['行业现状概述', '市场规模与趋势', '竞争格局分析', '关键驱动因素', '前景展望与建议'],
+                '默认': ['背景与概述', '核心内容要点', '关键技术与突破', '应用场景与实践', '总结与展望']
+            };
+
+            let typeKey = '默认';
+            if (form.type === 'product' || form.type === 'release') typeKey = '产品发布';
+            else if (form.type === 'tech' || form.type === 'analysis') typeKey = '技术方案';
+            else if (form.type === 'report') typeKey = '行业报告';
+
+            const tmpl = typeTemplates[typeKey] || typeTemplates['默认'];
+
+            chapters = tmpl.map(t => ({
+                title: t.replace('产品', topic.substring(0, 6)).replace('行业', topic.substring(0, 6)),
+                points: []
+            }));
+
+            // 从原文提取事实性句子分配到各章节
+            const facts = this.extractFacts(text);
+            const perCh = Math.max(1, Math.floor(facts.length / chapters.length));
+            chapters.forEach((ch, i) => {
+                const start = i * perCh;
+                const end = start + perCh;
+                const pts = facts.slice(start, end);
+                // 如果事实不够，AI 生成补充要点
+                if (pts.length < 2) {
+                    const generated = this.generateOutlinePoints(ch.title, topic, 3 - pts.length);
+                    pts.push(...generated);
+                }
+                ch.points = pts.map(p => this.trimPoint(p)).filter(p => p.length > 3).slice(0, 5);
+            });
+        }
+
+        // 后处理：精简标题、去空、确保每章至少1个要点
+        const result = chapters
+            .map(ch => ({
+                title: this.condenseOutlineTitle(ch.title),
+                points: ch.points.filter(p => p.trim().length > 3)
+            }))
+            .filter(ch => ch.points.length > 0 || ch.title.length > 2);
+
+        return result;
+    },
+
+    /** 提取关键词 */
+    extractKeywords(text) {
+        const kwPatterns = [
+            /AI|人工智能|大模型|GPT|Claude|DeepSeek|智能体/g,
+            /芯片|半导体|算力|GPU|CPU|NVIDIA|英特尔|AMD/g,
+            /手机|iPhone|华为|小米|三星|OPPO|vivo/g,
+            /新能源|电动车|电池|固态电池|充电/g,
+            /互联网|电商|社交|视频|直播/g,
+            /机器人|自动驾驶|智能/g,
+            /国产|供应链|国产替代/g,
+        ];
+        const all = [];
+        for (const p of kwPatterns) {
+            const matches = text.match(p);
+            if (matches) all.push(...matches);
+        }
+        return [...new Set(all)];
+    },
+
+    /** 生成补充要点 */
+    generateOutlinePoints(title, topic, count) {
+        const templates = [
+            `${topic}领域的最新进展与趋势分析`,
+            `核心技术创新带来的突破性变化`,
+            `对比传统方案的优势与提升空间`,
+            `典型应用场景与实际案例解读`,
+            `面向未来的发展方向与规划`,
+            `行业内外的响应与评价`,
+            `关键技术指标的量化对比`,
+            `生态系统与产业链的协同效应`,
+        ];
+        const result = [];
+        const start = Math.floor(Math.random() * 3);
+        for (let i = 0; i < count; i++) {
+            result.push(templates[(start + i) % templates.length]);
+        }
+        return result;
+    },
+
+    /** 从原文提取事实性句子 */
+    extractFacts(text) {
+        const sentences = text.split(/[。；\n]+/).map(s => s.trim()).filter(s => s.length > 10 && s.length < 80);
+        // 优先提取含数字、百分比、专有名词的句子
+        const scored = sentences.map(s => {
+            let score = 1;
+            if (/\d+/.test(s)) score += 2;
+            if (/%|倍|亿|万/.test(s)) score += 2;
+            if (/AI|人工智能|大模型|芯片|手机|新能源|互联网/.test(s)) score += 2;
+            if (s.length > 30) score += 1;
+            return { s, score };
+        });
+        scored.sort((a, b) => b.score - a.score);
+        return scored.map(x => x.s).slice(0, 30);
+    },
+
+    /** 精简要点的长度 */
+    trimPoint(p) {
+        let t = p.replace(/^[，,、。\s]+/, '').replace(/[，,、。\s]+$/, '');
+        if (t.length > 45) t = t.substring(0, 42) + '';
+        return t;
+    },
+
+    /** 精简大纲章节标题 */
+    condenseOutlineTitle(title) {
+        return title
+            .replace(/^关于\s*/, '')
+            .replace(/以及/g, '/')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .substring(0, 25);
     }
 };

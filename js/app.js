@@ -307,12 +307,24 @@ const app = createApp({
 
         function generateOutline() {
             const content = pptForm.value.content;
-            if (!content || content.trim().length < 10) return;
-            // 使用 PPTGenerator 的 parseContent 提取章节结构
-            const raw = PPTGenerator.parseContent(content, { maxSlides: 30 }, 30);
+            if (!content || content.trim().length < 5) {
+                alert('请先粘贴文案内容');
+                return;
+            }
+            pptReady.value = false;
+            PPTGenerator.clearCache();
+            // 使用 AI 生成结构化大纲
+            const raw = AIGenerator.generatePPTOutline({
+                title: pptForm.value.title,
+                content: pptForm.value.content,
+                type: pptForm.value.pptType,
+                style: 'professional',
+                wordCount: 800
+            });
             outlineSlides.value = raw.map(s => ({
                 title: s.title || '',
-                points: (s.points || []).map(p => p)
+                points: (s.points || []).map(p => p),
+                collapsed: false
             }));
         }
 
@@ -333,6 +345,9 @@ const app = createApp({
         }
         function removeOutlinePoint(si, pi) {
             outlineSlides.value[si].points.splice(pi, 1);
+        }
+        function toggleOutlineCollapse(si) {
+            outlineSlides.value[si].collapsed = !outlineSlides.value[si].collapsed;
         }
 
         const pptOptions = ref({
@@ -524,6 +539,7 @@ const app = createApp({
             outlineSlides, totalOutlinePoints, generateOutline,
             updateOutlineTitle, updateOutlinePoint,
             addOutlineSlide, removeOutlineSlide, addOutlinePoint, removeOutlinePoint,
+            toggleOutlineCollapse,
         };
     }
 });
