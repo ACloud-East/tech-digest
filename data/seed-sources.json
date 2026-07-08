@@ -1,6 +1,6 @@
 {
   "updateTime": "2026-07-08T08:00:00",
-  "total": 33,
+  "total": 38,
   "articles": [
     {
       "source": "品玩",
@@ -395,6 +395,65 @@
       "tags": [
         "人工智能",
         "芯片"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "腾讯放手，AI没有大哥",
+      "description": "腾讯退出快手主要股东，AI赛道竞争格局变化",
+      "url": "https://www.huxiu.com/article/4873511.html",
+      "time": "Tue, 08 Jul 2026 07:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "科学大爆炸是个幻觉？我们正在集体减速？",
+      "description": "科技发展速度的反思与讨论",
+      "url": "https://www.huxiu.com/article/4873439.html",
+      "time": "Tue, 08 Jul 2026 06:00:00 GMT",
+      "tags": [
+        "互联网",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "我把斯坦福最火的一门课，做成Prompt帮我设计人生",
+      "description": "AI Prompt在个人发展中的应用",
+      "url": "https://www.huxiu.com/article/4873428.html",
+      "time": "Tue, 08 Jul 2026 05:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "腾讯毅然退出主要股东序列，快手还快得起来吗",
+      "description": "腾讯减持快手的影响分析",
+      "url": "https://www.huxiu.com/article/4873396.html",
+      "time": "Mon, 07 Jul 2026 16:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "跨境物流玩法要变天，专线和货代何去何从？",
+      "description": "跨境物流行业变革趋势",
+      "url": "https://www.huxiu.com/article/4873331.html",
+      "time": "Mon, 07 Jul 2026 14:00:00 GMT",
+      "tags": [
+        "互联网"
       ]
     }
   ]

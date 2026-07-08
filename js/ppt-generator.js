@@ -83,25 +83,45 @@ const PPTGenerator = {
         const targetSlides = options.maxSlides || 10;
         const slides = this.parseContent(options.content, options, targetSlides);
 
+        this._currentPPTX = pptx;
+        this._currentFileName = (options.title || '演示文稿').replace(/[\\/:*?"<>|]/g, '-') + '.pptx';
+
+        this._buildSlides(pptx, slides, options, theme);
+        return { pptx, filename: this._currentFileName };
+    },
+
+    // 从大纲数据直接生成（跳过内容解析）
+    async generateFromOutline(options) {
+        const theme = this.themes[options.theme] || this.themes.tech;
+        const pptx = new PptxGenJS();
+        pptx.layout = 'LAYOUT_WIDE';
+        pptx.author = 'TechDigest';
+        pptx.company = 'TechDigest';
+        pptx.subject = options.title || '科技数码演示文稿';
+
+        const slides = options.slides || [];
+
+        this._currentPPTX = pptx;
+        this._currentFileName = (options.title || '演示文稿').replace(/[\\/:*?"<>|]/g, '-') + '.pptx';
+
+        this._buildSlides(pptx, slides, options, theme);
+        return { pptx, filename: this._currentFileName };
+    },
+
+    // 构建幻灯片（generate 和 generateFromOutline 共用）
+    _buildSlides(pptx, slides, options, theme) {
         if (options.includeCover !== false) {
             this.addCoverSlide(pptx, options, theme);
         }
         if (options.includeToc !== false && slides.length >= 2) {
             this.addTocSlide(pptx, slides, options, theme);
         }
-        let sectionIdx = 0;
         slides.forEach((slideData, idx) => {
-            // 每 3-4 页插入章节分隔页（对标专业设计）
             this.addContentSlide(pptx, slideData, idx, slides.length, options, theme);
         });
         if (options.includeEnd !== false) {
             this.addEndSlide(pptx, options, theme);
         }
-
-        const filename = (options.title || '演示文稿').replace(/[\\/:*?"<>|]/g, '-') + '.pptx';
-        this._currentPPTX = pptx;
-        this._currentFileName = filename;
-        return { pptx, filename };
     },
 
     async downloadCurrent() {

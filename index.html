@@ -450,6 +450,38 @@
                                         <button class="ppt-upload-remove" @click.stop="pptForm.pdfFileName = ''; pptForm.content = ''">✕</button>
                                     </div>
                                 </div>
+
+                                <!-- 生成大纲按钮 -->
+                                <button class="ppt-outline-gen-btn" @click="generateOutline" :disabled="!pptForm.content.trim()">
+                                    <i class="fa-solid fa-list-check"></i>
+                                    {{ outlineSlides.length ? '重新生成大纲' : '生成大纲' }}
+                                </button>
+                            </div>
+
+                            <!-- ===== 大纲编辑区 ===== -->
+                            <div class="ppt-outline-section" v-if="outlineSlides.length > 0">
+                                <div class="ppt-outline-header">
+                                    <h3><i class="fa-solid fa-list-check"></i> PPT大纲</h3>
+                                    <span class="ppt-outline-meta">{{ outlineSlides.length }}章节 · {{ totalOutlinePoints }}要点</span>
+                                </div>
+                                <div class="ppt-outline-list">
+                                    <div class="outline-slide" v-for="(slide, si) in outlineSlides" :key="si">
+                                        <div class="outline-slide-header">
+                                            <span class="outline-num">{{ si + 1 }}</span>
+                                            <input :value="slide.title" @input="updateOutlineTitle(si, $event.target.value)" class="outline-title-input">
+                                            <button @click="removeOutlineSlide(si)" class="outline-btn-del" title="删除章节">✕</button>
+                                        </div>
+                                        <div class="outline-points">
+                                            <div class="outline-point" v-for="(pt, pi) in slide.points" :key="pi">
+                                                <span class="outline-bullet">•</span>
+                                                <textarea :value="pt" @input="updateOutlinePoint(si, pi, $event.target.value)" rows="1" class="outline-point-input"></textarea>
+                                                <button @click="removeOutlinePoint(si, pi)" class="outline-btn-del-sm" title="删除要点">✕</button>
+                                            </div>
+                                            <button @click="addOutlinePoint(si)" class="outline-btn-add"><i class="fa-solid fa-plus"></i> 添加要点</button>
+                                        </div>
+                                    </div>
+                                    <button @click="addOutlineSlide" class="outline-btn-add-section"><i class="fa-solid fa-plus"></i> 添加章节</button>
+                                </div>
                             </div>
 
                             <!-- 右栏：参数 + 生成 -->
@@ -517,10 +549,10 @@
                                     </div>
 
                                     <!-- 生成按钮 -->
-                                    <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating">
+                                    <button class="ppt-generate-btn" @click="generatePPT" :disabled="pptGenerating || !outlineSlides.length">
                                         <i v-if="!pptGenerating" class="fa-solid fa-bolt"></i>
                                         <i v-if="pptGenerating" class="fa-solid fa-spinner spinning"></i>
-                                        {{ pptGenerating ? '正在生成 PPT...' : '生成 PPT' }}
+                                        {{ pptGenerating ? '正在生成 PPT...' : outlineSlides.length ? '根据大纲生成 PPT' : '请先生成大纲' }}
                                     </button>
 
                                     <!-- 下载按钮 -->

@@ -299,6 +299,42 @@ const app = createApp({
         const pptDownloading = ref(false);
         const pptSlideCount = ref(0);
 
+        // ===== 大纲编辑器 =====
+        const outlineSlides = ref([]);
+        const totalOutlinePoints = computed(() =>
+            outlineSlides.value.reduce((sum, s) => sum + (s.points || []).length, 0)
+        );
+
+        function generateOutline() {
+            const content = pptForm.value.content;
+            if (!content || content.trim().length < 10) return;
+            // 使用 PPTGenerator 的 parseContent 提取章节结构
+            const raw = PPTGenerator.parseContent(content, { maxSlides: 30 }, 30);
+            outlineSlides.value = raw.map(s => ({
+                title: s.title || '',
+                points: (s.points || []).map(p => p)
+            }));
+        }
+
+        function updateOutlineTitle(si, val) {
+            outlineSlides.value[si].title = val;
+        }
+        function updateOutlinePoint(si, pi, val) {
+            outlineSlides.value[si].points[pi] = val;
+        }
+        function addOutlineSlide() {
+            outlineSlides.value.push({ title: '新章节', points: ['新要点'] });
+        }
+        function removeOutlineSlide(si) {
+            outlineSlides.value.splice(si, 1);
+        }
+        function addOutlinePoint(si) {
+            outlineSlides.value[si].points.push('');
+        }
+        function removeOutlinePoint(si, pi) {
+            outlineSlides.value[si].points.splice(pi, 1);
+        }
+
         const pptOptions = ref({
             types: [
                 { value: 'product', label: '产品发布' },
@@ -414,16 +450,26 @@ const app = createApp({
                 alert('请至少输入标题或内容');
                 return;
             }
+            if (!outlineSlides.value.length) {
+                generateOutline();
+                return; // 先生成大纲让用户确认
+            }
             pptGenerating.value = true;
             pptReady.value = false;
             pptSlideCount.value = 0;
             PPTGenerator.clearCache();
 
             try {
-                const result = await PPTGenerator.generate({
+                // 如果是刚从大纲生成，直接传 outline；否则走原流程
+                const slidesData = outlineSlides.value.map(s => ({
+                    title: s.title || '',
+                    points: (s.points || []).filter(p => p.trim())
+                })).filter(s => s.title || s.points.length);
+
+                const result = await PPTGenerator.generateFromOutline({
                     title: pptForm.value.title || '科技数码演示文稿',
                     subtitle: pptForm.value.subtitle,
-                    content: pptForm.value.content,
+                    slides: slidesData,
                     theme: pptForm.value.theme,
                     pptType: pptForm.value.pptType,
                     maxSlides: pptForm.value.maxSlides,
@@ -474,6 +520,10 @@ const app = createApp({
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
             pptReady, pptDownloading, pptSlideCount,
             handleWordUpload, handleWordDrop, handlePDFUpload, handlePDFDrop, generatePPT, downloadPPT,
+            // PPT 大纲
+            outlineSlides, totalOutlinePoints, generateOutline,
+            updateOutlineTitle, updateOutlinePoint,
+            addOutlineSlide, removeOutlineSlide, addOutlinePoint, removeOutlinePoint,
         };
     }
 });
