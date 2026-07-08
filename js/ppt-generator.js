@@ -13,9 +13,7 @@ const PPTGenerator = {
     themes: {
         tech: {
             name: '科技蓝',
-            bgGrad: { type: 'linear', degree: 135, stops: [
-                [0, '0A1628'], [0.5, '0F1F3D'], [1, '0A1628']
-            ]},
+            bg: '0A1628',
             primary: '0EA5E9', secondary: '38BDF8', accent: '06B6D4',
             text: 'E2E8F0', textDim: '94A3B8', textMuted: '64748B',
             cardBg: '112240', cardBorder: '1E3A5F',
@@ -24,9 +22,7 @@ const PPTGenerator = {
         },
         dark: {
             name: '暗夜黑',
-            bgGrad: { type: 'linear', degree: 135, stops: [
-                [0, '0F0F1A'], [0.5, '1A1A2E'], [1, '0F0F1A']
-            ]},
+            bg: '0F0F1A',
             primary: 'A78BFA', secondary: 'C4B5FD', accent: '818CF8',
             text: 'F1F5F9', textDim: 'A1A1AA', textMuted: '71717A',
             cardBg: '1E1E2E', cardBorder: '3F3F5B',
@@ -35,9 +31,7 @@ const PPTGenerator = {
         },
         light: {
             name: '简约白',
-            bgGrad: { type: 'linear', degree: 135, stops: [
-                [0, 'F8FAFC'], [0.5, 'FFFFFF'], [1, 'F8FAFC']
-            ]},
+            bg: 'F8FAFC',
             primary: '2563EB', secondary: '3B82F6', accent: '06B6D4',
             text: '1E293B', textDim: '64748B', textMuted: '94A3B8',
             cardBg: 'FFFFFF', cardBorder: 'E2E8F0',
@@ -46,9 +40,7 @@ const PPTGenerator = {
         },
         nature: {
             name: '清新绿',
-            bgGrad: { type: 'linear', degree: 135, stops: [
-                [0, '0A1F14'], [0.5, '0F2A1B'], [1, '0A1F14']
-            ]},
+            bg: '0A1F14',
             primary: '10B981', secondary: '34D399', accent: '059669',
             text: 'ECFDF5', textDim: 'A7F3D0', textMuted: '6EE7B7',
             cardBg: '132A1E', cardBorder: '1E4732',
@@ -57,9 +49,7 @@ const PPTGenerator = {
         },
         warm: {
             name: '暖橙',
-            bgGrad: { type: 'linear', degree: 135, stops: [
-                [0, '1C1410'], [0.5, '2D1A12'], [1, '1C1410']
-            ]},
+            bg: '1C1410',
             primary: 'F97316', secondary: 'FB923C', accent: 'EA580C',
             text: 'FFF7ED', textDim: 'FED7AA', textMuted: 'FDBA74',
             cardBg: '2D1F18', cardBorder: '4A3028',
@@ -216,7 +206,7 @@ const PPTGenerator = {
         const W = 13.33, H = 7.5;
 
         // 渐变背景
-        slide.background = { fill: theme.bgGrad };
+        slide.background = { color: theme.bg };
 
         // 左上角装饰三角
         slide.addShape('rect', {
@@ -293,7 +283,7 @@ const PPTGenerator = {
         const W = 13.33, H = 7.5;
 
         // 背景
-        slide.background = { fill: theme.bgGrad };
+        slide.background = { color: theme.bg };
 
         // 左侧色块装饰
         slide.addShape('rect', {
@@ -377,7 +367,7 @@ const PPTGenerator = {
         const W = 13.33, H = 7.5;
 
         // 背景
-        slide.background = { fill: theme.bgGrad };
+        slide.background = { color: theme.bg };
 
         // 左侧装饰条
         slide.addShape('rect', {
@@ -597,7 +587,7 @@ const PPTGenerator = {
         const W = 13.33, H = 7.5;
 
         // 背景
-        slide.background = { fill: theme.bgGrad };
+        slide.background = { color: theme.bg };
 
         // 顶部装饰线
         slide.addShape('rect', {
