@@ -340,6 +340,10 @@ const app = createApp({
         function removeOutlineSlide(si) {
             outlineSlides.value.splice(si, 1);
         }
+        // 整体编辑章节要点（从textarea按行解析）
+        function updateOutlinePoints(si, text) {
+            outlineSlides.value[si].points = text.split('\n').filter(l => l.trim());
+        }
         function addOutlinePoint(si) {
             outlineSlides.value[si].points.push('');
         }
@@ -537,7 +541,7 @@ const app = createApp({
             handleWordUpload, handleWordDrop, handlePDFUpload, handlePDFDrop, generatePPT, downloadPPT,
             // PPT 大纲
             outlineSlides, totalOutlinePoints, generateOutline,
-            updateOutlineTitle, updateOutlinePoint,
+            updateOutlineTitle, updateOutlinePoint, updateOutlinePoints,
             addOutlineSlide, removeOutlineSlide, addOutlinePoint, removeOutlinePoint,
             toggleOutlineCollapse,
         };

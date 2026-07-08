@@ -643,10 +643,9 @@ const AIGenerator = {
         return result;
     },
 
-    /** 从原文提取事实性句子 */
+    /** 提取事实性句子（不截断长句） */
     extractFacts(text) {
-        const sentences = text.split(/[。；\n]+/).map(s => s.trim()).filter(s => s.length > 10 && s.length < 80);
-        // 优先提取含数字、百分比、专有名词的句子
+        const sentences = text.split(/[。；\n]+/).map(s => s.trim()).filter(s => s.length > 10 && s.length < 200);
         const scored = sentences.map(s => {
             let score = 1;
             if (/\d+/.test(s)) score += 2;
@@ -659,20 +658,17 @@ const AIGenerator = {
         return scored.map(x => x.s).slice(0, 30);
     },
 
-    /** 精简要点的长度 */
+    /** 精简要点（只清理首尾标点，不截断） */
     trimPoint(p) {
-        let t = p.replace(/^[，,、。\s]+/, '').replace(/[，,、。\s]+$/, '');
-        if (t.length > 45) t = t.substring(0, 42) + '';
-        return t;
+        return p.replace(/^[，,、。\s]+/, '').replace(/[，,、。\s]+$/, '').trim();
     },
 
-    /** 精简大纲章节标题 */
+    /** 精简章节标题 */
     condenseOutlineTitle(title) {
         return title
             .replace(/^关于\s*/, '')
             .replace(/以及/g, '/')
             .replace(/\s+/g, ' ')
-            .trim()
-            .substring(0, 25);
+            .trim();
     }
 };

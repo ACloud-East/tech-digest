@@ -767,6 +767,14 @@ ul { list-style: none; }
     min-height: 24px; overflow: hidden;
 }
 .outline-point-input:focus { border-color: var(--accent-cyan); background: var(--bg-secondary); }
+.outline-points-textarea {
+    width: 100%; padding: 8px 10px; border-radius: 4px;
+    background: var(--bg-primary); border: 1px solid var(--border-color);
+    color: var(--text-secondary); font-size: 0.78rem;
+    outline: none; resize: vertical; font-family: inherit;
+    line-height: 1.7; min-height: 80px;
+}
+.outline-points-textarea:focus { border-color: var(--accent-cyan); }
 .outline-btn-del {
     width: 20px; height: 20px; border-radius: 50%; background: transparent;
     color: var(--text-muted); font-size: 0.65rem; display: flex; align-items: center; justify-content: center;

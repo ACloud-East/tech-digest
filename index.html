@@ -448,12 +448,7 @@
                                             <button @click.stop="removeOutlineSlide(si)" class="outline-btn-del" title="删除">✕</button>
                                         </div>
                                         <div class="outline-points" v-show="!slide.collapsed">
-                                            <div class="outline-point" v-for="(pt, pi) in slide.points" :key="pi">
-                                                <span class="outline-bullet">•</span>
-                                                <textarea :value="pt" @input="updateOutlinePoint(si, pi, $event.target.value)" rows="1" class="outline-point-input"></textarea>
-                                                <button @click="removeOutlinePoint(si, pi)" class="outline-btn-del-sm">✕</button>
-                                            </div>
-                                            <button @click="addOutlinePoint(si)" class="outline-btn-add"><i class="fa-solid fa-plus"></i> 添加要点</button>
+                                            <textarea class="outline-points-textarea" :value="slide.points.join('\n')" @input="updateOutlinePoints(si, $event.target.value)" placeholder="每行一个要点，可整体复制粘贴..." rows="4"></textarea>
                                         </div>
                                     </div>
                                     <button @click="addOutlineSlide" class="outline-btn-add-section"><i class="fa-solid fa-plus"></i> 添加章节</button>
