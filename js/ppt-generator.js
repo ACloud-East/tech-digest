@@ -229,10 +229,33 @@ const PPTGenerator = {
         return data;
     },
 
-    // 标题截断（超过指定长度加省略号）
-    truncTitle(title, maxLen) {
-        if (!title || title.length <= maxLen) return title;
-        return title.substring(0, maxLen - 1) + '…';
+    // 标题精简（去除冗余，超长硬截断但不加省略号）
+    condenseTitle(title, maxLen) {
+        if (!title) return '';
+        let t = title
+            .replace(/^\d{4}年\d{1,2}月\d{1,2}日[，,、]?\s*/, '')   // 去掉日期前缀
+            .replace(/^关于\s*/, '')                          // 去掉"关于"
+            .replace(/有限公司/g, '')
+            .replace(/电影摄影机/g, '')
+            .replace(/Super 35mm/gi, '')
+            .replace(/ILME-/g, '')
+            .replace(/推出面向/g, '')
+            .replace(/面向/g, '')
+            .replace(/用户的免费/g, '')
+            .replace(/免费/g, '')
+            .replace(/以及/g, '/')                              // "以及" → "/"
+            .replace(/（[^）]*）/g, '')                          // 去掉括号内容
+            .replace(/[，,、]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        // 对副标题只精简主标题
+        if (t.includes('——')) {
+            const [main, sub] = t.split('——');
+            const main2 = main.trim().replace(/信息$/, '').replace(/用户$/, '').replace(/固件升级信息/g, '固件');
+            t = main2 + '——' + sub.trim();
+        }
+        if (t.length <= maxLen) return t;
+        return t.substring(0, maxLen); // 超长硬截断，不加省略号
     },
 
     // 从要点中提取关键词作为副标题
@@ -402,7 +425,7 @@ const PPTGenerator = {
                 color: theme.accent, align: 'left', valign: 'middle'
             });
             // 标题
-            s.addText(this.truncTitle(sl.title, 18), {
+            s.addText(this.condenseTitle(sl.title, 18), {
                 x: x + 1.25, y: y, w: cardW - 1.4, h: cardH,
                 fontSize: 14.5, fontFace: 'Microsoft YaHei',
                 color: theme.text, align: 'left', valign: 'middle'
@@ -459,7 +482,7 @@ const PPTGenerator = {
             x: 0.85, y: 0.45, w: 1.0, h: barH, fontSize: 30, fontFace: 'Arial', bold: true,
             color: theme.accent, align: 'left', valign: 'middle'
         });
-        s.addText(this.truncTitle(slideData.title, 22), {
+        s.addText(this.condenseTitle(slideData.title, 22), {
             x: 1.95, y: 0.45, w: 10.5, h: barH, fontSize: 23, fontFace: 'Microsoft YaHei', bold: true,
             color: theme.text, align: 'left', valign: 'middle'
         });
@@ -487,19 +510,22 @@ const PPTGenerator = {
         const top = 1.85, bottom = 6.95;
         const n = Math.min(points.length, 6);
         const gap = 0.18;
-        const baseRowH = 0.92;
-        const totalGap = gap * (n - 1);
-        const availH = bottom - top - totalGap;
+        const baseRowH = 0.72;
+        const lineChars = 33; // 每行约33个字符
 
-        // 按文本长度动态分配行高（长文本自动拉高）
-        const weights = points.slice(0, n).map(p => Math.min(Math.max(p.length / 55, 0.7), 1.8));
-        const totalW = weights.reduce((a, b) => a + b, 0);
+        // 按实际所需行数分级行高：短文本紧凑，只有长文本才扩展
+        const neededLines = points.slice(0, n).map(p => Math.min(Math.ceil(p.length / lineChars), 3));
+        const rowHs = neededLines.map(lines => baseRowH + (lines - 1) * 0.35);
+        const totalNeeded = rowHs.reduce((a, h) => a + h, 0) + gap * (n - 1);
+        const availH = bottom - top;
+        const scale = totalNeeded > availH ? (availH / totalNeeded) : 1;
+        const finalRowHs = rowHs.map(h => h * scale);
 
         let yCursor = top;
         const x = 0.7, w = W - 1.4;
 
         points.slice(0, n).forEach((p, i) => {
-            const rowH = Math.max(baseRowH * 1.15, (availH * weights[i] / totalW));
+            const rowH = finalRowHs[i];
             const y = yCursor;
             s.addShape('roundRect', {
                 x, y, w, h: rowH, rectRadius: 0.05,
