@@ -1,0 +1,401 @@
+{
+  "updateTime": "2026-07-08T08:00:00",
+  "total": 33,
+  "articles": [
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "3.8万小时、狂烧天价token：字节发现Agent的 Scaling Law",
+      "description": "字节自己的AI下半场",
+      "url": "https://www.pingwest.com/a/315350",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "李开复携一号位 AI 产品亮相，帮老板们做决策改善财报",
+      "description": "AI赋能企业决策",
+      "url": "https://www.pingwest.com/a/315332",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "VC"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "愚公蔚来，用基础设施移世界模型的山",
+      "description": "6年前那颗被骂浪费的Orin，今天成了老车的底牌",
+      "url": "https://www.pingwest.com/a/315244",
+      "time": "Sat, 04 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "新能源汽车",
+        "芯片"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "舍弃一键生成路线，比肩Google和Meta，这个国人团队凭何坐稳行业头部？",
+      "description": "AI 3D进入下半场，既要好看也要好用",
+      "url": "https://www.pingwest.com/a/315070",
+      "time": "Tue, 30 Jun 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "从生成内容到生成世界，AI需要一套新的底层语言",
+      "description": "3D是世界的源文件",
+      "url": "https://www.pingwest.com/a/315193",
+      "time": "Fri, 03 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "让Agent加入群聊变同事，飞书从多维表格开始打样",
+      "description": "我在群里@了一张1398行的表格",
+      "url": "https://www.pingwest.com/a/315155",
+      "time": "Thu, 02 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "当AI短剧越来越烧钱，Agnes决定高举免费大旗",
+      "description": "人人可用的AI就是好AI",
+      "url": "https://www.pingwest.com/a/315098",
+      "time": "Tue, 30 Jun 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "这位前腾讯T-12技术专家，做了一套给Agent用的POS机和二维码",
+      "description": "把整个义乌搬到AI上",
+      "url": "https://www.pingwest.com/a/315317",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "AI，正在替你养孩子",
+      "description": "人工抚养，未来可能成为一种特权？",
+      "url": "https://www.geekpark.net/news/366962",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "赛博菩萨Cloudflare，AI爬虫最严厉的父亲",
+      "description": "互联网最大的保安，现在要当最大的收银员了",
+      "url": "https://www.geekpark.net/news/366920",
+      "time": "Mon, 06 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "互联网",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "当马斯克要送100万颗算力卫星上天，中国团队也打出了自己的牌",
+      "description": "算力正从地面往近地轨道上迁移",
+      "url": "https://www.geekpark.net/news/366919",
+      "time": "Mon, 06 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "芯片"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "旗舰受困，升级Sonnet 5救场，能力直追Opus",
+      "description": "用中端模型的成本优势补上旗舰模型的缺",
+      "url": "https://www.geekpark.net/news/366743",
+      "time": "Wed, 01 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "Codex，1个月吃掉150GB流量，写满4T硬盘，疯了吗？",
+      "description": "AI编程工具的资源消耗调查",
+      "url": "https://www.geekpark.net/news/366744",
+      "time": "Wed, 01 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "治理与进化，如何成为企业级Agent的两条生死线？",
+      "description": "如何让Agent低成本低风险地在企业级场景运行",
+      "url": "https://www.geekpark.net/news/366961",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "2年，他和AI聊出一家智能戒指公司，还盈利了",
+      "description": "0个全职员工做出一款爆品",
+      "url": "https://www.geekpark.net/news/366942",
+      "time": "Mon, 06 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "比AirPods贵三倍的睡眠耳机，可能是最有用的AI硬件",
+      "description": "AI让耳机第一次学会哄你睡觉",
+      "url": "https://www.geekpark.net/news/366939",
+      "time": "Mon, 06 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "极客公园",
+      "sourceColor": "#00c4ff",
+      "title": "存在40年的游戏光盘被判死刑，压垮它的最后一根稻草是AI",
+      "description": "玩家悼念的或许不是光盘",
+      "url": "https://www.geekpark.net/news/366877",
+      "time": "Sat, 04 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "游戏"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "中国大模型在美悄然崛起！企业惊觉：极致性价比更诱人",
+      "description": "中国AI性价比优势凸显",
+      "url": "https://www.163.com/dy/article/L1AK0JHQ05198R91.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "存储超级周期从云端席卷终端：存储原厂赚爆Mac与Xbox被迫涨价",
+      "description": "存储芯片超级周期影响全行业",
+      "url": "https://www.163.com/dy/article/L1AK0IEG05198UNI.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "芯片",
+        "PC硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "传苹果开始测试长鑫存储DRAM，或为与三大原厂新的供应谈判博弈做准备",
+      "description": "苹果供应链国产替代进展",
+      "url": "https://www.163.com/dy/article/L1AK03R505118EDB.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "手机",
+        "芯片"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "小米汽车新品牌来了",
+      "description": "小米汽车第二品牌发布",
+      "url": "https://www.163.com/dy/article/L1AJGS2L0530NLC9.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "新能源汽车"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "众擎机器人创始人赵同阳：100岁时候希望陪伴我的是T800机器人",
+      "description": "国内人形机器人创业故事",
+      "url": "https://www.163.com/dy/article/L1AJVTPF0550B6IS.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "智能硬件",
+        "人工智能"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "蚂蚁集团入股薄荷健康，港股阿里巴巴涨超8%",
+      "description": "阿里市值逼近2万亿港元",
+      "url": "https://www.163.com/dy/article/L1AK03QQ05199NPP.html",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "当AI开始重写自己：EverMind的自进化智能体框架Raven，正在定义数字生命的下一个形态",
+      "description": "自进化AI智能体的新突破",
+      "url": "https://www.jiqizhixin.com/#6ef9bce6",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "DeepSeek被曝自研AI推理芯片",
+      "description": "国产大模型厂商入局芯片领域",
+      "url": "https://www.jiqizhixin.com/#3b96f971",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "芯片"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "五位AI专家组成一支虚拟科研团队：Agentic AI开始独立设计临床试验",
+      "description": "AI独立设计临床试验，数周工作压缩至数分钟",
+      "url": "https://www.jiqizhixin.com/#e338c593",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "突破具身智能泛化瓶颈！蚂蚁灵波开源具身基座模型LingBot-VLA 2.0",
+      "description": "支持20多种机器人构型",
+      "url": "https://www.jiqizhixin.com/#92d75e3b",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "20种机器人本体通吃！蚂蚁新一代VLA具身大脑刚刚开源了",
+      "description": "跨形态具身智能的重大突破",
+      "url": "https://www.jiqizhixin.com/#5b38eb1c",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "中国科学院携手全球顶尖机构发布首个十亿参数级的手术视频基础模型SurgMotion",
+      "description": "医疗AI手术视频基础模型",
+      "url": "https://www.jiqizhixin.com/#51bed46a",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "提示词压缩竟成大模型新漏洞？港科大提出黑盒攻击框架COMA",
+      "description": "提示词压缩的安全风险研究",
+      "url": "https://www.jiqizhixin.com/#e87653fa",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "维纳智能登上Nature通讯：AI不只会回答问题，开始生成高精度行业数据",
+      "description": "AI数据生成的Nature级突破",
+      "url": "https://www.jiqizhixin.com/#5f266778",
+      "time": "Wed, 08 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "互联网"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "RL训练一层就够了！单层RL超越全参数训练，跨任务跨模型跨算法全部验证",
+      "description": "强化学习的效率革命",
+      "url": "https://www.jiqizhixin.com/#d525bddb",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "世界模型的DeepSeek时刻！魔芯Flash World Model降本70%，跑出50FPS实时交互",
+      "description": "世界模型降本增效突破",
+      "url": "https://www.jiqizhixin.com/#1616a023",
+      "time": "Tue, 07 Jul 2026 08:00:00 GMT",
+      "tags": [
+        "人工智能",
+        "芯片"
+      ]
+    }
+  ]
+}

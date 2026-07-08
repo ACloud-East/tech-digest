@@ -331,6 +331,30 @@ async function main() {
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
+    // 合并种子数据（4个反爬源的手动快照）
+    const seedPath = path.join(__dirname, '..', 'data', 'seed-sources.json');
+    if (fs.existsSync(seedPath)) {
+        try {
+            const seedData = JSON.parse(fs.readFileSync(seedPath, 'utf8'));
+            const seedArts = seedData.articles || [];
+            let added = 0;
+            for (const sa of seedArts) {
+                const key = (sa.title + (sa.url || '')).slice(0, 120);
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    unique.push(sa);
+                    added++;
+                }
+            }
+            if (added > 0) {
+                console.log(`\n🌱 合并种子数据: +${added} 篇 (品玩/机器之心/极客公园/网易科技)`);
+                unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+            }
+        } catch(e) {
+            console.log('⚠️ 种子数据读取失败:', e.message);
+        }
+    }
+
     const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
