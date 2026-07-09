@@ -82,6 +82,9 @@ const app = createApp({
         const aiResult = ref('');
         const aiResultTitle = ref('');
         const aiResultTime = ref('');
+        const aiResultPlain = ref('');    // 非结构式文本
+        const aiTab = ref('structured');  // 'structured' | 'plain'
+
         const aiResultHtml = computed(() => {
             if (!aiResult.value) return '';
             return aiResult.value
@@ -97,6 +100,26 @@ const app = createApp({
                 .join('\n');
         });
 
+        // 非结构式 HTML（去除 ## 标题，纯段落）
+        const aiResultPlainHtml = computed(() => {
+            if (!aiResultPlain.value) return '';
+            return aiResultPlain.value
+                .split('\n')
+                .filter(line => line.trim())
+                .map(line => {
+                    if (line.startsWith('## ')) return '<p><strong>' + line.slice(3) + '</strong></p>';
+                    if (line.startsWith('### ')) return '<p><strong>' + line.slice(4) + '</strong></p>';
+                    return '<p>' + line + '</p>';
+                })
+                .join('\n');
+        });
+
+        // 总字数
+        const aiTotalChars = computed(() => {
+            const text = aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value;
+            return text.replace(/\s/g, '').length;
+        });
+
         // 类型/风格选中时同步label
         function updateAILabels() {
             const typeObj = aiOptions.value.types.find(t => t.value === aiForm.value.type);
@@ -110,12 +133,19 @@ const app = createApp({
             updateAILabels();
             aiGenerating.value = true;
             aiResult.value = '';
+            aiResultPlain.value = '';
+            aiTab.value = 'structured';
 
             try {
                 const result = await AIGenerator.generate(aiForm.value);
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                // 生成非结构式版本：去除 ## 标题，转连续段落
+                aiResultPlain.value = result.content
+                    .replace(/^##\s+/gm, '')    // 去掉 ## 标记但保留文字
+                    .replace(/^###\s+/gm, '')   // 去掉 ### 标记
+                    .replace(/\n{3,}/g, '\n\n'); // 压缩多余空行
                 // 滚动到结果区
                 await nextTick();
                 const outputEl = document.querySelector('.ai-output-section');
@@ -130,28 +160,25 @@ const app = createApp({
 
         function regenerateArticle() {
             aiResult.value = '';
+            aiResultPlain.value = '';
             aiResultTitle.value = '';
+            aiTab.value = 'structured';
             generateArticle();
         }
 
         async function copyResult() {
             try {
-                const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') + aiResult.value;
+                const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') +
+                    (aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value);
                 await navigator.clipboard.writeText(text);
-                // 短暂提示
-                const btn = document.querySelector('.ai-action-btn');
-                if (btn) {
-                    const orig = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
-                    setTimeout(() => { btn.innerHTML = orig; }, 2000);
-                }
             } catch {
                 alert('复制失败，请手动选择文本复制');
             }
         }
 
         function downloadResult() {
-            const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') + aiResult.value;
+            const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') +
+                (aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value);
             const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -534,6 +561,7 @@ const app = createApp({
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
+            aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,

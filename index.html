@@ -317,6 +317,14 @@
                         <div class="ai-output-section" v-if="aiResult">
                             <div class="ai-output-header">
                                 <h3><i class="fa-solid fa-file-check"></i> 生成结果</h3>
+                                <div class="ai-output-tabs">
+                                    <button class="ai-tab-btn" :class="{ active: aiTab === 'structured' }" @click="aiTab = 'structured'">
+                                        <i class="fa-solid fa-list"></i> 结构式
+                                    </button>
+                                    <button class="ai-tab-btn" :class="{ active: aiTab === 'plain' }" @click="aiTab = 'plain'">
+                                        <i class="fa-solid fa-align-left"></i> 非结构式
+                                    </button>
+                                </div>
                                 <div class="ai-output-actions">
                                     <button class="ai-action-btn" @click="copyResult">
                                         <i class="fa-solid fa-copy"></i> 复制
@@ -327,7 +335,7 @@
                                     <button class="ai-action-btn" @click="regenerateArticle">
                                         <i class="fa-solid fa-rotate-right"></i> 重新生成
                                     </button>
-                                    <button class="ai-action-btn" @click="aiResult = ''">
+                                    <button class="ai-action-btn" @click="aiResult = ''; aiResultPlain = ''">
                                         <i class="fa-solid fa-xmark"></i> 清除
                                     </button>
                                 </div>
@@ -342,7 +350,13 @@
                                 <div class="ai-output-title" v-if="aiResultTitle">
                                     <h2>{{ aiResultTitle }}</h2>
                                 </div>
-                                <div class="ai-output-body" v-html="aiResultHtml"></div>
+                                <!-- 结构式 -->
+                                <div class="ai-output-body" v-show="aiTab === 'structured'" v-html="aiResultHtml"></div>
+                                <!-- 非结构式 -->
+                                <div class="ai-output-body ai-output-plain" v-show="aiTab === 'plain'" v-html="aiResultPlainHtml"></div>
+                                <div class="ai-output-char-count">
+                                    <span>总字数：{{ aiTotalChars }}</span>
+                                </div>
                             </div>
                         </div>
 
