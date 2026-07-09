@@ -4,6 +4,45 @@
  */
 const { createApp, ref, computed, onMounted, nextTick } = Vue;
 
+/** 将结构式 Markdown 改写为流畅的连续文章 */
+function toPlainArticle(structured, title) {
+    if (!structured) return '';
+    // 按 ## 分段
+    const sections = structured.split(/\n##\s+/);
+    const transitions = ['首先', '其次', '此外', '另一方面', '更值得关注的是', '从另一个角度看', '进一步来看', '同时', '除此之外', '最后'];
+
+    let result = '';
+    let ti = 0;
+
+    for (const sec of sections) {
+        const lines = sec.trim().split('\n');
+        if (lines.length === 0) continue;
+        // 第一行是章节标题（或文章整体开头）
+        const firstLine = lines[0].replace(/^##\s*/, '').trim();
+        const body = lines.slice(1).join('\n').trim();
+
+        if (firstLine === '总结' || firstLine.includes('总结')) {
+            result += '\n\n' + (body || ('综上所述，' + firstLine + '。'));
+        } else if (!firstLine || firstLine.length < 3) {
+            result += '\n\n' + body;
+        } else {
+            const trans = ti < transitions.length ? transitions[ti] + '，' : '';
+            // 把章节标题变成段落主题句
+            const topicSentence = trans + firstLine + '。';
+            result += '\n\n' + topicSentence;
+            if (body) result += body;
+            ti++;
+        }
+    }
+
+    // 清理
+    return result
+        .replace(/^\n+/, '')
+        .replace(/\n{3,}/g, '\n\n')
+        .replace(/\n\n/g, '\n\n')
+        .trim();
+}
+
 const app = createApp({
     setup() {
         // ========== 导航 ==========
@@ -141,11 +180,8 @@ const app = createApp({
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-                // 生成非结构式版本：去除 ## 标题，转连续段落
-                aiResultPlain.value = result.content
-                    .replace(/^##\s+/gm, '')    // 去掉 ## 标记但保留文字
-                    .replace(/^###\s+/gm, '')   // 去掉 ### 标记
-                    .replace(/\n{3,}/g, '\n\n'); // 压缩多余空行
+                // 生成非结构式版本：真正改写为连续文章
+                aiResultPlain.value = toPlainArticle(result.content, result.title);
                 // 滚动到结果区
                 await nextTick();
                 const outputEl = document.querySelector('.ai-output-section');
