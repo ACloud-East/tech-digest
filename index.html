@@ -448,13 +448,15 @@
                                 </button>
                             </div>
 
-                            <!-- ===== 中栏：大纲编辑区 ===== -->
-                            <div class="ppt-col ppt-col-outline" v-if="outlineSlides.length > 0">
+                            <!-- ===== 中栏：大纲编辑区（始终占位） ===== -->
+                            <div class="ppt-col ppt-col-outline">
                                 <div class="ppt-col-header">
                                     <i class="fa-solid fa-list-check"></i> PPT大纲
-                                    <span class="ppt-outline-meta">{{ outlineSlides.length }}章 · {{ totalOutlinePoints }}要点</span>
+                                    <span class="ppt-outline-meta" v-if="outlineSlides.length">{{ outlineSlides.length }}章 · {{ totalOutlinePoints }}要点</span>
+                                    <span class="ppt-outline-meta" v-else>等待生成</span>
                                 </div>
-                                <div class="ppt-outline-list">
+                                <!-- 有内容时显示大纲 -->
+                                <div class="ppt-outline-list" v-if="outlineSlides.length > 0">
                                     <div class="outline-slide" v-for="(slide, si) in outlineSlides" :key="si">
                                         <div class="outline-slide-header" @click="toggleOutlineCollapse(si)">
                                             <span class="outline-num">{{ si + 1 }}</span>
@@ -467,6 +469,11 @@
                                         </div>
                                     </div>
                                     <button @click="addOutlineSlide" class="outline-btn-add-section"><i class="fa-solid fa-plus"></i> 添加章节</button>
+                                </div>
+                                <!-- 空状态占位 -->
+                                <div class="ppt-outline-empty" v-else>
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                    <p>在左侧粘贴文案后<br>点击「AI 生成大纲」</p>
                                 </div>
                             </div>
 

@@ -20,6 +20,9 @@ const AIGenerator = {
         if (this.config.provider === 'openai' && this.config.openaiKey) {
             return await this.generateViaOpenAI(form);
         }
+        if (form.plain) {
+            return await this.generatePlainLocal(form);
+        }
         return await this.generateLocal(form);
     },
 
@@ -52,6 +55,90 @@ const AIGenerator = {
         content = this.polish(content, source);
 
         return { title, content };
+    },
+
+    /** 非结构式生成：连续文章，不分 ## 标题，像杂志长文 */
+    async generatePlainLocal(form) {
+        await this.delay(800 + Math.random() * 600);
+        const typeConfig = this.getTypeConfig(form.type);
+        const style = this.getStyleConfig(form.style);
+        const audience = this.getAudienceConfig(form.audience);
+
+        const source = form.content && form.content.length > 30
+            ? this.parseSource(form.content, typeConfig)
+            : null;
+
+        const title = (source && source.product)
+            ? this.buildTitle(source, typeConfig, form.title)
+            : (form.title || this.generateTitle(form, typeConfig, []));
+
+        const product = (source && source.product) || title;
+        const company = (source && source.company) || '';
+        const facts = source ? source.allFacts : [];
+        const date = (source && source.date) || '';
+        const featureFacts = source ? source.features : [];
+        const specFacts = source ? source.specs : [];
+        const bgFacts = source ? source.background : [];
+
+        // 构建连续文章：引言 → 2-3 个主体段 → 结语
+        let article = '';
+
+        // 引言
+        if (date && company && product) {
+            article += `${date}，${company}正式推出${product}，这一消息迅速引发了${audience.label}的广泛关注。`;
+        } else {
+            article += `${product}的发布，为${audience.label}带来了新的期待。`;
+        }
+        if (featureFacts[0]) article += featureFacts[0] + '。';
+
+        // 主体：连续 3 段，不分小标题
+        const bodyTopics = [
+            { label: '核心升级', facts: featureFacts.slice(1, featureFacts.length) },
+            { label: '技术参数', facts: specFacts },
+            { label: '市场背景', facts: bgFacts },
+        ];
+
+        const connectors = ['值得关注的是，', '在技术层面，', '从市场角度来看，', '进一步分析可以看到，', '实际体验中，'];
+        let ci = 0;
+
+        for (const topic of bodyTopics) {
+            if (topic.facts.length === 0) continue;
+            const conn = connectors[ci % connectors.length];
+            article += '\n\n' + conn;
+
+            // 用 1-2 个相关事实组成一段
+            const selected = topic.facts.slice(0, 3);
+            for (const f of selected) {
+                if (f && !article.includes(f.substring(0, 20))) {
+                    article += f + '。';
+                }
+            }
+            ci++;
+        }
+
+        // 如果事实不够，补充 AI 生成的内容
+        if (article.length < form.wordCount * 0.5) {
+            if (featureFacts.length) {
+                article += '\n\n从实际应用来看，' + product + '在' + featureFacts[0].substring(0, 20) + '方面展现了明显的提升。';
+            }
+            if (company) {
+                article += company + '通过持续的创新投入，不断优化产品体验，为' + audience.label + '提供了更加丰富的选择。';
+            }
+        }
+
+        // 结语
+        article += '\n\n';
+        if (company && product) {
+            article += `总体来看，${product}的推出是${company}在专业影像领域持续深耕的又一成果。`;
+        }
+        article += `对于${audience.label}而言，${product}不仅带来了切实的技术进步，也为市场注入了新的活力。`;
+        article += style.howEvaluate ? style.howEvaluate + '而言，这也标志着' + (source ? source.company + '在技术迭代上迈出了坚实一步。' : '行业技术迭代的持续加速。') : '';
+
+        // 润色
+        article = this.polish(article, source);
+        article = article.replace(/\n{3,}/g, '\n\n').trim();
+
+        return { title, content: article };
     },
 
     /**
