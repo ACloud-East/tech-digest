@@ -149,7 +149,8 @@ ul { list-style: none; }
 }
 
 /* ==================== Sub Tabs ==================== */
-.hotboard-panel { max-width: 1050px; }
+.social-hotboard { max-width: 1050px; }
+.tech-hotboard { max-width: 1200px; }
 .sub-tabs {
     display: flex; gap: 6px; margin-bottom: 24px;
     background: var(--bg-secondary); padding: 5px;

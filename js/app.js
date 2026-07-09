@@ -548,7 +548,7 @@ const app = createApp({
             }
         }
 
-        onMounted(() => { fetchSocialHotlist(); });
+        onMounted(() => { fetchSocialHotlist(); fetchTechNews(); });
 
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
