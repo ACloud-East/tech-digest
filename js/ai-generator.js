@@ -53,6 +53,8 @@ const AIGenerator = {
 
         // Step 4: 全文润色（清除残留模板变量、替换通用占位词）
         content = this.polish(content, source);
+        // Step 5: 按目标字数裁剪或扩展
+        content = this.adjustWordCount(content, form.wordCount, source);
 
         return { title, content };
     },
@@ -137,6 +139,8 @@ const AIGenerator = {
         // 润色
         article = this.polish(article, source);
         article = article.replace(/\n{3,}/g, '\n\n').trim();
+        // 按目标字数调整
+        article = this.adjustWordCount(article, form.wordCount, source);
 
         return { title, content: article };
     },
@@ -590,6 +594,41 @@ const AIGenerator = {
         // 清理多余空格和空行
         t = t.replace(/  +/g, ' ').replace(/\n{4,}/g, '\n\n\n');
         return t.trim();
+    },
+
+    /** 按目标字数调整：不够就扩展，超了就裁剪 */
+    adjustWordCount(text, target, source) {
+        if (!target || target < 10) return text;
+        let count = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').length;
+        const facts = source ? source.allFacts : [];
+
+        // 需要扩展
+        while (count < target * 0.75 && facts.length > 0) {
+            const f = facts[Math.floor(Math.random() * facts.length)];
+            if (f && !text.includes(f.substring(0, 15))) {
+                text += '\n\n' + f + '。';
+                count += f.length;
+            }
+            // 避免死循环
+            if (facts.length < 3) break;
+        }
+
+        // 如果还不够，加补充描述
+        if (count < target * 0.6 && source && source.product) {
+            text += '\n\n' + source.product + '的推出，不仅丰富了' + (source.company || '品牌') + '的产品线布局，也为市场带来了更多选择。展望未来，随着技术的不断迭代，' + source.product + '所代表的这一产品方向将持续演进，值得行业和用户共同期待。';
+            count += 80;
+        }
+
+        // 需要裁剪（从末尾逐段删除）
+        while (count > target * 1.3) {
+            const lastPara = text.lastIndexOf('\n\n');
+            if (lastPara < 10) break;
+            const removed = text.substring(lastPara + 2);
+            count -= removed.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').length;
+            text = text.substring(0, lastPara);
+        }
+
+        return text.trim();
     },
 
     // ========== 配置表 ==========

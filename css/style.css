@@ -109,7 +109,7 @@ ul { list-style: none; }
     position: sticky; top: var(--topbar-height);
     height: calc(100vh - var(--topbar-height));
     overflow-y: auto; flex-shrink: 0;
-    margin-left: -12px;
+    margin-left: -72px;
 }
 .sidebar-nav { flex: 1; padding: 16px 8px; display: flex; flex-direction: column; gap: 4px; }
 .nav-item {
@@ -149,6 +149,7 @@ ul { list-style: none; }
 }
 
 /* ==================== Sub Tabs ==================== */
+.hotboard-panel { max-width: 1050px; }
 .sub-tabs {
     display: flex; gap: 6px; margin-bottom: 24px;
     background: var(--bg-secondary); padding: 5px;
@@ -738,7 +739,7 @@ ul { list-style: none; }
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
-    align-items: start;
+    align-items: stretch;
 }
 .ppt-col {
     background: var(--bg-secondary); border: 1px solid var(--border-color);
