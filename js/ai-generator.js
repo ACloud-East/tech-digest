@@ -59,7 +59,7 @@ const AIGenerator = {
         return { title, content };
     },
 
-    /** 非结构式生成：连续文章，不分 ## 标题，像杂志长文 */
+    /** 非结构式生成：独立生成连续文章，改写原文事实、不照抄 */
     async generatePlainLocal(form) {
         await this.delay(800 + Math.random() * 600);
         const typeConfig = this.getTypeConfig(form.type);
@@ -76,65 +76,102 @@ const AIGenerator = {
 
         const product = (source && source.product) || title;
         const company = (source && source.company) || '';
-        const facts = source ? source.allFacts : [];
         const date = (source && source.date) || '';
         const featureFacts = source ? source.features : [];
         const specFacts = source ? source.specs : [];
         const bgFacts = source ? source.background : [];
 
-        // 构建连续文章：引言 → 2-3 个主体段 → 结语
+        // 构建连续文章：引言 → 3个主体段 → 结语，每个事实都经过改写
         let article = '';
 
-        // 引言
+        // ===== 引言（200-300字，不照抄原文第一句） =====
+        const introOptions = [];
         if (date && company && product) {
-            article += `${date}，${company}正式推出${product}，这一消息迅速引发了${audience.label}的广泛关注。`;
-        } else {
-            article += `${product}的发布，为${audience.label}带来了新的期待。`;
+            introOptions.push(`${date}，${company}正式揭开了${product}的神秘面纱。在${audience.label}的热切期待中，这款产品的亮相不仅是一次常规发布，更折射出${company}在当前市场环境下的战略思考。`);
+            introOptions.push(`当${product}的消息在${date}传出时，${audience.label}的目光迅速聚焦到${company}身上。这不仅仅是一款新品的问世，更可能是细分赛道格局变化的开始。`);
         }
-        if (featureFacts[0]) article += featureFacts[0] + '。';
+        if (company && product) {
+            introOptions.push(`${company}的${product}一经发布便成为话题中心。对于${audience.label}而言，这既是期待已久的答案，也带来了新的思考——它究竟带来了哪些实质性的改变？`);
+        }
+        introOptions.push(`${product}的到来，为${audience.label}提供了一个重新审视当前技术趋势的契机。从其定位和配置来看，这显然不是一次简单的例行更新。`);
+        article += (introOptions.length > 0 ? introOptions[Math.floor(Math.random() * introOptions.length)] : `${product}值得深入探讨。`);
 
-        // 主体：连续 3 段，不分小标题
-        const bodyTopics = [
-            { label: '核心升级', facts: featureFacts.slice(1, featureFacts.length) },
-            { label: '技术参数', facts: specFacts },
-            { label: '市场背景', facts: bgFacts },
+        // 引言中融入1个核心事实（改写后）
+        if (featureFacts.length > 0) {
+            const rewritten = this._paraphraseFact(featureFacts[0], source);
+            article += rewritten;
+        }
+
+        // ===== 主体段1：功能与技术创新（改写，不照抄） =====
+        const p1Facts = featureFacts.slice(1, Math.min(featureFacts.length, 4));
+        article += '\n\n';
+        const p1Openers = [
+            '从产品本身来看，' + product + '在多个维度上展现了迭代的诚意。',
+            '深入剖析' + product + '的升级之处，可以发现其改进并非流于表面。',
+            '具体到功能层面，' + product + '带来的变化值得逐一拆解。',
         ];
+        article += p1Openers[Math.floor(Math.random() * p1Openers.length)];
 
-        const connectors = ['值得关注的是，', '在技术层面，', '从市场角度来看，', '进一步分析可以看到，', '实际体验中，'];
-        let ci = 0;
-
-        for (const topic of bodyTopics) {
-            if (topic.facts.length === 0) continue;
-            const conn = connectors[ci % connectors.length];
-            article += '\n\n' + conn;
-
-            // 用 1-2 个相关事实组成一段
-            const selected = topic.facts.slice(0, 3);
-            for (const f of selected) {
-                if (f && !article.includes(f.substring(0, 20))) {
-                    article += f + '。';
+        if (p1Facts.length > 0) {
+            for (const f of p1Facts) {
+                const rewritten = this._paraphraseFact(f, source);
+                if (rewritten && !article.includes(rewritten.substring(0, 15))) {
+                    article += rewritten;
                 }
             }
-            ci++;
+        } else {
+            article += product + '的升级策略体现了对' + audience.label + '真实需求的深入理解，在核心体验上做出了有针对性的优化。';
         }
 
-        // 如果事实不够，补充 AI 生成的内容
-        if (article.length < form.wordCount * 0.5) {
-            if (featureFacts.length) {
-                article += '\n\n从实际应用来看，' + product + '在' + featureFacts[0].substring(0, 20) + '方面展现了明显的提升。';
-            }
-            if (company) {
-                article += company + '通过持续的创新投入，不断优化产品体验，为' + audience.label + '提供了更加丰富的选择。';
-            }
-        }
-
-        // 结语
+        // ===== 主体段2：技术参数与性能（改写） =====
         article += '\n\n';
-        if (company && product) {
-            article += `总体来看，${product}的推出是${company}在专业影像领域持续深耕的又一成果。`;
+        const p2Openers = [
+            '在技术规格层面，',
+            '参数往往是理解一款产品最直接的窗口。',
+            '翻开' + product + '的技术清单，',
+        ];
+        article += p2Openers[Math.floor(Math.random() * p2Openers.length)];
+
+        if (specFacts.length > 0) {
+            const p2Facts = specFacts.slice(0, 3);
+            // 将多个规格事实融合成一段叙述
+            const mergedFacts = p2Facts.map(f => f.replace(/[。！？，,\.!?;；]+$/g, '').trim()).filter(f => f.length > 5);
+            if (mergedFacts.length > 0) {
+                article += mergedFacts.join('；') + '。';
+            }
         }
-        article += `对于${audience.label}而言，${product}不仅带来了切实的技术进步，也为市场注入了新的活力。`;
-        article += style.howEvaluate ? style.howEvaluate + '而言，这也标志着' + (source ? source.company + '在技术迭代上迈出了坚实一步。' : '行业技术迭代的持续加速。') : '';
+        // 补充分析（不照抄原文）
+        article += '这些数字背后，反映的是' + (company || '研发团队') + '对' + (product || '产品') + '的清晰定位——在性能与体验之间寻找最优解，而非单纯追逐参数。';
+
+        // ===== 主体段3：市场背景与行业意义（改写） =====
+        article += '\n\n';
+        const p3Openers = [
+            '放在更大的行业背景下来看，',
+            '跳出产品本身，从市场维度审视，',
+            '如果说产品力是内在，那么市场定位便是' + product + '的另一面镜子。',
+        ];
+        article += p3Openers[Math.floor(Math.random() * p3Openers.length)];
+
+        if (bgFacts.length > 0) {
+            const p3Fact = this._paraphraseFact(bgFacts[0], source);
+            article += p3Fact;
+        }
+        // 市场分析补充
+        if (company && product) {
+            article += '在当前竞争格局下，' + company + '凭借' + product + '进一步完善了自身的产品矩阵。对于' + audience.label + '而言，这意味着更多元的选择空间，也推动着行业整体向更高标准看齐。';
+        } else {
+            article += product + '的出现恰逢其时，回应了' + audience.label + '在当下最关心的几个核心议题，也为市场提供了新的参照坐标。';
+        }
+
+        // ===== 结语 =====
+        article += '\n\n';
+        const endingOptions = [];
+        if (company && product) {
+            endingOptions.push(`总得来看，${product}不是一次简单的升级，而是${company}在技术演进路线上的又一次坚定落子。对于${audience.label}来说，它带来的不仅是参数上的满足，更是使用体验层面的切实提升。随着时间的推移，${product}的真实价值将在实际应用中逐步显现，而它所开启的方向，也值得行业持续关注。`);
+            endingOptions.push(`回到最初的问题：${product}值得关注吗？答案是肯定的。它体现了${company}对${audience.label}需求的深刻洞察，也在技术迭代与市场策略之间找到了自己的节奏。无论从哪个角度来看，这都是一款承载着诚意与野心的产品。`);
+        }
+        endingOptions.push(`${product}的故事才刚刚开始。它所带来的改变，或许不会在一夜之间重塑格局，但正是一步一步的积累，最终定义了行业的走向。对于${audience.label}而言，保持关注、理性判断，便是最好的姿态。`);
+        article += endingOptions[Math.floor(Math.random() * endingOptions.length)];
 
         // 润色
         article = this.polish(article, source);
@@ -596,39 +633,194 @@ const AIGenerator = {
         return t.trim();
     },
 
-    /** 按目标字数调整：不够就扩展，超了就裁剪 */
+    /** 按目标字数调整：不够就扩展（补事实），超了就智能裁剪（优先整段→整句→半句续写） */
     adjustWordCount(text, target, source) {
         if (!target || target < 10) return text;
-        let count = text.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').length;
-        const facts = source ? source.allFacts : [];
+        const charCount = s => (s || '').replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').length;
+        let count = charCount(text);
+        const facts = source ? [...source.allFacts] : [];
+        const hasHeadings = text.includes('\n## ');
 
-        // 需要扩展
-        while (count < target * 0.75 && facts.length > 0) {
-            const f = facts[Math.floor(Math.random() * facts.length)];
-            if (f && !text.includes(f.substring(0, 15))) {
-                text += '\n\n' + f + '。';
-                count += f.length;
+        // ====== 扩展：不足目标 75% ======
+        if (count < target * 0.75 && facts.length > 0) {
+            const usedSet = new Set();
+            // 按相关性排序扩展事实（优先匹配标题关键词）
+            const titleWords = text.split('\n')[0].replace(/#/g, '').trim();
+            facts.sort((a, b) => {
+                const aRel = this._factRelevance(a, titleWords);
+                const bRel = this._factRelevance(b, titleWords);
+                return bRel - aRel;
+            });
+
+            for (const f of facts) {
+                if (count >= target * 0.9) break;
+                if (usedSet.has(f)) continue;
+                if (text.includes(f.substring(0, 12))) continue;
+                usedSet.add(f);
+                // 改写后追加（不是直接照抄）
+                const rewritten = this._paraphraseFact(f, source);
+                text += '\n\n' + rewritten;
+                count += charCount(rewritten);
             }
-            // 避免死循环
-            if (facts.length < 3) break;
         }
 
-        // 如果还不够，加补充描述
-        if (count < target * 0.6 && source && source.product) {
-            text += '\n\n' + source.product + '的推出，不仅丰富了' + (source.company || '品牌') + '的产品线布局，也为市场带来了更多选择。展望未来，随着技术的不断迭代，' + source.product + '所代表的这一产品方向将持续演进，值得行业和用户共同期待。';
-            count += 80;
+        // 如果还不够，补一段高质量收尾
+        if (count < target * 0.65 && source && source.product) {
+            const padText = this._generatePadding(source, target - count);
+            text += '\n\n' + padText;
+            count += charCount(padText);
         }
 
-        // 需要裁剪（从末尾逐段删除）
-        while (count > target * 1.3) {
-            const lastPara = text.lastIndexOf('\n\n');
-            if (lastPara < 10) break;
-            const removed = text.substring(lastPara + 2);
-            count -= removed.replace(/[^\u4e00-\u9fa5a-zA-Z0-9]/g, '').length;
-            text = text.substring(0, lastPara);
+        // ====== 裁剪：超过目标 130% ======
+        if (count <= target * 1.3) return text.trim();
+
+        if (hasHeadings) {
+            // 结构化文章：优先删除完整章节
+            const sections = text.split(/\n(?=## )/);
+            // sections[0] 是引言（没有 ## 前缀），后面是各章节
+            let kept = [];
+            let keptCount = 0;
+            const targetMax = target * 1.2;
+
+            for (const sec of sections) {
+                const secChars = charCount(sec);
+                if (keptCount + secChars <= targetMax) {
+                    kept.push(sec);
+                    keptCount += secChars;
+                } else {
+                    // 最后一个可容纳的章节：尝试截取前半部分（到句子边界）
+                    const sentences = sec.split(/(?<=[。！？])/);
+                    let partial = '';
+                    let partialCount = 0;
+                    for (const sent of sentences) {
+                        const sc = charCount(sent);
+                        if (keptCount + partialCount + sc <= targetMax) {
+                            partial += sent;
+                            partialCount += sc;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (partial.trim().length > 20) {
+                        kept.push(partial.trim());
+                    }
+                    break;
+                }
+            }
+
+            if (kept.length > 0) {
+                text = kept.join('\n').trim();
+                count = charCount(text);
+            }
+        }
+
+        // 非结构化文章 / 兜底：在句子边界裁剪
+        while (count > target * 1.2) {
+            // 找最后一个句子结束位置（。！？后跟换行或空格或字符串尾）
+            const matches = [...text.matchAll(/[。！？]/g)];
+            if (matches.length === 0) break;
+
+            // 从后往前找，确保去掉足够的内容
+            let cutPos = -1;
+            let removedCount = 0;
+            for (let i = matches.length - 1; i >= 0; i--) {
+                const pos = matches[i].index + 1;
+                const tail = text.substring(pos);
+                removedCount = charCount(tail);
+                if (count - removedCount <= target * 1.15) {
+                    cutPos = pos;
+                    break;
+                }
+            }
+
+            // 如果裁一句不够，裁掉最后一个 \n\n 段的全部
+            if (cutPos < 0) {
+                const lastDbl = text.lastIndexOf('\n\n');
+                if (lastDbl > 10) {
+                    const tail = text.substring(lastDbl + 2);
+                    removedCount = charCount(tail);
+                    cutPos = lastDbl;
+                } else {
+                    break;
+                }
+            }
+
+            if (cutPos > 0 && removedCount > 5) {
+                text = text.substring(0, cutPos);
+                count -= removedCount;
+            } else {
+                break;
+            }
         }
 
         return text.trim();
+    },
+
+    /** 计算事实与标题/主题的相关度 */
+    _factRelevance(fact, title) {
+        if (!title) return 0;
+        let score = 0;
+        const twords = title.split('');
+        for (let i = 0; i < twords.length - 1; i++) {
+            if (fact.includes(twords[i] + (twords[i + 1] || ''))) score += 1;
+        }
+        return score;
+    },
+
+    /** 改写事实：换句式、换连接词，避免原文照抄 */
+    _paraphraseFact(fact, source) {
+        if (!fact) return '';
+        let t = fact.trim();
+        // 去除已有标点结尾
+        t = t.replace(/[。！？，,\.!?;；]+$/g, '');
+        if (t.length < 8) return t + '。';
+
+        // 随机选择改写策略
+        const strategy = Math.floor(Math.random() * 6);
+        switch (strategy) {
+            case 0: // 倒装/前置状语
+                if (t.includes('，')) {
+                    const parts = t.split(/[，,]/);
+                    if (parts.length >= 2) {
+                        return parts.slice(1).join('，').trim() + '，' + parts[0].trim() + '。';
+                    }
+                }
+                return t + '，这进一步印证了相关趋势。';
+            case 1: // 补充评价
+                return t + '，从行业视角来看，这一变化值得持续关注。';
+            case 2: // 因果转换
+                if (/提升|增加|增长|提高|扩大/.test(t)) {
+                    return t.replace(/提升|增加|增长|提高|扩大/g, '显著提升') + '，反映出积极的演进方向。';
+                }
+                return t + '，成为推动领域发展的重要因素。';
+            case 3: // 对比视角
+                return '相较于此前版本，' + t + '，带来了实质性的体验升级。';
+            case 4: // 时间视角
+                const now = source && source.date ? source.date : '近期';
+                return now + '的信息显示，' + t + '。';
+            default:
+                return t + '。';
+        }
+    },
+
+    /** 生成补充段落（不照抄事实，而是综合叙述） */
+    _generatePadding(source, needChars) {
+        const product = source.product || '';
+        const company = source.company || '';
+        const parts = [];
+        if (needChars > 30 && product) {
+            parts.push(product + '所展现的技术路线，反映了' + (company || '行业') + '在当前阶段的核心策略——即在创新与实用之间寻找最佳平衡点。');
+        }
+        if (needChars > 60 && company) {
+            parts.push('对于' + company + '而言，' + (product || '持续迭代') + '不仅是产品线的丰富，更是技术积累向市场价值转化的关键一步。');
+        }
+        if (needChars > 90) {
+            parts.push('展望未来，随着相关技术的不断成熟和应用场景的持续拓展，这一方向有望释放更大的市场潜力，值得行业参与者和用户共同期待。');
+        }
+        if (parts.length === 0) {
+            parts.push('总体来看，这一进展为市场注入了新的活力，后续发展值得持续关注。');
+        }
+        return parts.join('\n\n');
     },
 
     // ========== 配置表 ==========

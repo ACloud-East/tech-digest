@@ -191,12 +191,20 @@ const app = createApp({
         const lastUpdate = ref('');
         const techSources = API.techSourceConfig;
 
-        const totalArticles = computed(() => socialHotlist.value.length + techNews.value.length);
+        // 侧边栏统计数据（全部来自真实数据，非硬编码）
+        const totalArticles = computed(() => techNews.value.length);
+        const totalHotItems = computed(() => socialHotlist.value.length);
         const sourcesCount = computed(() => {
             const s = new Set();
             techNews.value.forEach(i => { if (i.source) s.add(i.source); });
-            if (socialHotlist.value.length > 0) s.add(socialPlatform.value);
             return s.size;
+        });
+        // 总数据源 = 科技资讯源 + 社交媒体平台
+        const totalSourcesCount = computed(() => {
+            let count = sourcesCount.value;
+            // 社交媒体平台（微博、抖音、头条、百度）
+            if (socialHotlist.value.length > 0) count += 1;
+            return count;
         });
 
         const displayedTechNews = computed(() => techNews.value.slice(0, techDisplayCount.value));
@@ -553,7 +561,7 @@ const app = createApp({
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
-            loading, lastUpdate, techSources, totalArticles, sourcesCount,
+            loading, lastUpdate, techSources, totalArticles, totalHotItems, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
