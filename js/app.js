@@ -191,14 +191,6 @@ const app = createApp({
         const loading = computed(() => socialLoading.value || techLoading.value || aiGenerating.value);
         const lastUpdate = ref('');
 
-        // ========== 自动刷新 ==========
-        // 打开即加载；每隔 AUTO_REFRESH_MS 自动重新抓取一次，无缝接住 GitHub Action 的定时抓取结果
-        const AUTO_REFRESH_MS = 5 * 60 * 1000; // 5 分钟
-        const autoRefreshEnabled = ref(true);
-        const nextRefreshIn = ref(Math.round(AUTO_REFRESH_MS / 1000));
-        let _refreshTimer = null;
-        let _tickTimer = null;
-
         const techSources = API.techSourceConfig;
 
         // 侧边栏统计数据（全部来自真实数据，非硬编码）
@@ -270,37 +262,6 @@ const app = createApp({
             API.clearOldCache();
             if (hotboardTab.value === 'social') fetchSocialHotlist();
             else fetchTechNews();
-        }
-
-        // 自动刷新：刷新当前可见 tab，并后台补抓另一个为空 tab（保证切换即时出数据）
-        function autoRefreshTick() {
-            if (activePanel.value !== 'hotboard') return; // 仅停留在热点看板时刷新，避免浪费外部 API 配额
-            if (hotboardTab.value === 'social') fetchSocialHotlist();
-            else fetchTechNews();
-            // 后台补齐另一个 tab（若尚未加载）
-            if (socialHotlist.value.length === 0) fetchSocialHotlist();
-            if (techNews.value.length === 0) fetchTechNews();
-            nextRefreshIn.value = Math.round(AUTO_REFRESH_MS / 1000);
-            updateTimestamp();
-        }
-
-        function startAutoRefresh() {
-            stopAutoRefresh();
-            _refreshTimer = setInterval(() => { if (autoRefreshEnabled.value) autoRefreshTick(); }, AUTO_REFRESH_MS);
-            _tickTimer = setInterval(() => {
-                if (!autoRefreshEnabled.value) return;
-                if (nextRefreshIn.value > 0) nextRefreshIn.value -= 1;
-            }, 1000);
-        }
-
-        function stopAutoRefresh() {
-            if (_refreshTimer) { clearInterval(_refreshTimer); _refreshTimer = null; }
-            if (_tickTimer) { clearInterval(_tickTimer); _tickTimer = null; }
-        }
-
-        function toggleAutoRefresh() {
-            autoRefreshEnabled.value = !autoRefreshEnabled.value;
-            if (autoRefreshEnabled.value) nextRefreshIn.value = Math.round(AUTO_REFRESH_MS / 1000);
         }
 
         function updateTimestamp() {
@@ -598,10 +559,9 @@ const app = createApp({
 
         onMounted(() => {
             // 打开即加载两个 tab（social 来自外部热搜 API，tech 来自本地预抓取）
+            // 仅加载一次，不做定时自动刷新，避免频繁重抓造成的等待与闪烁
             fetchSocialHotlist();
             fetchTechNews();
-            // 启动定时自动刷新（每 5 分钟重新抓取，无缝接住服务端定时抓取结果）
-            startAutoRefresh();
         });
 
         return {
@@ -611,8 +571,6 @@ const app = createApp({
             filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
-            // 自动刷新
-            autoRefreshEnabled, nextRefreshIn, toggleAutoRefresh,
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
             aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars,
