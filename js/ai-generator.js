@@ -134,10 +134,12 @@ const AIGenerator = {
 
         if (specFacts.length > 0) {
             const p2Facts = specFacts.slice(0, 3);
-            // 将多个规格事实融合成一段叙述
-            const mergedFacts = p2Facts.map(f => f.replace(/[。！？，,\.!?;；]+$/g, '').trim()).filter(f => f.length > 5);
-            if (mergedFacts.length > 0) {
-                article += mergedFacts.join('；') + '。';
+            // 将规格事实逐条改写后融入叙述，避免照抄原文
+            const reworded = p2Facts
+                .map(f => this._paraphraseFact(f, source, true))
+                .filter(f => f && f.length > 8);
+            if (reworded.length > 0) {
+                article += reworded.join('；') + '。';
             }
         }
         // 补充分析（不照抄原文）
@@ -785,16 +787,33 @@ const AIGenerator = {
         return score;
     },
 
-    /** 改写事实：换句式、换连接词，避免原文照抄 */
-    _paraphraseFact(fact, source) {
+    /** 改写事实：先做词汇级同义替换打破逐字照抄，再换句式/连接词 */
+    _paraphraseFact(fact, source, light = false) {
         if (!fact) return '';
         let t = fact.trim();
         // 去除已有标点结尾
-        t = t.replace(/[。！？，,\.!?;；]+$/g, '');
-        if (t.length < 8) return t + '。';
+        t = t.replace(/[。！？，,\.!?;；]+$/g, '').trim();
+        if (t.length < 6) return t + '。';
+
+        // 关键：词汇级同义替换，从根本上避免原句逐字保留
+        t = this._applySynonyms(t);
+
+        // 轻量模式（规格参数等）：只做句式微调，不加评价性后缀
+        if (light) {
+            const l = Math.floor(Math.random() * 3);
+            if (l === 0 && t.includes('，')) {
+                const parts = t.split(/[，,]/);
+                if (parts.length >= 2) return parts.slice(1).join('，').trim() + '，' + parts[0].trim() + '。';
+            }
+            if (l === 1) {
+                const now = source && source.date ? source.date : '官方信息';
+                return now + '显示，' + t + '。';
+            }
+            return t + '。';
+        }
 
         // 随机选择改写策略
-        const strategy = Math.floor(Math.random() * 6);
+        const strategy = Math.floor(Math.random() * 5);
         switch (strategy) {
             case 0: // 倒装/前置状语
                 if (t.includes('，')) {
@@ -807,18 +826,34 @@ const AIGenerator = {
             case 1: // 补充评价
                 return t + '，从行业视角来看，这一变化值得持续关注。';
             case 2: // 因果转换
-                if (/提升|增加|增长|提高|扩大/.test(t)) {
-                    return t.replace(/提升|增加|增长|提高|扩大/g, '显著提升') + '，反映出积极的演进方向。';
+                if (/提升|增强|增加|增长|提高|扩大/.test(t)) {
+                    return t.replace(/提升|增强|增加|增长|提高|扩大/g, '明显提升') + '，反映出积极的演进方向。';
                 }
                 return t + '，成为推动领域发展的重要因素。';
             case 3: // 对比视角
                 return '相较于此前版本，' + t + '，带来了实质性的体验升级。';
-            case 4: // 时间视角
+            default: // 时间视角
                 const now = source && source.date ? source.date : '近期';
                 return now + '的信息显示，' + t + '。';
-            default:
-                return t + '。';
         }
+    },
+
+    /** 科技词汇同义替换表：用于改写事实，避免逐字照抄 */
+    _applySynonyms(text) {
+        const SYN = {
+            '正式发布': '正式推出', '电影摄影机': '电影机', '分辨率': '清晰度',
+            '电池容量': '电池', '机身重量': '整机重量', '新增': '加入', '支持': '具备',
+            '提升': '增强', '优化': '改良', '升级': '迭代', '改进': '改善',
+            '增加': '增添', '加入': '引入', '可以': '能够', '能够': '可',
+            '允许': '支持', '发布': '推出', '录制': '拍摄', '像素': '画质',
+            '性能': '表现', '功能': '能力', '实时': '即时', '跟踪': '追踪',
+            '主体': '拍摄对象', '新品': '该机型', '产品': '设备', '公司': '厂商',
+            '致力于': '深耕于', '覆盖': '囊括', '产品线': '产品矩阵', '领域': '赛道',
+            '市场': '行业',
+        };
+        const keys = Object.keys(SYN).sort((a, b) => b.length - a.length);
+        const re = new RegExp(keys.join('|'), 'g');
+        return text.replace(re, m => SYN[m] || m);
     },
 
     /** 生成补充段落（不照抄事实，而是综合叙述） */
