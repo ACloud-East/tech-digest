@@ -55,6 +55,8 @@ const AIGenerator = {
         content = this.polish(content, source);
         // Step 5: 按目标字数裁剪或扩展
         content = this.adjustWordCount(content, form.wordCount, source);
+        // Step 6: 标点归一化，清除拼接产生的重复/粘连标点
+        content = this._normalizePunctuation(content);
 
         return { title, content };
     },
@@ -180,6 +182,8 @@ const AIGenerator = {
         article = article.replace(/\n{3,}/g, '\n\n').trim();
         // 按目标字数调整
         article = this.adjustWordCount(article, form.wordCount, source);
+        // 标点归一化
+        article = this._normalizePunctuation(article);
 
         return { title, content: article };
     },
@@ -194,46 +198,72 @@ const AIGenerator = {
             features: [], specs: [], background: [], allFacts: []
         };
 
-        // 提取产品名和公司名
+        // ===== 1) 公司名 =====
         const brands = ['索尼', '佳能', '尼康', '苹果', '华为', '小米', '三星', '特斯拉', '英伟达', 'NVIDIA',
             '英特尔', 'AMD', '高通', '联发科', '谷歌', '微软', 'Meta', '字节跳动', '阿里', '腾讯', '百度', '大疆',
             '蔚来', '小鹏', '理想', '比亚迪', 'OPPO', 'vivo', '荣耀', 'DJI', 'GoPro'];
-        const productPatterns = [
-            /((?:ILME-)?[A-Z]{2,3}[-\s]?\d{1,3}[A-Za-z]*)/g,
-            /([A-Z][a-z]+\s[A-Z][a-z]+\s?[A-Za-z]?\d*)/g,
-            /(iPhone\s?\d{1,2}\s?(?:Pro|Plus|Max)?)/gi,
-            /(Mate\s?\d{1,2})/gi,
-        ];
-
-        // 找产品名
-        for (const p of productPatterns) {
-            const m = text.match(p);
-            if (m) { result.product = m[0]; break; }
-        }
-        // 找型号列表
-        const modelMatches = text.match(/[A-Z]+[\-]?\d{2,3}/g) || [];
-        result.versions = [...new Set(modelMatches)].slice(0, 4);
-
-        // 找公司名
+        let company = '';
         for (const b of brands) {
-            if (text.includes(b)) { result.company = b; break; }
+            if (text.includes(b)) { company = b; break; }
+        }
+
+        // ===== 2) 剔除 Markdown 标题行，避免 #小标题 混入正文 =====
+        const bodyLines = text.split('\n').filter(l => !/^\s*#+\s/.test(l));
+        const cleanText = bodyLines.join('\n');
+        const titleLine = (text.split('\n')[0] || '').trim();
+
+        // ===== 3) 产品型号：综合打分，优先"最新/力作"且带完整前缀的型号 =====
+        const modelRegex = /[A-Za-z]{2,6}[-\s]?[A-Za-z]?\d{1,4}[A-Za-z]?/g;
+        const rawCandidates = [...new Set(cleanText.match(modelRegex) || [])];
+        // 丢弃纯子串候选（如 Z200 是 PXW-Z200 的子串）
+        const candidates = rawCandidates.filter(c =>
+            !rawCandidates.some(o => o !== c && o.length > c.length && o.includes(c))
+        );
+
+        const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        let bestModel = '';
+        let bestScore = -1e9;
+        for (const c of candidates) {
+            let score = c.length;                                   // 越完整越长越好
+            if (new RegExp(esc(c)).test(titleLine)) score += 12;   // 标题中出现
+            const nearNew = new RegExp('.{0,14}' + esc(c) + '.{0,8}(最新|新款|全新|力作|新一代|发布|推出|上市)').test(cleanText)
+                          || new RegExp('(最新|新款|全新|力作|新一代).{0,14}' + esc(c)).test(cleanText);
+            if (nearNew) score += 8;
+            const nearOld = new RegExp('(最初|此前|上代|前辈|原来的|老款|前代|早先).{0,12}' + esc(c)).test(cleanText);
+            if (nearOld) score -= 12;                              // 旧型号减分
+            if (score > bestScore) { bestScore = score; bestModel = c; }
+        }
+
+        // product 仅存型号（公司在标题/正文组合时再加，避免重复）
+        result.product = bestModel || '';
+        result.company = company;
+        result.versions = candidates.slice(0, 6);
+
+        // 找公司名（兜底，若上面循环未命中）
+        if (!result.company) {
+            for (const b of brands) {
+                if (text.includes(b)) { result.company = b; break; }
+            }
         }
 
         // 找日期
         const dateMatch = text.match(/(\d{4}年\d{1,2}月\d{1,2}日)/);
         if (dateMatch) result.date = dateMatch[1];
 
-        // 提取版本号
+        // 提取版本号（固件 Ver.x.x）
         const verMatches = text.match(/Ver\.?\s*\d+\.\d+/g) || [];
-        result.versions = [...new Set([...result.versions, ...verMatches])].slice(0, 5);
+        if (verMatches.length) result.versions = [...new Set([...result.versions, ...verMatches])].slice(0, 6);
 
-        // 提取所有句子
-        const sentences = text.replace(/[\n\r]+/g, ' ').split(/[。！？；]/).map(s => s.trim()).filter(s => s.length > 8);
+        // 提取所有句子：排除标题行（避免标题被当事实注入正文），并剔除残留 # 标题
+        const factText = bodyLines.length > 1 ? bodyLines.slice(1).join('\n') : cleanText;
+        const sentences = factText.replace(/[\n\r]+/g, ' ')
+            .split(/[。！？；]/)
+            .map(s => s.replace(/^#+\s*/, '').trim())
+            .filter(s => s.length > 8 && !/^#/.test(s));
 
         // 分类句子
         sentences.forEach(s => {
             result.allFacts.push(s);
-            const t = s.toLowerCase();
             if (/新增|支持|允许|提升|优化|升级|改进|增加|加入|可以|能够/.test(s)) {
                 result.features.push(s);
             } else if (/\d+[%倍档级]|ISO|fps|K\s*120|动态范围|分辨率|像素|Watt|功耗|mAh/.test(s)) {
@@ -243,12 +273,9 @@ const AIGenerator = {
             }
         });
 
-        // 兜底：如果产品名没识别到，用标题或前几个关键词
-        if (!result.product && result.versions.length > 0) {
-            result.product = result.company + ' ' + result.versions.join('/');
-        }
+        // 兜底：型号仍为空时，取标题前 30 字作为产品名
         if (!result.product) {
-            result.product = text.substring(0, 30).replace(/[,，。\s]+$/, '');
+            result.product = titleLine.substring(0, 30).replace(/[,，。\s]+$/, '') || text.substring(0, 30).replace(/[,，。\s]+$/, '');
         }
 
         return result;
@@ -280,9 +307,8 @@ const AIGenerator = {
         const { title, typeConfig, style, audience, source, form, wordCount, extraInstructions, template } = ctx;
         const main = (source && source.product) || form.title || typeConfig.keyword;
         const company = (source && source.company) || '';
-        const secondary = (source && source.versions.length > 1)
-            ? source.versions.join('、')
-            : (source && source.features[0]) ? source.features[0].substring(0, 20) : '';
+        // secondary 不再用 versions（会混入旧型号 FS5/FS7 造成事实错误），统一留空交由各段落兜底文案
+        const secondary = '';
         const facts = source ? source.allFacts : [];
 
         // 根据目标字数控制章节数量，避免 500 字生成 700+ 内容
@@ -661,34 +687,39 @@ const AIGenerator = {
         const facts = source ? [...source.allFacts] : [];
         const hasHeadings = text.includes('\n## ');
 
-        // ====== 扩展：不足目标 75% ======
+        // ====== 扩展：不足目标，向「结语之前」补充改写后的事实（绝不堆在结尾） ======
         if (count < target * 0.75 && facts.length > 0) {
             const usedSet = new Set();
             // 按相关性排序扩展事实（优先匹配标题关键词）
             const titleWords = text.split('\n')[0].replace(/#/g, '').trim();
-            facts.sort((a, b) => {
-                const aRel = this._factRelevance(a, titleWords);
-                const bRel = this._factRelevance(b, titleWords);
-                return bRel - aRel;
-            });
+            facts.sort((a, b) => this._factRelevance(b, titleWords) - this._factRelevance(a, titleWords));
 
+            const extraParas = [];
             for (const f of facts) {
-                if (count >= target * 0.9) break;
+                if (count >= target * 0.95) break;
                 if (usedSet.has(f)) continue;
                 if (text.includes(f.substring(0, 12))) continue;
                 usedSet.add(f);
-                // 改写后追加（不是直接照抄）
+                // 改写后再用，不照抄
                 const rewritten = this._paraphraseFact(f, source);
-                text += '\n\n' + rewritten;
-                count += charCount(rewritten);
+                if (rewritten && rewritten.length > 10) {
+                    extraParas.push(rewritten);
+                    count += charCount(rewritten);
+                }
+                if (extraParas.length >= 3) break; // 封顶3段，避免过度堆砌
+            }
+            if (extraParas.length > 0) {
+                text = this._insertBeforeConclusion(text, extraParas.join('\n\n'), hasHeadings);
             }
         }
 
-        // 如果还不够，补一段高质量收尾
-        if (count < target * 0.65 && source && source.product) {
+        // 若仍明显不足，补一段综合叙述（非照抄具体事实）
+        if (count < target * 0.7 && source && source.product) {
             const padText = this._generatePadding(source, target - count);
-            text += '\n\n' + padText;
-            count += charCount(padText);
+            if (padText && padText.length > 10) {
+                text = this._insertBeforeConclusion(text, padText, hasHeadings);
+                count += charCount(padText);
+            }
         }
 
         // ====== 裁剪：超过目标 130% ======
@@ -874,6 +905,34 @@ const AIGenerator = {
             parts.push('总体来看，这一进展为市场注入了新的活力，后续发展值得持续关注。');
         }
         return parts.join('\n\n');
+    },
+
+    /** 将补充段落插入到「结语/最后一段」之前，杜绝在结尾胡乱拼接尾巴 */
+    _insertBeforeConclusion(text, para, hasHeadings) {
+        if (!para) return text;
+        if (hasHeadings) {
+            const idx = text.lastIndexOf('## 总结');
+            if (idx > 0) {
+                const head = text.slice(0, idx).replace(/\s+$/, '');
+                return head + '\n\n' + para + '\n\n' + text.slice(idx);
+            }
+        }
+        const lastDbl = text.lastIndexOf('\n\n');
+        if (lastDbl > 0) {
+            const head = text.slice(0, lastDbl).replace(/\s+$/, '');
+            return head + '\n\n' + para + text.slice(lastDbl);
+        }
+        return text + '\n\n' + para;
+    },
+
+    /** 归一化拼接产生的重复/粘连标点（如 。。 → 。，。； → ；），提升可读性且不改变事实 */
+    _normalizePunctuation(text) {
+        if (!text) return text;
+        // 任意 2+ 连续的中文标点串折叠成最后一个，避免重复与粘连
+        text = text.replace(/([。！？；，、：]){2,}/g, m => m.slice(-1));
+        // 多个连续空格折叠为一个
+        text = text.replace(/[ \t]{2,}/g, ' ');
+        return text;
     },
 
     // ========== 配置表 ==========
