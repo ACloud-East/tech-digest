@@ -93,6 +93,21 @@ ul { list-style: none; }
 .spinning { animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+/* 自动刷新状态指示 */
+.auto-refresh {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.8rem; color: var(--accent-cyan, #22d3ee);
+    background: color-mix(in srgb, var(--accent-cyan, #22d3ee) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-cyan, #22d3ee) 35%, transparent);
+    padding: 5px 10px; border-radius: 999px; white-space: nowrap;
+}
+.auto-refresh.paused { color: var(--text-muted, #94a3b8); background: var(--bg-tertiary); border-color: var(--border-color); }
+.auto-refresh .ar-label { font-weight: 600; }
+.auto-refresh .ar-count {
+    font-variant-numeric: tabular-nums; min-width: 30px; text-align: center;
+    background: rgba(0,0,0,0.18); border-radius: 6px; padding: 1px 6px;
+}
+
 /* ==================== Main Layout ==================== */
 .main-container {
     display: flex;

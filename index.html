@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -17,7 +17,17 @@
             </div>
             <div class="top-bar-right">
                 <span class="update-time" v-if="lastUpdate">更新于 {{ lastUpdate }}</span>
-                <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading">
+                <span class="auto-refresh" :class="{ paused: !autoRefreshEnabled }"
+                      :title="autoRefreshEnabled ? '每 5 分钟自动重新抓取' : '自动刷新已暂停'">
+                    <i class="fa-solid fa-arrows-rotate" :class="{ spinning: loading }"></i>
+                    <span class="ar-label">{{ autoRefreshEnabled ? '自动刷新' : '已暂停' }}</span>
+                    <span class="ar-count" v-if="autoRefreshEnabled && activePanel === 'hotboard'">{{ nextRefreshIn }}s</span>
+                </span>
+                <button class="refresh-btn" @click="toggleAutoRefresh"
+                        :title="autoRefreshEnabled ? '暂停自动刷新' : '开启自动刷新'">
+                    <i class="fa-solid" :class="autoRefreshEnabled ? 'fa-pause' : 'fa-play'"></i>
+                </button>
+                <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="立即刷新">
                     <i class="fa-solid fa-rotate" :class="{ spinning: loading }"></i>
                 </button>
             </div>
@@ -553,8 +563,8 @@
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="js/api.js?v=3"></script>
     <script src="js/filter.js?v=3"></script>
-    <script src="js/ai-generator.js?v=4"></script>
+    <script src="js/ai-generator.js?v=5"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=4"></script>
+    <script src="js/app.js?v=5"></script>
 </body>
 </html>
