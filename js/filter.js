@@ -1,6 +1,11 @@
 /**
  * TechDigest 内容过滤模块
  * 确保所有展示的内容都与科技数码领域相关
+ *
+ * 过滤策略：加权判定
+ *  - 硬科技类别（ai/phone/chip/ev/game/pc/software/internet/vc/iot/web3）命中任意关键词即相关（权重 2）
+ *  - 软相关类别（review 评测类、internetBiz 泛化业务词）权重 1，需累计 ≥2 或配合硬词才相关
+ * 这样可避免「安全/体验/广告」等泛化词单独把非科技热搜放进来，也避免漏掉「大疆/航天」等科技品牌
  */
 
 const TechFilter = {
@@ -18,7 +23,8 @@ const TechFilter = {
             'prompt', '提示词', '微调', '预训练', '开源模型', 'Llama', '通义千问', '文心一言',
             '混元', '豆包', 'kimi', 'deepseek', '深度求索', '月之暗面', '智谱', '百川',
             '零一万物', 'MiniMax', '阶跃星辰', 'AI搜索', 'AI绘画', 'AI写作', 'AI编程',
-            'AI助手', 'AI客服', 'AI医疗', 'AI教育', 'AI金融', '自动驾驶AI', '具身智能'
+            'AI助手', 'AI客服', 'AI医疗', 'AI教育', 'AI金融', '自动驾驶AI', '具身智能',
+            '商汤', '科大讯飞'
         ],
 
         // 手机
@@ -38,8 +44,8 @@ const TechFilter = {
             'AMD', '英伟达', 'NVIDIA', '台积电', '光刻', '晶圆', '制程', '3nm', '5nm',
             '7nm', 'EUV', 'DUV', 'ASML', 'ARM', 'RISC-V', 'x86', '海思', '麒麟',
             '昇腾', '寒武纪', '地平线', '摩尔线程', '壁仞', '天数智芯', '龙芯', '飞腾',
-            '兆芯', '申威', 'HBM', 'DDR5', 'PCIe', '封装', 'chiplet', 'chiplet',
-            '先进封装', 'CoWoS', 'HBM', '存储芯片', 'NAND', 'DRAM', '三星电子',
+            '兆芯', '申威', 'HBM', 'DDR5', 'PCIe', '封装', 'chiplet',
+            '先进封装', 'CoWoS', '存储芯片', 'NAND', 'DRAM', '三星电子',
             'SK海力士', '美光', '中芯国际', '华虹', '长江存储', '长鑫存储', 'EDA',
             '芯片设计', '流片', '良率', '制裁', '出口管制', '实体清单'
         ],
@@ -56,10 +62,9 @@ const TechFilter = {
             '充电桩', 'V2G', '智能座舱', '城市NOA', '高速NOA', '端到端', 'Occupancy'
         ],
 
-        // 数码评测
+        // 数码评测（软相关：仅评测类强指向词，需配合/累计，避免「体验/推荐」等泛词泄漏）
         review: [
-            '评测', '开箱', '体验', '测评', '上手', '对比', '横评', '深度', '首发',
-            '图赏', '拆解', '维修', '性价比', '值得买', '推荐', '避坑', '踩雷'
+            '评测', '开箱', '测评', '横评', '图赏'
         ],
 
         // 游戏
@@ -84,25 +89,29 @@ const TechFilter = {
             '万兆', 'DDR5', 'PCIe 5.0', 'ATX', 'ITX', 'miniLED', 'OLED'
         ],
 
-        // 软件应用
+        // 软件应用（硬科技）
         software: [
             '软件', 'App', '应用', '操作系统', 'iOS', 'Android', 'Windows', 'macOS',
             '浏览器', 'Chrome', 'Edge', 'Firefox', 'Safari', '办公', 'WPS',
-            'Office', '设计', '剪辑', '修图', '视频', '音频', '小程序', '插件',
+            'Office', '设计', '剪辑', '修图', '小程序', '插件',
             '扩展', 'API', 'SDK', '开源', 'GitHub', 'Git', 'Docker', 'Kubernetes',
             'Linux', 'Ubuntu', 'Debian', '服务器', '云服务', 'AWS', 'Azure',
             '阿里云', '腾讯云', '华为云', '数据库', 'MySQL', 'PostgreSQL', 'Redis',
-            'MongoDB', '中间件', '微服务', 'DevOps', 'CI/CD', '安全', '防火墙'
+            'MongoDB', '中间件', '微服务', 'DevOps', 'CI/CD', '防火墙'
         ],
 
-        // 互联网
+        // 互联网（硬科技：平台/公司/业务主体）
         internet: [
-            '互联网', '社交', '电商', '直播', '短视频', '搜索', '字节跳动', '腾讯',
+            '互联网', '社交', '搜索', '字节跳动', '腾讯',
             '阿里', '百度', '美团', '拼多多', '京东', '快手', '小红书', 'B站',
             '知乎', '微博', '微信', '抖音', 'TikTok', '淘宝', '天猫', '饿了么',
-            '滴滴', '网易', '搜狐', '新浪', '携程', '去哪儿', '飞猪', '大厂',
-            '裁员', '招聘', '营收', '财报', 'MAU', 'DAU', 'GMV', '广告',
-            '私域', '社群', '下沉市场', '出海', '本地生活', '即时零售', '社区团购'
+            '滴滴', '网易', '搜狐', '新浪', '携程', '去哪儿', '飞猪', '大厂'
+        ],
+
+        // 互联网泛化业务词（软相关：单独出现多为非科技，需累计或配合硬词）
+        internetBiz: [
+            '营收', '财报', '广告', '裁员', '招聘', 'MAU', 'DAU', 'GMV',
+            '私域', '社群', '下沉市场', '出海'
         ],
 
         // 科技创投
@@ -115,10 +124,10 @@ const TechFilter = {
             '并购', '拆分', '独立上市', 'Pre-A', '战略投资', '产业资本'
         ],
 
-        // 智能硬件
+        // 智能硬件 / 物联网（含无人机、商业航天等品牌与领域）
         iot: [
             '智能硬件', 'IoT', '可穿戴', '智能家居', 'AR', 'VR', 'XR', 'Vision Pro',
-            'Quest', '机器人', '无人机', '3D打印', '智能音箱', '智能手表', '手环',
+            'Quest', '机器人', '无人机', '大疆', '航天', '3D打印', '智能音箱', '智能手表', '手环',
             '智能门锁', '智能灯', '智能窗帘', '扫地机器人', '洗地机', '智能猫砂盆',
             '智能喂食器', 'HomeKit', '米家', '华为智选', '天猫精灵', '小度',
             'Apple Watch', 'AirPods', 'Meta Quest', 'Apple Vision', 'Ray-Ban',
@@ -134,6 +143,15 @@ const TechFilter = {
             '数字人民币', '元宇宙', 'GameFi', 'SocialFi', '空投', 'Meme', 'Ordinals',
             '铭文', '符文', 'RWA', 'DePIN', 'TON', 'Telegram', 'Web3游戏'
         ]
+    },
+
+    /**
+     * 类别权重：硬科技=2，软相关=1
+     */
+    categoryWeight: {
+        ai: 2, phone: 2, chip: 2, ev: 2, game: 2, pc: 2, software: 2,
+        internet: 2, vc: 2, iot: 2, web3: 2,
+        review: 1, internetBiz: 1
     },
 
     /**
@@ -157,24 +175,29 @@ const TechFilter = {
     },
 
     /**
-     * 判断文本是否与科技数码领域相关
+     * 判断文本是否与科技数码领域相关（加权判定）
+     * 规则：命中任意硬科技关键词(score≥2) 即相关；
+     *       仅命中软相关词时，需累计分值 ≥2（即 ≥2 个软词）才相关。
      * @param {string} text - 待检测文本
      * @returns {boolean}
      */
     isRelevant(text) {
         if (!text) return false;
-
         const lowerText = text.toLowerCase();
-        const keywords = this.getAllKeywords();
+        let score = 0;
 
-        // 只要匹配到任意一个关键词就算相关
-        for (const keyword of keywords) {
-            if (lowerText.includes(keyword.toLowerCase())) {
-                return true;
+        for (const [category, keywords] of Object.entries(this.keywords)) {
+            const weight = this.categoryWeight[category] || 1;
+            for (const keyword of keywords) {
+                if (lowerText.includes(keyword.toLowerCase())) {
+                    score += weight;
+                    break; // 同一类别只计一次权重
+                }
             }
+            if (score >= 2) break; // 已达阈值，提前结束
         }
 
-        return false;
+        return score >= 2;
     },
 
     /**
@@ -213,8 +236,13 @@ const TechFilter = {
         pc: '电脑硬件',
         software: '软件应用',
         internet: '互联网',
+        internetBiz: '互联网商业',
         vc: '科技创投',
         iot: '智能硬件',
         web3: '区块链/Web3'
     }
 };
+
+// 兼容旧引用（部分代码可能直接引用 TechFilter）
+if (typeof window !== 'undefined') window.TechFilter = TechFilter;
+if (typeof module !== 'undefined' && module.exports) module.exports = TechFilter;
