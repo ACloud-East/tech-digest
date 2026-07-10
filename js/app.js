@@ -193,7 +193,6 @@ const app = createApp({
 
         // 侧边栏统计数据（全部来自真实数据，非硬编码）
         const totalArticles = computed(() => techNews.value.length);
-        const totalHotItems = computed(() => socialHotlist.value.length);
         const sourcesCount = computed(() => {
             const s = new Set();
             techNews.value.forEach(i => { if (i.source) s.add(i.source); });
@@ -561,7 +560,7 @@ const app = createApp({
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
-            loading, lastUpdate, techSources, totalArticles, totalHotItems, sourcesCount, totalSourcesCount,
+            loading, lastUpdate, techSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,

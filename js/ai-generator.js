@@ -273,7 +273,7 @@ const AIGenerator = {
         return tmpl.replace(/\$\{main\}/g, main).replace(/\$\{secondary\}/g, keywords[1] || '行业洞察');
     },
 
-    // Step 3: 文章合成（使用结构化 source 而非通用 main/secondary）
+    // Step 3: 文章合成（使用结构化 source 而非通用 main/secondary，按目标字数控制章节数）
     composeArticle(ctx) {
         const { title, typeConfig, style, audience, source, form, wordCount, extraInstructions, template } = ctx;
         const main = (source && source.product) || form.title || typeConfig.keyword;
@@ -283,12 +283,20 @@ const AIGenerator = {
             : (source && source.features[0]) ? source.features[0].substring(0, 20) : '';
         const facts = source ? source.allFacts : [];
 
+        // 根据目标字数控制章节数量，避免 500 字生成 700+ 内容
+        let sections = typeConfig.sections;
+        const maxSections = this._sectionCountByWordCount(wordCount);
+        if (sections.length > maxSections) {
+            // 保留前面的章节，后面的删除；总结永远保留
+            sections = sections.slice(0, maxSections);
+        }
+
         // 引言
         let article = this.writeIntroNew({ typeConfig, style, audience, main, company, source, extraInstructions });
 
         // 正文段落：每个 section 匹配相关事实
         const usedFacts = new Set();
-        typeConfig.sections.forEach((sectionName, idx) => {
+        sections.forEach((sectionName, idx) => {
             // 选择与本节主题最匹配的事实
             const matchedFact = this.pickBestFact(sectionName, facts, usedFacts, idx);
             if (matchedFact) usedFacts.add(matchedFact);
@@ -305,6 +313,16 @@ const AIGenerator = {
         article += '\n\n' + this.writeConclusionNew({ typeConfig, style, audience, main, company, source, extraInstructions });
 
         return article;
+    },
+
+    /** 按目标字数决定章节数量 */
+    _sectionCountByWordCount(wordCount) {
+        if (!wordCount) return 5;
+        if (wordCount <= 500) return 3;
+        if (wordCount <= 800) return 4;
+        if (wordCount <= 1000) return 5;
+        if (wordCount <= 1500) return 6;
+        return 7;
     },
 
     /** 按主题匹配选择最佳事实 */
