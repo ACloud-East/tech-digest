@@ -124,6 +124,7 @@ const API = {
         { key: 'ars', name: 'ArsTechnica', color: '#ff4e00' },
         { key: 'macrumors', name: 'MacRumors', color: '#1d4ed8' },
         { key: 'expreview', name: '超能网', color: '#00a0e9' },
+        { key: 'igao7', name: '爱搞机', color: '#ff6a00' },
         { key: 'theverge', name: 'The Verge', color: '#e2127a' },
         { key: 'techcrunch', name: 'TechCrunch', color: '#0f9d58' },
         { key: 'engadget', name: 'Engadget', color: '#2b2d32' },

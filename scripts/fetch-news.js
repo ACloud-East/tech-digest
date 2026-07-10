@@ -58,7 +58,10 @@ function makeArticle(source, item) {
         source: source.name, sourceColor: source.color,
         title: (item.title || '').trim(),
         description: stripHtml(item.description || ''),
-        url: item.url || '', time: item.time || new Date().toISOString(),
+        url: item.url || '',
+        // 注意：缺日期时绝不回填"当前时间"，否则旧文会被伪装成刚发布、
+        // 还能骗过新鲜度过滤继续置顶。HTML 抓取源会在 extract 中显式给 now。
+        time: item.time || '',
         tags: extractTags(item.title + ' ' + (item.description || ''))
     };
 }
@@ -79,6 +82,7 @@ const standardSources = [
     { name: '9to5Mac', url: 'https://9to5mac.com/feed/', color: '#0a84ff' },
     { name: 'MacRumors', url: 'https://www.macrumors.com/macrumors.xml', color: '#1d4ed8' },
     { name: '超能网', url: 'https://www.expreview.com/rss.php', color: '#00a0e9' },
+    { name: '爱搞机', url: 'https://www.igao7.com/feed', color: '#ff6a00' },
     // RSSHub 公共实例路由（反爬/无RSS网站替代源）
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
@@ -367,7 +371,7 @@ async function main() {
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
-        if (isNaN(t) || t <= 0) return true; // 无时间的（多为实时抓取）默认保留
+        if (isNaN(t) || t <= 0) return false; // 日期缺失直接丢弃，避免旧文伪装成最新
         return (Date.now() - t) <= MAX_AGE_MS;
     });
     console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (丢弃 >3天旧文)`);
