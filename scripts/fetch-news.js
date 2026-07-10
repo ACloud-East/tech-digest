@@ -99,9 +99,9 @@ function parseDateFromText(text) {
             return dt.toISOString();
         }
     }
-    // 7) MM-DD（今年）
-    m = text.match(/(?<!\d)(\d{1,2})[-/](\d{1,2})(?!\d)/);
-    if (m) { const dt = new Date(Date.UTC(y0, +m[1] - 1, +m[2], -8, 0, 0, 0)); if (!isNaN(dt.getTime())) return dt.toISOString(); }
+    // 注：不再支持孤立的 "MM-DD" 解析——"Win11/10""Redmi 12/13" 等版本号会被
+    // 误判为日期（如 11/10 → 11月10日），且多为未来日期，反而会触发下面的未来钳制
+    // 把旧文伪装成"刚发布"。取不到可靠日期的文章将在新鲜度过滤中被丢弃。
     return '';
 }
 
@@ -447,14 +447,18 @@ async function main() {
     });
     console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (丢弃 >3天旧文)`);
 
-    // 修正未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常
+    // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
+    // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
+    // 绝不回填为"现在"（否则旧文会伪装成刚发布——之前 2015 年的快科技旧文即因此被显示成"刚刚"）。
     const nowIso = Date.now();
     let futureFixed = 0;
-    unique.forEach(a => {
+    unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
-        if (!isNaN(t) && t > nowIso) { a.time = new Date(nowIso).toISOString(); futureFixed++; }
+        // 允许 1 分钟内的微小误差（解析/时区抖动），超出则视为误判/异常，直接丢弃
+        if (!isNaN(t) && t > nowIso + 60000) { futureFixed++; return false; }
+        return true;
     });
-    if (futureFixed) console.log(`🛠 修正未来时间戳: ${futureFixed} 篇 → 当前时间`);
+    if (futureFixed) console.log(`🛠 剔除误判/未来时间戳: ${futureFixed} 篇`);
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
