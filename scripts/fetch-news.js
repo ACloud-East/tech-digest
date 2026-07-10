@@ -70,7 +70,10 @@ function parseDateFromText(text) {
     // 1) URL 中的 YYYYMMDD（如 news.cn/tech/20260710/...）
     m = text.match(/(20\d{2})(\d{2})(\d{2})/);
     if (m) { const dt = cnUTC(+m[1], +m[2], +m[3]); if (dt) return dt.toISOString(); }
-    // 2) 绝对日期 YYYY-MM-DD / YYYY/MM/DD / YYYY年MM月DD日
+    // 2) 绝对日期+时间 YYYY-MM-DD HH:MM[:SS]（中国时间，如 163 媒体页）
+    m = text.match(/(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})\D+(\d{1,2}):(\d{2})/);
+    if (m) { const dt = cnUTC(+m[1], +m[2], +m[3], +m[4], +m[5]); if (dt) return dt.toISOString(); }
+    // 2b) 绝对日期 YYYY-MM-DD / YYYY/MM/DD / YYYY年MM月DD日
     m = text.match(/(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})/);
     if (m) { const dt = cnUTC(+m[1], +m[2], +m[3]); if (dt) return dt.toISOString(); }
     // 3) 相对：X分钟前 / X小时前（与时区无关）
@@ -368,29 +371,65 @@ const htmlSources = [
         }
     },
     {
-        name: '机器之心', url: 'https://www.jiqizhixin.com/', color: '#512da8',
+        // 机器之心官网(jiqizhixin.com)已启用反爬，首页/文章页均返回挑战页，无法直爬。
+        // 改用其官方网易号「机器之心Pro」媒体页：可直连、含当天最新文章、链接为真实可点文章页。
+        name: '机器之心', url: 'https://www.163.com/dy/media/T1473761139764.html', color: '#512da8',
         extract: ($) => {
             const items = [];
             $('a').each((i, el) => {
                 const $el = $(el);
-                const title = $el.text().trim();
+                const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && href.includes('jiqizhixin.com/articles')) {
-                    if (href.startsWith('/')) href = 'https://www.jiqizhixin.com' + href;
+                if (title.length > 15 && title.length < 120 && /163\.com\/dy\/article\//.test(href)) {
+                    if (href.startsWith('/')) href = 'https://www.163.com' + href;
+                    href = href.split('?')[0]; // 去掉 ?spss= 跟踪参数
                     const card = $el.closest('li, div, article');
-                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
+                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + href;
                     items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
-            return items.slice(0, 50);
+            return items.slice(0, 60);
         }
     },
 ];
 
+// ========== 4. Google News RSS（反爬/无RSS源的可靠兜底） ==========
+// 部分源官网反爬严重(如 pingwest)、RSSHub 公共实例频繁 503，直接用 Google News
+// 站点检索获取近 3 天真实文章（标题/时间准确，链接为 news.google.com 重定向，
+// 点击后在浏览器中解析到原文，不会跳到站点首页）。
+const googleNewsSources = [
+    { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
+    { name: '网易科技', site: '163.com/dy', color: '#e60012' },
+];
+
+async function fetchGoogleNews(src, existingTitles) {
+    try {
+        console.log(`[GNews] ${src.name}`);
+        const q = encodeURIComponent('site:' + src.site);
+        const url = `https://news.google.com/rss/search?q=${q}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans`;
+        const feed = await parser.parseURL(url);
+        const now = Date.now();
+        const items = [];
+        for (const it of (feed.items || [])) {
+            const t = new Date(it.isoDate || it.pubDate || 0).getTime();
+            if (isNaN(t) || (now - t) > 3 * 86400000) continue; // 仅保留近 3 天
+            // 去掉 Google News 追加的 " - 站点名" 后缀
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163)\s*$/, '').trim();
+            if (!title || title === src.name) continue; // 跳过频道/栏目入口
+            // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
+            if (existingTitles.has(title)) continue;
+            items.push(makeArticle(src, { title, url: it.link || '', time: it.isoDate || it.pubDate || '' }));
+            existingTitles.add(title);
+        }
+        console.log(`  => ${items.length}条(近3天, 已去重)`);
+        return items;
+    } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
+}
+
 // ========== 纯科技源：跳过相关性过滤，全抓 ==========
 // 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
 const MIXED_SOURCES = ['澎湃新闻', '澎湃', '华尔街见闻'];
-[...standardSources, ...manualSources, ...htmlSources].forEach(s => {
+[...standardSources, ...manualSources, ...htmlSources, ...googleNewsSources].forEach(s => {
     if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
 });
 
@@ -402,6 +441,8 @@ async function main() {
     for (const src of standardSources) allArticles.push(...(await fetchStandard(src)));
     for (const src of manualSources) allArticles.push(...(await fetchManual(src)));
     for (const src of htmlSources) allArticles.push(...(await scrapeHTML(src)));
+    const existingTitles = new Set(allArticles.map(a => a.title));
+    for (const src of googleNewsSources) allArticles.push(...(await fetchGoogleNews(src, existingTitles)));
 
     // 去重
     const seen = new Set();
