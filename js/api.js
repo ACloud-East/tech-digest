@@ -50,16 +50,9 @@ const API = {
     async fetchWeiboHot() {
         const key = 'weibo_hot';
         const c = this.getCache(key); if (c) return c;
+        // 直接走 uapis.cn 聚合接口（已带 CORS 头）；不再直连 weibo.com，避免跨域报错
         const all = [];
         try { const d = await this.fetchHotFromUApi('weibo'); all.push(...d); } catch(e){}
-        try {
-            const d = await this.fetchJSON('https://weibo.com/ajax/side/hotSearch');
-            if (d && d.data && d.data.realtime) {
-                d.data.realtime.forEach(item => {
-                    all.push({ title: item.word || item.note || '', url: `https://s.weibo.com/weibo?q=${encodeURIComponent(item.word||'')}`, tag: item.label_name || '' });
-                });
-            }
-        } catch(e){}
         const result = this.uniqueFilter(all);
         this.setCache(key, result);
         return result;
