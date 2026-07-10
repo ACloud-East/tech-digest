@@ -300,6 +300,7 @@ const app = createApp({
             if (!ts) return '';
             try {
                 const d = new Date(ts), n = new Date(), diff = n - d;
+                if (diff < 0) return '刚刚'; // 来源时间戳在未来时兜底，避免显示负数
                 if (diff < 3600000) return `${Math.floor(diff/60000)}分钟前`;
                 if (diff < 86400000) return `${Math.floor(diff/3600000)}小时前`;
                 if (diff < 604800000) return `${Math.floor(diff/86400000)}天前`;

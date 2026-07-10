@@ -371,6 +371,16 @@ async function main() {
         return (Date.now() - t) <= MAX_AGE_MS;
     });
     console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (丢弃 >3天旧文)`);
+
+    // 修正未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常
+    const nowIso = Date.now();
+    let futureFixed = 0;
+    unique.forEach(a => {
+        const t = new Date(a.time || 0).getTime();
+        if (!isNaN(t) && t > nowIso) { a.time = new Date(nowIso).toISOString(); futureFixed++; }
+    });
+    if (futureFixed) console.log(`🛠 修正未来时间戳: ${futureFixed} 篇 → 当前时间`);
+
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
     const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
