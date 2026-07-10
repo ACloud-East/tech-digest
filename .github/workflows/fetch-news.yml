@@ -2,8 +2,8 @@ name: Fetch Tech News Daily
 
 on:
   schedule:
-    # 每天北京时间 8:00、14:00、20:00 各抓取一次
-    - cron: '0 0,6,12 * * *'
+    # 每 2 小时抓取一次（UTC 0/2/4...22 点 = 北京时间 8/10/12...6 点），最大限度保证看板新鲜
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 jobs:

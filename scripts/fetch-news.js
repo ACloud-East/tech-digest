@@ -119,10 +119,10 @@ async function fetchStandard(src) {
         }
         const items = (feed.items || []).map(item => makeArticle(src, {
             title: item.title, description: item.contentSnippet || item.content || item.summary || '',
-            url: item.link || item.guid || '', time: item.pubDate || item.isoDate || ''
+            url: item.link || item.guid || '', time: item.isoDate || item.pubDate || ''
         }));
-        const filtered = items.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        const filtered = src.techOnly ? items : items.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
@@ -159,23 +159,23 @@ async function fetchManual(src) {
         console.log(`[XML ] ${src.name}`);
         const parsed = await fetchAndParseXML(src.url);
         const items = extractRSSItems(parsed).map(item => makeArticle(src, item));
-        const filtered = items.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        const filtered = src.techOnly ? items : items.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
 
 // ========== 3. Cheerio HTML页面抓取 ==========
-async function scrapeHTML(name, url, color, extractFn) {
+async function scrapeHTML(src) {
     try {
-        console.log(`[HTML] ${name}`);
-        const resp = await fetch(url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: 15000 });
+        console.log(`[HTML] ${src.name}`);
+        const resp = await fetch(src.url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: 15000 });
         const html = await resp.text();
         const $ = cheerio.load(html);
-        const items = extractFn($, url);
-        const articles = items.map(item => makeArticle({ name, color }, item));
-        const filtered = articles.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条, 科技${filtered.length}条`);
+        const items = src.extract($, src.url);
+        const articles = items.map(item => makeArticle(src, item));
+        const filtered = src.techOnly ? articles : articles.filter(i => isRelevant(i.title + ' ' + i.description));
+        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
@@ -195,7 +195,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 40);
+            return items.slice(0, 60);
         }
     },
     {
@@ -211,7 +211,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 40);
+            return items.slice(0, 60);
         }
     },
     {
@@ -227,7 +227,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 30);
+            return items.slice(0, 50);
         }
     },
     {
@@ -243,7 +243,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 30);
+            return items.slice(0, 50);
         }
     },
     {
@@ -259,7 +259,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 30);
+            return items.slice(0, 50);
         }
     },
     {
@@ -291,7 +291,7 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 25);
+            return items.slice(0, 50);
         }
     },
     {
@@ -307,10 +307,17 @@ const htmlSources = [
                     items.push({ title, url: href, time: new Date().toISOString() });
                 }
             });
-            return items.slice(0, 25);
+            return items.slice(0, 50);
         }
     },
 ];
+
+// ========== 纯科技源：跳过相关性过滤，全抓 ==========
+// 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
+const MIXED_SOURCES = ['澎湃新闻', '澎湃', '华尔街见闻'];
+[...standardSources, ...manualSources, ...htmlSources].forEach(s => {
+    if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
+});
 
 // ========== 主流程 ==========
 async function main() {
@@ -319,11 +326,11 @@ async function main() {
 
     for (const src of standardSources) allArticles.push(...(await fetchStandard(src)));
     for (const src of manualSources) allArticles.push(...(await fetchManual(src)));
-    for (const src of htmlSources) allArticles.push(...(await scrapeHTML(src.name, src.url, src.color, src.extract)));
+    for (const src of htmlSources) allArticles.push(...(await scrapeHTML(src)));
 
     // 去重
     const seen = new Set();
-    const unique = [];
+    let unique = [];
     for (const a of allArticles) {
         const key = (a.title + a.url).slice(0, 120);
         if (!seen.has(key)) { seen.add(key); unique.push(a); }
@@ -354,6 +361,17 @@ async function main() {
             console.log('⚠️ 种子数据读取失败:', e.message);
         }
     }
+
+    // 新鲜度过滤：丢弃超过 3 天的旧文，保证看板前列始终是最新内容
+    const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
+    const before = unique.length;
+    unique = unique.filter(a => {
+        const t = new Date(a.time || 0).getTime();
+        if (isNaN(t) || t <= 0) return true; // 无时间的（多为实时抓取）默认保留
+        return (Date.now() - t) <= MAX_AGE_MS;
+    });
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (丢弃 >3天旧文)`);
+    unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
     const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
