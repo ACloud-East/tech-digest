@@ -53,14 +53,66 @@ function extractTags(text) {
     return tags.slice(0, 3);
 }
 function stripHtml(html) { if (!html) return ''; return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+// 从文本/URL 中解析真实发布时间，支持多种中文站点格式；
+// 解析失败返回 ''（缺日期的文章会在新鲜度过滤中被丢弃，绝不再伪造为"现在"）。
+// 所有 HTML 源均为中国站点，统一按中国时间(UTC+8)解释，保证在任意时区的
+// 运行环境（本地 UTC+8 / GitHub Actions UTC）下结果一致且正确。
+function parseDateFromText(text) {
+    if (!text) return '';
+    const now = new Date();
+    const y0 = now.getUTCFullYear(), mo0 = now.getUTCMonth(), d0 = now.getUTCDate();
+    const cnUTC = (y, mo, d, h, m) => {
+        const dt = new Date(Date.UTC(y, mo - 1, d, (h | 0) - 8, m | 0, 0, 0));
+        return isNaN(dt.getTime()) ? null : dt;
+    };
+    let m;
+    // 1) URL 中的 YYYYMMDD（如 news.cn/tech/20260710/...）
+    m = text.match(/(20\d{2})(\d{2})(\d{2})/);
+    if (m) { const dt = cnUTC(+m[1], +m[2], +m[3]); if (dt) return dt.toISOString(); }
+    // 2) 绝对日期 YYYY-MM-DD / YYYY/MM/DD / YYYY年MM月DD日
+    m = text.match(/(20\d{2})[-/年.](\d{1,2})[-/月.](\d{1,2})/);
+    if (m) { const dt = cnUTC(+m[1], +m[2], +m[3]); if (dt) return dt.toISOString(); }
+    // 3) 相对：X分钟前 / X小时前（与时区无关）
+    m = text.match(/(\d+)\s*分钟前/);
+    if (m) return new Date(now.getTime() - (+m[1]) * 60000).toISOString();
+    m = text.match(/(\d+)\s*小时前/);
+    if (m) return new Date(now.getTime() - (+m[1]) * 3600000).toISOString();
+    // 4) 昨天 / 前天（可带 HH:MM，按中国时间）
+    const hm = text.match(/(\d{1,2}):(\d{2})/); let hh = 0, mm = 0;
+    if (hm) { hh = +hm[1]; mm = +hm[2]; }
+    if (/昨天/.test(text)) { const dt = new Date(now.getTime() - 86400000); dt.setUTCHours(hh - 8, mm, 0, 0); return dt.toISOString(); }
+    if (/前天/.test(text)) { const dt = new Date(now.getTime() - 2 * 86400000); dt.setUTCHours(hh - 8, mm, 0, 0); return dt.toISOString(); }
+    // 5) 今天 HH:MM（中国时间；解析到未来则回退一天）
+    if (hm) {
+        const dt = new Date(Date.UTC(y0, mo0, d0, hh - 8, mm, 0, 0));
+        if (!isNaN(dt.getTime())) { if (dt.getTime() > now.getTime()) dt.setUTCDate(dt.getUTCDate() - 1); return dt.toISOString(); }
+    }
+    // 6) X日（本月；若大于今天则视为上月）
+    m = text.match(/(\d{1,2})\s*日/);
+    if (m) {
+        const day = +m[1];
+        const valid = new Date(Date.UTC(y0, mo0, day)); // 校验该日合法（如 32日→下月1日）
+        if (valid.getUTCDate() === day) {
+            const dt = new Date(Date.UTC(y0, mo0, day, -8, 0, 0, 0)); // 中国当天零点
+            if (dt.getTime() > now.getTime()) dt.setUTCMonth(dt.getUTCMonth() - 1);
+            return dt.toISOString();
+        }
+    }
+    // 7) MM-DD（今年）
+    m = text.match(/(?<!\d)(\d{1,2})[-/](\d{1,2})(?!\d)/);
+    if (m) { const dt = new Date(Date.UTC(y0, +m[1] - 1, +m[2], -8, 0, 0, 0)); if (!isNaN(dt.getTime())) return dt.toISOString(); }
+    return '';
+}
+
 function makeArticle(source, item) {
     return {
         source: source.name, sourceColor: source.color,
         title: (item.title || '').trim(),
         description: stripHtml(item.description || ''),
         url: item.url || '',
-        // 注意：缺日期时绝不回填"当前时间"，否则旧文会被伪装成刚发布、
-        // 还能骗过新鲜度过滤继续置顶。HTML 抓取源会在 extract 中显式给 now。
+        // 缺日期时绝不回填"当前时间"：旧文会伪装成刚发布并骗过新鲜度过滤。
+        // HTML 抓取源必须在 extract 中调用 parseDateFromText 提取真实时间。
         time: item.time || '',
         tags: extractTags(item.title + ' ' + (item.description || ''))
     };
@@ -196,7 +248,10 @@ const htmlSources = [
                 if (title.length > 15 && title.length < 120 && href && !title.match(/^(首页|登录|注册|更多|下一页|上一页|搜索)$/)) {
                     if (href.startsWith('/')) href = 'https://www.mydrivers.com' + href;
                     if (!href.startsWith('http')) return;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    // 时间在同 <li> 内的 <span class="t">（如 16:58 / 8日）
+                    const li = $el.closest('li');
+                    const ctx = li.length ? li.text() : ($el.text() + ' ' + $el.parent().text());
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 60);
@@ -212,7 +267,11 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && href.includes('leiphone.com') && !title.match(/^(首页|登录|注册|更多|下一页)$/)) {
                     if (href.startsWith('/')) href = 'https://www.leiphone.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    // 时间在同级 <div class="time">（如 13分钟前 / 昨天 21:03）
+                    const card = $el.closest('div, li, article');
+                    const tm = card.find('.time').first().text().trim();
+                    const ctx = (tm || (card.length ? card.text() : $el.text())) + ' ' + href;
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 60);
@@ -228,7 +287,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && (href.startsWith('/article/') || href.includes('donews.com'))) {
                     if (href.startsWith('/')) href = 'https://www.donews.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    // 日期在配图 src 中（如 .../2026/07/09/...）
+                    const ctx = $el.html() + ' ' + href + ' ' + $el.text();
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 50);
@@ -244,7 +305,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && (href.startsWith('/tech/') || href.includes('news.cn/tech'))) {
                     if (href.startsWith('/')) href = 'http://www.news.cn' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    // 日期在 URL 路径中（如 /tech/20260710/...）
+                    const ctx = href + ' ' + $el.text() + ' ' + $el.parent().text();
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 50);
@@ -260,7 +323,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && href.includes('huxiu.com/article')) {
                     if (href.startsWith('/')) href = 'https://www.huxiu.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    const card = $el.closest('li, div, article');
+                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 50);
@@ -276,7 +341,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && (href.includes('wallstreetcn.com/articles') || href.startsWith('/articles/'))) {
                     if (href.startsWith('/')) href = 'https://wallstreetcn.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    const card = $el.closest('li, div, article');
+                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 30);
@@ -292,7 +359,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && href.includes('pingwest.com')) {
                     if (href.startsWith('/')) href = 'https://www.pingwest.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    const card = $el.closest('li, div, article');
+                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 50);
@@ -308,7 +377,9 @@ const htmlSources = [
                 let href = $el.attr('href') || '';
                 if (title.length > 15 && title.length < 120 && href.includes('jiqizhixin.com/articles')) {
                     if (href.startsWith('/')) href = 'https://www.jiqizhixin.com' + href;
-                    items.push({ title, url: href, time: new Date().toISOString() });
+                    const card = $el.closest('li, div, article');
+                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
+                    items.push({ title, url: href, time: parseDateFromText(ctx) });
                 }
             });
             return items.slice(0, 50);
