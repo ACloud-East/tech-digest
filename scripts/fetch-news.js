@@ -10,7 +10,8 @@ const fs = require('fs');
 const path = require('path');
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-const parser = new Parser({ timeout: 15000, headers: { 'User-Agent': UA, 'Accept': 'application/rss+xml, application/xml, text/xml, */*' }, requestOptions: { rejectUnauthorized: false } });
+const FETCH_TIMEOUT = 8000; // 统一超时8秒（大部分源1-3秒响应，失败快速跳过）
+const parser = new Parser({ timeout: FETCH_TIMEOUT, headers: { 'User-Agent': UA, 'Accept': 'application/rss+xml, application/xml, text/xml, */*' }, requestOptions: { rejectUnauthorized: false } });
 
 // ========== 关键词 ==========
 const techKeywords = [
@@ -138,21 +139,11 @@ const standardSources = [
     { name: 'MacRumors', url: 'https://www.macrumors.com/macrumors.xml', color: '#1d4ed8' },
     { name: '超能网', url: 'https://www.expreview.com/rss.php', color: '#00a0e9' },
     { name: '爱搞机', url: 'https://www.igao7.com/feed', color: '#ff6a00' },
-    // RSSHub 公共实例路由（反爬/无RSS网站替代源）
+    // 以下源HTML抓取不稳定/反爬，保留RSSHub兜底：
+    // （RSSHub超时8秒，成功则快于HTML，失败不影响并发总耗时）
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
-    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
-    { name: '机器之心', url: 'https://rsshub.rssforever.com/jiqizhixin', color: '#512da8' },
-    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', color: '#00c4ff' },
-    { name: '网易科技', url: 'https://rsshub.rssforever.com/163/dy/T1348631808562', color: '#e60012' },
-    { name: 'cnBeta', url: 'https://rsshub.rssforever.com/cnbeta', color: '#009a61' },
-    { name: '澎湃新闻', url: 'https://rsshub.rssforever.com/thepaper/featured', color: '#1e88e5' },
-    // 使用不同RSSHub实例分散负载
-    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', url2: 'https://rsshub.app/pingwest/status', color: '#ff5722' },
-    { name: '机器之心', url: 'https://rsshub.rssforever.com/jiqizhixin', url2: 'https://rsshub.app/jiqizhixin', color: '#512da8' },
-    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', url2: 'https://rsshub.app/geekpark/breakingnews', color: '#00c4ff' },
-    { name: '网易科技', url: 'https://rsshub.rssforever.com/163/dy/T1348631808562', url2: 'https://rsshub.app/163/dy/T1348631808562', color: '#e60012' },
-    // 新增国际科技媒体
+    // 国际科技媒体
     { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
     { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
     { name: 'Engadget', url: 'https://www.engadget.com/rss.xml', color: '#2b2d32' },
@@ -188,7 +179,7 @@ async function fetchStandard(src) {
 
 // ========== 2. 手动XML解析 ==========
 async function fetchAndParseXML(url) {
-    const resp = await fetch(url, { headers: { 'User-Agent': UA }, timeout: 15000 });
+    const resp = await fetch(url, { headers: { 'User-Agent': UA }, timeout: FETCH_TIMEOUT });
     let xml = await resp.text();
     xml = xml.replace(/&(?!(amp;|lt;|gt;|quot;|apos;|#\d+;|#x[0-9a-fA-F]+;))/g, '&amp;');
     xml = xml.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
@@ -210,7 +201,7 @@ function extractRSSItems(parsed) {
 
 const manualSources = [
     { name: 'Odaily', url: 'https://www.odaily.news/feed', color: '#ffb300' },
-    { name: '澎湃', url: 'https://www.thepaper.cn/rss_24.xml', color: '#1e88e5' },
+    // 澎湃新闻已由 HTML 直抓覆盖（channel_119908 + list_27234）
 ];
 
 async function fetchManual(src) {
@@ -225,10 +216,77 @@ async function fetchManual(src) {
 }
 
 // ========== 3. Cheerio HTML页面抓取 ==========
+// 增量缓存：避免重复请求文章页提取日期
+const CACHE_PATH = path.join(__dirname, '..', 'data', 'fetch-cache.json');
+const CACHE_TTL = 24 * 3600 * 1000; // 24小时
+
+function loadCache() {
+    try {
+        if (fs.existsSync(CACHE_PATH)) {
+            const c = JSON.parse(fs.readFileSync(CACHE_PATH, 'utf8'));
+            if (Date.now() - (c.ts || 0) < CACHE_TTL) return c.articles || {};
+        }
+    } catch(e) { /* 静默 */ }
+    return {};
+}
+
+function saveCache(map) {
+    try {
+        fs.writeFileSync(CACHE_PATH, JSON.stringify({ ts: Date.now(), articles: map }));
+    } catch(e) { /* 静默 */ }
+}
+
+// 并发限流请求文章页，从 HTML 文本中提取首个 YYYY-MM-DD HH:MM[:SS] 作为发布时间
+// 增量模式：已缓存的文章直接复用日期，仅对新文章请求
+async function enrichArticleDates(items, batch = 10, delayMs = 300) {
+    const cache = loadCache();
+    let cached = 0, fetched = 0;
+    
+    // 先尝试从缓存匹配
+    const toFetch = [];
+    for (const it of items) {
+        const key = `${it.url}`;
+        if (cache[key] && cache[key].time) {
+            it.time = cache[key].time;
+            cached++;
+        } else {
+            toFetch.push(it);
+        }
+    }
+    
+    // 仅对新文章并发请求日期
+    for (let i = 0; i < toFetch.length; i += batch) {
+        const chunk = toFetch.slice(i, i + batch);
+        await Promise.allSettled(chunk.map(async (it) => {
+            try {
+                const r = await fetch(it.url, { headers: { 'User-Agent': UA, 'Accept-Language': 'zh-CN' }, timeout: FETCH_TIMEOUT });
+                const h = await r.text();
+                const m = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
+                if (m) it.time = m[0];
+            } catch(e) { /* 静默 */ }
+        }));
+        fetched += chunk.length;
+        if (i + batch < toFetch.length) await new Promise(r => setTimeout(r, delayMs));
+    }
+    
+    // 更新缓存
+    const newCache = {};
+    for (const it of items) {
+        if (it.time) newCache[it.url] = { time: it.time };
+    }
+    saveCache(newCache);
+    
+    const result = items.filter(it => it.time);
+    if (cached > 0 || fetched > 0) {
+        console.log(`    日期: 缓存${cached} + 请求${fetched} → ${result.length}篇有效`);
+    }
+    return result;
+}
+
 async function scrapeHTML(src) {
     try {
         console.log(`[HTML] ${src.name}`);
-        const resp = await fetch(src.url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: 15000 });
+        const resp = await fetch(src.url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: FETCH_TIMEOUT });
         const html = await resp.text();
         const $ = cheerio.load(html);
         // 支持异步 extract（如需要逐个请求文章页获取日期）
@@ -409,21 +467,35 @@ const htmlSources = [
                     if (!items.find(a => a.url === href)) items.push({ title: cleanTitle, url: href, time: '' });
                 }
             });
-            // 并发限流请求文章页提取日期（5 并发，间隔 1s，避免被限）
-            const batch = 5, delayMs = 1000;
-            for (let i = 0; i < items.length; i += batch) {
-                const chunk = items.slice(i, i + batch);
-                await Promise.allSettled(chunk.map(async (it) => {
-                    try {
-                        const r = await fetch(it.url, { headers: { 'User-Agent': UA, 'Accept-Language': 'zh-CN' }, timeout: 8000 });
-                        const h = await r.text();
-                        const m = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/);
-                        if (m) it.time = m[0]; // "YYYY-MM-DD HH:MM:SS" → parseDateFromText 可处理
-                    } catch(e) { /* 静默 */ }
-                }));
-                if (i + batch < items.length) await new Promise(r => setTimeout(r, delayMs));
-            }
-            return items.filter(it => it.time).slice(0, 60);
+            // 并发限流请求文章页提取日期（增量缓存自动跳过已请求过的文章）
+            return (await enrichArticleDates(items)).slice(0, 60);
+        }
+    },
+    {
+        // 澎湃新闻：原 RSSHub /thepaper/featured 精选以时政/社会/体育为主，科技含量低。
+        // 改为直接抓取科技频道(channel_119908) + 科学湃(list_27234) 两个纯科技栏目。
+        name: '澎湃新闻', url: 'https://www.thepaper.cn/channel_119908', color: '#1e88e5',
+        asyncExtract: async ($) => {
+            const items = [];
+            const addFromDoc = ($doc) => {
+                $doc('a').each((i, el) => {
+                    const $el = $doc(el);
+                    let href = $el.attr('href') || '';
+                    const title = $el.text().trim().replace(/\s+/g, ' ');
+                    if (!href || title.length < 12 || title.length > 90) return;
+                    if (!/newsDetail_forward_\d+/.test(href)) return;
+                    if (href.startsWith('/')) href = 'https://www.thepaper.cn' + href;
+                    if (!items.find(a => a.url === href)) items.push({ title, url: href, time: '' });
+                });
+            };
+            addFromDoc($);
+            // 合并科学湃栏目
+            try {
+                const res2 = await fetch('https://www.thepaper.cn/list_27234', { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: FETCH_TIMEOUT });
+                const html2 = await res2.text();
+                addFromDoc(cheerio.load(html2));
+            } catch(e) { /* 静默 */ }
+            return (await enrichArticleDates(items)).slice(0, 60);
         }
     },
 ];
@@ -433,6 +505,7 @@ const htmlSources = [
 // 站点检索获取近 3 天真实文章（标题/时间准确，链接为 news.google.com 重定向，
 // 点击后在浏览器中解析到原文，不会跳到站点首页）。
 const googleNewsSources = [
+    // 品玩 HTML 直抓不稳定（反爬），Google News 作为快速兜底
     { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
 ];
 
@@ -462,19 +535,40 @@ async function fetchGoogleNews(src, existingTitles) {
 
 // ========== 纯科技源：跳过相关性过滤，全抓 ==========
 // 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
-const MIXED_SOURCES = ['澎湃新闻', '澎湃', '华尔街见闻'];
+const MIXED_SOURCES = ['华尔街见闻'];
 [...standardSources, ...manualSources, ...htmlSources, ...googleNewsSources].forEach(s => {
     if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
 });
 
 // ========== 主流程 ==========
 async function main() {
-    console.log('=== TechDigest 新闻抓取 v3 ===\n');
+    console.log('=== TechDigest 新闻抓取 v4 (全并发) ===\n');
+    const startTime = Date.now();
     let allArticles = [];
 
-    for (const src of standardSources) allArticles.push(...(await fetchStandard(src)));
-    for (const src of manualSources) allArticles.push(...(await fetchManual(src)));
-    for (const src of htmlSources) allArticles.push(...(await scrapeHTML(src)));
+    // 全并发：所有源同时抓取，不再逐个等待
+    const allTasks = [
+        ...standardSources.map(s => ({ type: 'RSS', fn: () => fetchStandard(s) })),
+        ...manualSources.map(s => ({ type: 'XML', fn: () => fetchManual(s) })),
+        ...htmlSources.map(s => ({ type: 'HTML', fn: () => scrapeHTML(s) })),
+        ...googleNewsSources.map(s => ({ type: 'GNews', fn: () => fetchGoogleNews(s, new Set()) })),
+    ];
+    console.log(`🚀 并发启动 ${allTasks.length} 个抓取任务...\n`);
+
+    const results = await Promise.allSettled(allTasks.map(t => t.fn()));
+    let successCount = 0, failCount = 0;
+    results.forEach((r, i) => {
+        if (r.status === 'fulfilled' && Array.isArray(r.value)) {
+            allArticles.push(...r.value);
+            successCount++;
+        } else {
+            failCount++;
+            const err = r.status === 'rejected' ? r.reason?.message : 'empty';
+            if (err) console.log(`  ⚠️ ${allTasks[i].type} #${i+1} 失败: ${err.substring(0,40)}`);
+        }
+    });
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    console.log(`\n📊 抓取完成: ${successCount}/${allTasks.length} 成功, ${failCount} 失败, 耗时 ${elapsed}s`);
     const existingTitles = new Set(allArticles.map(a => a.title));
     for (const src of googleNewsSources) allArticles.push(...(await fetchGoogleNews(src, existingTitles)));
 
@@ -512,15 +606,18 @@ async function main() {
         }
     }
 
-    // 新鲜度过滤：丢弃超过 3 天的旧文，保证看板前列始终是最新内容
+    // 新鲜度过滤：丢弃旧文，保证看板前列始终是最新内容
+    // 标准窗口 3 天；澎湃新闻等更新较慢的源放宽至 7 天（科技频道多为编辑精选，发布节奏偏慢）
     const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
+    const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
         if (isNaN(t) || t <= 0) return false; // 日期缺失直接丢弃，避免旧文伪装成最新
-        return (Date.now() - t) <= MAX_AGE_MS;
+        const maxAge = a.source === '澎湃新闻' ? MAX_AGE_LONG_MS : MAX_AGE_MS;
+        return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (丢弃 >3天旧文)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天 / 澎湃7天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
@@ -543,8 +640,10 @@ async function main() {
 
     const bySource = {};
     unique.forEach(a => { bySource[a.source] = (bySource[a.source] || 0) + 1; });
+    const totalElapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     console.log('\n===== 最终统计 =====');
     console.log('总文章数:', unique.length);
+    console.log('总耗时:', totalElapsed + 's');
     Object.entries(bySource).sort((a,b) => b[1] - a[1]).forEach(([k, v]) => console.log(`  ${k}: ${v}`));
     console.log('\n已保存:', outPath);
 }

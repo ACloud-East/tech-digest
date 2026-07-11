@@ -5,7 +5,7 @@
  */
 const API = {
     cachePrefix: 'td35_',
-    cacheTTL: 5 * 60 * 1000,
+    cacheTTL: 30 * 1000, // 30秒：新闻更新快，用户希望刷新后立即看到最新数据
 
     getCache(key) {
         try {

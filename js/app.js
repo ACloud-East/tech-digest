@@ -209,7 +209,11 @@ const app = createApp({
         });
 
         const displayedTechNews = computed(() => techNews.value.slice(0, techDisplayCount.value));
-        const hasMoreTech = computed(() => techDisplayCount.value < techNews.value.length);
+        const hasMoreTech = computed(() => {
+            // 筛选或搜索时隐藏"加载更多"
+            if (techSourceFilter.value !== 'all' || techSearchQuery.value.trim()) return false;
+            return techDisplayCount.value < techNews.value.length;
+        });
 
         // ========== 热点看板方法 ==========
         function switchHotboardTab(tab) {
@@ -269,7 +273,8 @@ const app = createApp({
         }
 
         const filteredTechNews = computed(() => {
-            let articles = displayedTechNews.value;
+            // 来源筛选和搜索在全部数据中进行，不受"显示前N条"的限制
+            let articles = techNews.value;
             if (techSourceFilter.value !== 'all') {
                 const srcName = techSources.find(s => s.key === techSourceFilter.value)?.name;
                 if (srcName) articles = articles.filter(a => a.source === srcName);
@@ -280,6 +285,10 @@ const app = createApp({
                     a.title.toLowerCase().includes(q) ||
                     (a.description && a.description.toLowerCase().includes(q))
                 );
+            }
+            // 分页在前：只展示前 N 条（用户主动筛选或搜索时取消分页限制）
+            if (techSourceFilter.value === 'all' && !techSearchQuery.value.trim()) {
+                articles = articles.slice(0, techDisplayCount.value);
             }
             return articles;
         });
