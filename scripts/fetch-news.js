@@ -25,6 +25,13 @@ const STRONG_KEYWORDS = [
     '晶圆','3nm','5nm','ASML','ARM','RISC-V','海思','麒麟','昇腾','HBM','中芯国际',
     '新能源','电动车','特斯拉','比亚迪','蔚来','小鹏','理想','电池','充电','自动驾驶','FSD','固态电池',
     '宁德时代','小米汽车','SU7','Cybertruck','换电','800V','碳化硅',
+    // 汽车品牌（用户明确要求保留汽车/汽车品牌相关文章，含大众、劳斯莱斯等）
+    '大众','劳斯莱斯','宝马','奔驰','奥迪','丰田','本田','福特','通用','吉利','长城','长安','奇瑞',
+    '保时捷','法拉利','兰博基尼','沃尔沃','雷克萨斯','凯迪拉克','别克','雪佛兰','日产','马自达',
+    '现代','起亚','捷豹','路虎','宾利','迈凯伦','斯巴鲁','三菱','广汽','蔚来','小鹏','理想','问界',
+    // 车型/汽车通用词
+    '燃油车','混动','增程','SUV','跑车','轿车','皮卡','车展','发动机','变速箱','底盘',
+    '智能驾驶','辅助驾驶','车机','座舱','续航','充电桩','汽车品牌',
     '游戏','Steam','PS5','Xbox','Switch','电竞','3A','原神','黑神话','王者荣耀','DLSS','光追','虚幻引擎','云游戏',
     '电脑','笔记本','显卡','内存','SSD','主板','显示器','MacBook','ThinkPad','iPad','平板','机械键盘','鼠标','OLED','miniLED','DDR5',
     '软件','App','操作系统','Windows','macOS','浏览器','Chrome','WPS','开源','GitHub','Docker','Linux',
@@ -96,6 +103,7 @@ function extractTags(text) {
         '手机': ['手机','iphone','华为','小米','oppo','vivo','三星','荣耀','折叠屏','旗舰','智能手机','ios','android','鸿蒙','pixel','galaxy'],
         '芯片/半导体': ['芯片','半导体','cpu','gpu','npu','高通','联发科','英特尔','amd','英伟达','nvidia','台积电','光刻','asml','arm','risc-v','海思','麒麟'],
         '新能源/电动车': ['新能源','电动车','特斯拉','比亚迪','蔚来','小鹏','理想','电池','充电','自动驾驶','fsd','固态电池','cybertruck','换电'],
+        '汽车': ['汽车','大众','劳斯莱斯','宝马','奔驰','奥迪','丰田','本田','福特','吉利','长城','长安','奇瑞','保时捷','法拉利','沃尔沃','雷克萨斯','凯迪拉克','大众汽车','智能驾驶','辅助驾驶','混动','增程','suv'],
         '游戏': ['游戏','steam','ps5','xbox','switch','电竞','3a','原神','黑神话','dlss','光追'],
         '电脑硬件': ['电脑','笔记本','显卡','内存','ssd','主板','显示器','macbook','thinkpad','ipad','平板','机械键盘','鼠标','oled','miniled','ddr5'],
         '软件应用': ['软件','app','应用','操作系统','windows','macos','浏览器','chrome','开源','github','docker','linux'],
@@ -201,8 +209,8 @@ const standardSources = [
     // 注：cnBeta 原域名 cnbeta.com.tw 已被 MSN 收购，文章链接全部 302 跳转到 msn.cn
     // 的 Cookie 同意墙（用户点击即白屏）。已改为在 htmlSources 中直接抓取存活镜像
     // http://www.cn-beta.com/ 首页，得到真实可点击的 cn-beta.com 文章链接。
-    // 品玩：RSSHub 链接是真实 pingwest.com URL（非 Google News 重定向），可正常点击
-    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
+    // 品玩：官网(pingwest.com) 已启用 WAF，直连/RSSHub 全部 405/503，无法直爬；
+    // 改用 Google News (site:pingwest.com) 兜底（见 googleNewsSources），并由 seed 兜底。
     // 极客公园：RSSHub 链接是真实 geekpark.net URL（非 Google News 重定向），可正常点击
     { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', color: '#00c4ff' },
     // 国际科技媒体
@@ -533,24 +541,6 @@ const htmlSources = [
         }
     },
     {
-        name: '品玩', url: 'https://www.pingwest.com/', color: '#ff5722',
-        extract: ($) => {
-            const items = [];
-            $('a').each((i, el) => {
-                const $el = $(el);
-                const title = $el.text().trim();
-                let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && href.includes('pingwest.com')) {
-                    if (href.startsWith('/')) href = 'https://www.pingwest.com' + href;
-                    const card = $el.closest('li, div, article');
-                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
-            });
-            return items.slice(0, 50);
-        }
-    },
-    {
         // 机器之心官网(jiqizhixin.com)已启用反爬，首页/文章页均返回挑战页，无法直爬。
         // 改用其官方网易号「机器之心Pro」媒体页：可直连、含当天最新文章、链接为真实可点文章页。
         name: '机器之心', url: 'https://www.163.com/dy/media/T1473761139764.html', color: '#512da8',
@@ -652,8 +642,10 @@ const htmlSources = [
 // 站点检索获取近 3 天真实文章（标题/时间准确，链接为 news.google.com 重定向，
 // 点击后在浏览器中解析到原文，不会跳到站点首页）。
 const googleNewsSources = [
-    // 品玩/极客公园的 Google News 链接会白屏（<about:blank>），已全部改用直连源
-    // 保留此数组为空，避免提供无效链接
+    // 品玩官网(pingwest.com) 已启用阿里云 WAF，直连/RSSHub 全部 405/503 无法直爬。
+    // Google News 的 site:pingwest.com 检索可稳定返回近 3 天真实文章，且链接经
+    // Google 服务端代理，即使 pingwest 被墙在浏览器中仍可正常打开 —— 作为品玩实时源。
+    { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -712,8 +704,6 @@ async function main() {
     });
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     console.log(`\n📊 抓取完成: ${successCount}/${allTasks.length} 成功, ${failCount} 失败, 耗时 ${elapsed}s`);
-    const existingTitles = new Set(allArticles.map(a => a.title));
-    for (const src of googleNewsSources) allArticles.push(...(await fetchGoogleNews(src, existingTitles)));
 
     // 去重
     const seen = new Set();
@@ -722,6 +712,9 @@ async function main() {
         const key = (a.title + a.url).slice(0, 120);
         if (!seen.has(key)) { seen.add(key); unique.push(a); }
     }
+    // 各源实时抓取条数（用于「种子兜底」：仅在该源实时为 0 时注入种子）
+    const liveCountBySource = {};
+    unique.forEach(a => { liveCountBySource[a.source] = (liveCountBySource[a.source] || 0) + 1; });
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
@@ -740,9 +733,13 @@ async function main() {
             for (const sa of seedArts) {
                 const key = (sa.title + (sa.url || '')).slice(0, 120);
                 if (!seen.has(key)) {
+                    // 仅在该源「实时抓取为 0」时，才注入种子作为兜底，
+                    // 避免与新鲜实时数据重复/陈旧（如虎嗅/极客公园/网易科技有实时数据时不再注入种子）。
+                    if ((liveCountBySource[sa.source] || 0) > 0) continue;
                     // 同样经过相关性过滤，避免种子数据混入非科技内容
                     if (isRelevant(sa.title, sa.title + ' ' + (sa.description || ''), MIXED_SOURCES.includes(sa.source))) {
                         seen.add(key);
+                        sa.seedFallback = true; // 标记：新鲜度过滤放宽至 30 天（见下方）
                         unique.push(sa);
                         added++;
                     }
@@ -763,17 +760,19 @@ async function main() {
     const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
     const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园'];
-    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta', '虎嗅'];
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
         if (isNaN(t) || t <= 0) return false; // 日期缺失直接丢弃，避免旧文伪装成最新
         let maxAge = MAX_AGE_MS;
-        if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
+        // 种子兜底文章（实时为0时注入）同样放宽至 30 天，保证反爬源至少有内容
+        if (a.seedFallback) maxAge = MAX_AGE_MONTH_MS;
+        else if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
         else if (LONG_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_LONG_MS;
         return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/爱搞机Dev.to30天)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/爱搞机Dev.to虎嗅30天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
