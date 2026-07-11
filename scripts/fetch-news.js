@@ -33,7 +33,24 @@ const techKeywords = [
     '区块链','Web3','比特币','以太坊','NFT','DeFi','加密','数字货币','DAO','智能合约','Solana','数字人民币','元宇宙',
     'Tech','Technology','Apple','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC'
 ];
-function isRelevant(text) { if (!text) return false; const t = text.toLowerCase(); return techKeywords.some(k => t.includes(k.toLowerCase())); }
+// 非科技排除词：标题命中任一关键词即视为非科技，直接过滤（即使同时包含科技词）
+const nonTechExclude = [
+    '足球','世界杯','足协','联赛','体育赛事','奥运','亚运','全运会','世锦赛',
+    '电影上映','票房','导演','演员','周星驰','少林足球','功夫女足','大电影',
+    '旅游推介','文旅','风景区','景区','游客',
+    '考古','文物','东晋','古代史','博物馆',
+    '台风','暴雨','洪水','地震预警','防汛','水库','受灾',
+    '美食','小吃','菜谱','烹饪',
+    '演唱会','歌手新歌','音乐专辑','新歌发布',
+    '小说','文学奖','作家新书','诗歌',
+];
+function isRelevant(text) {
+    if (!text) return false;
+    const t = text.toLowerCase();
+    // 先排除明显的非科技主题
+    for (const kw of nonTechExclude) { if (t.includes(kw)) return false; }
+    return techKeywords.some(k => t.includes(k.toLowerCase()));
+}
 function extractTags(text) {
     if (!text) return [];
     const map = {
@@ -581,6 +598,11 @@ async function main() {
     }
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+
+    // 非科技硬过滤：即使来自纯科技源，标题命中排除词也直接丢弃
+    const beforeNonTech = unique.length;
+    unique = unique.filter(a => !nonTechExclude.some(kw => a.title.includes(kw)));
+    if (unique.length < beforeNonTech) console.log(`\n🧹 非科技过滤: ${beforeNonTech} → ${unique.length} 篇`);
 
     // 合并种子数据（4个反爬源的手动快照）
     const seedPath = path.join(__dirname, '..', 'data', 'seed-sources.json');
