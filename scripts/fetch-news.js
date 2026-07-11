@@ -31,6 +31,8 @@ const techKeywords = [
     '融资','IPO','上市','估值','投资','创投','VC','PE','创业','独角兽','红杉','高瓴','科创板','纳斯达克',
     '智能硬件','IoT','可穿戴','智能家居','AR','VR','XR','Vision Pro','Quest','机器人','无人机','3D打印','智能手表','Apple Watch','AirPods','扫地机器人',
     '区块链','Web3','比特币','以太坊','NFT','DeFi','加密','数字货币','DAO','智能合约','Solana','数字人民币','元宇宙',
+    '航天','火箭','卫星','SpaceX','星舰','商业航天','太空','空间站','探月',
+    'Codex','Claude','Cowork','Token','Copilot','Cursor','Windsurf','Devin',
     'Tech','Technology','Apple','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC'
 ];
 // 非科技排除词：标题命中任一关键词即视为非科技，直接过滤（即使同时包含科技词）
@@ -559,7 +561,7 @@ async function fetchGoogleNews(src, existingTitles) {
 
 // ========== 纯科技源：跳过相关性过滤，全抓 ==========
 // 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
-const MIXED_SOURCES = ['华尔街见闻'];
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅'];
 [...standardSources, ...manualSources, ...htmlSources, ...googleNewsSources].forEach(s => {
     if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
 });
