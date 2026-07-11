@@ -175,6 +175,20 @@ const TechFilter = {
     },
 
     /**
+     * 关键词匹配：短 ASCII 关键词（如 AI/AR/VR/PE/App）使用单词边界，
+     * 避免子串误触发（"AR" 不能匹配 war/car，"AI" 不能匹配 email/rain）。
+     * @param {string} text - 已 lowercased 的文本
+     * @param {string} keyword - 关键词
+     * @returns {boolean}
+     */
+    kwMatch(text, keyword) {
+        if (/^[A-Za-z]+$/.test(keyword) && keyword.length <= 4) {
+            return new RegExp('\\b' + keyword + '\\b', 'i').test(text);
+        }
+        return text.toLowerCase().includes(keyword.toLowerCase());
+    },
+
+    /**
      * 判断文本是否与科技数码领域相关（加权判定）
      * 规则：命中任意硬科技关键词(score≥2) 即相关；
      *       仅命中软相关词时，需累计分值 ≥2（即 ≥2 个软词）才相关。
@@ -189,7 +203,7 @@ const TechFilter = {
         for (const [category, keywords] of Object.entries(this.keywords)) {
             const weight = this.categoryWeight[category] || 1;
             for (const keyword of keywords) {
-                if (lowerText.includes(keyword.toLowerCase())) {
+                if (this.kwMatch(lowerText, keyword)) {
                     score += weight;
                     break; // 同一类别只计一次权重
                 }
@@ -213,7 +227,7 @@ const TechFilter = {
 
         for (const [category, keywords] of Object.entries(this.keywords)) {
             for (const keyword of keywords) {
-                if (lowerText.includes(keyword.toLowerCase())) {
+                if (this.kwMatch(lowerText, keyword)) {
                     categories.push(category);
                     break;
                 }
