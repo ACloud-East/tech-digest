@@ -231,7 +231,8 @@ async function scrapeHTML(src) {
         const resp = await fetch(src.url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: 15000 });
         const html = await resp.text();
         const $ = cheerio.load(html);
-        const items = src.extract($, src.url);
+        // 支持异步 extract（如需要逐个请求文章页获取日期）
+        const items = src.asyncExtract ? await src.asyncExtract($, src.url) : src.extract($, src.url);
         const articles = items.map(item => makeArticle(src, item));
         const filtered = src.techOnly ? articles : articles.filter(i => isRelevant(i.title + ' ' + i.description));
         console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
@@ -391,6 +392,40 @@ const htmlSources = [
             return items.slice(0, 60);
         }
     },
+    {
+        // 网易科技：tech.163.com 科技频道首页为服务端渲染，直链 100% 科技内容（非综合门户）。
+        // 日期通过并发请求每篇文章页提取（HTML 中首个 YYYY-MM-DD HH:MM:SS 即发布时间）。
+        name: '网易科技', url: 'https://tech.163.com/', color: '#e60012',
+        asyncExtract: async ($) => {
+            const items = [];
+            $('a').each((i, el) => {
+                const $el = $(el);
+                const title = $el.text().trim().replace(/\s+/g, ' ');
+                let href = ($el.attr('href') || '').split('?')[0];
+                if (title.length > 10 && title.length < 80 && /\/article\//.test(href) &&
+                    !title.includes('查看更多') && !title.includes('下一页') && !title.includes('标签')) {
+                    // 清理标题尾部的时间戳（如 "标题 09:26"）
+                    const cleanTitle = title.replace(/\s+\d{2}:\d{2}$/, '');
+                    if (!items.find(a => a.url === href)) items.push({ title: cleanTitle, url: href, time: '' });
+                }
+            });
+            // 并发限流请求文章页提取日期（5 并发，间隔 1s，避免被限）
+            const batch = 5, delayMs = 1000;
+            for (let i = 0; i < items.length; i += batch) {
+                const chunk = items.slice(i, i + batch);
+                await Promise.allSettled(chunk.map(async (it) => {
+                    try {
+                        const r = await fetch(it.url, { headers: { 'User-Agent': UA, 'Accept-Language': 'zh-CN' }, timeout: 8000 });
+                        const h = await r.text();
+                        const m = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/);
+                        if (m) it.time = m[0]; // "YYYY-MM-DD HH:MM:SS" → parseDateFromText 可处理
+                    } catch(e) { /* 静默 */ }
+                }));
+                if (i + batch < items.length) await new Promise(r => setTimeout(r, delayMs));
+            }
+            return items.filter(it => it.time).slice(0, 60);
+        }
+    },
 ];
 
 // ========== 4. Google News RSS（反爬/无RSS源的可靠兜底） ==========
@@ -399,7 +434,6 @@ const htmlSources = [
 // 点击后在浏览器中解析到原文，不会跳到站点首页）。
 const googleNewsSources = [
     { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
-    { name: '网易科技', site: '163.com/dy', color: '#e60012' },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
