@@ -162,7 +162,9 @@ const standardSources = [
     // （RSSHub超时8秒，成功则快于HTML，失败不影响并发总耗时）
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
-    { name: 'cnBeta', url: 'https://rsshub.rssforever.com/cnbeta', url2: 'https://rsshub.app/cnbeta', color: '#009a61' },
+    // 注：cnBeta 原域名 cnbeta.com.tw 已被 MSN 收购，文章链接全部 302 跳转到 msn.cn
+    // 的 Cookie 同意墙（用户点击即白屏）。已改为在 htmlSources 中直接抓取存活镜像
+    // http://www.cn-beta.com/ 首页，得到真实可点击的 cn-beta.com 文章链接。
     // 品玩：RSSHub 链接是真实 pingwest.com URL（非 Google News 重定向），可正常点击
     { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
     // 极客公园：RSSHub 链接是真实 geekpark.net URL（非 Google News 重定向），可正常点击
@@ -260,7 +262,10 @@ function loadCache() {
 
 function saveCache(map) {
     try {
-        fs.writeFileSync(CACHE_PATH, JSON.stringify({ ts: Date.now(), articles: map }));
+        // 合并写入：多个 HTML 源并发抓取时，避免后写的覆盖先写的缓存
+        const existing = loadCache();
+        const merged = Object.assign({}, existing, map);
+        fs.writeFileSync(CACHE_PATH, JSON.stringify({ ts: Date.now(), articles: merged }));
     } catch(e) { /* 静默 */ }
 }
 
@@ -309,6 +314,44 @@ async function enrichArticleDates(items, batch = 10, delayMs = 300) {
         console.log(`    日期: 缓存${cached} + 请求${fetched} → ${result.length}篇有效`);
     }
     return result;
+}
+
+// cnBeta 专用：直接抓取 http://www.cn-beta.com/ 镜像首页得到的文章链接可正常点击，
+// 但首页无发布时间，需逐个请求文章页提取「YYYY-MM-DD HH:MM」与 meta 摘要。
+// （原 cnbeta.com.tw 已被 MSN 收购，链接跳转 MSN Cookie 墙导致白屏，故改用镜像）
+async function enrichCnBetaArticles(items, batch = 10, delayMs = 200) {
+    const cache = loadCache();
+    const toFetch = [];
+    for (const it of items) {
+        const c = cache[it.url];
+        if (c && (c.time || c.description)) {
+            it.time = c.time || it.time;
+            it.description = c.description || it.description;
+        } else {
+            toFetch.push(it);
+        }
+    }
+    for (let i = 0; i < toFetch.length; i += batch) {
+        const chunk = toFetch.slice(i, i + batch);
+        await Promise.allSettled(chunk.map(async (it) => {
+            try {
+                const r = await fetch(it.url, { headers: { 'User-Agent': UA, 'Accept-Language': 'zh-CN' }, timeout: FETCH_TIMEOUT });
+                const h = await r.text();
+                const dm = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
+                if (dm) it.time = dm[0];
+                const metaM = h.match(/<meta\s+name=["']description["']\s+content=["']([^"']{20,300})["']/i)
+                    || h.match(/<meta\s+content=["']([^"']{20,300})["']\s+name=["']description["']/i);
+                if (metaM) it.description = metaM[1].trim();
+            } catch(e) { /* 静默 */ }
+        }));
+        if (i + batch < toFetch.length) await new Promise(r => setTimeout(r, delayMs));
+    }
+    const newCache = {};
+    for (const it of items) {
+        if (it.time || it.description) newCache[it.url] = { time: it.time, description: it.description };
+    }
+    if (Object.keys(newCache).length) saveCache(newCache);
+    return items;
 }
 
 async function scrapeHTML(src) {
@@ -526,6 +569,32 @@ const htmlSources = [
             return (await enrichArticleDates(items)).slice(0, 60);
         }
     },
+    {
+        // cnBeta：原域名 cnbeta.com.tw 已被 MSN 收购，文章链接全部 302 跳转到 msn.cn 的
+        // Cookie 同意墙（用户点击即白屏，看不到正文）。改用存活镜像 http://www.cn-beta.com/
+        // 直接抓取首页，得到真实可点击的 cn-beta.com 文章链接（如 /redian/52280.html）。
+        // 首页无发布时间，需逐个请求文章页提取日期与摘要（enrichCnBetaArticles）。
+        name: 'cnBeta', url: 'http://www.cn-beta.com/', color: '#009a61',
+        asyncExtract: async ($) => {
+            const items = [];
+            const seen = new Set();
+            const catRe = /cn-beta\.com\/(redian|keji|shouji|youxi|wangluo|shuma|qiye|pingce)\/\d+\.html/i;
+            $('a').each((i, el) => {
+                const $el = $(el);
+                let href = ($el.attr('href') || '').trim();
+                if (!catRe.test(href)) return;
+                if (href.startsWith('//')) href = 'http:' + href;
+                else if (href.startsWith('/')) href = 'http://www.cn-beta.com' + href;
+                const title = ($el.attr('title') || $el.text()).trim().replace(/\s+/g, ' ');
+                if (title.length < 8 || title.length > 120) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
+            });
+            // 注意：不再回退到 RSSHub cnbeta —— 其链接为已废弃的 cnbeta.com.tw 域名，
+            // 点击会 302 跳转 msn.cn 的 Cookie 同意墙（白屏）。镜像不可达时宁可少抓，也不给死链。
+            console.log(`    cnBeta 首页直抓 ${items.length} 条`);
+            return (await enrichCnBetaArticles(items)).slice(0, 30);
+        }
+    },
 ];
 
 // ========== 4. Google News RSS（反爬/无RSS源的可靠兜底） ==========
@@ -645,7 +714,7 @@ async function main() {
     const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
     const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园'];
-    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
