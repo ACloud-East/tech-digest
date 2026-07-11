@@ -152,8 +152,12 @@
                                             <a :href="item.url" target="_blank">{{ item.title }}</a>
                                         </h3>
                                         <p class="tech-card-desc" v-if="item.description">{{ truncate(item.description, 120) }}</p>
+                                        <p class="tech-card-desc tech-card-desc-empty" v-else>点击阅读全文 ›</p>
                                         <div class="tech-card-tags" v-if="item.tags && item.tags.length">
                                             <span class="tech-tag" v-for="tag in item.tags" :key="tag">{{ tag }}</span>
+                                        </div>
+                                        <div class="tech-card-tags" v-else>
+                                            <span class="tech-tag tech-tag-default">科技</span>
                                         </div>
                                     </article>
                                 </div>

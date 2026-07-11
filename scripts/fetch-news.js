@@ -305,9 +305,10 @@ function saveCache(map) {
     } catch(e) { /* 静默 */ }
 }
 
-// 并发限流请求文章页，从 HTML 文本中提取首个 YYYY-MM-DD HH:MM[:SS] 作为发布时间
-// 增量模式：已缓存的文章直接复用日期，仅对新文章请求
-async function enrichArticleDates(items, batch = 10, delayMs = 300) {
+    // 并发限流请求文章页，从 HTML 文本中提取首个 YYYY-MM-DD HH:MM[:SS] 作为发布时间
+    // 同时补充 <meta name="description"> 内容作为摘要，提升卡片信息完整度。
+    // 增量模式：已缓存的文章直接复用日期/摘要，仅对新文章请求。
+    async function enrichArticleDates(items, batch = 10, delayMs = 300) {
     const cache = loadCache();
     let cached = 0, fetched = 0;
     
@@ -332,6 +333,19 @@ async function enrichArticleDates(items, batch = 10, delayMs = 300) {
                 const h = await r.text();
                 const m = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
                 if (m) it.time = m[0];
+                // 补充摘要：优先 meta description / og:description，否则正文首段
+                if (!it.description) {
+                    const metaM = h.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']{10,300})["']/i)
+                        || h.match(/<meta[^>]*content=["']([^"']{10,300})["'][^>]*name=["']description["']/i)
+                        || h.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']{10,300})["']/i);
+                    if (metaM) {
+                        it.description = stripHtml(metaM[1]).trim();
+                    } else {
+                        const $h = cheerio.load(h);
+                        const firstP = $h('article p, .post-content p, .entry-content p, .article-content p, .content p, .main-content p, p').first().text().trim().slice(0, 220);
+                        if (firstP.length >= 10) it.description = stripHtml(firstP).trim();
+                    }
+                }
             } catch(e) { /* 静默 */ }
         }));
         fetched += chunk.length;
@@ -341,7 +355,7 @@ async function enrichArticleDates(items, batch = 10, delayMs = 300) {
     // 更新缓存
     const newCache = {};
     for (const it of items) {
-        if (it.time) newCache[it.url] = { time: it.time };
+        if (it.time || it.description) newCache[it.url] = { time: it.time, description: it.description };
     }
     saveCache(newCache);
     
@@ -375,9 +389,10 @@ async function enrichCnBetaArticles(items, batch = 10, delayMs = 200) {
                 const h = await r.text();
                 const dm = h.match(/20\d{2}-\d{2}-\d{2}\s+\d{2}:\d{2}/);
                 if (dm) it.time = dm[0];
-                const metaM = h.match(/<meta\s+name=["']description["']\s+content=["']([^"']{20,300})["']/i)
-                    || h.match(/<meta\s+content=["']([^"']{20,300})["']\s+name=["']description["']/i);
-                if (metaM) it.description = metaM[1].trim();
+                const metaM = h.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']{10,300})["']/i)
+                    || h.match(/<meta[^>]*content=["']([^"']{10,300})["'][^>]*name=["']description["']/i)
+                    || h.match(/<meta[^>]*property=["']og:description["'][^>]*content=["']([^"']{10,300})["']/i);
+                if (metaM) it.description = stripHtml(metaM[1]).trim();
             } catch(e) { /* 静默 */ }
         }));
         if (i + batch < toFetch.length) await new Promise(r => setTimeout(r, delayMs));
@@ -408,78 +423,77 @@ async function scrapeHTML(src) {
 const htmlSources = [
     {
         name: '快科技', url: 'https://www.mydrivers.com/', color: '#ff6600',
-        extract: ($) => {
+        // 过滤逻辑交给主流程的 isRelevant（快科技已加入 MIXED_SOURCES）
+        asyncExtract: async ($) => {
             const items = [];
+            const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
-                const title = $el.text().trim();
+                const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && href && !title.match(/^(首页|登录|注册|更多|下一页|上一页|搜索)$/)) {
-                    if (href.startsWith('/')) href = 'https://www.mydrivers.com' + href;
-                    if (!href.startsWith('http')) return;
-                    // 时间在同 <li> 内的 <span class="t">（如 16:58 / 8日）
-                    const li = $el.closest('li');
-                    const ctx = li.length ? li.text() : ($el.text() + ' ' + $el.parent().text());
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
+                if (title.length < 15 || title.length > 120 || !href) return;
+                if (!href.includes('mydrivers.com') && !href.startsWith('/')) return;
+                if (title.match(/^(首页|登录|注册|更多|下一页|上一页|搜索)$/)) return;
+                if (href.startsWith('/')) href = 'https://www.mydrivers.com' + href;
+                if (!href.startsWith('http')) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return items.slice(0, 60);
+            return (await enrichArticleDates(items)).slice(0, 50);
         }
     },
     {
         name: '雷锋网', url: 'https://www.leiphone.com/', color: '#1890ff',
-        extract: ($) => {
-            const items = [];
+        // 雷锋网：首页无摘要，改为 asyncExtract 请求文章页补全日期+描述。
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
-                const title = $el.text().trim();
+                const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && href.includes('leiphone.com') && !title.match(/^(首页|登录|注册|更多|下一页)$/)) {
-                    if (href.startsWith('/')) href = 'https://www.leiphone.com' + href;
-                    // 时间在同级 <div class="time">（如 13分钟前 / 昨天 21:03）
-                    const card = $el.closest('div, li, article');
-                    const tm = card.find('.time').first().text().trim();
-                    const ctx = (tm || (card.length ? card.text() : $el.text())) + ' ' + href;
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
+                if (title.length < 15 || title.length > 120) return;
+                if (!href.includes('leiphone.com')) return;
+                if (title.match(/^(首页|登录|注册|更多|下一页)$/)) return;
+                if (href.startsWith('/')) href = 'https://www.leiphone.com' + href;
+                if (!href.startsWith('http')) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return items.slice(0, 60);
+            return (await enrichArticleDates(items)).slice(0, 40);
         }
     },
     {
         name: 'DoNews', url: 'https://www.donews.com/', color: '#00a971',
-        extract: ($) => {
-            const items = [];
+        // DoNews：首页无摘要，改为 asyncExtract 请求文章页补全日期+描述。
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
-                const title = $el.text().trim();
+                const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && (href.startsWith('/article/') || href.includes('donews.com'))) {
-                    if (href.startsWith('/')) href = 'https://www.donews.com' + href;
-                    // 日期在配图 src 中（如 .../2026/07/09/...）
-                    const ctx = $el.html() + ' ' + href + ' ' + $el.text();
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
+                if (title.length < 15 || title.length > 120) return;
+                if (!(href.startsWith('/article/') || href.includes('donews.com'))) return;
+                if (href.startsWith('/')) href = 'https://www.donews.com' + href;
+                if (!href.startsWith('http')) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return items.slice(0, 50);
+            return (await enrichArticleDates(items)).slice(0, 40);
         }
     },
     {
         name: '新华网科技', url: 'http://www.news.cn/tech/', color: '#003d8c',
-        extract: ($) => {
-            const items = [];
+        // 新华网科技：首页无摘要，改为 asyncExtract 请求文章页补全日期+描述。
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
-                const title = $el.text().trim();
+                const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && (href.startsWith('/tech/') || href.includes('news.cn/tech'))) {
-                    if (href.startsWith('/')) href = 'http://www.news.cn' + href;
-                    // 日期在 URL 路径中（如 /tech/20260710/...）
-                    const ctx = href + ' ' + $el.text() + ' ' + $el.parent().text();
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
+                if (title.length < 15 || title.length > 120) return;
+                if (!(href.startsWith('/tech/') || href.includes('news.cn/tech'))) return;
+                if (href.startsWith('/')) href = 'http://www.news.cn' + href;
+                if (!href.startsWith('http')) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return items.slice(0, 50);
+            return (await enrichArticleDates(items)).slice(0, 40);
         }
     },
     {
@@ -540,21 +554,21 @@ const htmlSources = [
         // 机器之心官网(jiqizhixin.com)已启用反爬，首页/文章页均返回挑战页，无法直爬。
         // 改用其官方网易号「机器之心Pro」媒体页：可直连、含当天最新文章、链接为真实可点文章页。
         name: '机器之心', url: 'https://www.163.com/dy/media/T1473761139764.html', color: '#512da8',
-        extract: ($) => {
-            const items = [];
+        // 机器之心：网易号媒体页直链，文章为 163.com 真实页面。改为 asyncExtract 抓文章页补全日期+描述。
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
                 const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && /163\.com\/dy\/article\//.test(href)) {
-                    if (href.startsWith('/')) href = 'https://www.163.com' + href;
-                    href = href.split('?')[0]; // 去掉 ?spss= 跟踪参数
-                    const card = $el.closest('li, div, article');
-                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + href;
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
+                if (title.length < 15 || title.length > 120) return;
+                if (!/163\.com\/dy\/article\//.test(href)) return;
+                if (href.startsWith('/')) href = 'https://www.163.com' + href;
+                href = href.split('?')[0];
+                if (!href.startsWith('http')) return;
+                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return items.slice(0, 60);
+            return (await enrichArticleDates(items)).slice(0, 40);
         }
     },
     {
@@ -667,7 +681,7 @@ async function fetchGoogleNews(src, existingTitles) {
 }
 
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
-const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园'];
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技'];
 
 // ========== 主流程 ==========
 async function main() {
@@ -790,4 +804,6 @@ async function main() {
     console.log('\n已保存:', outPath);
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+main()
+    .then(() => process.exit(0))
+    .catch(e => { console.error(e); process.exit(1); });

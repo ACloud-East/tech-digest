@@ -301,8 +301,10 @@ ul { list-style: none; }
     font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
+.tech-card-desc-empty { color: var(--text-muted); font-style: italic; }
 .tech-card-tags { display: flex; gap: 5px; flex-wrap: wrap; }
 .tech-tag { font-size: 0.65rem; padding: 2px 7px; border-radius: 4px; background: rgba(59,130,246,0.12); color: var(--accent-blue); }
+.tech-tag-default { background: rgba(100,116,139,0.15); color: var(--text-muted); }
 .tech-load-more {
     text-align: center; margin-top: 16px;
 }
