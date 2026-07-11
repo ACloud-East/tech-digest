@@ -160,6 +160,7 @@ const standardSources = [
     // （RSSHub超时8秒，成功则快于HTML，失败不影响并发总耗时）
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
+    { name: 'cnBeta', url: 'https://rsshub.app/cnbeta', url2: 'https://rsshub.rssforever.com/cnbeta', color: '#009a61' },
     // 国际科技媒体
     { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
     { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
@@ -183,6 +184,10 @@ async function fetchStandard(src) {
                 console.log(`  -> 主源失败，尝试备用`);
                 feed = await parser.parseURL(src.url2);
             } else throw e1;
+        }
+        // 空 items 重试一次（并发时 RSSHub 可能返回空壳）
+        if ((!feed || !feed.items || feed.items.length === 0) && src.url2) {
+            feed = await parser.parseURL(src.url2);
         }
         const items = (feed.items || []).map(item => makeArticle(src, {
             title: item.title, description: item.contentSnippet || item.content || item.summary || '',
@@ -524,6 +529,8 @@ const htmlSources = [
 const googleNewsSources = [
     // 品玩 HTML 直抓不稳定（反爬），Google News 作为快速兜底
     { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
+    // 极客公园官网 403 + RSSHub 503，Google News 是目前唯一可用源
+    { name: '极客公园', site: 'geekpark.net', color: '#00c4ff' },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -538,7 +545,7 @@ async function fetchGoogleNews(src, existingTitles) {
             const t = new Date(it.isoDate || it.pubDate || 0).getTime();
             if (isNaN(t) || (now - t) > 3 * 86400000) continue; // 仅保留近 3 天
             // 去掉 Google News 追加的 " - 站点名" 后缀
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163)\s*$/, '').trim();
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark)\s*$/, '').trim();
             if (!title || title === src.name) continue; // 跳过频道/栏目入口
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;
@@ -629,17 +636,22 @@ async function main() {
     }
 
     // 新鲜度过滤：丢弃旧文，保证看板前列始终是最新内容
-    // 标准窗口 3 天；澎湃新闻等更新较慢的源放宽至 7 天（科技频道多为编辑精选，发布节奏偏慢）
+    // 标准窗口 3 天；澎湃新闻等更新较慢的源放宽至 7 天；爱搞机/Dev.to 等低频源放宽至 30 天
     const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
     const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
+    const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
+    const LONG_WINDOW_SOURCES = ['澎湃新闻'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to'];
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
         if (isNaN(t) || t <= 0) return false; // 日期缺失直接丢弃，避免旧文伪装成最新
-        const maxAge = a.source === '澎湃新闻' ? MAX_AGE_LONG_MS : MAX_AGE_MS;
+        let maxAge = MAX_AGE_MS;
+        if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
+        else if (LONG_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_LONG_MS;
         return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天 / 澎湃7天)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/爱搞机Dev.to30天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
