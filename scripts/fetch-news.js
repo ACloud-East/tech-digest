@@ -163,6 +163,10 @@ const standardSources = [
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
     { name: 'cnBeta', url: 'https://rsshub.app/cnbeta', url2: 'https://rsshub.rssforever.com/cnbeta', color: '#009a61' },
+    // 品玩：RSSHub 链接是真实 pingwest.com URL（非 Google News 重定向），可正常点击
+    { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
+    // 极客公园：RSSHub 链接是真实 geekpark.net URL（非 Google News 重定向），可正常点击
+    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', color: '#00c4ff' },
     // 国际科技媒体
     { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
     { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
@@ -529,10 +533,8 @@ const htmlSources = [
 // 站点检索获取近 3 天真实文章（标题/时间准确，链接为 news.google.com 重定向，
 // 点击后在浏览器中解析到原文，不会跳到站点首页）。
 const googleNewsSources = [
-    // 品玩 HTML 直抓不稳定（反爬），Google News 作为快速兜底
-    { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
-    // 极客公园官网 403 + RSSHub 503，Google News 是目前唯一可用源
-    { name: '极客公园', site: 'geekpark.net', color: '#00c4ff' },
+    // 品玩/极客公园的 Google News 链接会白屏（<about:blank>），已全部改用直连源
+    // 保留此数组为空，避免提供无效链接
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -561,7 +563,7 @@ async function fetchGoogleNews(src, existingTitles) {
 
 // ========== 纯科技源：跳过相关性过滤，全抓 ==========
 // 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
-const MIXED_SOURCES = ['华尔街见闻', '虎嗅'];
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园'];
 [...standardSources, ...manualSources, ...htmlSources, ...googleNewsSources].forEach(s => {
     if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
 });
@@ -642,7 +644,7 @@ async function main() {
     const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
     const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
-    const LONG_WINDOW_SOURCES = ['澎湃新闻'];
+    const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园'];
     const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to'];
     const before = unique.length;
     unique = unique.filter(a => {
