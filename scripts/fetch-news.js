@@ -13,45 +13,81 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 const FETCH_TIMEOUT = 8000; // 统一超时8秒（大部分源1-3秒响应，失败快速跳过）
 const parser = new Parser({ timeout: FETCH_TIMEOUT, headers: { 'User-Agent': UA, 'Accept': 'application/rss+xml, application/xml, text/xml, */*' }, requestOptions: { rejectUnauthorized: false } });
 
-// ========== 关键词 ==========
-const techKeywords = [
+// ========== 关键词（用于相关性过滤） ==========
+// 强科技关键词：具体、指向明确，单条命中即视为科技相关
+const STRONG_KEYWORDS = [
     '人工智能','AI','大模型','GPT','ChatGPT','深度学习','机器学习','神经网络','LLM','AIGC','AGI',
     'OpenAI','Claude','Gemini','Copilot','Sora','DeepSeek','通义千问','文心一言','混元','豆包','kimi',
+    'Agent','智能体','Codex','Cursor','Windsurf','Devin','Token',
     '手机','iPhone','华为','小米','OPPO','vivo','三星','荣耀','折叠屏','旗舰','智能手机','苹果','Apple',
     'Mate','骁龙','天玑','iOS','Android','鸿蒙','HarmonyOS','Pixel','Galaxy',
     '芯片','半导体','CPU','GPU','NPU','高通','联发科','英特尔','AMD','英伟达','NVIDIA','台积电','光刻',
     '晶圆','3nm','5nm','ASML','ARM','RISC-V','海思','麒麟','昇腾','HBM','中芯国际',
     '新能源','电动车','特斯拉','比亚迪','蔚来','小鹏','理想','电池','充电','自动驾驶','FSD','固态电池',
     '宁德时代','小米汽车','SU7','Cybertruck','换电','800V','碳化硅',
-    '评测','开箱','体验','测评','上手','对比','横评','深度','首发',
     '游戏','Steam','PS5','Xbox','Switch','电竞','3A','原神','黑神话','王者荣耀','DLSS','光追','虚幻引擎','云游戏',
     '电脑','笔记本','显卡','内存','SSD','主板','显示器','MacBook','ThinkPad','iPad','平板','机械键盘','鼠标','OLED','miniLED','DDR5',
-    '软件','App','应用','操作系统','Windows','macOS','浏览器','Chrome','WPS','开源','GitHub','Docker','Linux',
-    '互联网','社交','电商','直播','短视频','字节跳动','腾讯','阿里','百度','美团','拼多多','京东','快手','小红书','B站','知乎','微信','抖音','TikTok',
-    '融资','IPO','上市','估值','投资','创投','VC','PE','创业','独角兽','红杉','高瓴','科创板','纳斯达克',
+    '软件','App','操作系统','Windows','macOS','浏览器','Chrome','WPS','开源','GitHub','Docker','Linux',
+    '字节跳动','腾讯','阿里','百度','美团','拼多多','京东','快手','小红书','B站','知乎','抖音','TikTok',
+    '红杉','高瓴',
     '智能硬件','IoT','可穿戴','智能家居','AR','VR','XR','Vision Pro','Quest','机器人','无人机','3D打印','智能手表','Apple Watch','AirPods','扫地机器人',
     '区块链','Web3','比特币','以太坊','NFT','DeFi','加密','数字货币','DAO','智能合约','Solana','数字人民币','元宇宙',
     '航天','火箭','卫星','SpaceX','星舰','商业航天','太空','空间站','探月',
-    'Codex','Claude','Cowork','Token','Copilot','Cursor','Windsurf','Devin',
-    'Tech','Technology','Apple','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC'
+    'Tech','Technology','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC',
+    'OceanBase'
 ];
-// 非科技排除词：标题命中任一关键词即视为非科技，直接过滤（即使同时包含科技词）
-const nonTechExclude = [
-    '足球','世界杯','足协','联赛','体育赛事','奥运','亚运','全运会','世锦赛',
-    '电影上映','票房','导演','演员','周星驰','少林足球','功夫女足','大电影',
-    '旅游推介','文旅','风景区','景区','游客',
-    '考古','文物','东晋','古代史','博物馆',
-    '台风','暴雨','洪水','地震预警','防汛','水库','受灾',
-    '美食','小吃','菜谱','烹饪',
-    '演唱会','歌手新歌','音乐专辑','新歌发布',
-    '小说','文学奖','作家新书','诗歌',
+// 弱相关关键词：泛化业务/评测词，单独出现多为非科技，需累计≥2或配合强词才相关
+const SOFT_KEYWORDS = [
+    '评测','开箱','体验','测评','上手','对比','横评','深度','首发',
+    '营收','财报','广告','裁员','招聘','上市','融资','IPO','估值','创投','VC','PE','创业','独角兽','科创板','纳斯达克'
 ];
-function isRelevant(text) {
-    if (!text) return false;
-    const t = text.toLowerCase();
-    // 先排除明显的非科技主题
-    for (const kw of nonTechExclude) { if (t.includes(kw)) return false; }
-    return techKeywords.some(k => t.includes(k.toLowerCase()));
+// 中性词：过于泛化，不计入相关性（避免「微信+投资」之类蒙混过关）
+const NEUTRAL_KEYWORDS = new Set([
+    '微信','投资','互联网','社交','电商','直播','短视频','平台','应用','数据',
+    '公司','企业','用户','市场','行业','产品','服务','网络'
+]);
+// 标题级非科技排除词（一级：对所有源生效，高精度）
+const TITLE_BLOCK_T1 = [
+    '总统','选举','外交','移民','难民','游行','抗议','示威','政变',
+    '领土','主权','联合国','北约','加沙','哈马斯',
+    '疫情','新冠','确诊','疫苗','医院','门诊','医保','养生','癌症','肿瘤',
+    '高考','考研','中考','录取','分数线','大学排名','教材',
+    '世界杯','奥运','亚运','欧冠','NBA','CBA','足球','篮球','排球','网球','演唱会','票房','电影','综艺','明星','电视剧','小说',
+    '台风','暴雨','洪水','地震','干旱','高温','寒潮','灾情','救援',
+    '美食','餐厅','菜谱','旅游','景区','游客','民宿',
+    '反腐','贪腐','受贿','判刑','逮捕','通缉','诈骗','命案','坠楼'
+];
+// 标题级非科技排除词（二级：仅对混合源生效，避免误删纯科技源中提及市场的真科技文）
+const TITLE_BLOCK_T2 = [
+    '议会','国会','股市','A股','美股','港股','散户','涨停','跌停','大盘','上证','深证','金价','原油','期货','外汇',
+    '楼市','房价','房地产','限购','首付','房贷','存款','理财','保险','基金',
+    '工资','失业','社保','养老','生育','婚姻','离婚','殡葬','南非'
+];
+
+// 关键词匹配：短 ASCII 关键词（如 AR/PE/AI/App/NBA）使用单词边界，避免子串误触发
+// （"AR" 不能匹配 war/car，"NBA" 不能匹配 OceanBase，"AI" 不能匹配 email/rain）
+function kwMatch(text, kw) {
+    if (/^[A-Za-z]+$/.test(kw) && kw.length <= 4) {
+        return new RegExp('\\b' + kw + '\\b', 'i').test(text);
+    }
+    return text.toLowerCase().includes(kw.toLowerCase());
+}
+function countHits(text, list) { let n = 0; for (const k of list) if (kwMatch(text, k)) n++; return n; }
+
+// 相关性判定
+//  - 标题命中一级（或混合源命中二级）排除词 → 直接丢弃
+//  - 混合源：需命中≥1个强科技词，或≥2个弱相关词（避免「微信+投资」蒙混）
+//  - 纯科技源：仅做标题排除，不过度删减（源本身即科技媒体）
+function isRelevant(title, full, mixed) {
+    if (!full) return false;
+    const tl = title.toLowerCase();
+    if (TITLE_BLOCK_T1.some(kw => kwMatch(tl, kw))) return false;
+    if (mixed && TITLE_BLOCK_T2.some(kw => kwMatch(tl, kw))) return false;
+    if (!mixed) return true;
+    const strong = countHits(full, STRONG_KEYWORDS);
+    const soft = countHits(full, SOFT_KEYWORDS);
+    if (strong >= 1) return true;
+    return soft >= 2;
 }
 function extractTags(text) {
     if (!text) return [];
@@ -201,8 +237,8 @@ async function fetchStandard(src) {
             title: item.title, description: item.contentSnippet || item.content || item.summary || '',
             url: item.link || item.guid || '', time: item.isoDate || item.pubDate || ''
         }));
-        const filtered = src.techOnly ? items : items.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
+        const filtered = items.filter(i => isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name)));
+        console.log(`  => ${items.length}条${MIXED_SOURCES.includes(src.name) ? ', 科技' + filtered.length + '条' : '(纯科技源)'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
@@ -239,8 +275,8 @@ async function fetchManual(src) {
         console.log(`[XML ] ${src.name}`);
         const parsed = await fetchAndParseXML(src.url);
         const items = extractRSSItems(parsed).map(item => makeArticle(src, item));
-        const filtered = src.techOnly ? items : items.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
+        const filtered = items.filter(i => isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name)));
+        console.log(`  => ${items.length}条${MIXED_SOURCES.includes(src.name) ? ', 科技' + filtered.length + '条' : '(纯科技源)'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
@@ -363,8 +399,8 @@ async function scrapeHTML(src) {
         // 支持异步 extract（如需要逐个请求文章页获取日期）
         const items = src.asyncExtract ? await src.asyncExtract($, src.url) : src.extract($, src.url);
         const articles = items.map(item => makeArticle(src, item));
-        const filtered = src.techOnly ? articles : articles.filter(i => isRelevant(i.title + ' ' + i.description));
-        console.log(`  => ${items.length}条${src.techOnly ? '(全抓)' : ', 科技' + filtered.length + '条'}`);
+        const filtered = articles.filter(i => isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name)));
+        console.log(`  => ${items.length}条${MIXED_SOURCES.includes(src.name) ? ', 科技' + filtered.length + '条' : '(纯科技源)'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
@@ -630,12 +666,8 @@ async function fetchGoogleNews(src, existingTitles) {
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }
 
-// ========== 纯科技源：跳过相关性过滤，全抓 ==========
-// 排除明显混合源（综合门户/财经），其余科技媒体全部 techOnly
+// ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
 const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园'];
-[...standardSources, ...manualSources, ...htmlSources, ...googleNewsSources].forEach(s => {
-    if (!MIXED_SOURCES.includes(s.name)) s.techOnly = true;
-});
 
 // ========== 主流程 ==========
 async function main() {
@@ -679,9 +711,9 @@ async function main() {
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
-    // 非科技硬过滤：即使来自纯科技源，标题命中排除词也直接丢弃
+    // 非科技硬过滤：统一用 isRelevant 复核（混合源强词要求 + 标题排除词），防御性兜底
     const beforeNonTech = unique.length;
-    unique = unique.filter(a => !nonTechExclude.some(kw => a.title.includes(kw)));
+    unique = unique.filter(a => isRelevant(a.title, a.title + ' ' + a.description, MIXED_SOURCES.includes(a.source)));
     if (unique.length < beforeNonTech) console.log(`\n🧹 非科技过滤: ${beforeNonTech} → ${unique.length} 篇`);
 
     // 合并种子数据（4个反爬源的手动快照）
@@ -694,9 +726,12 @@ async function main() {
             for (const sa of seedArts) {
                 const key = (sa.title + (sa.url || '')).slice(0, 120);
                 if (!seen.has(key)) {
-                    seen.add(key);
-                    unique.push(sa);
-                    added++;
+                    // 同样经过相关性过滤，避免种子数据混入非科技内容
+                    if (isRelevant(sa.title, sa.title + ' ' + (sa.description || ''), MIXED_SOURCES.includes(sa.source))) {
+                        seen.add(key);
+                        unique.push(sa);
+                        added++;
+                    }
                 }
             }
             if (added > 0) {
