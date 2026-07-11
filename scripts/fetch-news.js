@@ -162,7 +162,7 @@ const standardSources = [
     // （RSSHub超时8秒，成功则快于HTML，失败不影响并发总耗时）
     { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
-    { name: 'cnBeta', url: 'https://rsshub.app/cnbeta', url2: 'https://rsshub.rssforever.com/cnbeta', color: '#009a61' },
+    { name: 'cnBeta', url: 'https://rsshub.rssforever.com/cnbeta', url2: 'https://rsshub.app/cnbeta', color: '#009a61' },
     // 品玩：RSSHub 链接是真实 pingwest.com URL（非 Google News 重定向），可正常点击
     { name: '品玩', url: 'https://rsshub.rssforever.com/pingwest/status', color: '#ff5722' },
     // 极客公园：RSSHub 链接是真实 geekpark.net URL（非 Google News 重定向），可正常点击
@@ -174,7 +174,7 @@ const standardSources = [
     { name: 'ZDNet', url: 'https://www.zdnet.com/news/rss.xml', color: '#0066cc' },
     { name: 'Hacker News', url: 'https://hnrss.org/frontpage', color: '#ff6600' },
     { name: 'Lobsters', url: 'https://lobste.rs/rss', color: '#b22222' },
-    { name: 'Dev.to', url: 'https://dev.to/feed', color: '#4b3e99' },
+    { name: 'Dev.to', url: 'https://dev.to/feed', url2: 'https://rsshub.app/devto', color: '#4b3e99' },
     { name: 'GSMArena', url: 'https://www.gsmarena.com/rss-news-reviews.php3', color: '#d32f2f' },
 ];
 
