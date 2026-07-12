@@ -586,7 +586,54 @@ async function enrichCnBetaArticles(items, batch = 10, delayMs = 200) {
 async function scrapeHTML(src) {
     try {
         console.log(`[HTML] ${src.name}`);
-        // 支持 multiUrl：依次抓多个栏目页，合并后传给 asyncExtract
+        // DoNews 特殊：4 栏目 AJAX 分页接口，每页 12 条
+        if (src.sections && src.sections.length) {
+            const allItems = [];
+            for (const sec of src.sections) {
+                for (let p = 1; p <= (src.maxPages || 10); p++) {
+                    const apiUrl = `https://www.donews.com/${sec.col}/${sec.api}?page=${p}`;
+                    try {
+                        const r = await fetch(apiUrl, { headers: { 'User-Agent': UA, 'Referer': `https://www.donews.com/${sec.col}/index`, 'X-Requested-With': 'XMLHttpRequest' }, timeout: FETCH_TIMEOUT });
+                        const arr = await r.json();
+                        if (!Array.isArray(arr) || arr.length === 0) break;
+                        let n = 0;
+                        for (const it of arr) {
+                            const title = (it.title || '').trim();
+                            let url = it.url || '';
+                            if (!title || !url) continue;
+                            // url 已经是完整 https://...，不需要拼接
+                            // 日期从 pic 提取（pic 含 /img/2026/07/11/）
+                            let time = '';
+                            const pic = it.pic || '';
+                            const dm = pic.match(/img\/(20\d{2})\/(\d{2})\/(\d{2})\//);
+                            if (dm) {
+                                const dt = new Date(Date.UTC(+dm[1], +dm[2] - 1, +dm[3], -8, 0, 0, 0));
+                                if (!isNaN(dt)) time = dt.toISOString();
+                            }
+                            if (!time) time = new Date().toISOString();
+                            // 描述 = description（JSON 中字段）
+                            const desc = (it.description || '').replace(/<[^>]+>/g, '').slice(0, 200);
+                            allItems.push({ title: title.slice(0, 100), url, time, description: desc });
+                            n++;
+                        }
+                        if (p === 1 || p % 3 === 0) console.log(`    [${sec.label}] page ${p}: ${arr.length} 条 (累计 ${allItems.length})`);
+                        if (arr.length < 12) break; // 末页
+                    } catch (e) { console.log(`    [${sec.label}] page ${p} 失败: ${e.message}`); break; }
+                }
+            }
+            console.log(`    DoNews 4 栏分页合计: ${allItems.length} 条`);
+            // 跨栏目去重
+            const seen = new Set();
+            const items = allItems.filter(it => { if (!it.url || seen.has(it.url)) return false; seen.add(it.url); return true; });
+            console.log(`    DoNews URL 去重后: ${items.length} 条`);
+            const articles = items.map(item => makeArticle(src, item));
+            const filtered = articles.filter(i => {
+                return isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name));
+            });
+            return filtered;
+        }
+
+        // 标准多 URL 抓取（其他源）
         const urls = src.multiUrl && src.multiUrl.length ? src.multiUrl : [src.url];
         let allItems = [];
         for (const u of urls) {
@@ -664,57 +711,18 @@ const htmlSources = [
         }
     },
     {
-        // DoNews：直接抓 4 个子栏目页（游戏/3C/家电/汽车），含七彩虹/AMD/联想/苹果等数码品牌文章。
-        // 日期从文章卡片中的图片 URL 提取（img/2026/07/11/...），无需逐个请求文章页。
+        // DoNews：4 个子栏目（游戏/3C/家电/汽车），用 AJAX 接口分页（每页 12 条，可达 10+ 页）。
+        // 每栏 ~120 篇，4 栏共 ~480 条原始 → 去重后 ~100+ 篇。
         name: 'DoNews', color: '#00a971', url: 'https://www.donews.com/digital/index',
-        multiUrl: [
-            'https://www.donews.com/ent/index',
-            'https://www.donews.com/ent/index?page=2',
-            'https://www.donews.com/digital/index',
-            'https://www.donews.com/digital/index?page=2',
-            'https://www.donews.com/digitalhome/index',
-            'https://www.donews.com/digitalhome/index?page=2',
-            'https://www.donews.com/automobile/index',
-            'https://www.donews.com/automobile/index?page=2',
+        // 4 个栏目配置（部分接口用 ajax_news_more，部分用 more_ent_ajax——按页内 JS 实际选择）
+        sections: [
+            { col: 'ent',         api: 'more_ent_ajax',   label: '游戏' },
+            { col: 'digital',     api: 'more_ent_ajax',   label: '3C'   },
+            { col: 'digitalhome', api: 'ajax_news_more',  label: '家电' },
+            { col: 'automobile',  api: 'ajax_news_more',  label: '汽车' },
         ],
-        asyncExtract: async ($) => {
-            // 先扫描所有 <a> 与 <img> 的对应关系：找到带文章链接的 img → 提取日期
-            const imgDates = new Map();
-            $('img[src*="/img/20"]').each((i, imgEl) => {
-                const src = $(imgEl).attr('src') || '';
-                const dm = src.match(/img\/(20\d{2})\/(\d{2})\/(\d{2})\//);
-                if (!dm) return;
-                const dt = new Date(Date.UTC(+dm[1], +dm[2] - 1, +dm[3], -8, 0, 0, 0));
-                if (isNaN(dt)) return;
-                const iso = dt.toISOString();
-                const $parentA = $(imgEl).closest('a[href*="/news/"]');
-                if ($parentA.length) {
-                    let href = $parentA.attr('href') || '';
-                    if (href.startsWith('/')) href = 'https://www.donews.com' + href;
-                    imgDates.set(href, iso);
-                }
-            });
-            if (process.env.DEBUG_DROP) console.log(`    imgDates 条目: ${imgDates.size}`);
-            const items = []; const seen = new Set();
-            $('a').each((i, el) => {
-                const $el = $(el);
-                const title = $el.text().trim().replace(/\s+/g, ' ');
-                let href = $el.attr('href') || '';
-                if (title.length < 15 || title.length > 120) return;
-                if (!(href.startsWith('/news/') || href.includes('donews.com/news/'))) return;
-                if (href.startsWith('/')) href = 'https://www.donews.com' + href;
-                if (!href.startsWith('http')) return;
-                if (seen.has(href)) return;
-                seen.add(href);
-                const time = imgDates.get(href) || '';
-                items.push({ title, url: href, time, description: '' });
-            });
-            // 对无日期的文章：不调用 enrichArticleDates（太慢且掉文章），改用当前时间作为日期
-            // 配合 30 天窗口审核，即使日期不正确也不会丢失；后续 Actions 运行会自动刷新。
-            const nowIso = new Date().toISOString();
-            items.forEach(it => { if (!it.time) it.time = nowIso; });
-            return items;
-        }
+        maxPages: 10,
+        asyncExtract: async () => { return []; } // 占位；实际由 scrapeHTML 处理 sections
     },
     {
         name: '新华网科技', url: 'http://www.news.cn/tech/', color: '#003d8c',
