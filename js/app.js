@@ -305,6 +305,10 @@ const app = createApp({
             lastUpdate.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
 
+        // 数据源 / 主题源 分组展示（主题源为按主题聚合的视图，与真实数据源区分）
+        const themeSources = computed(() => techSources.value.filter(s => s.group === 'theme'));
+        const dataSources = computed(() => techSources.value.filter(s => s.group !== 'theme'));
+
         const filteredTechNews = computed(() => {
             // 来源筛选和搜索在全部数据中进行，不受"显示前N条"的限制
             let articles = techNews.value;
@@ -610,7 +614,7 @@ const app = createApp({
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
-            loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, totalArticles, sourcesCount, totalSourcesCount,
+            loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, dataSources, themeSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,

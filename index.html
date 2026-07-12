@@ -120,7 +120,14 @@
                             <div class="source-filter">
                                 <span class="filter-label">筛选来源：</span>
                                 <button class="source-tag" :class="{ active: techSourceFilter === 'all' }" @click="techSourceFilter = 'all'">全部</button>
-                                <button class="source-tag" v-for="src in techSources" :key="src.key"
+                                <button class="source-tag" v-for="src in dataSources" :key="src.key"
+                                    :class="{ active: techSourceFilter === src.key }"
+                                    @click="techSourceFilter = src.key">
+                                    {{ src.name }}
+                                </button>
+                                <span class="group-sep">|</span>
+                                <span class="group-label">主题源</span>
+                                <button class="source-tag theme-tag" v-for="src in themeSources" :key="src.key"
                                     :class="{ active: techSourceFilter === src.key }"
                                     @click="techSourceFilter = src.key">
                                     {{ src.name }}

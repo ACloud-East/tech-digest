@@ -267,7 +267,7 @@ const standardSources = [
     { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
     { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
     { name: 'Engadget', url: 'https://www.engadget.com/rss.xml', color: '#2b2d32' },
-    { name: 'ZDNet', url: 'https://www.zdnet.com/news/rss.xml', color: '#0066cc' },
+    { name: 'ZDNet', url: 'https://www.zdnet.com/news/rss.xml', color: '#0066cc', dead: true },
     { name: 'Hacker News', url: 'https://hnrss.org/frontpage', color: '#ff6600' },
     { name: 'Lobsters', url: 'https://lobste.rs/rss', color: '#b22222' },
     { name: 'Dev.to', url: 'https://dev.to/feed', url2: 'https://rsshub.app/devto', color: '#4b3e99' },
@@ -686,6 +686,19 @@ const googleNewsSources = [
     // Google News 的 site:huxiu.com 可稳定拉取近 ~100 篇（含前沿科技/3C数码等板块），
     // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
     { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
+    // ZDNet 官网 RSS(news/rss.xml) 已退化（仅 ~1 条），改为 Google News site:zdnet.com 兜底；
+    // ZDNet 为英文源，故用 en-US 语言参数拉取真实英文文章（链接已修为 articles/ 格式可正常打开）。
+    { name: 'ZDNet', site: 'zdnet.com', color: '#0066cc', hl: 'en-US', gl: 'US', ceid: 'US:en' },
+    // ===== 主题源（与上方"数据源"分开归类）：自由检索词，拉取近30天相关科技文 =====
+    // 这些不是独立的媒体，而是"按主题聚合"的视图；标记 topic:true 并放宽至 30 天窗口。
+    { name: '数码测评', query: '测评 OR 评测 OR 上手 OR 开箱 OR 横评 OR 跑分', color: '#e65100', topic: true },
+    { name: '新品发布', query: '新品发布 OR 发布会 OR 首发 OR 亮相 OR 官宣', color: '#ad1457', topic: true },
+    { name: '三星', query: '三星 Galaxy 手机 OR 三星 芯片 OR 三星 发布', color: '#0d47a1', topic: true },
+    { name: '索尼', query: '索尼 Sony OR 索尼 耳机 OR 索尼 相机 OR PlayStation', color: '#1a1a2e', topic: true },
+    { name: '尼康', query: '尼康 Nikon OR 尼康 相机 OR 尼康 Z 系列', color: '#34495e', topic: true },
+    { name: '佳能', query: '佳能 Canon OR 佳能 相机 OR 佳能 EOS', color: '#c0392b', topic: true },
+    { name: '科技专访', query: '专访 OR 访谈 OR 对话 科技 OR 口述 创始人', color: '#37474f', topic: true },
+    { name: '上市科技', query: 'IPO OR 科技公司 上市 OR 科技 财报 OR 独角兽 融资', color: '#1b5e20', topic: true },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -693,7 +706,9 @@ async function fetchGoogleNews(src, existingTitles) {
         console.log(`[GNews] ${src.name}`);
         // 站点兜底源用 site:domain；主题扩量源用自由检索词（src.query）
         const q = src.query ? src.query : 'site:' + src.site;
-        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans`;
+        // 语言/地区可逐源覆盖（英文源如 ZDNet 用 en-US，中文源用 zh-CN）
+        const hl = src.hl || 'zh-CN', gl = src.gl || 'CN', ceid = src.ceid || 'CN:zh-Hans';
+        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=${hl}&gl=${gl}&ceid=${ceid}`;
         const feed = await parser.parseURL(url);
         const now = Date.now();
         const items = [];
@@ -722,7 +737,9 @@ async function fetchGoogleNews(src, existingTitles) {
 }
 
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
-const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技'];
+// 含站点兜底源(华尔街见闻/虎嗅/品玩/极客公园/快科技) 与 主题源(数码测评/新品发布/三星/索尼/尼康/佳能/科技专访/上市科技)
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技',
+    '数码测评', '新品发布', '三星', '索尼', '尼康', '佳能', '科技专访', '上市科技'];
 
 // ========== 主流程 ==========
 async function main() {
@@ -811,6 +828,8 @@ async function main() {
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
     const LONG_WINDOW_SOURCES = ['澎湃新闻'];
     const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
+    // 主题源（自由检索聚合）放宽至 30 天，作为"按主题浏览"的合集；其最新条目仍会进入看板前列
+    const TOPIC_SOURCES = new Set(googleNewsSources.filter(s => s.topic).map(s => s.name));
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
@@ -818,11 +837,12 @@ async function main() {
         let maxAge = MAX_AGE_MS;
         // 种子兜底文章（实时为0时注入）同样放宽至 30 天，保证反爬源至少有内容
         if (a.seedFallback) maxAge = MAX_AGE_MONTH_MS;
+        else if (TOPIC_SOURCES.has(a.source) || a.topic) maxAge = MAX_AGE_MONTH_MS;
         else if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
         else if (LONG_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_LONG_MS;
         return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/低频源30天)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/低频源30天/主题源30天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
