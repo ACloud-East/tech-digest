@@ -269,6 +269,7 @@ const app = createApp({
                     case 'douyin': data = await API.fetchDouyinHot(); break;
                     case 'toutiao': data = await API.fetchToutiaoHot(); break;
                     case 'baidu': data = await API.fetchBaiduHot(); break;
+                    case 'zhihu': data = await API.fetchZhihuHot(); break;
                     default: data = await API.fetchWeiboHot();
                 }
                 socialHotlist.value = data;

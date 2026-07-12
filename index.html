@@ -88,6 +88,9 @@
                             <button class="platform-btn baidu" :class="{ active: socialPlatform === 'baidu' }" @click="switchSocialPlatform('baidu')">
                                 <i class="fa-solid fa-magnifying-glass"></i> 百度热搜
                             </button>
+                            <button class="platform-btn zhihu" :class="{ active: socialPlatform === 'zhihu' }" @click="switchSocialPlatform('zhihu')">
+                                <i class="fa-brands fa-zhihu"></i> 知乎热榜
+                            </button>
                         </div>
 
                         <div class="hot-list-container">
@@ -570,6 +573,6 @@
     <script src="js/filter.js?v=8"></script>
     <script src="js/ai-generator.js?v=7"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=11"></script>
+    <script src="js/app.js?v=12"></script>
 </body>
 </html>

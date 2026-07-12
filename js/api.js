@@ -85,6 +85,15 @@ const API = {
         } catch(e) { throw new Error('百度热搜获取失败'); }
     },
 
+    async fetchZhihuHot() {
+        const key = 'zhihu_hot';
+        const c = this.getCache(key); if (c) return c;
+        try {
+            const result = this.uniqueFilter(await this.fetchHotFromUApi('zhihu'));
+            this.setCache(key, result); return result;
+        } catch(e) { throw new Error('知乎热搜获取失败'); }
+    },
+
     uniqueFilter(items) {
         const seen = new Set();
         return items.filter(item => {
