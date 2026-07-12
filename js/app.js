@@ -219,21 +219,9 @@ const app = createApp({
             } catch { return ''; }
         });
 
-        // 自动刷新：标签页重新可见 / 每 10 分钟自动重抓一次最新 news.json（静态文件，开销极低）
-        function setupAutoRefresh() {
-            let timer = null;
-            const refresh = () => {
-                if (activePanel.value !== 'hotboard') return;
-                // 仅重抓当前 tab，避免无谓请求
-                if (hotboardTab.value === 'social') fetchSocialHotlist();
-                else fetchTechNews();
-            };
-            document.addEventListener('visibilitychange', () => {
-                if (document.visibilityState === 'visible') refresh();
-            });
-            timer = setInterval(refresh, 10 * 60 * 1000);
-            return () => { clearInterval(timer); document.removeEventListener('visibilitychange', refresh); };
-        }
+        // 注意：按用户要求「禁止自动更新，只手动更新」——此处不再注册任何定时/切回标签页的自动重抓。
+        // 仅保留手动刷新按钮（refreshCurrentTab）触发 fetchTechNews / fetchSocialHotlist。
+        // nowTick 仅用于让「X 分钟前」等相对时间标签随当前时钟实时滚动（不重新拉取数据）。
 
         const techSources = API.techSourceConfig;
 
@@ -614,10 +602,9 @@ const app = createApp({
 
         onMounted(() => {
             // 打开即加载两个 tab（social 来自外部热搜 API，tech 来自本地预抓取）
+            // 仅加载一次：不注册任何自动刷新（用户要求「禁止自动更新，只手动更新」）
             fetchSocialHotlist();
             fetchTechNews();
-            // 自动刷新：切回标签页 / 每 10 分钟重抓一次，保证用户看到的是接近当前时间的数据
-            setupAutoRefresh();
         });
 
         return {

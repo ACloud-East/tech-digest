@@ -272,6 +272,10 @@ const standardSources = [
     { name: 'Lobsters', url: 'https://lobste.rs/rss', color: '#b22222' },
     { name: 'Dev.to', url: 'https://dev.to/feed', url2: 'https://rsshub.app/devto', color: '#4b3e99' },
     { name: 'GSMArena', url: 'https://www.gsmarena.com/rss-news-reviews.php3', color: '#d32f2f' },
+    // 以下为补充的真实科技媒体（直接 RSS，无 WAF/反爬），用于在不制造"伪主题源"的前提下
+    // 真实扩量：Android Authority 覆盖安卓/手机/数码测评，Dark Reading 覆盖网络安全。
+    { name: 'Android Authority', url: 'https://www.androidauthority.com/feed/', color: '#a4c639' },
+    { name: 'Dark Reading', url: 'https://www.darkreading.com/rss.xml', color: '#1a1a2e' },
 ];
 
 async function fetchStandard(src) {
@@ -682,16 +686,6 @@ const googleNewsSources = [
     // Google News 的 site:huxiu.com 可稳定拉取近 ~100 篇（含前沿科技/3C数码等板块），
     // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
     { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
-    // ===== 主题扩量源：自由检索词（非 site:），拉取近30天相关科技文，最大化看板体量 =====
-    // 这些源本身就是"主题检索"，几乎全为科技相关，故标记 topic:true 并放宽至 30 天窗口。
-    { name: '网络安全', query: '网络安全 OR 黑客 OR 漏洞 OR 数据泄露 OR 勒索软件 OR 钓鱼 OR 渗透测试', color: '#c62828', topic: true },
-    { name: 'AI芯片', query: 'AI芯片 OR 算力芯片 OR 英伟达 OR 华为昇腾 OR 寒武纪', color: '#6a1b9a', topic: true },
-    { name: '三星', query: '三星 Galaxy 手机 OR 三星 芯片 OR 三星 发布', color: '#0d47a1', topic: true },
-    { name: '科技大厂', query: '腾讯 OR 阿里巴巴 OR 字节跳动 OR 百度 OR 小米 OR 华为 OR 美团 OR 京东 OR 拼多多 OR 网易 OR 快手', color: '#00695c', topic: true },
-    { name: '数码测评', query: '测评 OR 评测 OR 上手 OR 开箱 OR 横评 OR 跑分', color: '#e65100', topic: true },
-    { name: '新品发布', query: '新品发布 OR 发布会 OR 首发 OR 亮相 OR 官宣', color: '#ad1457', topic: true },
-    { name: '科技专访', query: '专访 OR 访谈 OR 对话 科技 OR 口述 创始人', color: '#37474f', topic: true },
-    { name: '上市科技', query: 'IPO OR 科技公司 上市 OR 科技 财报 OR 独角兽 融资', color: '#1b5e20', topic: true },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -713,7 +707,11 @@ async function fetchGoogleNews(src, existingTitles) {
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;
-            const art = makeArticle(src, { title, url: it.link || '', time: it.isoDate || it.pubDate || '' });
+            // Google News 的 RSS 链接为 news.google.com/rss/articles/...，该格式在浏览器中会白屏；
+            // 去掉路径中的 "rss/" 改为 news.google.com/articles/... 即可正常跳转到原文。
+            let gurl = it.link || '';
+            gurl = gurl.replace('news.google.com/rss/articles/', 'news.google.com/articles/');
+            const art = makeArticle(src, { title, url: gurl, time: it.isoDate || it.pubDate || '' });
             if (src.topic) art.topic = true; // 标记主题扩量源，新鲜度过滤放宽至 30 天
             items.push(art);
             existingTitles.add(title);
@@ -724,9 +722,7 @@ async function fetchGoogleNews(src, existingTitles) {
 }
 
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
-// 含站点兜底源(华尔街见闻/虎嗅/品玩/极客公园/快科技) 与 主题扩量源(网络安全/AI芯片/三星/科技大厂/数码测评/新品发布/科技专访/上市科技)
-const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技',
-    '网络安全', 'AI芯片', '三星', '科技大厂', '数码测评', '新品发布', '科技专访', '上市科技'];
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技'];
 
 // ========== 主流程 ==========
 async function main() {
@@ -808,14 +804,13 @@ async function main() {
     }
 
     // 新鲜度过滤：丢弃旧文，保证看板前列始终是最新内容
-    // 标准窗口放宽至 7 天（原 3 天，扩量需要）；知名科技媒体放宽至 14 天；
-    // 低频/主题源放宽至 30 天（爱搞机/Dev.to/cnBeta/虎嗅/华尔街见闻/品玩 + 主题扩量源）。
-    const MAX_AGE_MS = 7 * 24 * 3600 * 1000;
-    const MAX_AGE_LONG_MS = 14 * 24 * 3600 * 1000;
+    // 用户要求只看「新的 / 1天前 / 2天前 / 3天前」——标准窗口收紧为 3 天；
+    // 仅对更新极慢的低频源放宽（爱搞机/Dev.to/cnBeta 30天，澎湃新闻 7天），避免它们被饿死。
+    const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
+    const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
-    const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园', '36氪', '钛媒体', '少数派', '爱范儿', '量子位', '机器之心', 'InfoQ', '开源中国', 'Solidot', 'DoNews', '雷锋网'];
-    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta', '虎嗅', '华尔街见闻', '品玩'];
-    const TOPIC_SOURCES = new Set(googleNewsSources.filter(s => s.topic).map(s => s.name));
+    const LONG_WINDOW_SOURCES = ['澎湃新闻'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
@@ -823,12 +818,11 @@ async function main() {
         let maxAge = MAX_AGE_MS;
         // 种子兜底文章（实时为0时注入）同样放宽至 30 天，保证反爬源至少有内容
         if (a.seedFallback) maxAge = MAX_AGE_MONTH_MS;
-        else if (TOPIC_SOURCES.has(a.source) || a.topic) maxAge = MAX_AGE_MONTH_MS;
         else if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
         else if (LONG_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_LONG_MS;
         return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准7天/知名媒体14天/低频与主题源30天)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/低频源30天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
