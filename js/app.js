@@ -193,15 +193,18 @@ const app = createApp({
 
         // 数据源自身的抓取时间（来自 news.json 的 updateTime，由 GitHub Actions 定时生成）
         const dataUpdateTime = ref('');
+        // 用户手动刷新/页面加载时间：以用户点击或加载的那一刻为基准显示"更新于X前"
+        const manualRefreshTime = ref(0);
         // 实时心跳：每 30 秒刷新一次，让“X 分钟前”类相对时间始终相对于用户当前时钟
         const nowTick = ref(Date.now());
         setInterval(() => { nowTick.value = Date.now(); }, 30000);
 
-        // “数据更新于 X 分钟前” —— 反映服务器最近一次抓取的时间，而非用户点击时间
+        // "数据更新于 X 分钟前" —— 以用户手动刷新/页面加载时间为准，点击刷新后显示"刚刚更新"
         const dataAgeText = computed(() => {
-            if (!dataUpdateTime.value) return '';
+            const base = manualRefreshTime.value || dataUpdateTime.value;
+            if (!base) return '';
             try {
-                const d = new Date(dataUpdateTime.value), diff = nowTick.value - d.getTime();
+                const d = new Date(base), diff = nowTick.value - d.getTime();
                 if (diff < 0) return '刚刚更新';
                 if (diff < 60000) return '刚刚更新';
                 if (diff < 3600000) return `更新于 ${Math.floor(diff / 60000)} 分钟前`;
@@ -296,6 +299,8 @@ const app = createApp({
 
         function refreshCurrentTab() {
             if (activePanel.value !== 'hotboard') return;
+            // 手动刷新：以用户点击这一刻为基准显示"刚刚更新"
+            manualRefreshTime.value = Date.now();
             API.clearOldCache();
             if (hotboardTab.value === 'social') fetchSocialHotlist();
             else fetchTechNews();
