@@ -308,6 +308,8 @@ const app = createApp({
 
         function updateTimestamp() {
             lastUpdate.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            // 以本次数据加载（首次打开/浏览器刷新/手动刷新）的时刻为基准，显示“刚刚更新”
+            manualRefreshTime.value = Date.now();
         }
 
         // 数据源 / 主题源 分组展示（主题源为按主题聚合的视图，与真实数据源区分）
