@@ -18,7 +18,7 @@
                 <span>TechDigest</span>
             </div>
             <div class="top-bar-right">
-                <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '本指示以你最近一次刷新/打开页面的时刻为基准。服务器数据实际抓取于 ' + dataUpdateAbsolute : ''">
+                <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '数据由服务器每小时自动抓取，最近一次抓取于 ' + dataUpdateAbsolute + '（点击刷新按钮只是重新加载已抓取的数据，不会触发新的抓取）' : ''">
                     <i class="fa-solid fa-cloud-arrow-down"></i> {{ dataAgeText }}
                 </span>
                 <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="刷新">
@@ -570,6 +570,6 @@
     <script src="js/filter.js?v=7"></script>
     <script src="js/ai-generator.js?v=7"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=9"></script>
+    <script src="js/app.js?v=10"></script>
 </body>
 </html>

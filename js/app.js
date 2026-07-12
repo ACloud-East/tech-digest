@@ -192,24 +192,22 @@ const app = createApp({
         const lastUpdate = ref('');
 
         // 数据源自身的抓取时间（来自 news.json 的 updateTime，由 GitHub Actions 定时生成）
+        // 数据源自身的抓取时间（来自 news.json 的 updateTime，由 GitHub Actions 每小时定时生成）
         const dataUpdateTime = ref('');
-        // 用户手动刷新/页面加载时间：以用户点击或加载的那一刻为基准显示"更新于X前"
-        const manualRefreshTime = ref(0);
         // 实时心跳：每 30 秒刷新一次，让“X 分钟前”类相对时间始终相对于用户当前时钟
         const nowTick = ref(Date.now());
         setInterval(() => { nowTick.value = Date.now(); }, 30000);
 
-        // "数据更新于 X 分钟前" —— 以用户手动刷新/页面加载时间为准，点击刷新后显示"刚刚更新"
+        // "数据更新于 X 前" —— 反映服务器最近一次成功抓取的时间（真实数据新鲜度，与列表内容时间一致）
         const dataAgeText = computed(() => {
-            const base = manualRefreshTime.value || dataUpdateTime.value;
-            if (!base) return '';
+            if (!dataUpdateTime.value) return '';
             try {
-                const d = new Date(base), diff = nowTick.value - d.getTime();
+                const d = new Date(dataUpdateTime.value), diff = nowTick.value - d.getTime();
                 if (diff < 0) return '刚刚更新';
                 if (diff < 60000) return '刚刚更新';
-                if (diff < 3600000) return `更新于 ${Math.floor(diff / 60000)} 分钟前`;
-                if (diff < 86400000) return `更新于 ${Math.floor(diff / 3600000)} 小时前`;
-                return `更新于 ${Math.floor(diff / 86400000)} 天前`;
+                if (diff < 3600000) return `数据更新于 ${Math.floor(diff / 60000)} 分钟前`;
+                if (diff < 86400000) return `数据更新于 ${Math.floor(diff / 3600000)} 小时前`;
+                return `数据更新于 ${Math.floor(diff / 86400000)} 天前`;
             } catch { return ''; }
         });
         // 数据源抓取的绝对本地时间（辅助说明）
@@ -299,8 +297,7 @@ const app = createApp({
 
         function refreshCurrentTab() {
             if (activePanel.value !== 'hotboard') return;
-            // 手动刷新：以用户点击这一刻为基准显示"刚刚更新"
-            manualRefreshTime.value = Date.now();
+            // 手动刷新：重新拉取服务器已抓取的最新数据（不会触发服务器端抓取，数据新鲜度取决于服务器上次整点抓取）
             API.clearOldCache();
             if (hotboardTab.value === 'social') fetchSocialHotlist();
             else fetchTechNews();
@@ -308,8 +305,6 @@ const app = createApp({
 
         function updateTimestamp() {
             lastUpdate.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            // 以本次数据加载（首次打开/浏览器刷新/手动刷新）的时刻为基准，显示“刚刚更新”
-            manualRefreshTime.value = Date.now();
         }
 
         // 数据源 / 主题源 分组展示（主题源为按主题聚合的视图，与真实数据源区分）

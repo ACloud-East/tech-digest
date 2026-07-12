@@ -28,8 +28,17 @@ jobs:
         run: npm ci
 
       - name: Fetch news
-        run: npm run fetch
-        timeout-minutes: 30
+        run: |
+          for i in 1 2 3; do
+            echo "=== 第 $i 次尝试抓取 ==="
+            if npm run fetch; then
+              echo "抓取成功"
+              break
+            fi
+            echo "第 $i 次失败，15 秒后重试..."
+            sleep 15
+          done
+        timeout-minutes: 45
 
       - name: Commit and push
         run: |
