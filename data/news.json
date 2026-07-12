@@ -1,7 +1,109 @@
 {
-  "updateTime": "2026-07-12T10:13:33.567Z",
-  "total": 1572,
+  "updateTime": "2026-07-12T10:29:16.406Z",
+  "total": 1565,
   "articles": [
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "诺基亚时代经典产品线命名回归：HMD Asha 305 入门手机完整规格及海报曝光",
+      "description": "IT之家 7 月 12 日消息，消息源 smashx_60 现已曝光了 HMD Asha 305 手机海报及完整参数信息，该机系 HMD 首款 Asha 机型，预计定位入门市场，在泰国起步价为 2390 泰铢（IT之家注：现汇率约合 487.4 元人民币）。 该机提供黑 / 绿双色，整体尺寸为 147x71.5x10.2mm，正面配备一块 5 英寸 854x480 分辨率非全面屏面板，匹配 2MP 自拍摄像头。手机背面摄像头模组设计酷似苹果 iPhone Pro 机型，不过实际上仅配备了 5MP 主摄。 该机搭载紫光展锐 SC9832E 处理器，匹配至高 3GB RAM 及至高 32GB 存储空间，内置 2500mAh 电池，支持 4G 网络，搭载安卓 14 Go 系统。",
+      "url": "https://www.ithome.com/0/975/774.htm",
+      "time": "2026-07-12T10:21:26.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "凤凰科技",
+      "sourceColor": "#1e88e5",
+      "title": "63道地狱级难题实测，GPT-5.6把其他AI甩开了一截",
+      "description": "63道地狱级难题实测，GPT-5.6把其他AI甩开了一截",
+      "url": "https://tech.ifeng.com/c/8uh8Nwlnuy5",
+      "time": "2026-07-12 10:21",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "OpenAI招聘家庭产品经理，将拓展家庭用户市场|ChatGPT|IT之家|旧金山|Copilot|家长_手机新浪网 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-07-12/detail-inihnwyi7991633.d.html?oid=800&vt=4&cid=76993&node_id=76993",
+      "time": "2026-07-12T10:20:07.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "单日35亿涌入卫星ETF，大跌之下半导体赛道仍在虹吸资金 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.cn/2026-07-12/detail-inihpymz2817236.d.html?oid=WA%200812%202782%205310%20Total%20Biaya%20Membangun%20Plafon%20Model%20GRC%20Pasar%20Kliwon%20Solo&vt=4",
+      "time": "2026-07-12T10:18:45.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Failure Engineering Explained by Uncle to Nephew — Episode 3: Failure Detection",
+      "description": "Episode 2 gave you the seven categories of failure. Episode 3 answers the first real lifecycle question: once one of those seven happens, how does your system even find out? 👦 Nephew: Uncle, quick question. If my database connection drops at 2 AM tonight — how would I actually find out? 👨‍🦳 Uncle: Think about it honestly. Would you? 👦 Nephew: ...no. Not until a user complains in the morning, probably. 👨‍🦳 Uncle: That's the whole problem, right there. Worst case: Failure happens → user notices → user complains → you find out Goal: Failure happens → system notices → you find out → user never notices 👦 Nephew: So detection is just closing that gap. 👨‍🦳 Uncle: Shrinking the time between \"something broke\" and \"someone who can fix it knows about it.\" Six tools do that. One at a time. 1. Timeouts 2. Health Checks 3. Heartbeats 4. Logs 5. Monitoring / Metrics 6. Error Responses 👦 Nephew: If my database hangs, Express just throws an error back automatically, right? 👨‍🦳 Uncle: Does it? 👦 Nephew: ...I actually don't know. I assumed. 👨‍🦳 Uncle: Query goes out. Database never responds. What happens to that line of code? 👦 Nephew: It just... waits? 👨‍🦳 Uncle: For how long? 👦 Nephew: ...forever? 👨‍🦳 Uncle: Forever. Nephew: Wait. So my code could literally hang. Forever. No error, nothing? 👨‍🦳 Uncle: Nothing. Just a request quietly holding a connection, doing nothing, for as long as the process lives. 👦 Nephew: That's terrifying. 👨‍🦳 Uncle: Exactly. So you don't wait and hope. You force a decision. Without timeout: Request sent → ??? → ??? → ??? → (hangs indefinitely) With timeout: Request sent → waits up to 3s → no response → ERROR THROWN → you know NOW 👦 Nephew: So a timeout doesn't fix the database being slow. 👨‍🦳 Uncle: Correct — it just guarantees you find out fast. That's this whole episode, honestly. None of these six tools fix anything. They just surface the problem quickly enough that something else — Episode 4 — can act on it. 👦 Nephew: Isn't checking \"is the process alive\" enough, though? If Node's running, the server's up. 👨‍🦳 Uncle: Is it, though? 👦 Nephew: ...you're going to trace this too, aren't you. 👨‍🦳 Uncle: Every time. Your Node process is alive, accepting connections, fully responsive — but its database connection died an hour ago. Is that server \"up\"? 👦 Nephew: Technically yes. Practically... no, it can't actually do anything. 👨‍🦳 Uncle: Right. \"Process is running\" and \"process can do its job\" are two different questions. Process alive? ✅ Yes Can reach database? ❌ No | \"Is the server up?\" → misleadingly YES \"Is the server HEALTHY?\" → correctly NO 👦 Nephew: So who's actually asking that second question? 👨‍🦳 Uncle: You build an endpoint that answers it honestly, and Kubernetes asks it — every few seconds, on its own. Kubernetes calls GET /health every few seconds | 200 OK → keep sending traffic here | 503 → stop sending traffic, maybe restart the container 👦 Nephew: So a bad health check can get my own container restarted, without a human ever noticing? 👨‍🦳 Uncle: Correct. That's the system detecting and reacting on its own — no one woken up at 3 AM for it. We'll go deeper into exactly that in the Recovery episode. 👨‍🦳 Uncle: New scenario. You have 300 background workers. No HTTP. No API. No endpoint to knock on. One of them just died. How do you know? 👦 Nephew: ...I genuinely don't know. There's nothing to ask it. 👨‍🦳 Uncle: Right — that's exactly why heartbeats exist. If nobody can ask it, it has to tell you, on its own, on a schedule. Health Check: Heartbeat: Monitor ---\"are you okay?\"--> Service ---\"I'm alive\"---> Monitor Service controller.abort(), 3000); try { const result = await fetch('https://api.example.com/data', { signal: controller.signal }); } catch (err) { if (err.name === 'AbortError') { console.error('Request timed out after 3s'); } } finally { clearTimeout(timeoutId); } Health check app.get('/health', async (req, res) => { try { await db.query('SELECT 1'); res.status(200).json({ status: 'ok' }); } catch (err) { res.status(503).json({ status: 'unhealthy', reason: err.message }); } }); Heartbeat setInterval(() => { redis.set('worker:heartbeat', Date.now(), 'EX', 30); }, 10000); // \"I'm alive\" every 10 seconds, expires if not refreshed Structured logging const logger = require('pino')(); logger.info({ userId: 42 }, 'User logged in'); logger.error({ err, orderId: 1001 }, 'Payment failed'); Metrics const promClient = require('prom-client'); const httpDuration = new promClient.Histogram({ name: 'http_request_duration_seconds', help: 'Duration of HTTP requests in seconds', labelNames: ['method', 'route', 'status'] }); app.use((req, res, next) => { const end = httpDuration.startTimer(); res.on('finish', () => { end({ method: req.method, route: req.path, status: res.statusCode }); }); next(); }); Error response res.status(503).json({ error: 'DATABASE_UNAVAILABLE', message: 'Unable to reach the database. Please retry shortly.', retryable: true }); 👦 Nephew: So now I know something broke. 👨‍🦳 Uncle: Right. 👦 Nephew: How do I stop it from taking the whole system down? 👨‍🦳 Uncle: That's where real engineering begins. 👦 Nephew: Saturday? 👨‍🦳 Uncle: Saturday.",
+      "url": "https://dev.to/surajrkhonde/failure-engineering-explained-by-uncle-to-nephew-episode-3-failure-detection-20ck",
+      "time": "2026-07-12T10:16:24.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Compiling PHP DTOs: from reflection to 4.5M hydrations per second",
+      "description": "TL;DR: attribute-driven DTOs are pleasant to write but usually pay a reflection-and-dispatch tax on every call. Simple Data Objects compiles a specialized closure per data class instead — plain properties become inline array reads, the generated code is persisted into an opcache-served cache, and PHP 8.4 lazy ghosts defer hydration until first property access. Here's the architecture, step by step, with numbers at each stage. Every modern PHP codebase eventually grows a layer of data objects: typed, immutable classes that sit between raw input (a request, a DB row, an API payload) and your domain logic. Attribute-driven DTO libraries made this pleasant to write: class CreateOrderData extends BaseData { public function __construct( #[Rules(['required', 'string', 'max:200'])] public readonly string $title, #[Cast(new DateTimeCast('Y-m-d'))] public readonly \\DateTime $deliveryDate, public readonly ?string $notes = null, ) {} } $order = CreateOrderData::from($request->all()); But pleasant to write usually means expensive to run. The typical implementation reflects over the constructor, reads the attributes, and walks a generic hydration pipeline for every property of every object — on every call. That's fine for one DTO per request. It stops being fine when you hydrate a few thousand rows from a report query, or when your API serializes nested object graphs on every response. I wanted the ergonomics without the tax. The result is a PHP 8.4+ package where the hot path contains no reflection, no attribute reads, and no generic dispatch loop — because by the time production traffic hits it, hydration is a compiled function. The obvious first move: do all reflection up front. On the first from() call for a class, the package builds a ClassMeta — an immutable description of the constructor: parameter names, types, defaults, nullability, and everything the attributes declare (casts, input-key mappings, pipes, validation rules). Every subsequent call reuses that metadata. This is table stakes — most libraries do some version of it — and it still leaves you with an interpreted loop: for each parameter, check \"does it have a cast? a mapped key? a default?\" and branch accordingly. Thousands of objects × dozens of properties = millions of predictable, redundant branch decisions per request. The metadata is static per class. So instead of interpreting it on every call, the package generates a specialized closure per class and lets PHP execute that. For the CreateOrderData above, the generated hydrator is essentially: static function (array $d) use ($p, $pipes): \\App\\Data\\CreateOrderData { return new \\App\\Data\\CreateOrderData( \\array_key_exists('title', $d) ? $d['title'] : throw DataHydrationException::missingField(CreateOrderData::class, 'title'), \\array_key_exists('deliveryDate', $d) ? ValueCaster::cast($p[1], $d['deliveryDate']) : throw DataHydrationException::missingField(CreateOrderData::class, 'deliveryDate'), $d['notes'] ?? null, ); } Note what happened to each kind of parameter: Plain properties (title, notes) became direct array reads. No pipeline, no dispatch — the nullable-with-null-default case collapses all the way down to $d['notes'] ?? null. Properties with behavior (deliveryDate has a cast) delegate to the same runtime ValueCaster as before, with the metadata captured in use. Semantics are identical to the interpreted path; only the per-parameter \"what kind of property is this?\" decision is gone, because it was made once at compile time. Missing-field errors are inlined as throw expressions, so the happy path carries no error-handling scaffolding. The serializer side (toArray()) gets the same treatment: plain properties become inline property reads into an array literal. \"You're eval()-ing generated code?\" Yes, once per class per process — and the generated source is assembled only from reflection metadata. Class and property names are valid PHP identifiers by definition; the single free-form string that can appear (an input key from #[MapPropertyName]) is embedded via var_export(). There is no path from runtime input into the generated code. Result of this step alone, measured on the same DTO shapes: hydration ~2.6× faster, serialization ~2.2× faster than the interpreted pipeline it replaced. A compiled closure still costs reflection + code generation + eval() on the first call of each process. With PHP-FPM that's every worker after every deploy; with short-lived CLI jobs it's every run. So the metadata cache persists the compiled code. Point the registry at a directory: MetadataRegistry::setStoragePath(storage_path('framework/data-objects')); and each class gets a .meta.php file containing the exported metadata plus the generated hydrator and serializer source. Loading it is a PHP include — which means opcache serves it as compiled opcodes, shared across all FPM workers. A warmed worker pays neither reflection nor eval(). The cache write is atomic (write-to-temp + rename), and a guard refuses to persist classes whose metadata isn't safely exportable. Pre-warm on deploy so even the first request is hot: vendor/bin/sdo-warm storage/framework/data-objects app/Data The warmer scans your PSR-4 sources for concrete data classes, compiles everything, and fails the deploy fast if any DTO definition is invalid — which is exactly when you want to find out. PHP 8.4 shipped lazy objects, and they're a perfect fit for DTOs. fromLazy() returns an uninitialized lazy ghost; the compiled argument resolver runs on first property access: $orders = array_map(OrderData::fromLazy(...), $rows); // casts, nested DTOs, pipes — none of it has run yet. // Touch one property and that object (only) hydrates: $orders[0]->title; Both the eager hydrator and the lazy argument resolver are generated from the same code builder, so hydration semantics can't drift between the two paths. When only ~10% of created objects are ever read — think \"hydrate the page, render the visible rows\" — this measures ~3× faster on cast-heavy DTOs and ~6× with nested collections. Honest footnote: for trivial flat DTOs the ghost bookkeeping costs about as much as it saves, so the docs say exactly that instead of pretending it's free speed. And for the \"million rows through a pipeline\" case there's lazyCollection(), which hydrates one item at a time as the collection is consumed: streaming 50,000 rows peaks at ~0.26 MB instead of ~13 MB materialized. Benchmarked against the most popular full-featured data-object library in the PHP/Laravel ecosystem — identical DTO shapes, 20,000 iterations per scenario, PHP 8.4: Scenario Simple Data Objects Popular alternative Advantage Hydration — flat DTO ~4,500,000 ops/s ~130,000 ops/s ~35× Hydration — nested DTO ~2,200,000 ops/s ~74,000 ops/s ~30× Hydration — collection of 20 ~270,000 ops/s ~7,500 ops/s ~36× Serialization — flat DTO ~7,400,000 ops/s ~200,000 ops/s ~37× Serialization — nested DTO ~4,000,000 ops/s ~117,000 ops/s ~34× Peak memory — 50k rows 0.26 MB (lazyCollection()) ~13 MB ~50× less Absolute numbers vary with hardware; the ratios stay stable across runs. To be fair to the alternative: it does more — it's a framework-integrated toolkit with TypeScript transformers, wire formats, and a large extension surface. If you use that surface, use it; it's excellent. This package targets the case where DTOs are on your hot path and you mostly need hydrate/validate/serialize — the 80% — as fast as PHP can go. Design honesty section. The speed comes from constraints: PHP 8.4 only. Lazy ghosts, property hooks-era engine. No polyfills, no legacy branches. Constructor-promoted, readonly properties are the model. No setters, no mutable state — which is also just correct DTO design. No runtime magic. Everything the DTO does is declared in attributes and compiled ahead of time. If you need to rewire behavior per instance at runtime, this is the wrong tool. What you don't give up: validation (Laravel rules, working standalone without a Laravel app), casts (dates, enums, JSON, encrypted fields via libsodium), input pipelines, key transforms, nested collections, immutable with()/diff()/equals(). The test suite covers 100% of lines, enforced in CI — the coverage gate fails below 100, and there are no @codeCoverageIgnore escapes. composer require std-out/simple-data-objects / simple-data-objects Simple Data Objects Lightweight, attribute-driven DTOs for PHP 8.4+. composer require std-out/simple-data-objects → Full documentation Why Simple Data Objects Hot path Compiled per-class closures — zero reflection, zero dispatch overhead Boilerplate None — constructor props + attributes Roundtrip from(toArray()) always works, mapped keys included Standalone Validation works without a Laravel app Pipelines Middleware-style input preprocessing, class or property level Performance Benchmarked against the most popular full-featured data-object library in the PHP/Laravel ecosystem — identical DTO shapes, 20,000 iterations per scenario, PHP 8.4: Scenario Simple Data Objects Popular alternative Advantage Hydration — flat DTO ~4,500,000 ops/s ~130,000 ops/s ~35× faster Hydration — nested DTO ~2,200,000 ops/s ~74,000 ops/s ~30× faster Hydration — collection of 20 ~270,000 ops/s ~7,500 ops/s ~36× faster Serialization — flat DTO ~7,400,000 ops/s ~200,000 ops/s ~37× faster Serialization — nested DTO ~4,000,000 ops/s ~117,000 ops/s ~34× faster … View on GitHub Docs: https://std-out.github.io/simple-data-objects/ Good first issues (new casts, pipes, cookbook recipes): https://github.com/std-out/simple-data-objects/issues If you try it on a real workload, I'd genuinely like to hear the numbers — especially where it doesn't win. Benchmarks that survive contact with other people's production are the only ones that matter.",
+      "url": "https://dev.to/yuriizee/compiling-php-dtos-from-reflection-to-45m-hydrations-per-second-3jic",
+      "time": "2026-07-12T10:15:26.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "The TCL NXTPAPER 11 Plus is a budget Android tablet that finally does something different",
+      "description": "This budget slate has got more personality than any $250 tablet has a right to.",
+      "url": "https://www.androidauthority.com/tcl-nxtpaper-11-plus-review-3681246/",
+      "time": "2026-07-12T10:15:25.000Z",
+      "tags": [
+        "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "存储芯片股过去数周跌超20%，闪迪、SK海力士、三星龙头集体失速。AI热潮下的最热门交易为何突然“翻车”？ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5328858693_m13d9fee4502002f0im.html?from=news&subch=onews",
+      "time": "2026-07-12T10:12:57.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
     {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
@@ -16,6 +118,19 @@
       ]
     },
     {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Solving Every CSES Problems in Rust - #1 Number Spiral",
+      "description": "The constraints for x, y is 10^9, given these constraints the problem cannot be solved by actually building the spiral - but a static function with returns the solution in O(1) / O(logn). The problem is a simple pattern matching problem - the first observation to be made is that for a given (x, y) the value would be greater than squared(max(x, y) - 1). Then only 4 cases emerge :- x > y and square(x) is even -> Add y to square(x) x > y and square(x) is odd -> Add 2*x - y to square(x) y > x and square(x) is even -> Add 2*y - x to square(x) y > x and square(x) is odd -> Add x to square(x) use std::io; fn get_res(x: i64, y: i64, b: bool) -> i64 { let mut res = (x-1).pow(2); if (res % 2 == 0) == b { res += 2 * x - y; } else { res += y; } res } fn main() { let mut input = String::new(); io::stdin().read_line(&mut input).unwrap(); let t: i32 = input.trim().parse().unwrap(); for _ in 0..t { let mut input = String::new(); io::stdin().read_line(&mut input).unwrap(); let mut iter = input.split_whitespace(); let x: i64 = iter.next().unwrap().parse().unwrap(); let y: i64 = iter.next().unwrap().parse().unwrap(); let res; if x > y { res = get_res(x, y, false); } else { res = get_res(y, x, true); } println!(\"{}\", res); } }",
+      "url": "https://dev.to/shubh_agarwal_c1e90b67cb6/solving-every-cses-problems-in-rust-1-number-spiral-2j1k",
+      "time": "2026-07-12T10:11:40.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "沃什正在改造美联储的“大脑” 这比降不降息重要一百倍",
@@ -24,6 +139,19 @@
       "time": "2026-07-12T10:10:51.000Z",
       "tags": [
         "人工智能"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Sample Equation: Ego–Emotion–Analytical–Holistic (EEAH) Cognitive Wave-Energy Model",
+      "description": "@kungfufk Sample for The Physics of Bounded Rationality:Why AI Needs a \"Cognitive Mechanics\" Engine(Virtual Intelligence) STATUS: SAMPLE / ILLUSTRATIVE MODEL — NOT EMPIRICALLY VALIDATED Computational Cognitive Mechanics framework, built the same way the original was: by borrowing wave and energy mathematics from physics and applying them to cognitive traits as a metaphor. Every physics-borrowed step is explicitly flagged as an Assumption. Nothing here has been measured, calibrated, or tested against real behavioral data. Treat it as a hypothesis to test, not a fact. The original framework modeled a single composite cognitive state $\\Psi_{human}(t)$ and a single energy split ($K_E + P_E + W_E$). This document derives a sample equation that opens that composite state up into four named traits — Ego, Emotion, Analytical mind, Holistic mind — and shows, step by step, how a \"cognitive energy\" for the combination could be derived using wave superposition and interference, the same tools used in Section 2 of the original piece. Symbol Meaning $i, j$ Trait index, $i,j \\in {ego, emo, ana, hol}$ $\\Psi_i(t)$ Wave function representing trait $i$'s instantaneous engagement $A_i$ Amplitude of trait $i$ (its instantaneous \"strength,\" normalized $0$–$1$) $\\omega$ Shared angular frequency (see Assumption 2) $\\phi_i$ Phase offset of trait $i$ $k_i$ Trait weighting constant (analogous to a spring constant) $\\lambda_{ij}$ Coupling coefficient between traits $i$ and $j$ $C$ Total cognitive capacity (carried over from the original document's $K \\propto \\sqrt{C}$ relation) $E^{EAH}_{cognitive}$ Derived composite cognitive energy for this trait set Assumption 1 — Traits behave like oscillators. Each trait's instantaneous engagement can be approximated as a sinusoid, $\\Psi_i(t) = A_i \\sin(\\omega t + \\phi_i)$, rather than a fixed scalar. This is a modeling convenience borrowed from wave theory, not an observed property of ego, emotion, analysis, or holistic thought. Assumption 2 — Shared frequency within one exchange. All four traits are assumed to oscillate at approximately the same $\\omega$ over the timescale of a single conversational turn, even though over longer timescales they likely drift at different rates. This is only done to keep the interference math tractable. Assumption 3 — Energy scales with amplitude squared. As in simple harmonic motion ($E \\propto A^2$), \"cognitive energy\" invested in a trait is assumed proportional to the square of that trait's amplitude. There is no evidence this holds for psychological traits; it is a direct physics borrow. Assumption 4 — Traits interact, not just add. Traits are assumed to interfere the way two overlapping waves do, producing cross terms — not simply summed independently. This is what lets the model express \"ego and emotion reinforcing each other\" or \"analysis and holism trading off.\" Assumption 5 — Default phase relationships. As a starting point only (not a claim): Ego and Emotion are assumed roughly in phase ($\\Delta\\phi \\approx 0$), reflecting that ego-threat responses are often emotionally charged in the psychology literature. Analytical and Holistic modes are assumed roughly antiphase ($\\Delta\\phi \\approx \\pi$), reflecting cognitive-style research (e.g., analytic vs. holistic processing) that treats them as a trade-off. Real people blend both continuously; this is a simplification, not a rule. Assumption 6 — Bounded by capacity. Total composite energy cannot exceed the system's cognitive capacity $C$, tying this model back to the bounded-rationality equations in the original document. $$\\Psi_i(t) = A_i \\sin(\\omega t + \\phi_i), \\qquad i \\in {ego,\\ emo,\\ ana,\\ hol}$$ $$\\Psi_{state}(t) = \\Psi_{ego}(t) + \\Psi_{emo}(t) + \\Psi_{ana}(t) + \\Psi_{hol}(t)$$ Borrowing the physics convention that wave intensity $\\propto$ (amplitude)²: $$P(t) = \\Psi_{state}(t)^2 = \\left(\\sum_i A_i \\sin(\\omega t + \\phi_i)\\right)^2$$ Expanding the square: $$P(t) = \\sum_i A_i^2 \\sin^2(\\omega t + \\phi_i) \\;+\\; 2\\sum_{i<j} A_i A_j \\sin(\\omega t+\\phi_i)\\sin(\\omega t+\\phi_j)$$ Using $\\langle \\sin^2(\\omega t+\\phi_i)\\rangle = \\tfrac12$ and $\\langle \\sin(\\omega t+\\phi_i)\\sin(\\omega t+\\phi_j)\\rangle = \\tfrac12\\cos(\\phi_i-\\phi_j)$: $$\\langle P \\rangle = \\frac{1}{2}\\sum_i A_i^2 \\;+\\; \\sum_{i<j} A_i A_j \\cos(\\phi_i - \\phi_j)$$ This step is the only piece of pure, correctly-applied math in the derivation — it's the standard two-wave interference result (the same identity behind AC power averaging and double-slit interference). Everything feeding into it (Steps 1–3) is the assumption-laden part. Not every trait should carry equal weight, and cross-trait interactions shouldn't scale identically to self-terms, so weighting constants $k_i$ and coupling constants $\\lambda_{ij}$ are introduced: $$\\boxed{E^{EAH}{cognitive} = \\frac{1}{2}\\sum_i k_i A_i^2 \\;+\\; \\sum{i<j} \\lambda_{ij}\\, A_i A_j \\cos(\\phi_i - \\phi_j)}$$ where $i,j \\in {ego, emo, ana, hol}$. $$E^{EAH}_{cognitive} \\le C$$ If the four traits' combined energy would exceed available capacity $C$, the model implies some trait's amplitude must fall — a mathematical stand-in for \"you can't be maximally emotional and maximally analytical at full intensity at the same time.\" This is a testable-in-principle claim, not a demonstrated one. Since the original request left room for more traits (curiosity, skepticism, patience, trust — as in the \"alloy analogy\" of the source document), the equation generalizes to $N$ traits directly: $$E^{general}{cognitive} = \\frac{1}{2}\\sum{i=1}^{N} k_i A_i^2 \\;+\\; \\sum_{i<j}^{N} \\lambda_{ij}\\, A_i A_j \\cos(\\phi_i-\\phi_j), \\qquad \\text{subject to } E^{general}_{cognitive} \\le C$$ Adding a trait just means adding one more term to each sum and defining its coupling to the existing traits — no structural change. These numbers are invented for illustration — not measured from any real interaction. Trait $A_i$ $k_i$ Ego 0.6 1 Emotion 0.8 1 Analytical 0.3 1 Holistic 0.5 1 Self-term sum: Cross terms (assumed couplings, per Assumption 5): Ego–Emotion (in phase, $\\Delta\\phi\\approx0 \\Rightarrow \\cos\\approx1$), $\\lambda=0.9$: $0.9 \\times 0.6 \\times 0.8 \\times 1 = 0.432$ Analytical–Holistic (antiphase, $\\Delta\\phi\\approx\\pi \\Rightarrow \\cos\\approx-1$), $\\lambda=0.7$: $0.7 \\times 0.3 \\times 0.5 \\times (-1) = -0.105$ All remaining pairs (Ego–Analytical, Ego–Holistic, Emotion–Analytical, Emotion–Holistic) assumed near-orthogonal ($\\Delta\\phi\\approx\\pi/2 \\Rightarrow \\cos\\approx0$), $\\lambda=0.2$: contribute $\\approx 0$ Total: $E^{EAH}_{cognitive} \\approx 0.67 + 0.432 - 0.105 + 0 = 0.997$ If capacity were set at $C=1$, this toy example would sit right at the bounded-rationality ceiling — a deliberately chosen illustration of what \"near capacity\" looks like under this model, not a finding. mean, if this held up High Ego–Emotion coupling energy → a state where identity and feeling are reinforcing each other (defensiveness, pride, or emotionally-charged self-protection). Negative Analytical–Holistic cross term → the trade-off cost of trying to run detailed step-by-step analysis and big-picture synthesis at the same time. Approaching the capacity ceiling $C$ → the point where bounded rationality forces a heuristic shortcut instead of full deliberation. This is narrative interpretation of the math, not a validated psychological claim. The trait-as-wave representation is unproven. There's no evidence ego, emotion, analysis, or holistic thought actually oscillate sinusoidally, or that they share a common frequency. $k_i$ and $\\lambda_{ij}$ are free parameters, not constants. They were chosen for the example, not fit to data. Different people (or the same person in different contexts) would presumably need very different values, and there's currently no dataset that would let you fit them. The energy-squared analogy is a borrow, not a derivation from cognitive science. It's imported wholesale from simple harmonic motion. Phase defaults in Assumption 5 are illustrative starting points, not empirical claims — real cognitive style research shows individuals blend analytic and holistic processing rather than sitting at fixed opposite phases. This is a sample equation for one plausible trait set. Swapping in different traits, different coupling assumptions, or a different energy form (e.g., additive instead of squared) would produce an equally \"valid\" alternative model — which is itself evidence that the framework is under-constrained until real data is brought in. As with the original piece: interesting as a structured thought experiment and a way to reason about trait trade-offs, not yet a tested scientific model.",
+      "url": "https://dev.to/kungfufk/sample-equation-ego-emotion-analytical-holistic-eeah-cognitive-wave-energy-model-4ce3",
+      "time": "2026-07-12T10:09:10.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ]
     },
     {
@@ -254,18 +382,6 @@
       ]
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "“透视”功率半导体涨价潮 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-12/detail-inihpucx7855644.d.html?oid=800&vt=4&cid=76993&node_id=76993",
-      "time": "2026-07-12T09:50:54.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
       "title": "水月雨 × 洛天依联名耳机礼盒「无尽之夏」预售：专属提示音 + 主题涂装，239 元",
@@ -292,19 +408,6 @@
       ]
     },
     {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "Every engineering metric gets gamed. One of them structurally can't.",
-      "description": "OrbitLens Ace → ace.orbitlens.io A busy quarter is easy to stage. Code that's still there in two years isn't. Pick any metric a team has ever used to judge people, and someone has quietly figured out how to move it without doing the underlying thing. Lines of code rewarded typing, so people typed. Commit counts rewarded committing, so commits got smaller and more frequent. Velocity rewarded closed points, and points drifted upward until a \"3\" meant nothing. DORA measured how often you deploy, so teams shipped trivial changes just to move it. Even churn — the number the \"code health\" tools lean on — is something you can lower on purpose, which means you can manage the number instead of the mess underneath it. None of that requires dishonest engineers. It's Goodhart's law doing what it always does. Every one of those numbers is a measure of activity, and activity is cheap to produce. Once you're paid for activity, the fastest way to get paid more is to produce more of it — not more of whatever the activity was supposed to be a sign of. So the question worth asking isn't which activity metric is least bad. It's whether a git history contains anything at all that you can't move just by being busier. It turns out there's one. And it's not because we were clever — it's because of what the thing is actually made of. Take everything a person wrote, wait a while, and ask a smaller question than \"did they work hard.\" Ask whether the specific lines are still there. Not reverted, not rewritten, not quietly swallowed by someone else's refactor. Still holding weight at HEAD. That's survival. We read it with time-decayed git blame: a line's weight fades month by month unless the line keeps existing, and it counts for more once other people have built on top of it instead of leaving it as a private island. Survival that others have built on is what we call gravity — the structural pull that outlives the person who created it. Try to game it and watch where each trick lands. Split one commit into a hundred, and survival still counts the surviving lines, never the commits — a hundred commits over the same ten lines leave you ten lines. Write reformatting and busywork, and it deletes itself from the score, because code that gets rewritten is, by definition, code that didn't survive; the harder you thrash a file, the less of the thrashing is left to count later. Write an enormous volume, and only the part that lasts registers; a large body of code with a short half-life decays on the same clock as anyone else's. Build a private empire nobody else touches, and the gravity weighting breaks it: your code can still survive, but gravity asks whether other people built on it, and that term you can't supply yourself. Others contribute it over months, by choosing to build on your work or to tear it out. One subtler move is left, and it finds the seam. A line's survival weight is exp(-age_in_days/τ) — it runs on how long ago the line was written. Rewrite the line and its blame author-date resets, the age falls back to zero, and the weight refills. So if you keep touching your own code and territorially push back everyone else's refactors, you can hold survival high with no build-on from anyone. The irony cuts the other way too: genuinely durable code, the kind nobody needs to rewrite, ages and decays, while code that's kept churned gets paid. Raw survival on its own can penalize the most durable work and reward the most fussed-over. (A separate abandonment analysis showed the same seam: survival falls once replenishment stops, so it is partly a measure of maintenance recency — and maintenance is something you can supply alone.) So the thing you can't move by being busier isn't raw survival after all. If self-churn refills it, survival hasn't fully subtracted the activity; what it can't subtract is gravity, the others-contested gate. A territorial self-churn empire keeps its survival and scores zero gravity, and since τ is measured in months, the churn has to run forever or the weight decays — all the while the gate is asking whether anyone else built on the code, and self-maintenance has no answer. The one term that never passes through your own hands is whether other people built on your work. If survival were just output with better makeup, the people who commit the most would be the ones whose code lasts the most. They aren't. Across seven open-source repositories and 547 real contributors, a person's commit count and the surviving mass of their code correlate at ρ = 0.28. Being busy in the log explains a single-digit slice of who's still standing in the codebase. In three of the seven, the person with the most commits isn't the person with the most surviving code at all. I saw a sharper version of this inside a small production team. At one point one engineer held roughly fifteen times the surviving-code mass of a colleague — a landslide, if you were reading the activity. Two years on, most of that lead had been overwritten by the ordinary churn of a codebase that was still alive, and the colleague's work had quietly become the part everyone else was building on. Nobody ran a review to correct the ranking. Time did, by passing over both of them the same way. (The names aren't the point, and we don't publish them. A number that would rank a coworker in public is exactly the thing we're arguing against. Survival is read at the level of the code, never the level of a person's worth.) For most of software's history, activity was a decent stand-in. If you wanted a lot of surviving code, writing a lot of code really was one way to get there — writing was expensive, so volume tracked intent well enough. Then a model started writing a thousand lines a minute, and the stand-in came apart. Commit counts, diff sizes, PR throughput — in a repo where half the code is generated, they inflate for free. A measure of something that's no longer scarce is a measure of nothing. Survival is the layer that's still standing. A model can produce code; whether the code lasts gets decided afterward, by whether it holds under change and whether anyone builds on it — the two things no author controls, human or otherwise. So as the rest of the dashboard fills with noise, the surviving layer is the last part of the repository that still carries a signal. Here's where we walk away from the rest of the category, which mostly sells fear. Survival isn't virtue. Code can last because it's good, and code can last because it sits in a corner everyone's afraid to touch — persistence and value aren't the same thing, and separating \"lasted because others built on it\" from \"lasted because it was abandoned\" is real work, work that needs a crowd to do at all. On a three-person team there aren't enough independent hands for that separation to work, and the measure leans back toward raw persistence. We say so. And survival doesn't predict. It tells you what lasted, not what will. We spent real effort testing whether it forecasts durability, and across a lot of repositories it doesn't do that cleanly — a result we'll write up in full, the inconvenient parts included, because an observatory that only reports its wins isn't one. That's the whole claim, and it's a small one. Not a number that says who to promote or which file breaks next. Just this: of everything git records, the measurement you can't move by being busier is whether other people built on your code — survival gated by their contribution, the thing we call gravity, the one term that never passes through your own hands. In a year where being busy got free, that turned out to be the only measurement left worth reading. The telescope doesn't bend. It reads what's on the ground — the code that survived, and the pull it still has — and it won't turn that into a scoreboard over people. If that's the instrument you want pointed at your own repo, it runs locally, on git alone, and sends nothing out. Read your own surviving layer → ace.orbitlens.io · EIS is open source →",
-      "url": "https://dev.to/machuz/every-engineering-metric-gets-gamed-one-of-them-structurally-cant-3c34",
-      "time": "2026-07-12T09:49:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "赛力斯由盈转亏！受存储芯片、工业金属、碳酸锂等涨价影响，预计上半年至少亏损15亿元，问界汽车亏超10亿 - 东方财富",
@@ -316,45 +419,6 @@
         "汽车"
       ],
       "topic": true
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "I built a tiny macOS app that mounts FTP folders directly in Finder",
-      "description": "I often work with legacy servers that still expose files over FTP. On macOS, there isn't a simple way to mount an FTP server as a regular Finder folder anymore, and most existing solutions are either paid or feel outdated. So I built macOS FTP Folder Mounter. It lets you mount an FTP server so it behaves like a normal folder in Finder, making it much easier to browse and manage remote files without constantly switching between FTP clients. Features I'd really appreciate any feedback, feature requests, or pull requests. GitHub: https://github.com/LukasWagnerX/macos-ftp-folder-mounter",
-      "url": "https://dev.to/lukaswagner__/i-built-a-tiny-macos-app-that-mounts-ftp-folders-directly-in-finder-2iba",
-      "time": "2026-07-12T09:48:17.000Z",
-      "tags": [
-        "人工智能",
-        "游戏",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "The complete guide to disposable email detection",
-      "description": "Syntax-valid, MX-record-valid, and still worthless for your product: that's a disposable email address from 10minutemail, guerrillamail, mailinator, or one of several hundred similar throwaway-inbox services. If you're not filtering these, a meaningful slice of your \"verified\" signups are addresses nobody will ever check twice. Here's why this is a genuinely different problem from syntax or MX validation, and how to actually solve it. Why there's no algorithmic tell. A disposable-mail domain looks completely normal — valid syntax, real MX records, sometimes even a legitimate-looking domain name. There's no structural pattern that distinguishes mailinator.com from gmail.com at the protocol level. The only reliable signal is a maintained list of known disposable domains, checked against the domain part of the address: function isDisposable(email, disposableDomainSet) { const domain = email.split(\"@\")[1]?.toLowerCase(); return disposableDomainSet.has(domain); } The catch: the list has to stay current. New disposable-mail domains spin up constantly — some services rotate domains specifically to dodge blocklists. A list you snapshot once and never update degrades within weeks. The community-run disposable-email-domains project is a solid free starting point and is actively maintained, but you need a process to re-sync it, not a one-time import. Where this fits in the validation pipeline. Order matters, because each check is progressively more expensive and should only run if the previous one passed: Syntax — near-instant, always run MX record lookup — one DNS call, catches typo'd/dead domains Disposable-domain check — a set lookup against your list, catches throwaway-but-technically-valid addresses Running them in that order means you only pay for the disposable-domain check on addresses that already passed the cheaper filters — no wasted work on obviously broken input. What it doesn't catch: a user who signs up with a real Gmail address they simply never check again. Disposable-domain detection targets services designed for throwaway use, not general inbox abandonment — that's a retention problem, not a validation one. I run this exact pipeline (syntax → MX → disposable-domain, each opt-in past the first) as an endpoint on Validate with a synced domain list, if you'd rather not own the re-sync process yourself. Sibling APIs on the same account: QR API and Currency API.",
-      "url": "https://dev.to/jay-ecommerce/the-complete-guide-to-disposable-email-detection-2lbh",
-      "time": "2026-07-12T09:48:12.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "AI芯片"
-      ]
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "Why your regex for IBAN validation is probably wrong",
-      "description": "A regex like /^[A-Z]{2}\\d{2}[A-Z0-9]{11,30}$/ will pass through plenty of IBANs that are complete garbage. It checks the shape — two letters, two digits, then alphanumerics — but shape isn't validity, and this is the mistake nearly every from-scratch IBAN validator makes. Here's what a shape-only regex misses, in order of how often it bites people: 1. Country-specific length. IBAN length isn't a range, it's a fixed number per country: Germany is always 22 characters, the Netherlands 18, Malta 31. A regex with {11,30} for the BBAN portion accepts a \"German\" IBAN that's the wrong length for Germany, because it's only checking the global range across all countries, not the specific one this IBAN claims to be from. 2. The checksum. This is the part a regex structurally cannot do — regular expressions can't compute a mod-97 checksum, because that requires arithmetic over the whole string, not pattern matching. Every IBAN has two check digits (positions 3-4) that are the result of ISO 7064's mod-97-10 algorithm applied to the rearranged, letter-to-number-converted account number. A regex will happily accept an IBAN with those two digits set to anything: function isValidIBAN(iban) { const clean = iban.replace(/\\s+/g, \"\").toUpperCase(); if (!/^[A-Z]{2}\\d{2}[A-Z0-9]+$/.test(clean)) return false; // shape check — necessary but nowhere near sufficient const rearranged = clean.slice(4) + clean.slice(0, 4); const numeric = rearranged.replace(/[A-Z]/g, c => (c.charCodeAt(0) - 55).toString()); let remainder = numeric; while (remainder.length > 2) { const chunk = remainder.slice(0, 9); remainder = (parseInt(chunk, 10) % 97) + remainder.slice(chunk.length); } return parseInt(remainder, 10) % 97 === 1; } Note the chunked-modulo loop — IBANs convert to numbers with 30+ digits, well past what JS's Number type can hold precisely, so you can't just do bigNumber % 97 in one step without either a BigInt polyfill or this kind of iterative reduction. 3. Per-country BBAN structure. Beyond length, each country also defines which positions must be digits vs letters within the BBAN. A regex checking \"alphanumeric\" for the whole remainder will accept a UK IBAN with digits where the bank code letters should be. None of this means \"validate against a live bank lookup\" — that's a different, heavier problem (does the account exist right now), and format validation deliberately doesn't answer it. It means: regex for shape, then the real mod-97 checksum, then country-specific length/structure — in that order, each one catching what the previous step can't. I wrapped all three checks into one endpoint on Validate if you'd rather not own the mod-97 edge cases and the per-country BBAN table yourself. Same account also covers QR API and Currency API if useful.",
-      "url": "https://dev.to/jay-ecommerce/why-your-regex-for-iban-validation-is-probably-wrong-am7",
-      "time": "2026-07-12T09:47:29.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
     },
     {
       "source": "IT之家",
@@ -1082,6 +1146,20 @@
       "topic": true
     },
     {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "新时空：恒生科技指数周涨5.33%，阿里巴巴涨17%领涨大模型板块 - 新浪财经",
+      "description": "",
+      "url": "https://cj.sina.cn/articles/view/6192937794/17120bb4202002rda8",
+      "time": "2026-07-12T08:13:00.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "新品发布",
       "sourceColor": "#ad1457",
       "title": "宝马i3首发版亮相古德伍德速度节，秋季交付 - 搜狐网",
@@ -1142,6 +1220,18 @@
         "手机",
         "汽车",
         "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "“透视”功率半导体涨价潮 - eeo.com.cn",
+      "description": "",
+      "url": "http://www.eeo.com.cn/2026/0712/954600.shtml",
+      "time": "2026-07-12T08:08:00.000Z",
+      "tags": [
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -2004,7 +2094,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "浙江半导体设备“小巨人”正式重启IPO，释放了什么信号？",
+      "title": "浙江半导体设备“小巨人”正式重启IPO，释放了什么信号？ - 凤凰网财经",
       "description": "",
       "url": "https://finance.ifeng.com/c/8uhRExqd5Zs",
       "time": "2026-07-12T06:47:37.000Z",
@@ -2058,20 +2148,6 @@
       "url": "https://owickstrom.github.io/the-proportional-web/",
       "time": "2026-07-12T06:40:15.000Z",
       "tags": []
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "机构实地调研：台积电(TSM.US)赢了现在的CPO，三星在押注下一场",
-      "description": "",
-      "url": "https://www.163.com/dy/article/L1L584I805568W0A.html",
-      "time": "2026-07-12T06:40:01.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ],
-      "topic": true
     },
     {
       "source": "IT之家",
@@ -2131,18 +2207,6 @@
       "tags": [
         "汽车",
         "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "九年完成九次增资扩产——兆驰半导体持续深耕南昌高新区的背后",
-      "description": "",
-      "url": "https://www.163.com/dy/article/L1L4PG210514VRTP.html",
-      "time": "2026-07-12T06:32:00.000Z",
-      "tags": [
-        "芯片/半导体"
       ],
       "topic": true
     },
@@ -2389,7 +2453,7 @@
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "1000℃烧透不变形徒手可拿，中国隔热材料跻身世界第一梯队",
-      "description": "回收火箭为什么难？“要求不能够烧坏，它回来以后又要重复飞，重复使用的难度远远超过一次性材料！”中国工程院院士赫晓东一语道破了回收火箭的核心难点。当隔热材料放进1000多摄氏度的炉子里烧透后，拿出来竟然没有发生变形，更让人难以置信的是，徒手就能直接拿起来！“拿出来时，里面的热量不能持续传出来，而边角已经发黑了，就说明它的热量散了，所以这个材料，隔热性能非常好。”赫晓东院士表示，中国在隔热材料方面已经是世界前列，达到世界第一梯队。（央视财经）",
+      "description": "回收火箭为什么难？“要求不能够烧坏，它回来以后又要重复飞，重复使用的难度远远超过一次性材料！”中国工程院院士赫晓东一语道破了回收火箭的核心难点。当隔热材料放进1000多摄氏度的炉子里烧透后，拿出来竟然没有发生变形，更让人难以置信的是，徒手就能直接拿起来！“拿出来时，里面的热量不能持续传出来，而边角已经发黑了，就说明它的热量散了，所以���个材料，隔热性能非常好。”赫晓东院士表示，中国在隔热材料方面已经是世界前列，达到世界第一梯队。（央视财经）",
       "url": "https://36kr.com/newsflashes/3892203912608517?f=rss",
       "time": "2026-07-12T05:51:42.000Z",
       "tags": []
@@ -2398,7 +2462,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Mindwalk – Replay coding-agent sessions on a 3D map of your codebase",
-      "description": "Article URL: https://github.com/cosmtrek/mindwalk Comments URL: https://news.ycombinator.com/item?id=48878682 Points: 53 # Comments: 19",
+      "description": "Article URL: https://github.com/cosmtrek/mindwalk Comments URL: https://news.ycombinator.com/item?id=48878682 Points: 58 # Comments: 24",
       "url": "https://github.com/cosmtrek/mindwalk",
       "time": "2026-07-12T05:51:32.000Z",
       "tags": [
@@ -2481,6 +2545,20 @@
         "手机",
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "机构实地调研：台积电赢了现在的CPO，三星在押注下一场 - 华尔街见闻",
+      "description": "",
+      "url": "https://wallstreetcn.com/articles/3776716",
+      "time": "2026-07-12T05:47:23.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "大公司"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -2870,17 +2948,6 @@
       "topic": true
     },
     {
-      "source": "Hacker News",
-      "sourceColor": "#ff6600",
-      "title": "Why Write Code in 2026",
-      "description": "Article URL: https://softwaredoug.com/blog/2026/07/09/write-code.html Comments URL: https://news.ycombinator.com/item?id=48878195 Points: 54 # Comments: 38",
-      "url": "https://softwaredoug.com/blog/2026/07/09/write-code.html",
-      "time": "2026-07-12T04:15:27.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "华智未来“灵言妙语”大模型通过生成式人工智能服务备案",
@@ -3006,7 +3073,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Under federal rule, colleges must leave grads better off or lose financial aid",
-      "description": "Article URL: https://www.npr.org/2026/06/30/nx-s1-5835631/turner-camhi-do-no-harm-college-loans Comments URL: https://news.ycombinator.com/item?id=48878126 Points: 92 # Comments: 147",
+      "description": "Article URL: https://www.npr.org/2026/06/30/nx-s1-5835631/turner-camhi-do-no-harm-college-loans Comments URL: https://news.ycombinator.com/item?id=48878126 Points: 93 # Comments: 152",
       "url": "https://www.npr.org/2026/06/30/nx-s1-5835631/turner-camhi-do-no-harm-college-loans",
       "time": "2026-07-12T04:00:14.000Z",
       "tags": [
@@ -3184,7 +3251,7 @@
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "这个周末，科技投资人都得飞一趟成都",
-      "description": "新能源基金的下半场 作者 | 吕敬之编辑 | 吾人 来源 | 融中财经 一只新能源基金落子成都。 近日，成都交通投资集团有限公司、成都濛江投资集团有限公司、杭州碧澄能源发展有限公司、洛能（杭州）股权投资有限公司四方签署新能源产业战略合作协议。根据协议，四方将联合设立总规模10亿元的新能源并购基金，推动碧澄能源西南总部及智能运维、资产运营等专业化经营主体落户成都彭州市，助力当地构建产融协同、全域联动的绿色能源产业发展新格局。 资本市场上的突破和产业落地上的加强，在成都相遇了。这次签约的背后，是新能源资产运营逻辑的一次悄悄转变，也是成都这座城在绿色能源赛道上的一次主动出击。 新能源基金的诞生 近日，成都交通投资集团有限公司、成都濛江投资集团有限公司、杭州碧澄能源发展有限公司、洛能（杭州）股权投资有限公司四方签署新能源产业战略合作协议。根据协议，四方将联合设立总规模10亿元的新能源并购基金，推动碧澄能源西南总部及智能运维、资产运营等专业化经营主体落户成都彭州市，助力当地构建产融协同、全域联动的绿色能源产业发展新格局。 具体来说，四方将集中布局光伏、储能、光储充一体化、城乡微电网等补链强链重点项目，搭建一体化智慧能源调控平台，常态化开展电力现货、绿电、辅助服务等市场化交易业务，形成“项目开发—智能运营—资产资本化增值”完整产业闭环。 在此基础上，各方同步拓展绿色产业金融、能源数字化平台搭建、新能源产业链招商、存量清洁能源资产证券化等配套业务，通过设立专业化资产持有平台，开展新能源项目“投、运、管、退”一体化业务。同时，四方还将立足各自资源禀赋、产业运营、资本平台优势，聚焦补电微网、枢纽微网、园区微网等赛道联合打造示范项目。 本次合作主要围绕着光伏、储能、光储充一体化和城乡微电网这几个方面进行。四方还将建立一个一体化的智慧能源调节平台，并且会一直做下去电力现货、绿色电力交易以及辅助服务等市场化的业务，从而形成从项目开发、智能化运营到资产资本化增值的一体化闭环。闭环听上去很专业，但是拆开来其实很简单，新能源项目建起来只是一步，后面还需要有人来管理、有人来进行运营，最后还要能够变成可以流通的资产，才算是完整的整个价值链。 值得一提的是，在这次签约之前不久，碧澄能源刚刚完成了第一笔分布式清洁能源资产机构间的REITs扩募。这是很容易被人忽视但是很重的一个信号。发行REITs并不稀奇，但是能够在发行之后完成扩募，这就说明了市场对于这类资产的认可度在不断提高，资产运营规模也正在逐步扩大。碧澄能源董事长兼CEO李文轩在签约仪式上表示，公司已经在能源资产证券化、人工智能赋能电力交易和资产数字化运营等方向上取得了重要的进展，并且以新能源资产为主力的投资方向也受到了越来越多的长期资金的关注和认可。 利用当地丰富的应用场景，深入挖掘工商业屋顶资源，探索光储一体化、城市微电网等新模式，并且稳步推进大储项目的实施，在此之下，已经成功完成资产证券化的新能源资产管理平台会把区域深耕的重点放在成都。 对新能源赛道感兴趣的投资人可以多看看这个信号。一个签约就是水面上的部分，而水下则是整个资产运营逻辑、区域布局思路的形成过程。这个周末在成都举行的活动，表面上只是一次普通的产业合作协议签署仪式，但是实际上却是在新能源资本版图上留下的一次重要落子。 为什么是成都 一场合作能不能成，从来不是单方面的事情。 愿意把资源投向一座城市的企业，看重的往往不只是眼前的一纸协议，而是这座城市能不能在后续的产业落地里持续接得住。这一次，成都展现出的接住能力，来自两个层面的叠加，一边是资本端的系统性布局，一边是场景端的真实开放，两者互相补充，缺一不可。 先看资本端。地方国资平台在这类合作里承担的角色，越来越不只是简单的资金方，而是产业基金集群的搭建者。用资本去撬动新能源产业的高质量发展，系统推进微网生态的建设，同时不断扩容智慧能源管控平台的资产规模，提升平台的调度能力和市场化交易运营水平，这一整套动作，本质上是在为新能源资产运营商搭建一个可以长期扎根的资本基础设施。对于像新能源资产运营这类企业来说，电力现货、绿电交易、辅助服务这些市场化能力能不能落地，很大程度上取决于当地是不是已经把这些配套机制搭建成熟。成都在这方面的积累，不是临时起意，而是一整套产业协同思路的自然延伸。 再看场景端，这是另一种更稀缺的资源。资金可以流动，场景却很难复制。工商业屋顶资源丰富，城乡微电网建设的空间充足，具体到街道和厂区的真实应用场景，才是新能源项目能够扎根生长的土壤。愿意把这些场景真正开放出来，用真实的产业需求去吸引产业主体和资本聚集,实现资源互补、业务联动，这种开放意愿，对新能源资产运营商而言,分量往往比资金本身更重。 成都把彭州这样的区域作为西南市场的核心示范支点，背后的逻辑也不难理解。本地应用场景丰富，产业基础扎实，为光储一体化、城市微电网这类创新模式的落地提供了天然的试验田。而放在更大的背景下看，成都这些年在推进国家碳达峰试点城市建设、构建全域协同新型电力系统的过程中，已经积累了相当成熟的产业协同经验，也培养出了主动开放场景的意愿。这种积累不是一朝一夕能形成的，而是这座城市在绿色能源领域长期投入、持续深耕的结果。 一座城市愿意开放真实场景，愿意搭建产业基金集群，愿意升级智慧能源调控平台，这些条件叠加在一起，才会让已经在资产证券化上取得突破的新能源资管企业，愿意把区域深耕的重心放在这里。对于关注区域产业布局的投资人来说,成都展现出的这种承接能力和开放诚意，本身就是一个值得重视的信号，说明这座城市在新能源赛道上，正在从政策洼地，逐渐成长为产业和资本都愿意主动靠近的目的地。 新能源资产正开启一扇新大门 把目光从成都这一个合作中移开，在整个行业的背景之下看去，一个新的值得重视的趋势正在形成之中。 在很长一段时间内，人们对新能源资产的印象就是重资产、慢回报。电站建好了，但是资金被锁在了里面，短期内无法变现出来，这也是以前很多投资者不愿意进入该领域的一个原因。但是REITs等工具的出现，正在慢慢改变着这样的逻辑。资产不是建设完成之后就停止了的过程，而是可以证券化的起点、可以流通的起点、可以退出的起点。如果这条通道打通了的话，那么长期配置新能源资产的意愿就会大大增加起来，因为人们所看到的已经不是只有一项需要长时间持有下去的固定资产了，而是一系列具有明确退出机制并且能够灵活调整的金融产品。 从发行第一只分布式清洁能源资产机构间REITs开始，到完成扩募，整个过程表明市场对于新能源资产证券化接受程度在迅速提高。随着人工智能在电力交易以及资产数字化运营中被越来越多地使用，新能源资产的运行效率与公开性也会得到很大的改善。这样就会有一个直接的结果出现，即原来对这个行业保持观望态度的投资人会重新考虑进入市场的时机。 同时，光储充一体化、城乡微电网等细分场景的逐步成熟也给新能源资产开辟了更多的价值实现途径。以前新能源资产的价值主要依靠卖电来实现，但是现在除了卖电之外，还有储能调峰、绿电交易、辅助服务、资产证券化等等新的价值实现方式在叠加起来，使得整个资产的想象空间变大了。补电微网、枢纽微网、园区微网等概念虽然还比较陌生，但是已经在示范项目的基础上开始规模化的实施，并且成为了新能源资产运营链中必不可少的一个环节。 新能源资产管理行业正处在一次身份上的变化之中。过去它更偏向于工程、运营类的行业，而现在则与资本市场深度融合，并且逐渐形成了既有产业属性又有金融属性的新赛道。这场变革才刚开始，以后会有很多的城市提供出场景和资源，很多的资金会重新去评价这个赛道的价值，也会出现更多的像REITs这样的创新工具来帮助新能源资产找到自己独特的流通途径。 本文来自微信公众号“融中财经”，作者：吕敬之，36氪经授权发布。",
+      "description": "新能源基金的下半场 作者 | 吕敬之编辑 | 吾人 来源 | 融中财经 一只新能源基金落子成都。 近日，成都交通投资集团有限公司、成都濛江投资集团有限公司、杭州碧澄能源发展有限公司、洛能（杭州）股权投资有限公司四方签署新能源产业战略合作协议。根据协议，四方将联合设立总规模10亿元的新能源并购基金，推动碧澄能源西南总部及智能运维、资产运营等专业化经营主体落户成都彭州市，助力当地构建产融协同、全域联动的绿色能源产业发展新格局。 资本市场上的突破和产业落地上的加强，在成都相遇了。这次签约的背后，是新能源资产运营逻辑的一次悄悄转变，也是成都这座城在绿色能源赛道上的一次主动出击。 新能源基金的诞生 近日，成都交通投资集团有限公司、成都濛江投资集团有限公司、杭州碧澄能源发展有限公司、洛能（杭州）股权投资有限公司四方签署新能源产业战略合作协议。根据协议，四方将联合设立总规模10亿元的新能源并购基金，推动碧澄能源西南总部及智能运维、资产运营等专业化经营主体落户成都彭州市，助力当地构建产融协同、全域联动的绿色能源产业发展新格局。 具体来说，四方将集中布局光伏、储能、光储充一体化、城乡微电网等补链强链重点项目，搭建一体化智慧能源调控平台，常态化开展电力现货、绿电、辅助服务等市场化交易业务，形成“项目开发—智能运营—资产资本化增值”完整产业闭环。 在此基础上，各方同步拓展绿色产业金融、能源数字化平台搭建、新能源产业链招商、存量清洁能源资产证券化等配套业务，通过设立专业化资产持有平台，开展新能源项目“投、运、管、退”一体化业务。同时，四方还将立足各自资源禀赋、产业运营、资本平台优势，聚焦补电微网、枢纽微网、园区微网等赛道联合打造示范项目。 本次合作主要围绕着光伏、储能、光储充一体化和城乡微电网这几个方面进行。四方还将建立一个一体化的智慧能源调节平台，并且会一直做下去电力现货、绿色电力交易以及辅助服务等市场化的业务，从而形成从项目开发、智能化运营到资产资本化增值的一体化闭环。闭环听上去很专业，但是拆开来其实很简单，新能源项目建起来只是一步，后面还需要有人来管理、有人来进行运营，最后还要能够变成可以流通的资产，才算是完整的整个价值链。 值得一提的是，在这次签约之前不久，碧澄能源刚刚完成了第一笔分布式清洁能源资产机构间的REITs扩募。这是很容易被人忽视但是很重的一个信号。发行REITs并不稀奇，但是能够在发行之后完成扩募，这就说明了市场对于这类资产的认可度在不断提高，资产运营规模也正在逐步扩大。碧澄能源董事长兼CEO李文轩在签约仪式上表示，公司已经在能源资产证券化、人工智能赋能电力交易和资产数字化运营等方向上取得了重要的进展，并且以新能源资产为主力的投资方向也受到了越来越多的长期资金的关注和认可。 利用当地丰富的应用场景，深入挖掘工商业屋顶资源，探索光储一体化、城市微电网等新模式，并且稳步推进大储项目的实施，在此之下，已经成功完成资产证券化的新能源资产管理平台会把区域深耕的重点放在成都。 对新能源赛道感兴趣的投资人可以多看看这个信号。一个签约就是水面上的部分，而水下则是整个资产运营逻辑、区域布局思路的形成过程。这个周末在成都举行的活动，表面上只是一次普通的产业合作协议签署仪式，但是实际上却是在新能源资本版图上留下的一次重要落子。 为什么是成都 一场合作能不能成，从来不是单方面的事情。 愿意把资源投向一座城市的企业，看重的往往不只是眼前的一纸协议，而是这座城市能不能在后续的产业落地里持续接得住。这一次，成都展现出的接住能力，来自两个层面的叠加，一边是资本端的系统性布局，一边是场景端的真实开放，两者互相补充，缺一不可。 先看资本端。地方国资平台在这类合作里承担的角色，越来越不只是简单的资金方，而是产业基金集群的搭建者。用资本去撬动新能源产业的高质量发展，系统推进微网生态的建设，同时不断扩容智慧能源管控平台的资产规模，提升平台的调度能力和市场化交易运营水平，这一整套动作，本质上是在为新能源资产运营商搭建一个可以长期扎根的资本基础设施。对于像新能源资产运营这类企业来说，电力现货、绿电交易、辅助服务这些市场化能力能不能落地，很大程度上取决于当地是不是已经把这些配套机制搭建成熟。成都在这方面的积累，不是临时起意，而是一整套产业协同思路的自然延伸。 再看场景端，这是另一种更稀缺的资源。资金可以流动，场景却很难复制。工商业屋顶资源丰富，城乡微电网建设的空间充足，具体到街道和厂区的真实应用场景，才是新能源项目能够扎根生长的土壤。愿意把这些场景真正开放出来，用真实的产业需求去吸引产业主体和资本聚集,实现资源互补、业务联动，这种开放意愿，对新能源资产运营商而言,分量往往比资金本身更重。 成都把彭州这样的区域作为西南市场的核心示范支点，背后的逻辑也不难理解。本地应用场景丰富，产业基础扎实，为光储一体化、城市微电网这类创新模式的落地提供了天然的试验田。而放在更大的背景下看，成都这些年在推进国家碳达峰试点城市建设、构建全域协同新型电力系统的过程中，已经积累了相当成熟的产业协同经验，也培养出了主动开放场景的意愿。这种积累不是一朝一夕能形成的，而是这座城市在绿色能源领域长期投入、持续深耕的结果。 一座城市愿意开放真实场景，愿意搭建产业基金集群，愿意升级智慧能源调控平台，这些条件叠加在一起，才会让已经在资产证券化上取得突破的新能源资管企业，愿意把区域深耕的重心放在这里。对于关注区域产业布局的投资人来说,成都展现出的这种承接能力和开放诚意，本身就是一个值得重视的信号，说明这座城市在新能源赛道上，正在从政策洼地，逐渐成长为产业和资本都愿意主动靠近的目的地。 新能源资产正开启一扇新大门 把目光从成都这一个合作中移开，在整个行业的背景之下看去，一个新的值得重视的趋势正在形成之中。 在很长一段时间内，人们对新能源资产的印象就是重资产、慢回报。电站建好了，但是资金被锁在了里面，短期内无法变现出来，这也是以前很多投资者不愿意进入该领域的一个原因。但是REITs等工具的出现，正在慢慢改变着这样的逻辑。资产不是建设完成之后就停止了的过程，而是可以证券化的起点、可以流通的起点、可以退出的起点。如果这条通道打通了的话，那么长期配置新能源资产的意愿就会大大增加起来，因为人们所看到的已经不是只有一项需要长时间持有下去的固定资产了，而是一系列具有明确退出机制并且能够灵活调整的金融产品。 从发行第一只分布式清洁能源资产机构间REITs开始，到完成扩募，整个过程表明市场对于新能源资产证券化接受程度在迅速提高。随着人工智能在电力交易以及资产数字化运营中被越来越多地使用，新能源资产的运行效率与公开性也会得到很大的改善。这样就会有一个直接的结果出现，即原来对这个行业保持观望态度的投资人会重新考虑进入市场的时机。 同时，光储充一体化、城乡微电网等细分场景的逐步成熟也给新能源资产开辟了更多的价值实现途径。以前新能源资产的价值主要依靠卖电来实现，但是现在除了卖电之外，还有储能调峰、绿电交易、辅助服务、资产证券化等等新的价值实现方式在叠加起来，使得整个资产的想象空间变大了。补电微网、枢纽微网、园区微网等概念虽然还比较陌生，但是已经在示范项目的基础上开始规模化的实施，并且成为了新能源资产运营链中必不可少的一个环节。 新能源资产管理行业正处在一次身份上的变化之中。过去它更偏向于工程、运营类的行业，而现在则与资本市场深度融合，并且逐渐形成了既有产业属性又有金融属性的新赛道。这场变革才刚开始，以后会有很多的城市提供出场景和资源，很多的资金会重新去评价这个赛道的价值，也会出现更多的像REITs这样的创新工具来帮助新能源资产找到自己独特的流通途径。 本文来自微信公众号“融中财经”，作者：吕敬之，36氪���授权发布。",
       "url": "https://36kr.com/p/3892096788396806?f=rss",
       "time": "2026-07-12T03:27:05.000Z",
       "tags": [
@@ -3550,17 +3617,6 @@
       "topic": true
     },
     {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "飞傲预热雪漫天 NATURE 头戴式耳机，7 月 15 日开售",
-      "description": "IT之家 7 月 12 日消息，飞傲官方今天在微博发文，预热雪漫天 NATURE 头戴式耳机。 IT之家从飞傲官博了解到，这款耳机搭载 50mm 大尺寸动圈单元，搭配日本进口炭黑振膜。拥有 19μm PET 为刚性骨架、融合 30μm 柔软 TPU 层，可带来更佳的耐用度、更小的失真和更深邃的低音，号称“让耳朵重归声音的自然本真”。 外观方面，这款耳机采用木质面板，搭配皮革材质头梁。从宣传图可以看出，该机支持更换连接线材，头梁与发声单元则是采用金属件连接。 此外，这款耳机将在 7 月 15 日 10:00 发售。",
-      "url": "https://www.ithome.com/0/975/670.htm",
-      "time": "2026-07-12T03:00:33.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "万元手机推荐 - 新浪网",
@@ -3883,7 +3939,7 @@
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "近百名玩家涌入具身数据 : 一年融资44.7亿，谁能真靠“卖数据”赚钱？",
-      "description": "林方舟 发自 凹非寺 在湖南郴州，一家中国移动营业厅挂牌“具身数据采集5S店”，普通顾客领一套夹爪、手套和头戴相机，经过简单培训，就能边做家务，边采集机器人训练数据。 首期投放的1000套设备，满产状态下每年能采集100万小时数据。我仿佛听到了商家心里打的小算盘：既采了数据，又赚了眼球，4A广告公司都应该来学学。（doge） 具身数采类似的“花活”还有不少：有的为了采数据免费上门保洁（欢迎来我家），有的把数采做成VR游戏，还有的把机器人接入互联网，采集员不用跑到数采工厂，远程就能“云操控”。 具身数采 不过，以上案例看完笑一笑就好了，真要采到符合要��的数据其实并不简单。之所以“花活”层出不穷，都是因为机器人实在是太缺数据了。 眼下大家都在牟足了劲采数据，但还少有人全面梳理过这个行业的图谱。 量子位不完全统计了97家国内具身数据玩家的情况，其中70家做数据采集，27家做数据infra。 过去一年（2025年7月1日至2026年7月1日），15家「不做本体、不做模型、只做数据的独立具身数据服务商」，共融资约44.7亿元。 在资本对具身智能“猛猛上头”的当下，这个数字其实并不算多。量子位此前统计，今年上半年，具身“大脑派”公司半年就融了223亿元。 为了帮你看清具身数据行业，我们总结了以下十个行业现状。 数据怎么采？ 现状1：数据采集技术路线分为四大类，跨路线采集赛道最拥挤 目前主流具身数据采集的技术路线可以分为四大类： 真机遥操：人类操控真实机器人执行任务，同步采集动作、状态及传感器数据。 无本体采集：人直接完成示范，通过动捕、夹爪映射、第一视角相机等设备采集动作，无需机器人参与。 仿真合成：在虚拟环境中批量生成机器人交互数据，用于模型训练。 互联网视频蒸馏：从互联网视频中提取人类动作知识，转化为具身模型可学习的数据。 量子位不完全统计的70家数采公司/平台中，有30家同时走多条采集路线，占43%，例如：真机遥操+无本体、真机遥操+仿真、无本体+仿真、全路线等。 走跨路线采集方案的玩家，比单独押注任何一条路线的玩家都要多。 行业常用数据金字塔来形容机器人训练所需的数据结构。目前没有任何一种数据采集方式能够独自满足机器人的训练需求。 △ 现状2：单独押注真机遥操路线的玩家最多 依次分析每条技术路线。 单独押注真机遥操路线的最多，有22家，占31%。 这22个玩家中，13家是国资数据平台，7家是机器人公司（生产机器人硬件或开发具身大模型的公司），还有1家从AI数据标注行业转型，1家从工业装备制造领域跨界。 机器人公司有硬件优势和真实需求，做真机遥操采集是自然而然的选择。 而国资数据平台的优势则是“不怕重”。遥操是重资产路线，需要买本体、租场地、雇操作员，这些恰好都是国资平台容易调动的资源。 单独押注无本体采集路线的公司有15家，占21%。 这条赛道的公司最年轻，绝大多数都成立于2024年9月之后。 无本体采集路线的技术也最丰富，子类包括：Ego视角、UMI、动作捕捉、sEMG肌电、触觉采集…… 而单独押注仿真合成的玩家有2家：松应科技和谋先飞（Motphys）。 仿真赛道曾经的知名玩家，如今都选择把鸡蛋放在多个篮子里。 比如，曾以仿真数据为核心的光轮智能，也开始采集人类数据；曾是最坚定的仿真派之一的银河通用，今年6月发布了全身遥操作系统，拥有了遥操数据采集能力。 原因有两方面：外部，真机数据和人类数据的供给快速增加，价格持续下降，仿真数据的规模和成本优势被削薄；内部，sim2real gap仍没有太好的解法，很难高保真还原真实世界中的摩擦、形变、力觉与触觉反馈。 单独押注互联网视频蒸馏路线的也只有1家：枢途科技。 这家公司从互联网单目RGB视频里提取多模态机器人训练数据，宣称能把综合采集成本降到行业平均水平的千分之五。 具身数采 玩家是谁？ 现状3：独立数据服务商已成最大的玩家群体 如果不按技术路线，而是按身份分类，97名玩家可分为5类： 独立数据服务商39家，占40%； 国资数据平台25家，占26%； 机器人公司24家，占25%； 工业和IT跨界公司5家，占5%，例如来自物流、装备制造、自动化工程等领域的公司； 大厂平台型公司4家，占4%，例如华为、京东等。 可以看到，最大的玩家群体是独立数据服务商。 这说明：具身数据已经成长为一条独立赛道，不再是机器人公司的附属部门。 △ 现状4：三分之二玩家“具身原生”，三分之一玩家“跨界转型” 再换一种分类方式，将所有具身数据行业玩家分为“具身原生”和“跨界转型”两类。 “具身原生”公司成立之初主业就是具身数据或具身智能相关业务；“跨界转型”公司多从AI数据标注、自动驾驶、动作捕捉或工业领域转型而来。 97名玩家中，65家“具身原生”，占67%；32家“跨界转型”，占33%。 再拆开来看，数采公司和数据infra公司的构成完全相反。 70家数采公司里，57家“具身原生”，约占八成；27家数据infra公司里，19家“跨界转型”，约占七成。 为什么infra吸引转型公司，采集行业却多是新玩家？ 很多具身数据infra玩家是AI数据标注公司，例如海天瑞声、数据堂、云测数据等。他们积累的管线、质检和交付能力，很适合平移到具身数据infra环节。 而具身数据没有现成数据，采集环节则要从零构建资产，老玩家没有优势，新公司反而容易轻装上阵。 具身数采 产能与布局 现状5：全行业年产能160万至180万小时，短期目标扩大15到20倍 现有具身数据产能是多少？离市场需求还有多少差距？ 量子位不完全统计，具身数据行业现有年产能为：160万至180万小时+7000万至8000万条。 行业的短期目标为：未来1-3年内，产出2500万至3500万小时+亿条级数据。如果仅看小时数，短期目标是现有产能的15-20倍。 需要注意的是，由于各家机构披露口径不同，小时数和条数目前没有统一的换算标准，因此在这里并行列出。 这些数字只统计了真机遥操数据和无本体采集数据，剔除了仿真合成数据。产能通过公司/平台已披露的数据保守估计而来，实际数字可能还会更多。 而机器人训练数据的总需求量，目前仍然未知。但可以参考大语言模型的锚点：LLM可以吃掉整个互联网现成的语料，机器人需要的数据却只能一条一条采。有统计称，截至今年初，全球高质量真实物理交互数据总量只有约50万小时，不足LLM训练数据量的两万分之一。 换个角度看，即便产能短期目标全部兑现，相比大语言模型的数据量，可能也只是刚够到起跑线。产能与需求之间仍然存在巨大差距。 具身数采 现状6：全国六成省份建有数采工厂，目前长三角分布最多 这些数据都是在哪里采集的？ 量子位不完全统计，全国的数采工厂已经铺到20个省份，其中国资背景的数采工厂覆盖16个省份。 数采工厂主要分布在长三角、京津冀和珠三角地区。其中，长三角以30座居首。 不少人力成本较低的三、四线城市也成为数采工厂的选址地，例如宿迁、自贡、郴州、运城、德清等。 分布模式和技术路线相关。遥操类数采工厂散布各省，轻资产的无本体路线公司则扎堆在一线城市。 不少城市正在打造数采重镇的城市名片。 例如，无锡是全国首个提出城市全域数据采集概念的城市。它做的最重要的事是：鼓励制造业、服务业企业开放产线、平台，将真实场景作为数据采集厂，采集机器人最稀缺、也最实用的数据。 △ 钱往哪流？ 现状7：15家独立具身数据服务商过去一年融资约44.7亿元 再来看看最能说明问题的指标：钱。 由于机器人公司的数据业务无法从整体融资中剥离，我们圈出15家过去一年有融资记录的“独立具身数据服务商”，这些公司的融资情况在行业中很有代表性。 先解释一下，“独立具身数据服务商”的筛选标准有三条：不做通用机器人本体，不训练具身模型，具身数据为核心业务。 量子位不完全统计，过去一年间（2025年7月1日至2026年7月1日），这15家“独立具身数据服务商”共完成34起融资，合计约44.7亿元人民币。 融资的时间段高度集中。2026年4月至6月三个月内，融资事件数量占了四成多。这和今年上半年具身智能全行业的资本狂热息息相关。 量子位曾统计，2026年上半年，具身智能全行业共融资约438亿元。 具身数据赛道一年融的钱，只是具身智能全行业半年融资的零头，说明起码在眼下，这个赛道还并不够“性感”。 具身数采 现状8：独立具身数据服务商可划分为3个梯队，分化明显 再往下深扒一层，具身数据行业内部发展并不平衡。 这15家“独立具身数据服务商”可以划分为三个梯队： 第一梯队光轮智能最突出。 这家公司过去一年完成6起融资，共融资31亿元，约占总融资额的七成。 它还是唯一一家披露估值的“独立具身数据服务商”。最新估值超20亿美元，约合人民币超135亿元，是全球首个具身数据独角兽。 第二梯队有11家公司，例如简智机器人、诺亦腾机器人、渊澈太初、觅蜂科技等。 第二梯队的公司，过去一年累计融资在数千万至数亿元间，融资阶段大多为Pre-A 轮及以前，只有几家成立时间较早的AI数据标注转型公司突破了A轮。 第三梯队的公司有3家：枢途科技、智域基石、补天石科技。 他们过去一年的累计融资在数千万元级别，融资轮次为天使轮，业务还处于早期验证阶段。 △ 现状9： 69家投资机构出手，没有一家重仓 从资本的角度看，过去一年，共有69家投资机构投过这15家“独立具身数据服务商”。 出手最多的国方创投，投了3次；出手2次的有5家投资机构；剩下63家机构，都只投了1次。 对照具身模型融资热时头部机构抢占份额、连续加注的景象，眼下，具身数据赛道虽然方向有共识，但标的还没有共识，没有真正敢重仓的投资机构。 资本的谨慎有理由：相较于想象空间极大的具身“大脑”，具身数据是“劳动力密集型”的生意，价格会越卷越低，客户需求量也有相对明确的预期，天花板就在那里。 但也有投资人告诉量子位，具身数据行业存在一定的延展想象空间：一方面，这是一个全球生意，国外的市场很大；另一方面，数据采集的能力还能迁移到模型评测等，成为物理AI的基础设施。 △ 现状10：半数以上“独立具身数据服务商”成立不到一年 总的来看，独立的具身数据行业仍处于较早期的阶段。 公司发展处于早期。半数以上近一年融到资的“独立具身数据服务商”成立时间不足一年。 融资处在早期。15家“独立具身数据服务商”中，13家公司的最新轮次在A轮及以前。 商业模式处在早期。没有一家公司披露过利润。仅弈人科技一家自称盈利，但也没公开利润的具体数字。 具身数采 最后，把以上十个现状总结成三句话： 第一句，具身数据行业已经成长为一条独立赛道，吸引大量玩家涌入，并且正在成为AI领域新增就业岗位的蓄水池、地方经济活力的新引擎。 第二句，这条赛道仍然处于早期阶段，许多问题还没解决，许多共识还没形成，许多变量还没收敛。 第三句，资本的态度最诚实。鲜有公司验证过：“纯卖数据”是一门赚钱的生意。VC还在撒网阶段，没人能看清哪条鱼最大。 接下来的一两年，大概率就是这门生意的验证窗口。产能会不会兑现，价格会卷到哪里，谁先把利润表拿出来，决定了具身数据商能否真正成为赚钱的“卖铲人”。 本文来自微信公众号“量子位”，作者：关注前沿科技，36氪经授权发布。",
+      "description": "林方舟 发自 凹非寺 在湖南郴州，一家中国移动营业厅挂牌“具身数据采集5S店”，普通顾客领一套夹爪、手套和头戴相机，经过简单培训，就能边做家务，边采集机器人训练数据。 首期投放的1000套设备，满产状态下每年能采集100万小时数据。我仿佛听到了商家心里打的小算盘：既采了数据，又赚了眼球，4A广告公司都应该来学学。（doge） 具身数采类似的“花活”还有不少：有的为了采数据免费上门保洁（欢迎来我家），有的把数采做成VR游戏，还有的把机器人接入互联网，采集员不用跑到数采工厂，远程就能“云操控”。 具身数采 不过，以上案例看完笑一笑就好了，真要采到符合要求的数据其实并不简单。之所以“花活”层出不穷，都是因为机器人实在是太缺数据了。 眼下大家都在牟足了劲采数据，但还少有人全面梳理过这个行业的图谱。 量子位不完全统计了97家国内具身数据玩家的情况，其中70家做数据采集，27家做数据infra。 过去一年（2025年7月1日至2026年7月1日），15家「不做本体、不做模型、只做数据的独立具身数据服务商」，共融资约44.7亿元。 在资本对具身智能“猛猛上头”的当下，这个数字其实并不算多。量子位此前统计，今年上半年，具身“大脑派”公司半年就融了223亿元。 为了帮你看清具身数据行业，我们总结了以下十个行业现状。 数据怎么采？ 现状1：数据采集技术路线分为四大类，跨路线采集赛道最拥挤 目前主流具身数据采集的技术路线可以分为四大类： 真机遥操：人类操控真实机器人执行任务，同步采集动作、状态及传感器数据。 无本体采集：人直接完成示范，通过动捕、夹爪映射、第一视角相机等设备采集动作，无需机器人参与。 仿真合成：在虚拟环境中批量生成机器人交互数据，用于模型训练。 互联网视频蒸馏：从互联网视频中提取人类动作知识，转化为具身模型可学习的数据。 量子位不完全统计的70家数采公司/平台中，有30家同时走多条采集路线，占43%，例如：真机遥操+无本体、真机遥操+仿真、无本体+仿真、全路线等。 走跨路线采集方案的玩家，比单独押注任何一条路线的玩家都要多。 行业常用数据金字塔来形容机器人训练所需的数据结构。目前没有任何一种数据采集方式能够独自满足机器人的训练需求。 △ 现状2：单独押注真机遥操路线的玩家最多 依次分析每条技术路线。 单独押注真机遥操路线的最多，有22家，占31%。 这22个玩家中，13家是国资数据平台，7家是机器人公司（生产机器人硬件或开发具身大模型的公司），还有1家从AI数据标注行业转型，1家从工业装备制造领域跨界。 机器人公司有硬件优势和真实需求，做真机遥操采集是自然而然的选择。 而国资数据平台的优势则是“不怕重”。遥操是重资产路线，需要买本体、租场地、雇操作员，这些恰好都是国资平台容易调动的资源。 单独押注无本体采集路线的公司有15家，占21%。 这条赛道的公司最年轻，绝大多数都成立于2024年9月之后。 无本体采集路线的技术也最丰富，子类包括：Ego视角、UMI、动作捕捉、sEMG肌电、触觉采集…… 而单独押注仿真合成的玩家有2家：松应科技和谋先飞（Motphys）。 仿真赛道曾经的知名玩家，如今都选择把鸡蛋放在多个篮子里。 比如，曾以仿真数据为核心的光轮智能，也开始采集人类数据；曾是最坚定的仿真派之一的银河通用，今年6月发布了全身遥操作系统，拥有了遥操数据采集能力。 原因有两方面：外部，真机数据和人类数据的供给快速增加，价格持续下降，仿真数据的规模和成本优势被削薄；内部，sim2real gap仍没有太好的解法，很难高保真还原真实世界中的摩擦、形变、力觉与触觉反馈。 单独押注互联网视频蒸馏路线的也只有1家：枢途科技。 这家公司从互联网单目RGB视频里提取多模态机器人训练数据，宣称能把综合采集成本降到行业平均水平的千分之五。 具身数采 玩家是谁？ 现状3：独立数据服务商已成最大的玩家群体 如果不按技术路线，而是按身份分类，97名玩家可分为5类： 独立数据服务商39家，占40%； 国资数据平台25家，占26%； 机器人公司24家，占25%； 工业和IT跨界公司5家，占5%，例如来自物流、装备制造、自动化工程等领域的公司； 大厂平台型公司4家，占4%，例如华为、京东等。 可以看到，最大的玩家群体是独立数据服务商。 这说明：具身数据已经成长为一条独立赛道，不再是机器人公司的附属部门。 △ 现状4：三分之二玩家“具身原生”，三分之一玩家“跨界转型” 再换一种分类方式，将所有具身数据行业玩家分为“具身原生”和“跨界转型”两类。 “具身原生”公司成立之初主业就是具身数据或具身智能相关业务；“跨界转型”公司多从AI数据标注、自动驾驶、动作捕捉或工业领域转型而来。 97名玩家中，65家“具身原生”，占67%；32家“跨界转型”，占33%。 再拆开来看，数采公司和数据infra公司的构成完全相反。 70家数采公司里，57家“具身原生”，约占八成；27家数据infra公司里，19家“跨界转型”，约占七成。 为什么infra吸引转型公司，采集行业却多是新玩家？ 很多具身数据infra玩家是AI数据标注公司，例如海天瑞声、数据堂、云测数据等。他们积累的管线、质检和交付能力，很适合平移到具身数据infra环节。 而具身数据没有现成数据，采集环节则要从零构建资产，老玩家没有优势，新公司反而容易轻装上阵。 具身数采 产能与布局 现状5：全行业年产能160万至180万小时，短期目标扩大15到20倍 现有具身数据产能是多少？离市场需求还有多少差距？ 量子位不完全统计，具身数据行业现有年产能为：160万至180万小时+7000万至8000万条。 行业的短期目标为：未来1-3年内，产出2500万至3500万小时+亿条级数据。如果仅看小时数，短期目标是现有产能的15-20倍。 需要注意的是，由于各家机构披露口径不同，小时数和条数目前没有统一的换算标准，因此在这里并行列出。 这些数字只统计了真机遥操数据和无本体采集数据，剔除了仿真合成数据。产能通过公司/平台已披露的数据保守估计而来，实际数字可能还会更多。 而机器人训练数据的总需求量，目前仍然未知。但可以参考大语言模型的锚点：LLM可以吃掉整个互联网现成的语料，机器人需要的数据却只能一条一条采。有统计称，截至今年初，全球高质量真实物理交互数据总量只有约50万小时，不足LLM训练数据量的两万分之一。 换个角度看，即便产能短期目标全部兑现，相比大语言模型的数据量，可能也只是刚够到起跑线。产能与需求之间仍然存在巨大差距。 具身数采 现状6：全国六成省份建有数采工厂，目前长三角分布最多 这些数据都是在哪里采集的？ 量子位不完全统计，全国的数采工厂已经铺到20个省份，其中国资背景的数采工厂覆盖16个省份。 数采工厂主要分布在长三角、京津冀和珠三角地区。其中，长三角以30座居首。 不少人力成本较低的三、四线城市也成为数采工厂的选址地，例如宿迁、自贡、郴州、运城、德清等。 分布模式和技术路线相关。遥操类数采工厂散布各省，轻资产的无本体路线公司则扎堆在一线城市。 不少城市正在打造数采重镇的城市名片。 例如，无锡是全国首个提出城市全域数据采集概念的城市。它做的最重要的事是：鼓励制造业、服务业企业开放产线、平台，将真实场景作为数据采集厂，采集机器人最稀缺、也最实用的数据。 △ 钱往哪流？ 现状7：15家独立具身数据服务商过去一年融资约44.7亿元 再来看看最能说明问题的指标：钱。 由于机器人公司的数据业务无法从整体融资中剥离，我们圈出15家过去一年有融资记录的“独立具身数据服务商”，这些公司的融资情况在行业中很有代表性。 先解释一下，“独立具身数据服务商”的筛选标准有三条：不做通用机器人本体，不训练具身模型，具身数据为核心业务。 量子位不完全统计，过去一年间（2025年7月1日至2026年7月1日），这15家“独立具身数据服务商”共完成34起融资，合计约44.7亿元人民币。 融资的时间段高度集中。2026年4月至6月三个月内，融资事件数量占了四成多。这和今年上半年具身智能全行业的资本狂热息息相关。 量子位曾统计，2026年上半年，具身智能全行业共融资约438亿元。 具身数据赛道一年融的钱，只是具身智能全行业半年融资的零头，说明起码在眼下，这个赛道还并不够“性感”。 具身数采 现状8：独立具身数据服务商可划分为3个梯队，分化明显 再往下深扒一层，具身数据行业内部发展并不平衡。 这15家“独立具身数据服务商”可以划分为三个梯队： 第一梯队光轮智能最突出。 这家公司过去一年完成6起融资，共融资31亿元，约占总融资额的七成。 它还是唯一一家披露估值的“独立具身数据服务商”。最新估值超20亿美元，约合人民币超135亿元，是全球首个具身数据独角兽。 第二梯队有11家公司，例如简智机器人、诺亦腾机器人、渊澈太初、觅蜂科技等。 第二梯队的公司，过去一年累计融资在数千万至数亿元间，融资阶段大多为Pre-A 轮及以前，只有几家成立时间较早的AI数据标注转型公司突破了A轮。 第三梯队的公司有3家：枢途科技、智域基石、补天石科技。 他们过去一年的累计融资在数千万元级别，融资轮次为天使轮，业务还处于早期验证阶段。 △ 现状9： 69家投资机构出手，没有一家重仓 从资本的角度看，过去一年，共有69家投资机构投过这15家“独立具身数据服务商”。 出手最多的国方创投，投了3次；出手2次的有5家投资机构；剩下63家机构，都只投了1次。 对照具身模型融资热时头部机构抢占份额、连续加注的景象，眼下，具身数据赛道虽然方向有共识，但标的还没有共识，没有真正敢重仓的投资机构。 资本的谨慎有理由：相较于想象空间极大的具身“大脑”，具身数据是“劳动力密集型”的生意，价格会越卷越低，客户需求量也有相对明确的预期，天花板就在那里。 但也有投资人告诉量子位，具身数据行业存在一定的延展想象空间：一方面，这是一个全球生意，国外的市场很大；另一方面，数据采集的能力还能迁移到模型评测等，成为物理AI的基础设施。 △ 现状10：半数以上“独立具身数据服务商”成立不到一年 总的来看，独立的具身数据行业仍处于较早期的阶段。 公司发展处于早期。半数以上近一年融到资的“独立具身数据服务商”成立时间不足一年。 融资处在早期。15家“独立具身数据服务商”中，13家公司的最新轮次在A轮及以前。 商业模式处在早期。没有一家公司披露过利润。仅弈人科技一家自称盈利，但也没公开利润的具体数字。 具身数采 最后，把以上十个现状总结成三句话： 第一句，具身数据行业已经成长为一条独立赛道，吸引大量玩家涌入，并且正在成为AI领域新增就业岗位的蓄水池、地方经济活力的新引擎。 第二句，这条赛道仍然处于早期阶段，许多问题还没解决，许多共识还没形成，许多变量还没收敛。 第三句，资本的态度最诚实。鲜有公司验证过：“纯卖数据”是一门赚钱的生意。VC还在撒网阶段，没人能看清哪条鱼最大。 接下来的一两年，大概率就是这门生意的验证窗口。产能会不会兑现，价格会卷到哪里，谁先把利润表拿出来，决定了具身数据商能否真正成为赚钱的“卖铲人”。 本文来自微信公众号“量子位”，作者：关注前沿科技，36氪经授权发布。",
       "url": "https://36kr.com/p/3892027841362694?f=rss",
       "time": "2026-07-12T02:16:07.000Z",
       "tags": [
@@ -4339,19 +4395,6 @@
       ]
     },
     {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "大更新，特斯拉全新改款 Model 3/Y 来了！",
-      "description": "",
-      "url": "https://www.163.com/dy/article/L1KHBOI60511Q78R.html",
-      "time": "2026-07-12T00:52:36.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "A dock that wakes up reliably",
@@ -4432,7 +4475,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Autopsy Study Finds Replicating SARS-CoV-2 in the Hearts of Long Covid",
-      "description": "Article URL: https://my.uscap.org/uscap/program/S0tc675/index.cfm?pgid=5167&sid=14770&abid=51228 Comments URL: https://news.ycombinator.com/item?id=48877214 Points: 57 # Comments: 1",
+      "description": "Article URL: https://my.uscap.org/uscap/program/S0tc675/index.cfm?pgid=5167&sid=14770&abid=51228 Comments URL: https://news.ycombinator.com/item?id=48877214 Points: 58 # Comments: 2",
       "url": "https://my.uscap.org/uscap/program/S0tc675/index.cfm?pgid=5167&sid=14770&abid=51228",
       "time": "2026-07-12T00:38:02.000Z",
       "tags": [
@@ -4600,20 +4643,6 @@
       "topic": true
     },
     {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "OpenAI招聘家庭产品经理，将拓展家庭用户市场|ChatGPT|IT之家|旧金山|Copilot|家长_手机新浪网 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-12/detail-inihnwyi7991633.d.html?vt=4&cid=76993&node_id=76993",
-      "time": "2026-07-11T23:59:20.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
       "source": "凤凰科技",
       "sourceColor": "#1e88e5",
       "title": "和已故的人“再说一次话”：AI幽灵技术正在改写人类的悲伤方式",
@@ -4632,18 +4661,6 @@
       "url": "https://www.ebiotrade.com/newsf/2026-7/20260711211650006.htm",
       "time": "2026-07-11T23:57:56.000Z",
       "tags": [],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "评估ChatGPT对儿科神经病学领域护理人员问题的回答准确性：一项观察性研究 - 生物通",
-      "description": "",
-      "url": "https://www.ebiotrade.com/newsf/2026-7/20260712032819623.htm",
-      "time": "2026-07-11T23:57:56.000Z",
-      "tags": [
-        "人工智能"
-      ],
       "topic": true
     },
     {
@@ -4740,7 +4757,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Doctors die. It’s not like the rest of us (2016)",
-      "description": "Article URL: https://archive.cancerworld.net/featured/how-doctors-die/ Comments URL: https://news.ycombinator.com/item?id=48876741 Points: 180 # Comments: 103",
+      "description": "Article URL: https://archive.cancerworld.net/featured/how-doctors-die/ Comments URL: https://news.ycombinator.com/item?id=48876741 Points: 182 # Comments: 106",
       "url": "https://archive.cancerworld.net/featured/how-doctors-die/",
       "time": "2026-07-11T23:15:06.000Z",
       "tags": [
@@ -4761,10 +4778,23 @@
       "topic": true
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "中国半导体产业链巨头换锚布局AI - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.com.cn/stock/bxjj/2026-07-12/doc-inihnwyh2859155.shtml?cre=tianyi&mod=pchp&loc=6&r=0&rfunc=99&tj=cxvertical_pc_hp&tr=12",
+      "time": "2026-07-11T23:02:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Mesh LLM: distributed AI computing on iroh",
-      "description": "Article URL: https://www.iroh.computer/blog/mesh-llm Comments URL: https://news.ycombinator.com/item?id=48876505 Points: 258 # Comments: 58",
+      "description": "Article URL: https://www.iroh.computer/blog/mesh-llm Comments URL: https://news.ycombinator.com/item?id=48876505 Points: 259 # Comments: 59",
       "url": "https://www.iroh.computer/blog/mesh-llm",
       "time": "2026-07-11T22:38:57.000Z",
       "tags": [
@@ -5252,7 +5282,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Prefer strict tables in SQLite",
-      "description": "Article URL: https://evanhahn.com/prefer-strict-tables-in-sqlite/ Comments URL: https://news.ycombinator.com/item?id=48873940 Points: 290 # Comments: 137",
+      "description": "Article URL: https://evanhahn.com/prefer-strict-tables-in-sqlite/ Comments URL: https://news.ycombinator.com/item?id=48873940 Points: 293 # Comments: 139",
       "url": "https://evanhahn.com/prefer-strict-tables-in-sqlite/",
       "time": "2026-07-11T17:33:55.000Z",
       "tags": [
@@ -5288,7 +5318,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Nvidia, CoreWeave, and Nebius: Inside the Circular Financing of the GPU Boom",
-      "description": "Article URL: https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom Comments URL: https://news.ycombinator.com/item?id=48873836 Points: 263 # Comments: 100",
+      "description": "Article URL: https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom Comments URL: https://news.ycombinator.com/item?id=48873836 Points: 264 # Comments: 101",
       "url": "https://io-fund.com/ai-stocks/nvidia-coreweave-nebius-circular-financing-gpu-boom",
       "time": "2026-07-11T17:21:49.000Z",
       "tags": [
@@ -5388,7 +5418,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "UPI: Anatomy of a Payment Transaction",
-      "description": "Article URL: https://timeseriesofindia.com/economy/reads/upi-architecture/ Comments URL: https://news.ycombinator.com/item?id=48873457 Points: 187 # Comments: 80",
+      "description": "Article URL: https://timeseriesofindia.com/economy/reads/upi-architecture/ Comments URL: https://news.ycombinator.com/item?id=48873457 Points: 188 # Comments: 81",
       "url": "https://timeseriesofindia.com/economy/reads/upi-architecture/",
       "time": "2026-07-11T16:33:42.000Z",
       "tags": [
@@ -5399,7 +5429,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Modern decor may be straining people's brains",
-      "description": "Article URL: https://studyfinds.com/modern-decor-may-be-straining-peoples-brains/ Comments URL: https://news.ycombinator.com/item?id=48873424 Points: 191 # Comments: 197",
+      "description": "Article URL: https://studyfinds.com/modern-decor-may-be-straining-peoples-brains/ Comments URL: https://news.ycombinator.com/item?id=48873424 Points: 192 # Comments: 198",
       "url": "https://studyfinds.com/modern-decor-may-be-straining-peoples-brains/",
       "time": "2026-07-11T16:28:48.000Z",
       "tags": [
@@ -5573,6 +5603,28 @@
       "url": "https://finance.sina.com.cn/tech/2026-07-12/doc-inihnwye6085096.shtml",
       "time": "2026-07-11T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "FF宣布注销536万份认股权证 贾跃亭5月称要改行做机器人",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-07-12/doc-inihpymx4545808.shtml",
+      "time": "2026-07-11T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "上纬新材即将推出全球首个可变形个人机器人启元T1 变形过程今日曝光",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-07-12/doc-inihpymv7766711.shtml",
+      "time": "2026-07-11T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "新浪科技",
@@ -6111,7 +6163,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The early History of the Singular Value Decomposition (1993) [pdf]",
-      "description": "Article URL: https://www.math.ucdavis.edu/~saito/courses/229A/stewart-svd.pdf Comments URL: https://news.ycombinator.com/item?id=48872858 Points: 120 # Comments: 64",
+      "description": "Article URL: https://www.math.ucdavis.edu/~saito/courses/229A/stewart-svd.pdf Comments URL: https://news.ycombinator.com/item?id=48872858 Points: 121 # Comments: 64",
       "url": "https://www.math.ucdavis.edu/~saito/courses/229A/stewart-svd.pdf",
       "time": "2026-07-11T15:26:12.000Z",
       "tags": [
@@ -6143,6 +6195,19 @@
         "网络安全",
         "智能硬件"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "中信建投：半导体设备产业链投资机遇 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.com.cn/wm/2026-07-11/doc-inihnhar8085047.shtml?cre=tianyi&mod=pchp&loc=15&r=0&rfunc=29&tj=cxvertical_pc_hp&tr=12",
+      "time": "2026-07-11T15:13:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "科技创投"
+      ],
+      "topic": true
     },
     {
       "source": "网易科技",
@@ -6404,7 +6469,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Learn by rebuilding Redis, Git, a database from scratch",
-      "description": "Article URL: https://shipthatcode.com Comments URL: https://news.ycombinator.com/item?id=48871973 Points: 173 # Comments: 51",
+      "description": "Article URL: https://shipthatcode.com Comments URL: https://news.ycombinator.com/item?id=48871973 Points: 173 # Comments: 52",
       "url": "https://shipthatcode.com",
       "time": "2026-07-11T13:40:27.000Z",
       "tags": [
@@ -6462,17 +6527,6 @@
       "url": "https://www.engadget.com/2211948/samsung-gallery-no-longer-syncing-microsoft-onedrive-september-2026/",
       "time": "2026-07-11T13:30:00.000Z",
       "tags": []
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "存储巨头集体高位融资 历史周期信号再现",
-      "description": "",
-      "url": "https://m.huxiu.com/article/4874469.html",
-      "time": "2026-07-11T13:20:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
     },
     {
       "source": "芯片半导体",
@@ -6548,18 +6602,6 @@
       "tags": [
         "人工智能"
       ]
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "AI旗艦手機新選擇！榮耀HONOR Magic8 Pro開箱、規格與相機評測一次看- SOGI 手機王 - 新浪财经",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/7879848950/1d5acf3f601901qx5e?from=digit",
-      "time": "2026-07-11T12:44:48.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
     },
     {
       "source": "快科技",
@@ -6803,7 +6845,7 @@
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "独家 | 智谱创始人唐杰发内部信：「GLM 时刻」之后，什么是更重要的事",
-      "description": "文 | 周鑫雨 编辑 | 张雨忻 《智能涌现》独家获悉，2026 年 7 月 11 日，智谱创始人唐杰，在智谱发布了主题为《巨浪已来》的内部信。 过去半年来，智谱收获了创立以来的高光时刻：市值较半年前上市初期涨了 10 倍，并在 2026 年 6 月，跻身“万亿港元俱乐部”——这个数字，是百度市值的近 3 倍，并且超过了小米。7 月 8 日，首批股票解禁后，智谱依然稳住了股价。 这也是当下 AI 大模型赛道，最性感的故事：押注对的技术方向，换来斐然市场口碑和商业化成绩。 抽丝剥茧，智谱起飞的根源，离不开一年前对 Coding 的押注。2025 年初，智谱就开始重新分配资源，将力量收敛到了对模型 Coding 能力的提升上。 一场活动上，清华大学计算机系教授、智谱创始人唐杰点出了押注 Coding 的理由：DeepSeek R1 的出现，标志着 Chat 范式的探索已经基本结束。后DeepSeek时代的模型训练范式，他形容智谱“Bet（赌）”了 Coding 和 Reasoning——一种能与 Agent 共生共荣的模型能力。 事实证明，这是一次成功的赌注。 如今，AI Coding 已经成了 AI 商业化的最近端。一个典型的案例，是同样靠押注 Coding，对 OpenAI“弯道超车”的 Anthropic。2024 年 1 月，Anthropic 的年化收入还只有 8700 万美金；2026 年 6 月，它的 ARR 已经突破 470 亿美元， 2025 年 7 月发布的旗舰模型 GLM-4.5，到 2026 年 6 月上线并开源的 GLM-5.2，让智谱跻身全球 AI Coding 第一梯队。 开源的 GLM-5.2，多个核心指标已经追平甚至超过了 Claude Opus 4.8，以及 GPT-5.5。 技术能力，也体现在了营收上。智谱 2025 年财报显示，截至报告期末（2026 年 3 月），MaaS 平台的 ARR 达到了 17 亿元，过去一年提升了 60 倍。 而唐杰的内部信，向我们展示了后 Coding 时代，智谱押注的新命题： 长程任务能力（Long Horizon Task） 完全自治的智能体系统（Autonomous Agent System） 自我进化（Self-Evolving） 以下是唐杰的内部信内容： 巨浪已来 ——致每一位智谱人和关心人工智能未来的伙伴 请允许我借这篇文章，谈三件事：我们是谁，我们如何看待这个时代，以及我们决定全力倾注的战略方向。 （一）我们是谁：“本质、反直觉、专注” 智谱从不是一家追风口的公司。它从一间实验室里长出来，带着这间实验室二十年的方法论。这套方法论可以用三个词概括：本质、反直觉、专注——想得足够深，才敢选得足够反；选得足够反，就必须守得足够久。 回望来路，我们几乎每一个关键选择都曾经显得“反直觉”。2006年，我们守着一台台式机上的学术搜索系统坐冷板凳，因为我们想清楚了那背后是“挖掘学科演化机理”这件值得用十年回答的事；2021到2022年，当“让机器像人一样思考”被绝大多数人视为登月般的疯狂计划时，我们抽调资源、押注千亿参数，做出了GLM-130B——那是ChatGPT引爆世界整整一年半之前；而在智谱2026年1月8日H股上市的那一天，我们把它当作一个全新的起点，坚定地全面回归基础模型研究，全力冲击下一代模型。 别人敲钟，我们归零。这不是姿态，这是信念——既然终点是AGI，那么短期利益或者行业风口，都只是通向终局的沿途风景。 支撑我们一路走到今天的，是一种极致的专注和至真至纯的理想主义。学术搜索系统从一台台式机做到千万用户，我们用了十年；大模型这条路，我们又做了近十年，并且还会坚定深耕，继续走下去。今天的智谱，是一群愿意追问本质、敢于反直觉，又能专注地把事情做到底的人——这就是智谱核心竞争力的来源。 （二）我们如何看待这个时代：智能的上界正在被改写 如果说过去二十年我们学会了一件事，那就是：真正的商业机会，从来不在产品和模式的微调里，而在智能上界的跃迁中。这是我们对当下AI变革最根本的判断，也是我们最想传递给大��的认知。 这一次变革，本质不是一次产品创新或商业模式创新，而是技术革命本身抬高了“智能上界”。谁能率先将该上界向上推升一寸，谁就能重新定义千行百业的能力边界。所有聚焦第一性原理的新一代AI企业，争夺的正是这一寸的突破。 而智能上界的演进，有一条清晰的路径。人工智能正在完成从感知智能到认知智能的跨越——机器不再只是“看见”和“听见”，而是开始“理解”和“推理”。而下一步，正指向AGI。 我们对AGI有一个朴素而苛刻的定义：AGI不是某一个天才的智慧，而是全人类智慧水平的总和。它理应具备创造出“相对论”级别原创知识的能力，这是我们衡量是否真正到达巅峰的唯一标准。通往这个终点的道路上，有几座必须翻越的山峰，它们也正是今天技术浪潮最汹涌的地方： 第一座：长程任务能力（Long Horizon Task） 今天最令人兴奋的突破，是让模型学会完成一个极长的任务——不是即时问答，而是跨越数周、数月乃至数年的规划与执行。例如，一个模型可以不知疲倦地在软件中寻找漏洞，本质上是在学习一名顶级安全专家的思维方式，然后通过机器的耐力把它放大。 第二座：完全自治的智能体系统（Autonomous Agent System） 在长程任务之上，能够自主驱动、协同作业、7×24小时运转的智能体群体将成为新的生产力形态。我们曾提过“一人公司OPC”，但技术的脚步比预想更快——我们正在走向“全自动化公司NPC”。记忆（Memory）、持续学习（Continual Learning）、自我评判（Self-Judge）这三个曾被认为需要范式变革才能解决的难题，现已在技术与应用的双重驱动下逐步消解：长上下文与检索增强生成（RAG）逼近记忆雏形；模型迭代频次的提升本身即在逼近持续学习；前沿模型已显露自我评判的萌芽。 第三座：自我进化（Self-Evolving） 这是最艰难、也最诱人的一座。AI训练AI已经成型——模型自己写代码、自己清洗与合成数据、自己训练自己。这或许会消耗一些算力，却节省了最宝贵的人力与时间。而在大模型时代，速度是最重要的，快速迭代会直接拉开认知的代际差距。当海外头部企业开始筹建百万乃至两百万芯片级别的算力集群，其真正的用途，很可能正是让模型自己训练自己。 翻过这三座山之后，会发生什么？ AI将开始学习什么是“我”，什么是自我认知；再往后，它会触及人类的情感；更远处，是意识本身。从感知到认知，从认知到通用，从通用走向超级智能（ASI）——这条路已经铺开，巨浪已来，且不可逆转。 这并非我们一家之言。Google DeepMind在《From AGI to ASI》报告中给出了一个冷峻的论断：即便单个模型的能力永远停在人类水平，只要算力还在增长，超级智能可能会被硬生生“挤”出来。他们推演，若全球可运行AGI实例以每年十倍速增长，五年后将达一亿个。这些共享同一底层大脑、思考效率百倍提升且零成本复制经验的智能体，在群体层面即等同于ASI。换言之，从AGI迈向ASI，既需要算法层面的突破，也需要超大算力资源的汇聚。 这种不可逆转的趋势将自上而下穿透整个技术栈：当AGI到来，今天的应用或许都要被重构为AI原生，甚至不再需要这些应用；操作系统可能被重写，未来你打开电脑，看到的将是一个“LLM OS”，所有功能按需生成（generate on demand）；再往深处，是对运行了八十年的冯·诺依曼体系的挑战。金融、法律、电商、互联网……没有一个行业会置身事外。很多朋友找到我，说想变革企业、追赶AI的步伐，但真正洞察到“这场不可逆变革已然开启”者，仍属寥寥。 （三）我们全力倾注的方向：“摸高” 认清趋势之后，剩下的就是选择。而智谱的选择，一如既往地“反直觉”—— 在行业普遍加速商业变现的当下，我们决定向上突破。 我们将这一战略命名为 “Touch High（摸高）计划”。在人工智能从感知、认知向完全通用智能跨越的历史节点，智谱将以“摸高”的姿态，挑战当前技术的物理与算法极限。未来两年，我们计划战略性投入——不追求短期的应用变现，而是直指AGI的下一个高地。 这笔投入将集中在四大核心引擎上： 其一，长程任务。让AI从“即时问答”走向“宏大工程”，研发新一代记忆架构，使模型贯穿项目全生命周期“边学、边做、边记”，并具备将宏大目标（如“设计一种新型抗癌药物分子”）自主拆解为数千个可执行子任务的顶层能力。 其二，自治智能体系统。从“智能助手”走向“数字员工”，构建包含成千上万个不同专业“性格”与“技能”的智能体社会，让它们自主辩论、协作、审查代码、调度资源，实现“自动驾驶”级别的数字生产力。 其三，完全自我训练（Fully Self Training）。在人类高质量数据即将耗尽之际，把算力转化为进化的燃料——建设高质量合成数据工厂，通过AI与AI的博弈对抗（Self-Play）实现知识的“无中生有”，并在安全沙盒内赋予系统重构自身代码的能力，让进化速度挣脱人类工程师的物理限制。 其四，极致安全治理。这是四大引擎中我最想着重强调的一个。 能力越强大，安全约束机制也必须越稳固。智谱创立伊始即确立准则：AI必须服务于人类福祉，服务于国家战略。公司摒弃外挂式安全补丁，坚持将人类伦理、社会规范及国家法律法规作为底层公理写入模型价值函数；计划投入百亿级资源攻坚“机械可解释性”，厘清模型决策背后的神经元逻辑，推动黑盒系统向透明可解释系统转变；同时积极参与国际AI治理，防范AI技术被滥用。 这种紧迫感并非杞人忧天。当海外最前沿的顶级模型因风险考量而暂缓全面公开发布，其企业负责人公开警示AI的深远影响将深刻重塑全球力量格局时，我们更应清醒：超级智能的实现与超级对齐的研究，必须同步推进。这也是我们在面对颠覆性技术时反复审视的命题——历史一再表明，当一项技术抵达足以改变文明进程的力量量级时，安全就不再是附属品，而是技术得以存续与被允许应用的根本前提。 （四）开放生态：智能普惠和安全治理的底层逻辑 我们始终认为，人工智能作为引领未来的战略性技术，其长远发展离不开开放协同的产业生态。前沿智能的价值不仅在于技术突破本身，更在于它能否广泛赋能千行百业、惠及每一位开发者。我们坚信，真正的安全并非建立在技术封闭与壁垒之上，而是源于阳光下广泛的共建、共享与监督。 正是基于对技术普惠的深刻认同，智谱给出了自身的战略答卷。近日，我们发布了迄今能力最强的开源模型 GLM-5.2，它支持真正可用的百万（1M）上下文，在长程任务上继续保持领先，面向全量用户开放，并将以最宽松的 MIT 协议正式开源——任何人都可以下载、部署、商用，没有主体界别。这是公司以产品形态表达的坚定态度。 我们选择相信另一条路：前沿智能不应只属于少数人，也不应被少数规则随时收回。它应该开放、可用、可构建，并服务于每一位开发者。 这与“摸高”并不矛盾，反而是一体两面：我们一只手向上摸高，挑战智能的极限；另一只手向下铺路，让最前沿的能力尽可能地开放与普惠。摸到的高度属于全人类，修成的道路也属于每一个人。 （五）结语：为什么是现在，为什么是我们 有人会问：为什么智谱上市后反而还要继续倾注核心资源、向最不确定的方向“摸高”？因为我们相信一个朴素的道理：真正的登顶者，会把山修成路。 我们想清楚的那个本质，曾通过“悟道大模型”项目凝聚成几百位科学家的共识，又通过智谱的产业投资和整个生态，变成一代创业者起跳的基石。今天，我们想把这条路修得更高、更宽——高到能保护我们自己、守卫国家安全，高到能让人类有机会探索更多未知，探索宇宙的奥秘；也宽到能让每一位开发者、每一个团队，都走得上来。 在AGI时代，这些曾经遥不可及的事，第一次有了实现的可能。这正是我们这一代国人最大的幸运，也是最重的责任。 巨浪已来，趋势不可逆转。智谱要做那个迎着浪头、向上摸高的人。 不登顶，就是失败。 这一次，我们要摸到的，是属于全人类的那个高度。 智谱创始人 唐杰 2026年7月11日",
+      "description": "文 | 周鑫雨 编辑 | 张雨忻 《智能涌现》独家获悉，2026 年 7 月 11 日，智谱创始人唐杰，在智谱发布了主题为《巨浪已来》的内部信。 过去半年来，智谱收获了创立以来的高光时刻：市值较半年前上市初期涨了 10 倍，并在 2026 年 6 月，跻身“万亿港元俱乐部”——这个数字，是百度市值的近 3 倍，并且超过了小米。7 月 8 日，首批股票解禁后，智谱依然稳住了股价。 这也是当下 AI 大模型赛道，最性感的故事：押注对的技术方向，换来斐然市场口碑和商业化成绩。 抽丝剥茧，智谱起飞的根源，离不开一年前对 Coding 的押注。2025 年初，智谱就开始重新分配资源，将力量收敛到了对模型 Coding 能力的提升上。 一场活动上，清华大学计算机系教授、智谱创始人唐杰点出了押注 Coding 的理由：DeepSeek R1 的出现，标志着 Chat 范式的探索已经基本结束。后DeepSeek时代的模型训练范式，他形容智谱“Bet（赌）”了 Coding 和 Reasoning——一种能与 Agent 共生共荣的模型能力。 事实证明，这是一次成功的赌注。 如今，AI Coding 已经成了 AI 商业化的最近端。一个典型的案例，是同样靠押注 Coding，对 OpenAI“弯道超车”的 Anthropic。2024 年 1 月，Anthropic 的年化收入还只有 8700 万美金；2026 年 6 月，它的 ARR 已经突破 470 亿美元， 2025 年 7 月发布的旗舰模型 GLM-4.5，到 2026 年 6 月上线并开源的 GLM-5.2，让智谱跻身全球 AI Coding 第一梯队。 开源的 GLM-5.2，多个核心指标已经追平甚至超过了 Claude Opus 4.8，以及 GPT-5.5。 技术能力，也体现在了营收上。智谱 2025 年财报显示，截至报告期末（2026 年 3 月），MaaS 平台的 ARR 达到了 17 亿元，过去一年提升了 60 倍。 而唐杰的内部信，向我们展示了后 Coding 时代，智谱押注的新命题： 长程任务能力（Long Horizon Task） 完全自治的智能体系统（Autonomous Agent System） 自我进化（Self-Evolving） 以下是唐杰的内部信内容： 巨浪已来 ——致每一位智谱人和关心人工智能未来的伙伴 请允许我借这篇文章，谈三件事：我们是谁，我们如何看待这个时代，以及我们决定全力倾注的战略方向。 （一）我们是谁：“本质、反直觉、专注” 智谱从不是一家追风口的公司。它从一间实验室里长出来，带着这间实验室二十年的方法论。这套方法论可以用三个词概括：本质、反直觉、专注——想得足够深，才敢选得足够反；选得足够反，就必须守得足够久。 回望来路，我们几乎每一个关键选择都曾经显得“反直觉”。2006年，我们守着一台台式机上的学术搜索系统坐冷板凳，因为我们想清���了那背后是“挖掘学科演化机理”这件值得用十年回答的事；2021到2022年，当“让机器像人一样思考”被绝大多数人视为登月般的疯狂计划时，我们抽调资源、押注千亿参数，做出了GLM-130B——那是ChatGPT引爆世界整整一年半之前；而在智谱2026年1月8日H股上市的那一天，我们把它当作一个全新的起点，坚定地全面回归基础模型研究，全力冲击下一代模型。 别人敲钟，我们归零。这不是姿态，这是信念——既然终点是AGI，那么短期利益或者行业风口，都只是通向终局的沿途风景。 支撑我们一路走到今天的，是一种极致的专注和至真至纯的理想主义。学术搜索系统从一台台式机做到千万用户，我们用了十年；大模型这条路，我们又做了近十年，并且还会坚定深耕，继续走下去。今天的智谱，是一群愿意追问本质、敢于反直觉，又能专注地把事情做到底的人——这就是智谱核心竞争力的来源。 （二）我们如何看待这个时代：智能的上界正在被改写 如果说过去二十年我们学会了一件事，那就是：真正的商业机会，从来不在产品和模式的微调里，而在智能上界的跃迁中。这是我们对当下AI变革最根本的判断，也是我们最想传递给大家的认知。 这一次变革，本质不是一次产品创新或商业模式创新，而是技术革命本身抬高了“智能上界”。谁能率先将该上界向上推升一寸，谁就能重新定义千行百业的能力边界。所有聚焦第一性原理的新一代AI企业，争夺的正是这一寸的突破。 而智能上界的演进，有一条清晰的路径。人工智能正在完成从感知智能到认知智能的跨越——机器不再只是“看见”和“听见”，而是开始“理解”和“推理”。而下一步，正指向AGI。 我们对AGI有一个朴素而苛刻的定义：AGI不是某一个天才的智慧，而是全人类智慧水平的总和。它理应具备创造出“相对论”级别原创知识的能力，这是我们衡量是否真正到达巅峰的唯一标准。通往这个终点的道路上，有几座必须翻越的山峰，它们也正是今天技术浪潮最汹涌的地方： 第一座：长程任务能力（Long Horizon Task） 今天最令人兴奋的突破，是让模型学会完成一个极长的任务——不是即时问答，而是跨越数周、数月乃至数年的规划与执行。例如，一个模型可以不知疲倦地在软件中寻找漏洞，本质上是在学习一名顶级安全专家的思维方式，然后通过机器的耐力把它放大。 第二座：完全自治的智能体系统（Autonomous Agent System） 在长程任务之上，能够自主驱动、协同作业、7×24小时运转的智能体群体将成为新的生产力形态。我们曾提过“一人公司OPC”，但技术的脚步比预想更快——我们正在走向“全自动化公司NPC”。记忆（Memory）、持续学习（Continual Learning）、自我评判（Self-Judge）这三个曾被认为需要范式变革才能解决的难题，现已在技术与应用的双重驱动下逐步消解：长上下文与检索增强生成（RAG）逼近记忆雏形；模型迭代频次的提升本身即在逼近持续学习；前沿模型已显露自我评判的萌芽。 第三座：自我进化（Self-Evolving） 这是最艰难、也最诱人的一座。AI训练AI已经成型——模型自己写代码、自己清洗与合成数据、自己训练自己。这或许会消耗一些算力，却节省了最宝贵的人力与时间。而在大模型时代，速度是最重要的，快速迭代会直接拉开认知的代际差距。当海外头部企业开始筹建百万乃至两百万芯片级别的算力集群，其真正的用途，很可能正是让模型自己训练自己。 翻过这三座山之后，会发生什么？ AI将开始学习什么是“我”，什么是自我认知；再往后，它会触及人类的情感；更远处，是意识本身。从感知到认知，从认知到通用，从通用走向超级智能（ASI）——这条路已经铺开，巨浪已来，且不可逆转。 这并非我们一家之言。Google DeepMind在《From AGI to ASI》报告中给出了一个冷峻的论断：即便单个模型的能力永远停在人类水平，只要算力还在增长，超级智能可能会被硬生生“挤”出来。他们推演，若全球可运行AGI实例以每年十倍速增长，五年后将达一亿个。这些共享同一底层大脑、思考效率百倍提升且零成本复制经验的智能体，在群体层面即等同于ASI。换言之，从AGI迈向ASI，既需要算法层面的突破，也需要超大算力资源的汇聚。 这种不可逆转的趋势将自上而下穿透整个技术栈：当AGI到来，今天的应用或许都要被重构为AI原生，甚至不再需要这些应用；操作系统可能被重写，未来你打开电脑，看到的将是一个“LLM OS”，所有功能按需生成（generate on demand）；再往深处，是对运行了八十年的冯·诺依曼体系的挑战。金融、法律、电商、互联网……没有一个行业会置身事外。很多朋友找到我，说想变革企业、追赶AI的步伐，但真正洞察到“这场不可逆变革已然开启”者，仍属寥寥。 （三）我们全力倾注的方向：“摸高” 认清趋势之后，剩下的就是选择。而智谱的选择，一如既往地“反直觉”—— 在行业普遍加速商业变现的当下，我们决定向上突破。 我们将这一战略命名为 “Touch High（摸高）计划”。在人工智能从感知、认知向完全通用智能跨越的历史节点，智谱将以“摸高”的姿态，挑战当前技术的物理与算法极限。未来两年，我们计划战略性投入——不追求短期的应用变现，而是直指AGI的下一个高地。 这笔投入将集中在四大核心引擎上： 其一，长程任务。让AI从“即时问答”走向“宏大工程”，研发新一代记忆架构，使模型贯穿项目全生命周期“边学、边做、边记”，并具备将宏大目标（如“设计一种新型抗癌药物分子”）自主拆解为数千个可执行子任务的顶层能力。 其二，自治智能体系统。从“智能助手”走向“数字员工”，构建包含成千上万个不同专业“性格”与“技能”的智能体社会，让它们自主辩论、协作、审查代码、调度资源，实现“自动驾驶”级别的数字生产力。 其三，完全自我训练（Fully Self Training）。在人类高质量数据即将耗尽之际，把算力转化为进化的燃料——建设高质量合成数据工厂，通过AI与AI的博弈对抗（Self-Play）实现知识的“无中生有”，并在安全沙盒内赋予系统重构自身代码的能力，让进化速度挣脱人类工程师的物理限制。 其四，极致安全治理。这是四大引擎中我最想着重强调的一个。 能力越强大，安全约束机制也必须越稳固。智谱创立伊始即确立准则：AI必须服务于人类福祉，服务于国家战略。公司摒弃外挂式安全补丁，坚持将人类伦理、社会规范及国家法律法规作为底层公理写入模型价值函数；计划投入百亿级资源攻坚“机械可解释性”，厘清模型决策背后的神经元逻辑，推动黑盒系统向透明可解释系统转变；同时积极参与国际AI治理，防范AI技术被滥用。 这种紧迫感并非杞人忧天。当海外最前沿的顶级模型因风险考量而暂缓全面公开发布，其企业负责人公开警示AI的深远影响将深刻重塑全球力量格局时，我们更应清醒：超级智能的实现与超级对齐的研究，必须同步推进。这也��我们在面对颠覆性技术时反复审视的命题——历史一再表明，当一项技术抵达足以改变文明进程的力量量级时，安全就不再是附属品，而是技术得以存续与被允许应用的根本前提。 （四）开放生态：智能普惠和安全治理的底层逻辑 我们始终认为，人工智能作为引领未来的战略性技术，其长远发展离不开开放协同的产业生态。前沿智能的价值不仅在于技术突破本身，更在于它能否广泛赋能千行百业、惠及每一位开发者。我们坚信，真正的安全并非建立在技术封闭与壁垒之上，而是源于阳光下广泛的共建、共享与监督。 正是基于对技术普惠的深刻认同，智谱给出了自身的战略答卷。近日，我们发布了迄今能力最强的开源模型 GLM-5.2，它支持真正可用的百万（1M）上下文，在长程任务上继续保持领先，面向全量用户开放，并将以最宽松的 MIT 协议正式开源——任何人都可以下载、部署、商用，没有主体界别。这是公司以产品形态表达的坚定态度。 我们选择相信另一条路：前沿智能不应只属于少数人，也不应被少数规则随时收回。它应该开放、可用、可构建，并服务于每一位开发者。 这与“摸高”并不矛盾，反而是一体两面：我们一只手向上摸高，挑战智能的极限；另一只手向下铺路，让最前沿的能力尽可能地开放与普惠。摸到的高度属于全人类，修成的道路也属于每一个人。 （五）结语：为什么是现在，为什么是我们 有人会问：为什么智谱上市后反而还要继续倾注核心资源、向最不确定的方向“摸高”？因为我们相信一个朴素的道理：真正的登顶者，会把山修成路。 我们想清楚的那个本质，曾通过“悟道大模型”项目凝聚成几百位科学家的共识，又通过智谱的产业投资和整个生态，变成一代创业者起跳的基石。今天，我们想把这条路修得更高、更宽——高到能保护我们自己、守卫国家安全，高到能让人类有机会探索更多未知，探索宇宙的奥秘；也宽到能让每一位开发者、每一个团队，都走得上来。 在AGI时代，这些曾经遥不可及的事，第一次有了实现的可能。这正是我们这一代国人最大的幸运，也是最重的责任。 巨浪已来，趋势不可逆转。智谱要做那个迎着浪头、向上摸高的人。 不登顶，就是失败。 这一次，我们要摸到的，是属于全人类的那个高度。 智谱创始人 唐杰 2026年7月11日",
       "url": "https://36kr.com/p/3891132709206784?f=rss",
       "time": "2026-07-11T11:28:29.000Z",
       "tags": [
@@ -7532,17 +7574,6 @@
       ]
     },
     {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "生成看似合理却事实错误的虚假内容：人工智能“使坏”，我们怎么办",
-      "description": "AI（人工智能）走出实验室，潜在风险也日益显现。从AI换脸诈骗、算法诱导沉迷，到生成看似合理却事实错误的虚假内容，AI“使坏”带来的安全隐患引发担忧。 针对这些",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33564338",
-      "time": "2026-07-11 07:50",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
       "source": "网易科技",
       "sourceColor": "#e60012",
       "title": "研究机构：6月全球电动汽车注册量连续第四个月",
@@ -7643,19 +7674,6 @@
       "time": "2026-07-11 07:24",
       "tags": [
         "大公司"
-      ]
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "OpenAI回应苹果起诉：对其他公司的商业秘密不感",
-      "description": "OpenAI回应苹果起诉：对其他公司的商业秘密不感兴趣,苹果公司,知名企业,openai",
-      "url": "https://www.163.com/dy/article/L1HPKBIG0534A4SC.html",
-      "time": "2026-07-11 07:19",
-      "tags": [
-        "人工智能",
-        "大公司",
-        "科技创投"
       ]
     },
     {
@@ -7793,19 +7811,6 @@
         "手机",
         "软件应用",
         "科技创投"
-      ]
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "过去两年规模几乎翻倍，美国ETF“火的发烫”",
-      "description": "美国ETF行业正经历史无前例的扩张加速。资产规模、资金流入与交易量三项核心指标在2026年同步创下或逼近历史纪录，行业生态全面进入高速运转状态。 据高盛ETF业务主管Chris Lucas最新评估，今年以来美国上市ETF净流入已突破1万亿美元，全年净发行规模有望超过2万亿美元，将以逾33%的幅度打破2025年的历史纪录。与此同时，上半年ETF总成交量突破40万亿美元，较2025年同期飙升50%。 资金持续涌入的背后，美国大盘科技股、半导体/AI、新兴市场及韩国主题，以及主动管理型ETF构成了本轮增长的主要驱动力。主动管理型ETF年内已吸纳约4000亿美元资金，约占行业总流入的40%，是其资产规模市场份额的约3倍。 资产规模逼近16万亿美元，两年近乎翻倍 美国上市ETF总资产已突破15.6万亿美元，过去两年规模几乎翻番。高盛认为，在当前动能支撑下，年底前迈上17万亿美元台阶\"触手可及\"。 这一增长速度在行业历史上绝无仅有。规模的快速膨胀由资金流入与资产价格上涨共同驱动，二者形成正反馈，推动行业持续向上突破。 今年以来，ETF行业的资金流入不仅量级庞大，更展现出高度的持续性。6月单月净流入达1930亿美元，为高盛数据集中的历史第二高单月流入。 更值得关注的是，这种接近纪录水平的月度表现已成常态。据高盛统计，过去七个月中，ETF行业经历了其历史上月度流入规模最大的五个月份，集中程度罕见。 从资金流向来看，主动管理型ETF表现尤为突出。年内主动ETF共获约4000亿美元流入，占行业总流入比例接近40%，而其资产规模仅占整体约13%。集中主题型ETF的崛起被视为2026年的重要新趋势，延续了2024年现货加密货币ETF开辟新市场通道的逻辑。 交易量暴增50%，杠杆ETF成最大变量 上半年ETF生态系统的成交量\"全速运转\"。日均成交量达3250亿美元，6月单月累计成交量达7万亿美元，同样位居历史第二高。 杠杆类ETF是本轮成交量激增的核心推手。6月，杠杆ETF名义成交量创下单月纪录，达1.1万亿美元，较2025年同期增幅同样超过50%。若将杠杆效应换算为实际敞口，以3倍杠杆产品计算，杠杆ETF在6月产生的总敞口接近3万亿美元，相当于当月全部美国上市ETF名义成交量的约40%。 目前杠杆ETF管理资产约为1750亿美元，但其实际总敞口已超过4300亿美元，两者之间的倍数关系凸显出该类产品对整体市场流动性的放大效应。 在全球权益市场，成交量加速同样显著。矿业ETF整体成交量已超过2025年全年总量；新兴市场最大的两只ETF——EEM与IEMG的成交量也接近追平去年全年水平。 ETF数量超越本土上市公司，新品发行加速 美国上市ETF数量已达约5400只，而本土上市公司数量约为4000家，ETF对股票的\"数量超越\"仍在持续扩大。今年迄今已有逾770只新ETF面市，其中54%使用衍生品工具，33%被归类为杠杆或反向产品。 高盛预计，衍生品应用与集中主题型产品的快速扩张将是下半年行业的核心趋势。随着大量待批产品陆续生效，新品发行节奏预计将维持高位。 DRAM超越EWY，存储主题ETF格局重塑 集中主题型ETF崛起带来的资金迁移效应，在存储芯片主题上得到典型体现。聚焦DRAM存储芯片的主题ETF DRAM在总资产规模上已正式超越有着26年历史的韩国ETF EWY。 尽管EWY自今年4月以来基金净值上涨近50%，却同期录得约20亿美元的资金净流出。高盛指出，EWY与DRAM的持仓重叠度约为46%，这意味着EWY在一定程度上曾是投资者布局国际存储主题的替代工具。当更精准的主题通道出现后，资金迁移迅速且明显，清晰展示了新型市场接入工具引入后行业格局可以改变的速度。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3776701",
-      "time": "2026-07-11T06:00:08.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "软件应用"
       ]
     },
     {
@@ -8067,6 +8072,20 @@
       "tags": []
     },
     {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "实测 ChatGPT Work vs Claude Cowork，OpenAI 这次真追上来了|Anthropic|GPT-5|Codex|额度|网页_手机新浪网 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-07-11/detail-inihkyif8341419.d.html?vt=4&cid=76993&node_id=76993",
+      "time": "2026-07-11T03:22:20.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "曝更多索尼高管抛售股票跑路！砍掉实体 索尼总裁带头",
@@ -8158,18 +8177,6 @@
       ]
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "为建半导体产业园区，韩国考虑拆除韩美共用空军基地-观察者网 - guancha.cn",
-      "description": "",
-      "url": "https://www.guancha.cn/internation/2026_07_11_823371.shtml",
-      "time": "2026-07-11T01:37:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "Engadget",
       "sourceColor": "#2b2d32",
       "title": "Meta deactivates feature that let you generate AI images of any public Instagram account",
@@ -8198,7 +8205,7 @@
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "9点1氪丨“国产存储第一股”长鑫科技公布承销团阵容；SK海力士登陆美股，上市首日大涨近13%；OpenAI推出ChatGPT智能体",
-      "description": "今日热点导览 “全球首款智能体手机”已备货8万至10万台？知情人士：假的 百亿私募数量达142家，再次刷新历史纪录 三星李在镕拟于7月底赴美会晤英伟达黄仁勋 德国大众拟大裁员，最高或裁减12万个岗位 OpenAI高管层再现变动，首席运营官因病离职 TOP3大新闻 长鑫科技，承销团阵容公布 长鑫科技IPO进入发行倒计时，这家“国产存储第一股”背后的承销团阵容也随之浮出水面。最新披露的招股意向书显示，长鑫科技预计7月16日发行。本次IPO中，中金公司、中信建投担任联席保荐机构及主承销商，国泰海通、国元证券、华泰联合、招商证券担任联席主承销商，合计6家券商组成承销团。 这是一支少见的“豪华承销团”。一边是中金、中信建投、国泰海通、华泰联合、招商证券等头部投行密集出现，另一边是安徽本土券商国元证券进入主承销名单。更有意思的是，多家主承销商同时也是长鑫科技股东，投行收入之外，股权投资收益才是这单IPO更大的想象空间。（财联社） SK海力士登陆美股，上市首日大涨近13% 韩国芯片巨头SK海力士美东时间7月10日登陆科技股云集的纳斯达克交易所，此举将为其打通一条强力全新融资渠道，方便全球投资者布局高速增长的人工智能基础设施赛道。这家全球第二大存储芯片厂商计划通过在纳斯达克发行美国存托凭证(ADR)募资约40万亿韩元(折合265亿美元)。本次发行共计1.779亿份美国存托凭证，发行价定为每份149美元，1份ADR对应其在韩国首尔交易所上市普通股的十分之一。 上市首日开盘价报170美元，较发行价149美元涨约14.1%，盘中一度触及177美元，涨幅扩大至约18.8%，收盘报168.01美元，日内涨约12.8%，对应市值约1.22万亿美元。(新浪财经、华尔街见闻) OpenAI推出ChatGPT Work智能体，可持续数小时跟进任务 OpenAI推出由GPT-5.6驱动的ChatGPT Work，这是最新的前沿模型系列，全新Chatgpt桌面应用将聊天、工作与Codex整合在一起。ChatGPT Work是一款可跨各类应用与文件执行操作的智能体，必要时能持续跟进项目数小时，可直接将目标转化为已完成的工作成果。它可跨各类应用和工作流收集信息，生成表格、幻灯片、文档、网页应用等成品内容，还能通过拆解为小步骤独立执行，数小时持续跟进复杂项目。（财联社） AI最前沿 三星研发AI PC加速芯片GAIA，已向联想、惠普提供样片测试 7月10日，据报道，三星电子正在研发一款名为GAIA的AI PC加速芯片，并已向联想集团和惠普提供原型产品进行性能测试，计划于明年开始量产。GAIA采用4纳米制程工艺，搭载神经处理单元（NPU），面向生成式人工智能任务，并设计支持存算一体（PIM）技术。（界面新闻） 马斯克称低估Anthropic，表示不会因竞争切断其支持 马斯克当地时间7月9日在社交平台表示，自己此前对人工智能公司Anthropic的判断“明显错误”，并称Anthropic“目前显然是AI领域的领先者”。马斯克说，“目前没有任何公司发布过像Mythos/Fable这样优秀的模型”。马斯克表示，即使Anthropic是竞争对手，他也不会采取会严重伤害该公司的措施。此前有社交平台用户称，Anthropic依赖从SpaceX租用的计算资源，并讨论如果SpaceX停止相关服务可能带来的影响，马斯克对此回应称不会采取类似行动。（界面新闻） 蚂蚁灵波发布LingBot-VA 2.0 36氪获悉，7月10日，蚂蚁灵波发布业界首个具身原生世界动作模型LingBot-VA 2.0。它代表了具身智能发展的一种关键路线选择：机器人“大脑”不再依托数字世界模型能力的“嫁接”，而是从动态建模、因果预测、实时执行等与环境交互的原始需求出发，进行原生设计。 扎克伯格否认Meta算力过剩，称发展云业务具商业潜力 当地时间7月9日，Meta首席执行官马克·扎克伯格表示，Meta需要尽可能多的算力资源。不过，在AI开发和运行所需算力供不应求的情况下，他也在思考将部分AI基础设施出租给外部客户是否能创造更多价值。扎克伯格在接受采访时表示：“目前市场对算力的出价非常高，某些情况下，与其留作内部使用，不如把它租出去，或者考虑类似交易可能更划算。”此前有消息称，Meta正筹划开展云计算业务，希望借助公司的数据中心和其他算力合作伙伴，直接创造收入。扎克伯格表示，发展云业务的机会“始终存在，只要我们想做，随时都可以”。不过，他强调，这并不意味着Meta已经过度建设，或拥有闲置算力。扎克伯格表示：“我不知道业内有谁会觉得自己的算力太多。”他补充称，Meta目前正在使用手头所有算力资源。（界面新闻） 大公司/大事件 “全球首款智能体手机”已备货8万至10万台？知情人士：假的 7月10日有媒体报道，字节跳动联合中兴努比亚打造的全球首款AI智能体手机计划于2026世界人工智能大会期间亮相开售，现已备货8万至10万台，首批总量50万台，规模远超上代。对此，知情人士回应：假的！此次大会上，仅为该款手机首次公开展示，并非开售，更无备货数万台之说。（证券时报） 美国佛州棕榈滩机场正式以特朗普冠名 经美国联邦航空局批准，佛罗里达州棕榈滩国际机场7月9日正式更名为“唐纳德·特朗普国际机场”。佛州共和党籍州长罗恩·德桑蒂斯3月30日签署了相关法案。据美联社报道，此次更名预计耗资550万美元，用于更换标志和品牌形象等。（新华社） 小红书：世界杯后小红书App使用时长、日均发布等环比速度大幅提升 36氪获悉，7月10日，小红书数据显示，因为世界杯，7月，小红书App使用时长环比增速提升了2倍，日发布笔记数环比增速是6月的3倍，互动直播场景中长时间观播的用户同比增长近5倍。小红书同时宣布，上海街超、苏超、佛山西甲、楚超、贵州村超等十二个省市地方足球联赛正式集体入驻小红书。小红书将为入驻联赛提供流量扶持、内容运营等支持。 MiniMax闫俊杰：不再领取薪酬，个人拿出5%公司股份用于团队激励和开源支持 MiniMax创始人兼CEO闫俊杰发布内部全员信，回应近期市场波动，并强调公司长期方向不变。闫俊杰在信中宣布，从即日起，直到公司实现AGI的那一天，他将不再从公司领取任何薪酬。未来四年，他将拿出个人名下相当于公司总股本4%的股份，用于激励长期与公司并肩作战、共同创造价值的团队成员；同时拿出1%的股份设立专项基金，持续支持相关开源社区的发展。（财联社） 创世纪：因未及时披露重大诉讼进展，公司及两人被出具警示函 36氪获悉，创世纪公告，公司近日收到广东证监局下发的警示函，因2025年12月全资子公司深圳创世纪专利侵权二审被判赔偿3.82亿元，未按期履行赔偿义务致账户被冻结、资金被划扣，公司未及时披露相关情况，且未在2025年年报披露执行情况。公司董事长夏军、董事会秘书伍永兵对违规行为负主要责任。公司应30日内完成整改并报送报告，已就案件申请再审。 百亿私募数量达142家，再次刷新历史纪录 私募排排网数据显示，截至2026年6月30日，百亿私募数量达142家，较5月末的139家增加3家，较去年底的113家增加29家，再次刷新历史纪录。（证券时报） 胜宏科技回应英伟达传闻：与核心客户合作平稳有序，产能建设、产品交付均按计划推进 36氪获悉，有投资者在互动平台向胜宏科技提问，近期外媒有传言英伟达Rubin服务器架构延迟推出。对此，胜宏科技表示与核心客户合作平稳有序，产能建设、产品交付均按计划推进。受商业政策限制，未经许可公司不便讨论具体客户名称及业务情况。关于未经证实的市场传闻，请投资者注意甄别信息来源，慎重决策。 AI原生信用卡Kimi信用卡敲定美国运通、农业银行 全球首张AI（人工智能）原生信用卡“Kimi信用卡”合作方已经敲定美国运通、农业银行，并将于当日正式对外发行。对于合作，相关知情人士评价称“一拍即合”。该项目从今年4月开始酝酿，短短几个月，农业银行和运通内部一路绿灯加急。具体到本次合作规则，上述知情人士透露，目前已达成的意向是，持卡人的日常消费积分可八折兑换Kimi会员权益。积分商城的积分兑换比例是1000∶1，最高支持50%用积分兑换。未来，三方还将探索智能体支付、Token额度和信用额度挂钩、积分和算力双向打通等更多可能性。（每日经济新闻） 美联储主席沃什敲定央行改革顾问团队人选，前英国央行行长等知名人士在列 前英国央行行长默文・金、加密货币投资人马克・安德森等人入选美联储主席凯文・沃什牵头组建的顾问团队，协助美国中央银行推进现代化改革。凯文・沃什此前以改革现有运行体系为核心纲领参选美联储主席，他于当地时间7月9日公布五个专项工作小组名单，称这些团队将对这家全球最重要的金融机构进行职能优化。（新浪财经） 德国大众拟大裁员，最高或裁减12万个岗位 德国大众汽车集团当地时间9日召开监事会会议，就新一轮降本计划进行讨论。记者获悉，方案可能涉及进一步裁减岗位和调整德国工厂布局，全球裁员规模最高或达10万至12万个岗位，包括茨维考、汉诺威、埃姆登和内卡苏尔姆在内的德国部分工厂面临关闭风险。大众方面表示，公司正研究未来发展规划，目标是提升集团竞争力，并表示需要削减过剩产能，但具体方案仍在监事会讨论之中。针对相关计划，德国金属工业工会当天在德国多个大众汽车生产基地组织抗议活动，反对关闭工厂和进一步裁员。德国下萨克森州政府也对相关计划表示反对，认为关闭工厂不是企业未来发展的解决方案。（央视财经） 谷歌要求AI广告必须标注：涵盖搜索和YouTube等 当地时间7月9日，谷歌宣布全面扩大生成式AI广告的披露范围。新规要求在谷歌搜索、YouTube和Discover信息流中，对由AI创建或编辑的商业广告进行明确标注，以防消费者被虚假合成场景误导。（界面新闻） 美联储前主席伯南克加入Anthropic长期利益信托机构 当地时间7月9日，人工智能公司Anthropic宣布，任命美国联邦储备委员会前主席本·伯南克加入其长期利益信托机构，该机构负责监督Anthropic长期使命，即推动人工智能以安全、负责任的方式发展，并确保AI技术长期造福社会。（界面新闻） 消息称台积电CoWoS 2027年月产能目标至少20万片 据台湾电子时报，先进封装产能持续供不应求，台积电加速扩产。供应链指出，台积电所有新厂工程几乎都是24小时轮班施工，加速建设进度。设备厂商表示，据台积电释放出的信息来看，CoWoS月产能2024年约3万多片，2025年达7万片，2026年底原订11万片，但最终突破13万片，2027年扩产目标约20万片，但应为低标。市场乐观看待2027年底CoWoS月产能有望拉升至24万~26万片。不过，台积电至今仍未确立设备商的订单分配，导致供应链如坐针毡，担心形成降价抢单氛围，此外设备下单至生产出货时程至少7~9个月，供应商担心无法如期交付设备。（财联社） 三星李在镕拟于7月底赴美会晤英伟达黄仁勋 7月10日，据报道，三星电子会长李在镕正计划于今年7月底前往美国会晤英伟达首席执行官黄仁勋。据悉，双方此行的核心议题将围绕三星在韩国西南部的投资计划展开。为了确保三星规划中的光州晶圆厂以及京畿道龙仁半导体集群的顺利落地，三星急需提高对英伟达的组件供应比例。与此同时，为了建设人工智能数据中心服务器，三星确保能稳定获取英伟达的AI芯片也至关重要。（界面新闻） 联合国自动驾驶全球法规正式落地，中国智驾出海迎来统一规则窗口期 近日，联合国世界车辆法规协调组织（UN/WP.29）第199次全体会议传来重磅消息：由中国、欧盟、英国、美国、加拿大、日本共同牵头制定的自动驾驶系统全球统一技术法规（ADS GTR）完成全体缔约方投票并正式发布。这套法规实现全球L3及以上自动驾驶统一标准从无到有的突破，重构全球智能驾驶监管底层逻辑，也为具备成熟智驾技术的中国车企出海扫清关键合规障碍，标志中国汽车产业正式从产品、技术出海，迈入参与全球规则制定的全新阶段。（中证报） SK海力士赴美上市，华尔街投行合计佣金有望达1.4亿美元 参与SK海力士上市项目的投行团队将斩获上亿美元丰厚佣金。这家市值突破万亿美元的韩国芯片巨头即将登陆美股，本次发行有望跻身史上规模最大IPO行列。两名熟悉该交易的人士透露，高盛、花旗等承销本次纳斯达克股票发行的投行，总佣金池规模或将突破1.4亿美元；佣金由两部分构成，一是募资总额0.5%的基础承销费，二是SK海力士另行支付的浮动激励奖金。（新浪财经） OpenAI高管层再现变动，首席运营官因病离职 OpenAI于当地时间9日宣布，公司第二号人物、负责产品与商业化业务的首席运营官菲吉·西莫（Fidji Simo）因健康状况恶化，决定在医疗休假结束后不再回归全职岗位，将转任公司兼职顾问。此举标志着这家正筹备首次公开募股（IPO）的科技企业再度迎来高管层洗牌。（新浪财经） 段永平增持泡泡玛特持股比例升至7.65% 36氪获悉，据港交所披露，知名投资人段永平再度增持泡泡玛特股票，持股数量由9127.28万股增至1.02亿股，持股比例由6.85%增至7.65%。 摩根大通和花旗银行家据悉将加入香港交易所上市委员会 据知情人士透露，摩根大通的白思佳和花旗的Alexander Schrantz将加入香港交易所负责批准首次公开募股的委员会。（新浪财经） 上市进行时 文峰光电北交所IPO过会 36氪获悉，7月10日，北交所上市委员会召开2026年第66次审议会议，审议结果显示，淮南文峰光电科技股份有限公司符合发行条件、上市条件和信息披露要求。 大公司财报 舍得酒业：预计上半年净利润同比下降60.52%-69.55% 36氪获悉，舍得酒业公告，预计2026年半年度归属于上市公司股东的净利润为1.35亿元-1.75亿元，同比减少60.52%-69.55%。业绩变动主要系白酒行业深度调整，消费动能偏弱，公司主动控货稳价，同时加大市场投入，导致业绩同比下降。 中信证券：预计上半年净利润同比增长69.59% 36氪获悉，中信证券公告，预计2026年半年度归属于母公司所有者的净利润为233.43亿元，同比增长69.59%。业绩变动主要系2026年上半年资本市场稳中向好，公司各项业务协同发展，经营业绩创同期历史新高。 香农芯创：预计2026年半年度净利润同比增长2118%-2434% 36氪获悉，香农芯创公告，预计2026年半年度归属于上市公司股东的净利润为35.00亿元-40.00亿元，同比增长2118%-2434%。业绩变动主要系人工智能需求增长带动存储芯片行业高景气，公司电子元器件分销业务毛利率提高，以及自主品牌“海普存储”业务进入大规模销售阶段。 三六零：预计上半年净利润1.8亿元-2.6亿元，同比扭亏为盈 36氪获悉，三六零公告，预计2026年半年度归属于母公司所有者的净利润为1.8亿元-2.6亿元，上年同期亏损2.82亿元，同比扭亏为盈。报告期内，公司业绩预盈的主要原因如下：一是公司持续迭代全线互联网产品，通过功能升级与精细化运营，不断提升用户体验，驱动互联网产品业务营收增长，毛利水平同步提升；二是公司主动调整产品推广策略，优化资源配置，市场推广费用同比下降。 三孚股份：预计2026年上半年净利润同比增长191.22%-222.43% 36氪获悉，三孚股份公告，2026年上半年，公司预计实现归属于上市公司股东的净利润1.12亿元-1.24亿元，同比增加7354.16万元-8554.16万元，增幅为191.22%-222.43%；扣非净利润为1.081亿元-1.201亿元，同比增加7474.91万元-8674.91万元，增幅为224.13%-260.11%。业绩预增主要因各产品稳定运行，循环经济产业一体化运行、产能释放及市场开拓等提升了综合盈利能力。 投融资 MiniMax完成160亿港元股权类融资 7月10日早间，MiniMax完成新一轮160亿港元融资，多家国际主权基金、长线基金、中资机构和多策略基金参与，覆盖亚太、欧洲和美国市场。本次交易共吸引百余家机构参与，实现7倍认购覆盖。最初发行规模约18亿美元，在机构需求推动下最终扩大至20亿美元以上。（证券时报） “新奥聚变”完成Pre-A融资，投后估值超百亿 36氪获悉，近日，北京新奥聚变能源科技有限公司完成首轮（Pre-A）融资，投后估值106亿元。本轮融资由龙芯创投领投，中科创星、经纬创投联合领投，鼎晖投资、凯辉基金、上汽恒旭资本、联想之星、招商致远、亦庄产投等跟投。新奥表示，将加速推进聚变商业化落地进程。 “Xspark AI”完成近亿元天使轮融资 36氪获悉，据鼎晖投资，近日，可信物理智能企业“Xspark AI”（无界智航）完成首轮近亿元天使轮融资。本轮融资由鼎晖VGC、初心资本、SEE Fund无限基金联合领投，深圳天使母基金、水木校友种子基金等多家财务投资机构跟投。资金将主要用于核心技术研发、产品迭代以及Physical AI的规模化落地。 “聆思科技”完成近5亿元B轮融资 36氪获悉，近日，端侧AI推理芯片企业“聆思科技”完成近5亿元B轮融资。本轮融资由安徽省与合肥市多家国资平台联合战略领投，深报一本、天智投资、科讯创投、盈科投资、东瑞投资、永鑫方舟等跟投，泰合资本担任聆思科技长期财务顾问。本轮资金将重点投入新一代端侧大模型AI推理芯片研发，推动聆思的产品体系从感知模型AI推理芯片向认知大模型AI推理芯片进一步升级。 “灵睿智芯”完成新一轮数亿元融资 36氪获悉，近日，“灵睿智芯”宣布完成数亿元融资。本轮融资由张江高科、中科创星、东方富海、成为资本、石溪资本、壁仞科技、行业合作伙伴等产业投资机构共同参与，元禾璞华、上国投孚腾资本、华山资本等老股东同步持续加码。资金将重点用于公司高性能RISC-V内核的应用和产业落地，加速公司智能体CPU产品研发，以及深化AI原生融合计算架构的创新和布局。与此同时，公司后续融资工作也已展开。 “他山科技”完成数亿元B轮融资 36氪获悉，“他山科技”已于近期完成B轮融资，金额为数亿元。本轮投资方包括均胜电子、太平创新、奥克斯、鹏翎股份、Lavender Hill Capital Partners（LHCP）、洪山资本等产业方，老股东道氏技术、彬复资本追加投资。资金将主要用于触觉传感器及芯片迭代、场景化方案落地及触觉训练平台建设。 酷产品 移远通信推出三档电致变色光波导AR眼镜 36氪获悉，7月9日，在XR解决方案与生态战略发布会上，移远通信发布全链路自研的AI+AR眼镜Hawk系列，以及配套算力单元Dolphin系列，覆盖不同芯片平台、光学方案与算力需求。其中Hawk系列包含光波导和BirdBath眼镜，前者采用一体轻量化设计，镜片可根据环境光线自动调节透光度，后者则强调沉浸式视觉体验。系列产品的发布也标志着这家物联网领军企业正式入局XR赛道。 曹操充电携手支付宝碰一下发布基于AI大模型的全新智能充电桩 36氪获悉，近日，在支付宝“碰一下”生态大会上，曹操充电正式发布基于AI大模型的全新智能充电桩。同时，曹操充电与支付宝碰一下共同签署了新的合作，未来3年，曹操充电“碰一下”充电桩，将覆盖存量市场30w桩、新增市场20w桩，整体预计突破50万桩。 整理｜等等 本文来自微信公众号“36氪”，36氪经授权发布。",
+      "description": "今日热点导览 “全球首款智能体手机”已备货8万至10万台？知情人士：假的 百亿私募数量达142家，再次刷新历史纪录 三星李在镕拟于7月底赴美会晤英伟达黄仁勋 德国大众拟大裁员，最高或裁减12万个岗位 OpenAI高管层再现变动，首席运营官因病离职 TOP3大新闻 长鑫科技，承销团阵容公布 长鑫科技IPO进入发行倒计时，这家“国产存储第一股”背后的承销团阵容也随之浮出水面。最新披露的招股意向书显示，长鑫科技预计7月16日发行。本次IPO中，中金公司、中信建投担任联席保荐机构及主承销商，国泰海通、国元证券、华泰联合、招商证券担任联席主承销商，合计6家券商组成承销团。 这是一支少见的“豪华承销团”。一边是中金、中信建投、国泰海通、华泰联合、招商证券等头部投行密集出现，另一边是安徽本土券商国元证券进入主承销名单。更有意思的是，多家主承销商同时也是长鑫科技股东，投行收入之外，股权投资收益才是这单IPO更大的想象空间。（财联社） SK海力士登陆美股，上市首日大涨近13% 韩国芯片巨头SK海力士美东时间7月10日登陆科技股云集的纳斯达克交易所，此举将为其打通一条强力全新融资渠道，方便全球投资者布局高速增长的人工智能基础设施赛道。这家全球第二大存储芯片厂商计划通过在纳斯达克发行美国存托凭证(ADR)募资约40万亿韩元(折合265亿美元)。本次发行共计1.779亿份美国存托凭证，发行价定为每份149美元，1份ADR对应其在韩国首尔交易所上市普通股的十分之一。 上市首日开盘价报170美元，较发行价149美元涨约14.1%，盘中一度触及177美元，涨幅扩大至约18.8%，收盘报168.01美元，日内涨约12.8%，对应市值约1.22万亿美元。(新浪财经、华尔街见闻) OpenAI推出ChatGPT Work智能体，可持续数小时跟进任务 OpenAI推出由GPT-5.6驱动的ChatGPT Work，这是最新的前沿模型系列，全新Chatgpt桌面应用将聊天、工作与Codex整合在一起。ChatGPT Work是一款可跨各类应用与文件执行操作的智能体，必要时能持续跟进项目数小时，可直接将目标转化为已完成的工作成果。它可跨各类应用和工作流收集信息，生成表格、幻灯片、文档、网页应用等成品内容，还能通过拆解为小步骤独立执行，数小时持续跟进复杂项目。（财联社） AI最前沿 三星研发AI PC加速芯片GAIA，已向联想、惠普提供样片测试 7月10日，据报道，三星电子正在研发一款名为GAIA的AI PC加速芯片，并已向联想集团和惠普提供原型产品进行性能测试，计划于明年开始量产。GAIA采用4纳米制程工艺，搭载神经处理单元（NPU），面向生成式人工智能任务，并设计支持存算一体（PIM）技术。（界面新闻） 马斯克称低估Anthropic，表示不会因竞争切断其支持 马斯克当地时间7月9日在社交平台表示，自己此前对人工智能公司Anthropic的判断“明显错误”，并称Anthropic“目前显然是AI领域的领先者”。马斯克说，“目前没有任何公司发布过像Mythos/Fable这样优秀的模型”。马斯克表示，即使Anthropic是竞争对手，他也不会采取会严重伤害该公司的措施。此前有社交平台用户称，Anthropic依赖从SpaceX租用的计算资源，并讨论如果SpaceX停止相关服务可能带来的影响，马斯克对此回应称不会采取类似行动。（界面新闻） 蚂蚁灵波发布LingBot-VA 2.0 36氪获悉，7月10日，蚂蚁灵波发布业界首个具身原生世界动作模型LingBot-VA 2.0。它代表了具身智能发展的一种关键路线选择：机器人“大脑”不再依托数字世界模型能力的“嫁接”，而是从动态建模、因果预测、实时执行等与环境交互的原始需求出发，进行原生设计。 扎克伯格否认Meta算力过剩，称发展云业务具商业潜力 当地时间7月9日，Meta首席执行官马克·扎克伯格表示，Meta需要尽可能多的算力资源。不过，在AI开发和运行所需算力供不应求的情况下，他也在思考将部分AI基础设施出租给外部客户是否能创造更多价值。扎克伯格在接受采访时表示：“目前市场对算力的出价非常高，某些情况下，与其留作内部使用，不如把它租出去，或者考虑类似交易可能更划算。”此前有消息称，Meta正筹划开展云计算业务，希望借助公司的数据中心和其他算力合作伙伴，直接创造收入。扎克伯格表示，发展云业务的机会“始终存在，只要我们想做，随时都可以”。不过，他强调，这并不意味着Meta已经过度建设，或拥有闲置算力。扎克伯格表示：“我不知道业内有谁会觉得自己的算力太多。”他补充称，Meta目前正在使用手头所有算力资源。（界面新闻） 大公司/大事件 “全球首款智能体手机”已备货8万至10万台？知情人士：假的 7月10日有媒体报道，字节跳动联合中兴努比亚打造的全球首款AI智能体手机计划于2026世界人工智能大会期间亮相开售，现已备货8万至10万台，首批总量50万台，规模远超上代。对此，知情人士回应：假的！此次大会上，仅为该款手机首次公开展示，并非开售，更无备货数万台之说。（证券时报） 美国佛州棕榈滩机场正式以特朗普冠名 经美国联邦航空局批准，佛罗里达州棕榈滩国际机场7月9日正式更名为“唐纳德·特朗普国际机场”。佛州共和党籍州长罗恩·德桑蒂斯3月30日签署了相关法案。据美联社报道，此次更名预计耗资550万美元，用于更换标志和品牌形象等。（新华社） 小红书：世界杯后小红书App使用时长、日均发布等环比速度大幅提升 36氪获悉，7月10日，小红书数据显示，因为世界杯，7月，小红书App使用时长环比增速提升了2倍，日发布笔记数环比增速是6月的3倍，互动直播场景中长时间观播的用户同比增长近5倍。小红书同时宣布，上海街超、苏超、佛山西甲、楚超、贵州村超等十二个省市地方足球联赛正式集体入驻小红书。小红书将为入驻联赛提供流量扶持、内容运营等支持。 MiniMax闫俊杰：不再领取薪酬，个人拿出5%公司股份用于团队激励和开源支持 MiniMax创始人兼CEO闫俊杰发布内部全员信，回应近期市场波动，并强调公司长期方向不变。闫俊杰在信中宣布，从即日起，直到公司实现AGI的那一天，他将不再从公司领取任何薪酬。未来四年，他将拿出个人名下相当于公司总股本4%的股份，用于激励长期与公司并肩作战、共同创造价值的团队成员；同时拿出1%的股份设立专项基金，持续支持相关开源社区的发展。（财联社） 创世纪：因未及时披露重大诉讼进展，公司及两人被出具警示函 36氪获悉，创世纪公告，公司近日收到广东证监局下发的警示函，因2025年12月全资子公司深圳创世纪专利侵权二审被判赔偿3.82亿元，未按期履行赔偿义务致账户被冻结、资金被划扣，公司未及时披露相关情况，且未在2025年年报披露执行情况。公司董事长夏军、董事会秘书伍永兵对违规行为负主要责任。公司应30日内完成整改并报送报告，已就案件申请再审。 百亿私募数量达142家，再次刷新历史纪录 私募排排网数据显示，截至2026年6月30日，百亿私募数量达142家，较5月末的139家增加3家，较去年底的113家增加29家，再次刷新历史纪录。（证券时报） 胜宏科技回应英伟达传闻：与核心客户合作平稳有序，产能建设、产品交付均按计划推进 36氪获悉，有投资者在互动平台向胜宏科技提问，近期外媒有传言英伟达Rubin服务器架构延迟推出。对此，胜宏科技表示与核心客户合作平稳有序，产能建设、产品交付均按计划推进。受商业政策限制，未经许可公司不便讨论具体客户名称及业务情况。关于未经证实的市场传闻，请投资者注意甄别信息来源，慎重决策。 AI原生信用卡Kimi信用卡敲定美国运通、农业银行 全球首张AI（人工智能）原生信用卡“Kimi信用卡”合作方已经敲定美国运通、农业银行，并将于当日正式对外发行。对于合作，相关知情人士评价称“一拍即合”。该项目从今年4月开始酝酿，短短几个月，农业银行和运通内部一路绿灯加急。具体到本次合作规则，上述知情人士透露，目前已达成的意向是，持卡人的日常消费积分可八折兑换Kimi会员权益。积分商城的积分兑换比例是1000∶1，最高支持50%用积分��换。未来，三方还将探索智能体支付、Token额度和信用额度挂钩、积分和算力双向打通等更多可能性。（每日经济新闻） 美联储主席沃什敲定央行改革顾问团队人选，前英国央行行长等知名人士在列 前英国央行行长默文・金、加密货币投资人马克・安德森等人入选美联储主席凯文・沃什牵头组建的顾问团队，协助美国中央银行推进现代化改革。凯文・沃什此前以改革现有运行体系为核心纲领参选美联储主席，他于当地时间7月9日公布五个专项工作小组名单，称这些团队将对这家全球最重要的金融机构进行职能优化。（新浪财经） 德国大众拟大裁员，最高或裁减12万个岗位 德国大众汽车集团当地时间9日召开监事会会议，就新一轮降本计划进行讨论。记者获悉，方案可能涉及进一步裁减岗位和调整德国工厂布局，全球裁员规模最高或达10万至12万个岗位，包括茨维考、汉诺威、埃姆登和内卡苏尔姆在内的德国部分工厂面临关闭风险。大众方面表示，公司正研究未来发展规划，目标是提升集团竞争力，并表示需要削减过剩产能，但具体方案仍在监事会讨论之中。针对相关计划，德国金属工业工会当天在德国多个大众汽车生产基地组织抗议活动，反对关闭工厂和进一步裁员。德国下萨克森州政府也对相关计划表示反对，认为关闭工厂不是企业未来发展的解决方案。（央视财经） 谷歌要求AI广告必须标注：涵盖搜索和YouTube等 当地时间7月9日，谷歌宣布全面扩大生成式AI广告的披露范围。新规要求在谷歌搜索、YouTube和Discover信息流中，对由AI创建或编辑的商业广告进行明确标注，以防消费者被虚假合成场景误导。（界面新闻） 美联储前主席伯南克加入Anthropic长期利益信托机构 当地时间7月9日，人工智能公司Anthropic宣布，任命美国联邦储备委员会前主席本·伯南克加入其长期利益信托机构，该机构负责监督Anthropic长期使命，即推动人工智能以安全、负责任的方式发展，并确保AI技术长期造福社会。（界面新闻） 消息称台积电CoWoS 2027年月产能目标至少20万片 据台湾电子时报，先进封装产能持续供不应求，台积电加速扩产。供应链指出，台积电所有新厂工程几乎都是24小时轮班施工，加速建设进度。设备厂商表示，据台积电释放出的信息来看，CoWoS月产能2024年约3万多片，2025年达7万片，2026年底原订11万片，但最终突破13万片，2027年扩产目标约20万片，但应为低标。市场乐观看待2027年底CoWoS月产能有望拉升至24万~26万片。不过，台积电至今仍未确立设备商的订单分配，导致供应链如坐针毡，担心形成降价抢单氛围，此外设备下单至生产出货时程至少7~9个月，供应商担心无法如期交付设备。（财联社） 三星李在镕拟于7月底赴美会晤英伟达黄仁勋 7月10日，据报道，三星电子会长李在镕正计划于今年7月底前往美国会晤英伟达首席执行官黄仁勋。据悉，双方此行的核心议题将围绕三星在韩国西南部的投资计划展开。为了确保三星规划中的光州晶圆厂以及京畿道龙仁半导体集群的顺利落地，三星急需提高对英伟达的组件供应比例。与此同时，为了建设人工智能数据中心服务器，三星确保能稳定获取英伟达的AI芯片也至关重要。（界面新闻） 联合国自动驾驶全球法规正式落地，中国智驾出海迎来统一规则窗口期 近日，联合国世界车辆法规协调组织（UN/WP.29）第199次全体会议传来重磅消息：由中国、欧盟、英国、美国、加拿大、日本共同牵头制定的自动驾驶系统全球统一技术法规（ADS GTR）完成全体缔约方投票并正式发布。这套法规实现全球L3及以上自动驾驶统一标准从无到有的突破，重构全球智能驾驶监管底层逻辑，也为具备成熟智驾技术的中国车企出海扫清关键合规障碍，标志中国汽车产业正式从产品、技术出海，迈入参与全球规则制定的全新阶段。（中证报） SK海力士赴美上市，华尔街投行合计佣金有望达1.4亿美元 参与SK海力士上市项目的投行团队将斩获上亿美元丰厚佣金。这家市值突破万亿美元的韩国芯片巨头即将登陆美股，本次发行有望跻身史上规模最大IPO行列。两名熟悉该交易的人士透露，高盛、花旗等承销本次纳斯达克股票发行的投行，总佣金池规模或将突破1.4亿美元；佣金由两部分构成，一是募资总额0.5%的基础承销费，二是SK海力士另行支付的浮动激励奖金。（新浪财经） OpenAI高管层再现变动，首席运营官因病离职 OpenAI于当地时间9日宣布，公司第二号人物、负责产品与商业化业务的首席运营官菲吉·西莫（Fidji Simo）因健康状况恶化，决定在医疗休假结束后不再回归全职岗位，将转任公司兼职顾问。此举标志着这家正筹备首次公开募股（IPO）的科技企业再度迎来高管层洗牌。（新浪财经） 段永平增持泡泡玛特持股比例升至7.65% 36氪获悉，据港交所披露，知名投资人段永平再度增持泡泡玛特股票，持股数量由9127.28万股增至1.02亿股，持股比例由6.85%增至7.65%。 摩根大通和花旗银行家据悉将加入香港交易所上市委员会 据知情人士透露，摩根大通的白思佳和花旗的Alexander Schrantz将加入香港交易所负责批准首次公开募股的委员会。（新浪财经） 上市进行时 文峰光电北交所IPO过会 36氪获悉，7月10日，北交所上市委员会召开2026年第66次审议会议，审议结果显示，淮南文峰光电科技股份有限公司符合发行条件、上市条件和信息披露要求。 大公司财报 舍得酒业：预计上半年净利润同比下降60.52%-69.55% 36氪获悉，舍得酒业公告，预计2026年半年度归属于上市公司股东的净利润为1.35亿元-1.75亿元，同比减少60.52%-69.55%。业绩变动主要系白酒行业深度调整，消费动能偏弱，公司主动控货稳价，同时加大市场投入，导致业绩同比下降。 中信证券：预计上半年净利润同比增长69.59% 36氪获悉，中信证券公告，预计2026年半年度归属于母公司所有者的净利润为233.43亿元，同比增长69.59%。业绩变动主要系2026年上半年资本市场稳中向好，公司各项业务协同发展，经营业绩创同期历史新高。 香农芯创：预计2026年半年度净利润同比增长2118%-2434% 36氪获悉，香农芯创公告，预计2026年半年度归属于上市公司股东的净利润为35.00亿元-40.00亿元，同比增长2118%-2434%。业绩变动主要系人工智能需求增长带动存储芯片行业高景气，公司电子元器件分销业务毛利率提高，以及自主品牌“海普存储”业务进入大规模销售阶段。 三六零：预计上半年净利润1.8亿元-2.6亿元，同比扭亏为盈 36氪获悉，三六零公告，预计2026年半年度归属于母公司所有者的净利润为1.8亿元-2.6亿元，上年同期亏损2.82亿元，同比扭亏为盈。报告期内，公司业绩预盈的主要原因如下：一是公司持续迭代全线互联网产品，通过功能升级与精细化运营，不断提升用户体验，驱动互联网产品业务营收增长，毛利水平同步提升；二是公司主动调整产品推广策略，优化资源配置，市场推广费用同比下降。 三孚股份：预计2026年上半年净利润同比增长191.22%-222.43% 36氪获悉，三孚股份公告，2026年上半年，公司预计实现归属于上市公司股东的净利润1.12亿元-1.24亿元，同比增加7354.16万元-8554.16万元，增幅为191.22%-222.43%；扣非净利润为1.081亿元-1.201亿元，同比增加7474.91万元-8674.91万元，增幅为224.13%-260.11%。业绩预增主要因各产品稳定运行，循环经济产业一体化运行、产能释放及市场开拓等提升了综合盈利能力。 投融资 MiniMax完成160亿港元股权类融资 7月10日早间，MiniMax完成新一轮160亿港元融资，多家国际主权基金、长线基金、中资机构和多策略基金参与，覆盖亚太、欧洲和美国市场。本次交易共吸引百余家机构参与，实现7倍认购覆盖。最初发行规模约18亿美元，在机构需求推动下最终扩大至20亿美元以上。（证券时报） “新奥聚变”完成Pre-A融资，投后估值超百亿 36氪获悉，近日，北京新奥聚变能源科技有限公司完成首轮（Pre-A）融资，投后估值106亿元。本轮融资由龙芯创投领投，中科创星、经纬创投联合领投，鼎晖投资、凯辉基金、上汽恒旭资本、联想之星、招商致远、亦庄产投等跟投。新奥表示，将加速推进聚变商业化落地进程。 “Xspark AI”完成近亿元天使轮融资 36氪获悉，据鼎晖投资，近日，可信物理智能企业“Xspark AI”（无界智航）完成首轮近亿元天使轮融资。本轮融资由鼎晖VGC、初心资本、SEE Fund无限基金联合领投，深圳天使母基金、水木校友种子基金等多家财务投资机构跟投。资金将主要用于核心技术研发、产品迭代以及Physical AI的规模化落地。 “聆思科技”完成近5亿元B轮融资 36氪获悉，近日，端侧AI推理芯片企业“聆思科技”完成近5亿元B轮融资。本轮融资由安徽省与合肥市多家国资平台联合战略领投，深报一本、天智投资、科讯创投、盈科投资、东瑞投资、永鑫方舟等跟投，泰合资本担任聆思科技长期财务顾问。本轮资金将重点投入新一代端侧大模型AI推理芯片研发，推动聆思的产品体系从感知模型AI推理芯片向认知大模型AI推理芯片进一步升级。 “灵睿智芯”完成新一轮数亿元融资 36氪获悉，近日，“灵睿智芯”宣布完成数亿元融资。本轮融资由张江高科、中科创星、东方富海、成为资本、石溪资本、壁仞科技、行业合作伙伴等产业投资机构共同参与，元禾璞华、上国投孚腾资本、华山资本等老股东同步持续加码。资金将重点用于公司高性能RISC-V内核的应用和产业落地，加速公司智能体CPU产品研发，以及深化AI原生融合计算架构的创新和布局。与此同时，公司后续融资工作也已展开。 “他山科技”完成数亿元B轮融资 36氪获悉，“他山科技”已于近期完成B轮融资，金额为数亿元。本轮投资方包括均胜电子、太平创新、奥克斯、鹏翎股份、Lavender Hill Capital Partners（LHCP）、洪山资本等产业方，老股东道氏技术、彬复资本追加投资。资金将主要用于触觉传感器及芯片迭代、场景化方案落地及触觉训练平台建设。 酷产品 移远通信推出三档电致变色光波导AR眼镜 36氪获悉，7月9日，在XR解决方案与生态战略发布会上，移远通信发布全链路自研的AI+AR眼镜Hawk系列，以及配套算力单元Dolphin系列，覆盖不同芯片平台、光学方案与算力需求。其中Hawk系列包含光波导和BirdBath眼镜，前者采用一体轻量化设计，镜片可根据环境光线自动调节透光度，后者则强调沉浸式视觉体验。系列产品的发布也标志着这家物联网领军企业正式入局XR赛道。 曹操充电携手支付宝碰一下发布基于AI大模型的全新智能充电桩 36氪获悉，近日，在支付宝“碰一下”生态大会上，曹操充电正式发布基于AI大模型的全新智能充电桩。同时，曹操充电与支付宝碰一下共同签署了新的合作，未来3年，曹操充电“碰一下”充电桩，将覆盖存量市场30w桩、新增市场20w桩，整体预计突破50万桩。 整理｜等等 本文来自微信公众号“36氪”，36氪经授权发布。",
       "url": "https://36kr.com/p/3890553690192384?f=rss",
       "time": "2026-07-11T01:24:06.000Z",
       "tags": [
@@ -10782,6 +10789,17 @@
       ]
     },
     {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Laylo (YC S20) Is Hiring a Head of Finance",
+      "description": "Article URL: https://www.ycombinator.com/companies/laylo/jobs/qce41D2-head-of-finance Comments URL: https://news.ycombinator.com/item?id=48858745 Points: 0 # Comments: 0",
+      "url": "https://www.ycombinator.com/companies/laylo/jobs/qce41D2-head-of-finance",
+      "time": "2026-07-10T12:00:36.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
       "source": "InfoQ",
       "sourceColor": "#0277bd",
       "title": "HubSpot 如何将语义搜索扩展至 200 亿个向量",
@@ -11959,15 +11977,6 @@
       ]
     },
     {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "推荐科学家首次实时捕捉海底“分裂”瞬间",
-      "description": "地球物理学家首次实时捕捉到一个海底裂缝的扩张过程。研究团队在印度洋一片总长100公里的海域布设了20余个观测站，从而完整记录了这次地质活动——约1.6亿立方米的",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33555535",
-      "time": "2026-07-10 07:28",
-      "tags": []
-    },
-    {
       "source": "开源中国",
       "sourceColor": "#43a047",
       "title": "消息称腾讯拟接盘 Manus 成最大股东",
@@ -12339,26 +12348,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "50% Off DoorDash Promo Code | July 2026",
-      "description": "Explore today’s top DoorDash promo codes for $25 off your first order, free delivery, and 50% off DashPass for students and select users.",
-      "url": "https://www.wired.com/story/doordash-promo-code/",
-      "time": "2026-07-10T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "LG Promo Codes and Coupons for July 2026",
-      "description": "Save 20% with an LG promo code today, plus up to $1,000 off appliances, 40% off bestselling TVs and monitors.",
-      "url": "https://www.wired.com/story/lg-promo-code/",
-      "time": "2026-07-10T05:00:00.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Dell Coupon Codes: 20% Off for July 2026",
       "description": "Get 20% off with verified Dell promo code, plus today’s coupons for up to $600 off laptops, Alienware monitors, and all things tech.",
       "url": "https://www.wired.com/story/dell-coupon-code/",
@@ -12404,6 +12393,26 @@
       "time": "2026-07-10T05:00:00.000Z",
       "tags": [
         "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "50% Off DoorDash Promo Code | July 2026",
+      "description": "Explore today’s top DoorDash promo codes for $25 off your first order, free delivery, and 50% off DashPass for students and select users.",
+      "url": "https://www.wired.com/story/doordash-promo-code/",
+      "time": "2026-07-10T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "LG Promo Codes and Coupons for July 2026",
+      "description": "Save 20% with an LG promo code today, plus up to $1,000 off appliances, 40% off bestselling TVs and monitors.",
+      "url": "https://www.wired.com/story/lg-promo-code/",
+      "time": "2026-07-10T05:00:00.000Z",
+      "tags": [
+        "软件应用"
       ]
     },
     {
@@ -12822,6 +12831,18 @@
       "topic": true
     },
     {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "刚刚，GPT-5.6全面上线，Codex被合并，生产力工具ChatGPT Work来了 - 电子工程专辑",
+      "description": "",
+      "url": "https://www.eet-china.com/mp/a509102.html",
+      "time": "2026-07-10T01:56:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
       "source": "虎嗅",
       "sourceColor": "#374151",
       "title": "圆木智能姜昌浩：用AI改造中小工厂排产，压缩交付周期",
@@ -12907,7 +12928,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "自动驾驶“应急避让”：美国才发话，中国已定标-观察者网 - guancha.cn",
+      "title": "自动驾驶“应急避让”：美国才发话，中国已定标-观察者网 - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/qiche/2026_07_10_823243.shtml",
       "time": "2026-07-10T01:03:00.000Z",
@@ -13413,7 +13434,7 @@
       "sourceColor": "#004d40",
       "title": "中国或批准顶尖AI公司购买英伟达芯片，分析人士：这一政策转向暴露了中国国产芯片的关键瓶颈 - 美国之音",
       "description": "",
-      "url": "https://www.voachinese.com/amp/china-plans-to-let-top-ai-firms-buy-limited-nvidia-h200-chips-20260709/8170030.html",
+      "url": "https://www.voachinese.com/a/china-plans-to-let-top-ai-firms-buy-limited-nvidia-h200-chips-20260709/8170030.html",
       "time": "2026-07-09T20:35:47.000Z",
       "tags": [
         "人工智能",
@@ -14016,18 +14037,6 @@
       ]
     },
     {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "AI硬件投资热潮潜藏泡沫风险，历史经验警示投资者需冷静",
-      "description": "",
-      "url": "https://m.huxiu.com/article/4874106.html",
-      "time": "2026-07-09T16:10:16.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
       "source": "Wired",
       "sourceColor": "#000000",
       "title": "The 1X Neo Robot Has Freaky Fast Fingers",
@@ -14565,13 +14574,29 @@
       "topic": true
     },
     {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "奥特曼：OpenAI全新大模型智能自主编码的Token效率提升54% - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.com.cn/stock/usstock/c/2026-07-09/doc-inihfpqs7495954.shtml?cre=tianyi&mod=pchp&loc=9&r=0&rfunc=56&tj=cxvertical_pc_hp&tr=12",
+      "time": "2026-07-09T14:28:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼推出黑卡 RX10V 长焦相机，国行 15199 元 - qq.com",
+      "title": "索尼推出黑卡 RX10V 长焦相机，国行 15199 元 - 腾讯新闻",
       "description": "",
-      "url": "https://view.inews.qq.com/a/20260709A0BI8500?uid%5B0%5D=465365288&uid%5B1%5D=465365288",
+      "url": "https://view.inews.qq.com/a/20260709A0BI8500?uid%5B0%5D=100005074749&uid%5B1%5D=100005074749",
       "time": "2026-07-09T14:25:00.000Z",
-      "tags": [],
+      "tags": [
+        "互联网",
+        "大公司"
+      ],
       "topic": true
     },
     {
@@ -15013,19 +15038,6 @@
       "tags": []
     },
     {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "推荐1OpenAI推出实时语音模型：可同声传译，接近真人交流",
-      "description": "当地时间7月8日，OpenAI推出可同步听说的实时语音模型GPT-Live，让人类与AI的对话更接近真人交流。 新推出的GPT-Live模型包括GPT-Live",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33547604",
-      "time": "2026-07-09 11:21",
-      "tags": [
-        "人工智能",
-        "专访",
-        "科技创投"
-      ]
-    },
-    {
       "source": "机器之心",
       "sourceColor": "#512da8",
       "title": "OpenAI深夜放出GPT-Live，ChatGPT终于像真人一样说话",
@@ -15186,19 +15198,6 @@
       "topic": true
     },
     {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Samsung admits a Good Lock module is making a useful feature disappear",
-      "description": "A fix is coming, but maybe not soon.",
-      "url": "https://www.androidauthority.com/samsung-registar-good-lock-glitch-3685141/",
-      "time": "2026-07-09T10:31:46.000Z",
-      "tags": [
-        "软件应用",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "Wired",
       "sourceColor": "#000000",
       "title": "Best Microsoft Surface Laptop (2026): Which Model to Buy or Avoid",
@@ -15234,29 +15233,6 @@
       ]
     },
     {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "MoonBit Skills Marketplace ：让工具可发布、可运行、可被 Agent 调用",
-      "description": "当 Agent 开始参与真实开发任务时，它需要的不只是模型本身，还需要一组可以调用的工具。MoonBit Skills 提供了一种新的工具分发方式：开发者可以用 MoonBit 编写工具，将其编译为 WebAssembly，并通过 mooncakes.io / Skills Marketplace 发布。用户或 Agent 可以用统一方式发现、理解并调用这些工具。 “安装一个库”只...",
-      "url": "https://www.oschina.net/news/471616",
-      "time": "2026-07-09T10:28:29.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Self-Driving Cars Are Interfering With First Responders. Feds Aren’t Happy",
-      "description": "NHTSA administrator Jonathan Morrison called reports that self-driving cars had driven into emergency scenes and blocked ambulances and firefighters “unacceptable.”",
-      "url": "https://www.wired.com/story/self-driving-cars-are-interfering-with-first-responders-feds-arent-happy/",
-      "time": "2026-07-09T10:15:00.000Z",
-      "tags": [
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼黑卡RX10V相机今晚发布，搭载双处理器与独立AI芯片 - 太平洋科技",
@@ -15285,7 +15261,7 @@
     {
       "source": "新品发布",
       "sourceColor": "#ad1457",
-      "title": "全新宝马X5在美首发，跨国车企的全球协同正遭遇更多挑战-观察者网 - guancha.cn",
+      "title": "全新宝马X5在美首发，跨国车企的全球协同正遭遇更多挑战-观察者网 - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/qiche/2026_07_09_823193.shtml",
       "time": "2026-07-09T09:38:00.000Z",
@@ -15529,6 +15505,18 @@
       "tags": [
         "人工智能",
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "中国深度参与全球自动驾驶标准制定 - 新华网",
+      "description": "",
+      "url": "http://jjckb.xinhuanet.com/20260709/56b99ac2151b40efa6d43950abe0e0ec/c.html",
+      "time": "2026-07-09T01:27:17.000Z",
+      "tags": [
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -15807,17 +15795,6 @@
       "time": "2026-07-08T10:05:46.000Z",
       "tags": [],
       "topic": true
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "超级算法大幅提升暗能量测量精度",
-      "description": "西班牙巴塞罗那大学领衔的国际团队在最新一期《自然·天文》发表一项研究成果称，他们开发出一套名为CIGaRS的宇宙学数据分析框架，相比传统方法，其将利用Ia型超新",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33539643",
-      "time": "2026-07-08 09:42",
-      "tags": [
-        "智能硬件"
-      ]
     },
     {
       "source": "三星",
@@ -16135,30 +16112,6 @@
       "topic": true
     },
     {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "AI也有“潜意识”？ Claude被指存在专属“思考空间”",
-      "description": "7月6日，美国AI初创企业Anthropic表示，已识别出旗下大模型Claude内部使用的一个小型工作空间，在该空间中，Claude可激活与其输出无关的概念和计",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33533443",
-      "time": "2026-07-07 14:56",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "2026世界机器人大会将于8月19日在京启幕",
-      "description": "7月6日，2026世界机器人大会新闻发布会在北京召开。澎湃科技从发布会（www.thepaper.cn）获悉，2026世界机器人大会将于8月19日至23日在北京",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33533464",
-      "time": "2026-07-07 14:55",
-      "tags": [
-        "测评/新品",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼PlayStation 6生产时间线曝光 或于2027年5月启动 - 搜狐网",
@@ -16193,15 +16146,6 @@
         "大公司"
       ],
       "topic": true
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "表观遗传编辑开辟下一代基因治疗新路径",
-      "description": "如果把人体基因比作一本生命说明书，过去十多年，CRISPR基因编辑技术一直在尝试修改说明书上的文字。而如今，科学家开始探索另一条道路，他们不再改写文字本身，而是",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33531993",
-      "time": "2026-07-07 09:56",
-      "tags": []
     },
     {
       "source": "cnBeta",
@@ -16340,6 +16284,20 @@
       "topic": true
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "小米汽车半年交付量仅为年度目标三成多！55万辆交付目标该咋破？ - 同花顺财经",
+      "description": "",
+      "url": "https://m.10jqka.com.cn/20260707/c677993790.shtml",
+      "time": "2026-07-07T01:15:40.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "消息称索尼黑卡 RX10 V 相机支持 4K 120fps 视频拍摄 - 17173",
@@ -16373,19 +16331,6 @@
         "手机"
       ],
       "topic": true
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "巨头环伺中，AI金融创业者如何突围？",
-      "description": "2026年，AI模型的能力进一步提升，开始能够自主拆解任务、调用工具并独立完成任务，为不同行业场景的应用提供了巨大的想象空间。金融行业因其结构化程度高、数据密度",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33526000",
-      "time": "2026-07-06 16:57",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
     },
     {
       "source": "索尼",
@@ -16499,30 +16444,6 @@
       "topic": true
     },
     {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "全球首个针对本迪布焦型埃博拉病毒的临床试验启动",
-      "description": "世界卫生组织（WHO）近日召开新闻发布会，宣布全球首个针对本迪布焦型埃博拉病毒治疗的临床试验正式启动。据《科学》报道，首批受试者已纳入研究。刚果（金）境内将开展",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33523965",
-      "time": "2026-07-06 07:45",
-      "tags": [
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "2播客｜提前毕业、21岁当CEO，黄一谈人形机器人热潮：资本在为“梦想”定价",
-      "description": "黄一，2004年出生，浙江温州人，是全栈开源人形机器人公司 RoboParty（萝博派对）的创始人。在当下这轮人形机器人与具身智能热潮中，他是最年轻的一批创业者",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33493421",
-      "time": "2026-07-06 07:25",
-      "tags": [
-        "软件应用",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼将停止发行游戏光盘丨游戏周报 - 21财经",
@@ -16587,11 +16508,14 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼称PS6将与PC竞争玩家桌面 而不是PC替代品 - qq.com",
+      "title": "索尼称PS6将与PC竞争玩家桌面 而不是PC替代品 - 腾讯新闻",
       "description": "",
       "url": "https://view.inews.qq.com/a/20260706A040WJ00?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
       "time": "2026-07-06T02:47:00.000Z",
-      "tags": [],
+      "tags": [
+        "互联网",
+        "大公司"
+      ],
       "topic": true
     },
     {
@@ -16612,18 +16536,6 @@
       "url": "https://www.donews.com/news/detail/1/6621785.html",
       "time": "2026-07-06T01:58:52.000Z",
       "tags": [],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "“韬定律”V2版来了，半导体产业链将迎哪些新机遇？ - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.com.cn/roll/2026-07-06/doc-inifvkki1790380.shtml",
-      "time": "2026-07-05T23:00:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
       "topic": true
     },
     {
@@ -16806,6 +16718,19 @@
       "topic": true
     },
     {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
+      "title": "对话格式塔创始人彭雷：离开脑虎再创业，为什么押注超声波脑机接口这条新路？ - 搜狐网",
+      "description": "",
+      "url": "https://www.sohu.com/a/1045629948_313745",
+      "time": "2026-07-04T01:30:17.000Z",
+      "tags": [
+        "专访",
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼调整 PlayStation 实体游戏停产计划，2028 年以前发售的游戏可继续生产光盘 - 新浪网",
@@ -16910,19 +16835,6 @@
       "time": "2026-07-03T07:02:05.000Z",
       "tags": [
         "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "对话格式塔创始人彭雷：离开脑虎再创业，为什么押注超声波脑机接口这条新路？ - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-04/detail-inifrana2213330.d.html?oid=%E4%BF%9D%E5%AE%9A%E5%B8%82%E6%80%8E%E4%B9%88%E6%89%BE%E5%A4%96%E5%9B%B4%E5%B0%8F%E5%A7%90%E4%B8%8A%E9%97%A8%E6%9C%8D%E5%8A%A1(%E8%96%87%E4%BF%A16342343)%E4%BF%9D%E5%AE%9A%E5%B8%82%E5%B0%8F%E5%A7%90%E6%80%8E%E4%B9%88%E6%89%BE%E6%9C%8D%E5%8A%A1(%E8%96%87%E4%BF%A16342343)%E4%BF%9D%E5%AE%9A%E5%B8%82%E7%BA%A6%E5%B0%8F%E5%A7%90%E5%93%81%E8%8C%B6%E5%B7%A5%E4%BD%9C%E5%AE%A4&vt=4&cid=76993&node_id=76993",
-      "time": "2026-07-03T07:00:00.000Z",
-      "tags": [
-        "专访",
-        "科技创投"
       ],
       "topic": true
     },
@@ -17050,41 +16962,14 @@
       ]
     },
     {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "95后创办的3D大模型公司融资超10亿 游戏公司批量入股 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202607023792302671.html",
-      "time": "2026-07-02T15:48:15.000Z",
-      "tags": [
-        "人工智能",
-        "游戏",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼PS放弃实体游戏光盘，玩家为何喜忧参半？ - guancha.cn",
+      "title": "索尼PS放弃实体游戏光盘，玩家为何喜忧参半？ - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/internation/2026_07_02_822383.shtml",
       "time": "2026-07-02T09:29:00.000Z",
       "tags": [
         "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "6大杯旗舰自拍横评，哪款才是自拍王者？ - 新浪财经",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/7879923925/1d5ae18d506801i8sy",
-      "time": "2026-07-02T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "测评/新品"
       ],
       "topic": true
     },
@@ -17560,6 +17445,19 @@
       "topic": true
     },
     {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "数据显示，3A新作首发时索尼PlayStation版销量占比最高可达八成 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1043525915_114760?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-06-30T01:31:52.000Z",
+      "tags": [
+        "游戏",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "DoNews",
       "sourceColor": "#00a971",
       "title": "网易 CC 直播 8 月 31 日起停运，全平台下载入口、充值渠道今起关闭",
@@ -17595,7 +17493,7 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
-      "title": "又一美国科技巨头，悄然转向中国大模型 - guancha.cn",
+      "title": "又一美国科技巨头，悄然转向中国大模型 - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/economy/2026_06_29_821983.shtml",
       "time": "2026-06-29T07:00:00.000Z",
@@ -17781,6 +17679,16 @@
       "topic": true
     },
     {
+      "source": "佳能",
+      "sourceColor": "#c0392b",
+      "title": "新浪网· - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/detail/5314464341561392.html",
+      "time": "2026-06-27T07:00:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
       "source": "cnBeta",
       "sourceColor": "#009a61",
       "title": "vivo 联合联发科推动大屏AI使用体验升级，X Fold6树立移动生产力新标杆",
@@ -17792,6 +17700,16 @@
         "手机",
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "佳能",
+      "sourceColor": "#c0392b",
+      "title": "佳能携手无忧传媒“JOY in CITY”盛典",
+      "description": "",
+      "url": "https://i.ifeng.com/c/8uGixIx6LpJ",
+      "time": "2026-06-26T23:40:14.000Z",
+      "tags": [],
+      "topic": true
     },
     {
       "source": "DoNews",
@@ -17816,6 +17734,19 @@
         "手机",
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "vivo TWS 5 Pro 上手体验：无线 TWS 迈入 Hi-Fi 时代 - 新浪网",
+      "description": "",
+      "url": "https://tech.sina.cn/mobile/xp/2026-06-26/detail-inietnfw1930691.d.html?vt=4&cid=38739&node_id=38739",
+      "time": "2026-06-26T07:26:47.000Z",
+      "tags": [
+        "手机",
+        "测评/新品"
+      ],
+      "topic": true
     },
     {
       "source": "AI大模型",
@@ -17929,6 +17860,20 @@
         "手机",
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "vivo XFold6现场上手体验：展开的不只屏幕，还有AI 工作流|vivo X Fold6|折叠屏|MWC|科技|工作台_手机新浪网 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-06-26/detail-inieryen5540084.d.html?oid=LD%E4%B9%90%E5%8A%A8%E4%BD%93%E8%82%B2%E6%9D%83%E5%A8%81%E5%A4%A7%E5%85%A8%E8%AF%84%E7%BA%A7%E4%BD%93%E8%82%B2%E7%9B%B4%E8%90%A5%3E%3ELD2069.CC&vt=4&cid=76993&node_id=76993",
+      "time": "2026-06-25T07:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "测评/新品"
+      ],
+      "topic": true
     },
     {
       "source": "三星",
@@ -18295,16 +18240,6 @@
         "电脑硬件",
         "测评/新品"
       ],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "新浪网· - 新浪网",
-      "description": "",
-      "url": "https://www.sina.cn/news/detail/5312578164359889.html",
-      "time": "2026-06-22T07:00:00.000Z",
-      "tags": [],
       "topic": true
     },
     {
