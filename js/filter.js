@@ -91,9 +91,9 @@ const TechFilter = {
 
         // 软件应用（硬科技）
         software: [
-            '软件', 'App', '应用', '操作系统', 'iOS', 'Android', 'Windows', 'macOS',
-            '浏览器', 'Chrome', 'Edge', 'Firefox', 'Safari', '办公', 'WPS',
-            'Office', '设计', '剪辑', '修图', '小程序', '插件',
+        '软件', 'App', '应用', '操作系统', 'iOS', 'Android', 'Windows', 'macOS',
+        '浏览器', 'Chrome', 'Edge', 'Firefox', 'Safari', 'WPS',
+        'Office', '设计', '剪辑', '修图', '小程序', '插件',
             '扩展', 'API', 'SDK', '开源', 'GitHub', 'Git', 'Docker', 'Kubernetes',
             'Linux', 'Ubuntu', 'Debian', '服务器', '云服务', 'AWS', 'Azure',
             '阿里云', '腾讯云', '华为云', '数据库', 'MySQL', 'PostgreSQL', 'Redis',
@@ -267,38 +267,40 @@ const TechFilter = {
      * 判断文本是否与科技数码领域相关（加权判定 + 强非科技黑名单）
      * 规则：
      *   1) 命中「强非科技黑名单」→ 直接 false
-     *   2) 必须命中至少 1 个「强科技词」（产品/品牌/技术/AI/芯片/汽车/动作），光含平台名（抖音/微博）不算
-     *   3) score≥2 才放行
+     *   2) 使用加权关键词系统：命中硬科技(weight≥2)得2分，软(weight=1)得1分
+     *   3) 总分≥2 才放行
+     *   4) 但如果仅命中"互联网/社交平台"类(抖音/微博/微信/快手/B站等)，不视为科技相关
+     *      （防止"全抖音都在鼓励哈兰德"等纯娱乐藉"抖音"词蒙混）
      */
     isRelevant(text) {
         if (!text) return false;
         const lowerText = text.toLowerCase();
 
-        // 1) 强非科技黑名单：命中任一直接 false
+        // 1) 强非科技黑名单
         for (const w of this.HARD_ENT_TERMS) {
             if (this.kwMatch(lowerText, w)) return false;
         }
 
-        // 2) 必须命中至少 1 个强科技词（产品/品牌/技术词）
-        let techHit = 0;
-        for (const k of this.HARD_TECH_TERMS) {
-            if (this.kwMatch(lowerText, k)) { techHit++; break; }
-        }
-        if (techHit === 0) return false;
-
-        // 3) 加权判定（必须 score≥2，避免"小米+微博"凑分）
+        // 2) 加权判定：记录命中类别
         let score = 0;
+        const hitCategories = new Set();
         for (const [category, keywords] of Object.entries(this.keywords)) {
             const weight = this.categoryWeight[category] || 1;
             for (const keyword of keywords) {
                 if (this.kwMatch(lowerText, keyword)) {
                     score += weight;
+                    hitCategories.add(category);
                     break;
                 }
             }
             if (score >= 2) break;
         }
-        return score >= 2;
+        if (score < 2) return false;
+
+        // 3) 如果唯一命中类别是 "internet"（社交平台/公司），不做科技判定
+        if (hitCategories.size === 1 && hitCategories.has('internet')) return false;
+
+        return true;
     },
 
     /**
