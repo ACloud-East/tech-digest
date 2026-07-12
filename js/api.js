@@ -135,23 +135,25 @@ const API = {
     ],
 
     async fetchAllTechNews() {
-        const cacheKey = 'tech_all_v36';
+        const cacheKey = 'tech_all_v37';
         const cached = this.getCache(cacheKey);
         if (cached) return cached;
 
         try {
             // 直接fetch，不用AbortController避免超时问题
+            // 追加 Date.now() 既是 HTTP 缓存击穿，也确保每次刷新都拿到 cron 最新生成的文件
             const r = await fetch('data/news.json?' + Date.now());
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             const data = await r.json();
             if (data && data.articles && Array.isArray(data.articles)) {
                 const articles = data.articles.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
-                this.setCache(cacheKey, articles);
-                return articles;
+                const payload = { articles, updateTime: data.updateTime || '' };
+                this.setCache(cacheKey, payload);
+                return payload;
             }
         } catch (e) {
             console.warn('读取新闻数据失败:', e.message);
         }
-        return [];
+        return { articles: [], updateTime: '' };
     }
 };

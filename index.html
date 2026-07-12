@@ -17,7 +17,9 @@
                 <span>TechDigest</span>
             </div>
             <div class="top-bar-right">
-                <span class="update-time" v-if="lastUpdate">更新于 {{ lastUpdate }}</span>
+                <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '数据由服务器定时抓取于 ' + dataUpdateAbsolute + '（本机查看于 ' + lastUpdate + '）' : ''">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> {{ dataAgeText }}
+                </span>
                 <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="刷新">
                     <i class="fa-solid fa-rotate" :class="{ spinning: loading }"></i>
                 </button>

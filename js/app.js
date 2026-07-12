@@ -191,6 +191,50 @@ const app = createApp({
         const loading = computed(() => socialLoading.value || techLoading.value || aiGenerating.value);
         const lastUpdate = ref('');
 
+        // 数据源自身的抓取时间（来自 news.json 的 updateTime，由 GitHub Actions 定时生成）
+        const dataUpdateTime = ref('');
+        // 实时心跳：每 30 秒刷新一次，让“X 分钟前”类相对时间始终相对于用户当前时钟
+        const nowTick = ref(Date.now());
+        setInterval(() => { nowTick.value = Date.now(); }, 30000);
+
+        // “数据更新于 X 分钟前” —— 反映服务器最近一次抓取的时间，而非用户点击时间
+        const dataAgeText = computed(() => {
+            if (!dataUpdateTime.value) return '';
+            try {
+                const d = new Date(dataUpdateTime.value), diff = nowTick.value - d.getTime();
+                if (diff < 0) return '刚刚更新';
+                if (diff < 60000) return '刚刚更新';
+                if (diff < 3600000) return `更新于 ${Math.floor(diff / 60000)} 分钟前`;
+                if (diff < 86400000) return `更新于 ${Math.floor(diff / 3600000)} 小时前`;
+                return `更新于 ${Math.floor(diff / 86400000)} 天前`;
+            } catch { return ''; }
+        });
+        // 数据源抓取的绝对本地时间（辅助说明）
+        const dataUpdateAbsolute = computed(() => {
+            if (!dataUpdateTime.value) return '';
+            try {
+                return new Date(dataUpdateTime.value).toLocaleString('zh-CN', {
+                    month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+                });
+            } catch { return ''; }
+        });
+
+        // 自动刷新：标签页重新可见 / 每 10 分钟自动重抓一次最新 news.json（静态文件，开销极低）
+        function setupAutoRefresh() {
+            let timer = null;
+            const refresh = () => {
+                if (activePanel.value !== 'hotboard') return;
+                // 仅重抓当前 tab，避免无谓请求
+                if (hotboardTab.value === 'social') fetchSocialHotlist();
+                else fetchTechNews();
+            };
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') refresh();
+            });
+            timer = setInterval(refresh, 10 * 60 * 1000);
+            return () => { clearInterval(timer); document.removeEventListener('visibilitychange', refresh); };
+        }
+
         const techSources = API.techSourceConfig;
 
         // 侧边栏统计数据（全部来自真实数据，非硬编码）
@@ -250,8 +294,9 @@ const app = createApp({
             techLoading.value = true; techError.value = '';
             techDisplayCount.value = techPageSize;
             try {
-                const data = await API.fetchAllTechNews();
-                techNews.value = data;
+                const res = await API.fetchAllTechNews();
+                techNews.value = res.articles || [];
+                dataUpdateTime.value = res.updateTime || '';
                 updateTimestamp();
             } catch(e) {
                 techError.value = e.message || '科技资讯加载失败';
@@ -569,15 +614,16 @@ const app = createApp({
 
         onMounted(() => {
             // 打开即加载两个 tab（social 来自外部热搜 API，tech 来自本地预抓取）
-            // 仅加载一次，不做定时自动刷新，避免频繁重抓造成的等待与闪烁
             fetchSocialHotlist();
             fetchTechNews();
+            // 自动刷新：切回标签页 / 每 10 分钟重抓一次，保证用户看到的是接近当前时间的数据
+            setupAutoRefresh();
         });
 
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
-            loading, lastUpdate, techSources, totalArticles, sourcesCount, totalSourcesCount,
+            loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,

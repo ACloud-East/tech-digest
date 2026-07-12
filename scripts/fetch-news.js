@@ -32,6 +32,10 @@ const STRONG_KEYWORDS = [
     // 车型/汽车通用词
     '燃油车','混动','增程','SUV','跑车','轿车','皮卡','车展','发动机','变速箱','底盘',
     '智能驾驶','辅助驾驶','车机','座舱','续航','充电桩','汽车品牌',
+    // 用户指定主题：数码 / 电子 / 硬件 / 医疗科技 / 大语言模型
+    '数码','电子','硬件','大语言模型','数码产品','消费电子','智能设备',
+    '医疗科技','医疗AI','数字医疗','医疗器械','生物科技','基因','基因编辑','制药','AI制药','健康科技',
+    '半导体','显示面板','传感器','物联网','5G','6G','WiFi','蓝牙','快充','氮化镓','碳化硅',
     '游戏','Steam','PS5','Xbox','Switch','电竞','3A','原神','黑神话','王者荣耀','DLSS','光追','虚幻引擎','云游戏',
     '电脑','笔记本','显卡','内存','SSD','主板','显示器','MacBook','ThinkPad','iPad','平板','机械键盘','鼠标','OLED','miniLED','DDR5',
     '软件','App','操作系统','Windows','macOS','浏览器','Chrome','WPS','开源','GitHub','Docker','Linux',
@@ -41,7 +45,22 @@ const STRONG_KEYWORDS = [
     '区块链','Web3','比特币','以太坊','NFT','DeFi','加密','数字货币','DAO','智能合约','Solana','数字人民币','元宇宙',
     '航天','火箭','卫星','SpaceX','星舰','商业航天','太空','空间站','探月',
     'Tech','Technology','Google','Microsoft','Meta','Amazon','Tesla','Nvidia','Intel','AMD','Qualcomm','TSMC',
-    'OceanBase'
+    'OceanBase',
+    // ===== 用户指定「尽量保留」的主题（混合源命中即保留，避免过度过滤）=====
+    // 泛科技/数码/电子/硬件
+    '科技','数码','电子','硬件','消费电子','数码产品','智能设备','电子设备','工业品','智能制造','工业互联网','工业软件','工业',
+    '相机','摄像机','照相机','电影机','微单','单反','运动相机','无人机相机','投影仪','显示器','电视','智能电视',
+    '耳机','音箱','智能音箱','智能眼镜','智能手表','智能家电','智能家居','扫地机器人','空调','冰箱','洗衣机','智能门锁','电动牙刷',
+    '路由器','充电器','移动电源','数据线','键盘','鼠标','平板','笔记本','台式机','主机','掌机','游戏本',
+    '芯片','半导体','显卡','处理器','CPU','GPU','NPU','SOC','主板','内存','SSD','硬盘','电源','散热','机箱',
+    '手机','智能手机','iPhone','安卓','鸿蒙','折叠屏','平板手机','老人机','功能机','卫星通信','快充','无线充',
+    // AI / 大模型 / 互联网 / 创投 / 上市
+    '人工智能','AI','大模型','大语言模型','LLM','AIGC','生成式AI','多模态','智能体','Agent','AI Agent',
+    '互联网','科技创投','创投','上市','IPO','融资','估值','独角兽','创业','科创板','纳斯达克','中概股',
+    // 汽车 / 新能源（含品牌与车型，见上方汽车小节）
+    '汽车','新能源车','智能汽车','自动驾驶','智能驾驶','车联网','飞行汽车','eVTOL',
+    // 医疗科技
+    '医疗科技','医疗AI','数字医疗','医疗器械','生物科技','基因','基因编辑','制药','AI制药','健康科技','医疗机器人','手术机器人','可穿戴医疗'
 ];
 // 弱相关关键词：泛化业务/评测词，单独出现多为非科技，需累计≥2或配合强词才相关
 const SOFT_KEYWORDS = [
@@ -204,7 +223,9 @@ const standardSources = [
     { name: '爱搞机', url: 'https://www.igao7.com/feed', color: '#ff6a00' },
     // 以下源HTML抓取不稳定/反爬，保留RSSHub兜底：
     // （RSSHub超时8秒，成功则快于HTML，失败不影响并发总耗时）
-    { name: '虎嗅', url: 'https://rsshub.rssforever.com/huxiu/article', color: '#374151' },
+    // 虎嗅：RSSHub(huxiu/article) 仅 ~20 条且多为综合；板块页为 SPA 空壳、API 被阿里云 WAF 拦截，
+    // 故直接改用 Google News(site:huxiu.com) 作为虎嗅主源（见 googleNewsSources），可稳定拉取近 ~100 篇
+    // （含前沿科技/3C数码等板块），链接经 Google 服务端代理可在浏览器打开。
     { name: '华尔街见闻', url: 'https://rsshub.rssforever.com/wallstreetcn/news/global', color: '#d32f2f' },
     // 注：cnBeta 原域名 cnbeta.com.tw 已被 MSN 收购，文章链接全部 302 跳转到 msn.cn
     // 的 Cookie 同意墙（用户点击即白屏）。已改为在 htmlSources 中直接抓取存活镜像
@@ -505,24 +526,6 @@ const htmlSources = [
         }
     },
     {
-        name: '虎嗅', url: 'https://www.huxiu.com/', color: '#374151',
-        extract: ($) => {
-            const items = [];
-            $('a').each((i, el) => {
-                const $el = $(el);
-                const title = $el.text().trim();
-                let href = $el.attr('href') || '';
-                if (title.length > 15 && title.length < 120 && href.includes('huxiu.com/article')) {
-                    if (href.startsWith('/')) href = 'https://www.huxiu.com' + href;
-                    const card = $el.closest('li, div, article');
-                    const ctx = (card.length ? card.text() : $el.text()) + ' ' + $el.html() + ' ' + href;
-                    items.push({ title, url: href, time: parseDateFromText(ctx) });
-                }
-            });
-            return items.slice(0, 50);
-        }
-    },
-    {
         name: '华尔街见闻', url: 'https://wallstreetcn.com/news/tech', color: '#d32f2f',
         extract: ($) => {
             const items = [];
@@ -643,9 +646,13 @@ const htmlSources = [
 // 点击后在浏览器中解析到原文，不会跳到站点首页）。
 const googleNewsSources = [
     // 品玩官网(pingwest.com) 已启用阿里云 WAF，直连/RSSHub 全部 405/503 无法直爬。
-    // Google News 的 site:pingwest.com 检索可稳定返回近 3 天真实文章，且链接经
+    // Google News 的 site:pingwest.com 检索可稳定返回真实文章，且链接经
     // Google 服务端代理，即使 pingwest 被墙在浏览器中仍可正常打开 —— 作为品玩实时源。
     { name: '品玩', site: 'pingwest.com', color: '#ff5722' },
+    // 虎嗅：RSSHub(huxiu/article) 仅 ~20 条且多为综合；板块页为 SPA 空壳、API 被阿里云 WAF 拦截。
+    // Google News 的 site:huxiu.com 可稳定拉取近 ~100 篇（含前沿科技/3C数码等板块），
+    // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
+    { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -658,16 +665,18 @@ async function fetchGoogleNews(src, existingTitles) {
         const items = [];
         for (const it of (feed.items || [])) {
             const t = new Date(it.isoDate || it.pubDate || 0).getTime();
-            if (isNaN(t) || (now - t) > 3 * 86400000) continue; // 仅保留近 3 天
-            // 去掉 Google News 追加的 " - 站点名" 后缀
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark)\s*$/, '').trim();
-            if (!title || title === src.name) continue; // 跳过频道/栏目入口
+            // 放宽至 30 天：虎嗅在 MONTH_WINDOW 中保留一个月内全部科技文；
+            // 品玩不在 MONTH_WINDOW，最终仍由主流程 3 天窗口裁掉陈旧项。
+            if (isNaN(t) || (now - t) > 30 * 86400000) continue;
+            // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园等）
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu)\s*$/i, '').trim();
+            if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;
             items.push(makeArticle(src, { title, url: it.link || '', time: it.isoDate || it.pubDate || '' }));
             existingTitles.add(title);
         }
-        console.log(`  => ${items.length}条(近3天, 已去重)`);
+        console.log(`  => ${items.length}条(近30天, 已去重, 最终按源窗口裁切)`);
         return items;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
 }

@@ -1,9 +1,14 @@
 name: Fetch Tech News Daily
 
+# 关键修复：默认 GITHUB_TOKEN 只有读权限，缺少 contents: write 会导致 git push 静默失败、
+# news.json 永远不更新（即用户看到的“14 小时前”陈旧数据）。必须显式声明写入权限。
+permissions:
+  contents: write
+
 on:
   schedule:
-    # 每 2 小时抓取一次（UTC 0/2/4...22 点 = 北京时间 8/10/12...6 点），最大限度保证看板新鲜
-    - cron: '0 */2 * * *'
+    # 每小时抓取一次（UTC 整点 = 北京时间早 8 点至次日早 7 点），最大限度保证看板新鲜
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
