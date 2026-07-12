@@ -645,6 +645,7 @@ const htmlSources = [
     {
         name: 'DoNews', url: 'https://www.donews.com/', color: '#00a971',
         // DoNews：首页无摘要，改为 asyncExtract 请求文章页补全日期+描述。
+        // 用户要求放宽[游戏][家电][3C][汽车]栏目，一个月内的都可以拿，故提升上限到80。
         asyncExtract: async ($) => {
             const items = []; const seen = new Set();
             $('a').each((i, el) => {
@@ -657,7 +658,7 @@ const htmlSources = [
                 if (!href.startsWith('http')) return;
                 if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
             });
-            return (await enrichArticleDates(items)).slice(0, 40);
+            return (await enrichArticleDates(items)).slice(0, 80);
         }
     },
     {
@@ -1064,7 +1065,7 @@ async function main() {
     const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
     const LONG_WINDOW_SOURCES = ['澎湃新闻'];
-    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta', 'DoNews'];
     // 主题源（自由检索聚合）放宽至 30 天，作为"按主题浏览"的合集；其最新条目仍会进入看板前列
     const before = unique.length;
     unique = unique.filter(a => {
