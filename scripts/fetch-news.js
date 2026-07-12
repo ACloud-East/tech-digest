@@ -8,6 +8,11 @@ const { parseStringPromise } = require('xml2js');
 const cheerio = require('cheerio');
 const fs = require('fs');
 const path = require('path');
+// 服务端解码 Google News 跳转链接（news.google.com/articles/...）为真实原文 URL，
+// 避免用户网络下 Google 不可达导致点开白屏。复用 decode-cache.json 缓存，仅对新文章解码。
+const { decodeGoogleNews, extractId } = require('./decode-google-news');
+let decodeCache = {};
+try { decodeCache = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'decode-cache.json'), 'utf8')); } catch (_) { /* 无缓存则从空开始 */ }
 
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 const FETCH_TIMEOUT = 8000; // 统一超时8秒（大部分源1-3秒响应，失败快速跳过）
@@ -726,6 +731,19 @@ async function fetchGoogleNews(src, existingTitles) {
             // 去掉路径中的 "rss/" 改为 news.google.com/articles/... 即可正常跳转到原文。
             let gurl = it.link || '';
             gurl = gurl.replace('news.google.com/rss/articles/', 'news.google.com/articles/');
+            // 服务端解码 Google News 跳转链接为真实原文 URL：用户网络下 Google 不可达，
+            // 直接点 news.google.com/articles/ 会白屏；解码后指向原始媒体站点，可直接打开。
+            const gid = extractId(gurl);
+            let resolved = false;
+            if (gid && decodeCache[gid]) {
+                gurl = decodeCache[gid];
+                resolved = true;
+            } else {
+                const real = await decodeGoogleNews(gurl);
+                if (real) { gurl = real; if (gid) decodeCache[gid] = real; resolved = true; }
+            }
+            // 解码失败（Google 不可达或文章已失效）：直接跳过，避免用户点开白屏
+            if (!resolved) continue;
             const art = makeArticle(src, { title, url: gurl, time: it.isoDate || it.pubDate || '' });
             if (src.topic) art.topic = true; // 标记主题扩量源，新鲜度过滤放宽至 30 天
             items.push(art);
@@ -862,6 +880,8 @@ async function main() {
     const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
     fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+    // 持久化解码缓存，供下次抓取命中（只对新文章解码，避免每小时全量重解）
+    fs.writeFileSync(path.join(__dirname, '..', 'data', 'decode-cache.json'), JSON.stringify(decodeCache, null, 2));
 
     const bySource = {};
     unique.forEach(a => { bySource[a.source] = (bySource[a.source] || 0) + 1; });
