@@ -220,6 +220,13 @@ const TechFilter = {
      *   3) score≥2 才放行（硬科技词命中即满足，软词累计 2 个也算，但前提是含 1 个硬词）
      */
     isRelevant(text) {
+        if (!text) return false;
+        const lowerText = text.toLowerCase();
+
+        // 1) 强非科技黑名单：命中任一直接 false
+        for (const w of this.HARD_ENT_TERMS) {
+            if (this.kwMatch(lowerText, w)) return false;
+        }
 
         // 2/3) 加权判定
         let hardCount = 0;  // 硬科技主题词命中数
