@@ -691,7 +691,7 @@ const googleNewsSources = [
     { name: 'ZDNet', site: 'zdnet.com', color: '#0066cc', hl: 'en-US', gl: 'US', ceid: 'US:en' },
     // ===== 主题源（与上方"数据源"分开归类）：自由检索词，拉取近30天相关科技文 =====
     // 这些不是独立的媒体，而是"按主题聚合"的视图；标记 topic:true 并放宽至 30 天窗口。
-    { name: '数码测评', query: '测评 OR 评测 OR 上手 OR 开箱 OR 横评 OR 跑分', color: '#e65100', topic: true },
+    { name: '数码测评', query: '数码评测 OR 手机评测 OR 笔记本评测 OR 相机评测 OR 耳机评测 OR 平板评测 OR 上手体验 OR 开箱 OR 横评 OR 跑分', color: '#e65100', topic: true },
     { name: '新品发布', query: '新品发布 OR 发布会 OR 首发 OR 亮相 OR 官宣', color: '#ad1457', topic: true },
     { name: '三星', query: '三星 Galaxy 手机 OR 三星 芯片 OR 三星 发布', color: '#0d47a1', topic: true },
     { name: '索尼', query: '索尼 Sony OR 索尼 耳机 OR 索尼 相机 OR PlayStation', color: '#1a1a2e', topic: true },
