@@ -114,7 +114,7 @@ const TITLE_BLOCK_T1 = [
     '追剧','剧集','电视剧','网剧','长剧','剧评','影评','首映','路演','上映','开播','杀青','定档','综艺','真人秀','选秀','话剧','歌剧','音乐剧','相声','小品','脱口秀','纪录片',
     '恋情','分手','复合','出轨','离婚','结婚','婚礼','怀孕','生子','官宣','领证','订婚','同居','绯闻','婚恋','约会','告白','求婚','热恋','劈腿','小三','原配','前夫','前妻','太太','老公','老婆','配偶','伴侣','情侣','夫妻','夫妇','男友','女友','女友粉','老婆粉','丈夫','丈夫娘','秀恩爱',
     '颜值','穿搭','造型','妆容','美妆','发型','写真','街拍','红毯','时尚','减肥','瘦身','身材','腹肌','马甲线','整容','医美','化妆品','护肤品','香水','包包','鞋子','首饰','珠宝','美甲','新娘','婚纱','伴郎','伴娘',
-    '球星','运动员','教练','裁判','决赛','半决赛','小组赛','冠军','亚军','季军','金牌','银牌','铜牌','球迷','客场','主场','转会','签约','续约','退役','复出','伤病','禁赛','奥运冠军','亚马尔','首发阵容','首发纪录','不败纪录','VS首发','首发球员',
+    '球星','运动员','教练','裁判','球迷','客场','主场','亚马尔','首发阵容','首发纪录','不败纪录','VS首发','首发球员',
     // 警方/命案/诈骗/打掉（社会新闻，与科技数码无关）
     '公安','警方','打掉','洗钱','命案','坠楼','诈骗案','抓获','逮捕',
     // 影视/综艺/选秀/演唱会（漫威/漫展/BW用户要求保留，不拦截）
@@ -130,7 +130,9 @@ const TITLE_BLOCK_T1 = [
 const TITLE_BLOCK_T2 = [
     '议会','国会','股市','A股','美股','港股','散户','涨停','跌停','大盘','上证','深证','金价','原油','期货','外汇',
     '楼市','房价','房地产','限购','首付','房贷','存款','理财','保险','基金',
-    '工资','失业','社保','养老','生育','婚姻','离婚','殡葬','南非'
+    '工资','失业','社保','养老','生育','婚姻','离婚','殡葬','南非',
+    // 赛事/竞技类（对混合源/主题源仍拦截，纯科技源如 DoNews 不拦——其游戏/汽车栏目正常使用）
+    '决赛','半决赛','小组赛','冠军','亚军','季军','金牌','银牌','铜牌','转会','签约','续约','退役','复出','伤病','禁赛','奥运冠军'
 ];
 
 // 关键词匹配：短 ASCII 关键词（如 AR/PE/AI/App/NBA）使用单词边界，避免子串误触发
@@ -191,7 +193,7 @@ const HARD_ENT_TERMS = [
     // 美食/餐厅/菜谱
     '美食','菜谱','餐厅','饭店','菜系','年夜饭','小吃','甜点','蛋糕','奶茶','咖啡','茶饮','火锅','烧烤','自助餐',
     // 旅游/民宿
-    '旅游','景区','游客','民宿','酒店','机票','签证','旅行','度假','跟团游','邮轮','打卡','出片','穷游',
+    '旅游','景区','游客','民宿','酒店','机票','签证','旅行','度假','跟团游','邮轮','穷游',
     // 教育/校园
     '高考','考研','中考','录取','分数线','大学排名','教材','开学','期末','学霸','考公',
     // 收藏/博物
@@ -579,11 +581,25 @@ async function enrichCnBetaArticles(items, batch = 10, delayMs = 200) {
 async function scrapeHTML(src) {
     try {
         console.log(`[HTML] ${src.name}`);
-        const resp = await fetch(src.url, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: FETCH_TIMEOUT });
-        const html = await resp.text();
-        const $ = cheerio.load(html);
-        // 支持异步 extract（如需要逐个请求文章页获取日期）
-        const items = src.asyncExtract ? await src.asyncExtract($, src.url) : src.extract($, src.url);
+        // 支持 multiUrl：依次抓多个栏目页，合并后传给 asyncExtract
+        const urls = src.multiUrl && src.multiUrl.length ? src.multiUrl : [src.url];
+        let allItems = [];
+        for (const u of urls) {
+            try {
+                const resp = await fetch(u, { headers: { 'User-Agent': UA, 'Accept': 'text/html' }, timeout: FETCH_TIMEOUT });
+                const html = await resp.text();
+                const $ = cheerio.load(html);
+                const items = src.asyncExtract ? await src.asyncExtract($, u) : src.extract($, u);
+                console.log(`    ${u} 抓取 ${items.length} 条`);
+                allItems = allItems.concat(items);
+            } catch (e) { /* 单个栏目失败不阻塞其他 */ }
+        }
+        // 跨栏目去重（相同 url 仅保留一份）
+        const seen = new Set();
+        const items = allItems.filter(it => {
+            if (!it.url || seen.has(it.url)) return false;
+            seen.add(it.url); return true;
+        });
         const articles = items.map(item => makeArticle(src, item));
         const filtered = articles.filter(i => {
             const rel = isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name));
@@ -643,22 +659,52 @@ const htmlSources = [
         }
     },
     {
-        name: 'DoNews', url: 'https://www.donews.com/', color: '#00a971',
-        // DoNews：首页无摘要，改为 asyncExtract 请求文章页补全日期+描述。
-        // 用户要求放宽[游戏][家电][3C][汽车]栏目，一个月内的都可以拿，故提升上限到80。
+        // DoNews：直接抓 4 个子栏目页（游戏/3C/家电/汽车），含七彩虹/AMD/联想/苹果等数码品牌文章。
+        // 日期从文章卡片中的图片 URL 提取（img/2026/07/11/...），无需逐个请求文章页。
+        name: 'DoNews', color: '#00a971', url: 'https://www.donews.com/digital/index',
+        multiUrl: [
+            'https://www.donews.com/ent/index',
+            'https://www.donews.com/digital/index',
+            'https://www.donews.com/digitalhome/index',
+            'https://www.donews.com/automobile/index',
+        ],
         asyncExtract: async ($) => {
+            // 先扫描所有 <a> 与 <img> 的对应关系：找到带文章链接的 img → 提取日期
+            const imgDates = new Map();
+            $('img[src*="/img/20"]').each((i, imgEl) => {
+                const src = $(imgEl).attr('src') || '';
+                const dm = src.match(/img\/(20\d{2})\/(\d{2})\/(\d{2})\//);
+                if (!dm) return;
+                const dt = new Date(Date.UTC(+dm[1], +dm[2] - 1, +dm[3], -8, 0, 0, 0));
+                if (isNaN(dt)) return;
+                const iso = dt.toISOString();
+                const $parentA = $(imgEl).closest('a[href*="/news/"]');
+                if ($parentA.length) {
+                    let href = $parentA.attr('href') || '';
+                    if (href.startsWith('/')) href = 'https://www.donews.com' + href;
+                    imgDates.set(href, iso);
+                }
+            });
+            if (process.env.DEBUG_DROP) console.log(`    imgDates 条目: ${imgDates.size}`);
             const items = []; const seen = new Set();
             $('a').each((i, el) => {
                 const $el = $(el);
                 const title = $el.text().trim().replace(/\s+/g, ' ');
                 let href = $el.attr('href') || '';
                 if (title.length < 15 || title.length > 120) return;
-                if (!(href.startsWith('/article/') || href.includes('donews.com'))) return;
+                if (!(href.startsWith('/news/') || href.includes('donews.com/news/'))) return;
                 if (href.startsWith('/')) href = 'https://www.donews.com' + href;
                 if (!href.startsWith('http')) return;
-                if (!seen.has(href)) { seen.add(href); items.push({ title, url: href, time: '', description: '' }); }
+                if (seen.has(href)) return;
+                seen.add(href);
+                const time = imgDates.get(href) || '';
+                items.push({ title, url: href, time, description: '' });
             });
-            return (await enrichArticleDates(items)).slice(0, 80);
+            // 对无日期的文章：不调用 enrichArticleDates（太慢且掉文章），改用当前时间作为日期
+            // 配合 30 天窗口审核，即使日期不正确也不会丢失；后续 Actions 运行会自动刷新。
+            const nowIso = new Date().toISOString();
+            items.forEach(it => { if (!it.time) it.time = nowIso; });
+            return items;
         }
     },
     {
