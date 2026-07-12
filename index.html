@@ -43,7 +43,7 @@
                         <i class="fa-solid fa-file-powerpoint"></i>
                         <span>PPT生成</span>
                     </div>
-                    <div class="nav-item nav-item-disabled">
+                    <div class="nav-item" :class="{ active: activePanel === 'style-analyzer' }" @click="activePanel = 'style-analyzer'">
                         <i class="fa-solid fa-palette"></i>
                         <span>风格分析</span>
                         <span class="badge badge-coming">即将上线</span>
@@ -566,6 +566,15 @@
                             <span class="ppt-preview-count">预估 <strong>{{ estimatedSlides }}</strong> 页内容</span>
                         </div>
                     </div>
+                </div>
+                <!-- ========== 风格分析占位 ========== -->
+                <div class="panel style-panel" v-show="activePanel === 'style-analyzer'" style="padding:80px 20px;text-align:center;">
+                    <div style="font-size:3rem;color:var(--accent-purple);margin-bottom:16px;">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <h3 style="margin-bottom:8px;">风格分析功能开发中</h3>
+                    <p style="color:var(--text-secondary);font-size:0.85rem;">支持文章风格分析、情感分析、可读性评估等</p>
+                    <div style="margin-top:12px;"><span class="badge badge-coming">即将上线</span></div>
                 </div>
             </main>
         </div>
