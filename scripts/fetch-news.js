@@ -80,10 +80,8 @@ const STRONG_KEYWORDS = [
     '美团','京东','京东科技','拼多多','网易','网易有道','快手','小米集团','小米','联想','联想集团','荣耀','大疆',
     '商汤','科大讯飞','滴滴','携程','微博','哔哩哔哩','B站','哔哩','蔚来','小鹏','理想','比亚迪','宁德时代',
     '寒武纪','地平线','用友','金山','360','搜狐','新浪','新浪科技','搜狐科技','亚马逊','谷歌','微软',
-    // 测评 / 评测 / 上手
-    '测评','评测','上手','开箱','体验','横评','对比评测','深度评测','跑分','实拍','样张','首测','众测',
     // 新品发布 / 发布会
-    '新品发布','新品','发布会','亮相','首发','预售','官宣','曝光','官图','渲染图','预热','概念机','概念车','官博',
+    '新品发布','新品','发布会','亮相','预售','曝光','官图','渲染图','预热','概念机','概念车','官博',
     // 专访 / 访谈 / 对话
     '专访','访谈','对话','口述','演讲','座谈','圆桌','对谈','自述',
     // 企业高管 / 创始人
@@ -93,7 +91,7 @@ const STRONG_KEYWORDS = [
 ];
 // 弱相关关键词：泛化业务/评测词，单独出现多为非科技，需累计≥2或配合强词才相关
 const SOFT_KEYWORDS = [
-    '评测','开箱','体验','测评','上手','对比','横评','深度','首发',
+    '评测','开箱','体验','测评','上手','对比','横评','深度','首发','对比评测','深度评测','实拍','样张','首测','众测','官宣',
     '营收','财报','广告','裁员','招聘','上市','融资','IPO','估值','创投','VC','PE','创业','独角兽','科创板','纳斯达克'
 ];
 // 中性词：过于泛化，不计入相关性（避免「微信+投资」之类蒙混过关）
@@ -110,7 +108,19 @@ const TITLE_BLOCK_T1 = [
     '世界杯','奥运','亚运','欧冠','NBA','CBA','足球','篮球','排球','网球','演唱会','票房','电影','综艺','明星','电视剧','小说',
     '台风','暴雨','洪水','地震','干旱','高温','寒潮','灾情','救援',
     '美食','餐厅','菜谱','旅游','景区','游客','民宿',
-    '反腐','贪腐','受贿','判刑','逮捕','通缉','诈骗','命案','坠楼'
+    '反腐','贪腐','受贿','判刑','逮捕','通缉','诈骗','命案','坠楼',
+    // ===== 娱乐/明星/追剧/饭圈等非科技屏蔽（用户要求：明显无关科技数码的过滤） =====
+    '追星','粉丝','爱豆','偶像','网红','主播','娱乐圈','演艺圈','影视圈','娱记','狗仔','路透','探班','生图','精修','饭拍','应援','饭圈','私生','反黑','控评','打投','CP','cp','粉','超话',
+    '追剧','剧集','电视剧','网剧','长剧','剧评','影评','首映','路演','上映','开播','杀青','定档','综艺','真人秀','选秀','话剧','歌剧','音乐剧','相声','小品','脱口秀','纪录片',
+    '恋情','分手','复合','出轨','离婚','结婚','婚礼','怀孕','生子','官宣','领证','订婚','同居','绯闻','婚恋','约会','告白','求婚','热恋','劈腿','小三','原配','前夫','前妻','太太','老公','老婆','配偶','伴侣','情侣','夫妻','夫妇','男友','女友','女友粉','老婆粉','丈夫','丈夫娘','秀恩爱',
+    '颜值','穿搭','造型','妆容','美妆','发型','写真','街拍','红毯','时尚','减肥','瘦身','身材','腹肌','马甲线','整容','医美','化妆品','护肤品','香水','包包','鞋子','首饰','珠宝','美甲','新娘','婚纱','伴郎','伴娘',
+    '球星','运动员','教练','裁判','决赛','半决赛','小组赛','冠军','亚军','季军','金牌','银牌','铜牌','球迷','客场','主场','转会','签约','续约','退役','复出','伤病','禁赛','奥运冠军',
+    // 警方/命案/诈骗/打掉（社会新闻，与科技数码无关）
+    '公安','警方','打掉','洗钱','命案','坠楼','诈骗案','抓获','逮捕',
+    // 美容/护肤/美妆/护肤评测（与科技数码无关）
+    '美白','面霜','护肤','敏感肌','敏感肌实测','肌肤','精华液','乳液','肌底液','眼霜','洗面奶',
+    // 开嗓/秀恩爱 / 追星应援
+    '开嗓','开嗓门','秀恩爱'
 ];
 // 标题级非科技排除词（二级：仅对混合源生效，避免误删纯科技源中提及市场的真科技文）
 const TITLE_BLOCK_T2 = [
@@ -127,22 +137,106 @@ function kwMatch(text, kw) {
     }
     return text.toLowerCase().includes(kw.toLowerCase());
 }
+// 标题中只要出现以下任何明星/娱乐/网红/主播/官宣/配偶/求婚等强娱乐信号 → 立即丢
+// （用户明确：破明星、臭官宣、臭女友、臭求婚一律屏蔽；不依赖关键词组合）
+const CELEB_TERMS = [
+    '周星驰','王俊凯','王源','易烊千玺','马秋元','李泳豪','林青霞','汪峰','章子怡','刘亦菲',
+    '杨颖','刘诗诗','赵丽颖','杨幂','迪丽热巴','陈学冬','鹿晗','吴亦凡','蔡徐坤','华晨宇',
+    '范丞丞','王一博','肖战','白鹿','虞书欣','许凯','成毅','龚俊','王鹤棣','檀健次',
+    '雪野','陈雪','刘宇宁','张新成','刘宇','宋雨琦','鞠婧祎','杨紫','赵露思','白敬亭',
+    '赵牧辰','辰咪','蒋龙','贾科梅蒂','李诞','徐志胜','呼兰','周奇墨','毛不易','单依纯',
+    '黄子韬','徐艺洋','宋茜','刘雨昕','赵小棠','秦岚','李一桐','蒋勤勤','汤唯','高圆圆',
+    '陈建斌','蒋雯丽','倪妮','刘烨','张译','吴京','沈腾','马丽','贾玲','张小斐',
+    '王宝强','邓超','孙俪','黄晓明','baby','张杰','谢娜','何炅','汪涵','吴昕',
+    '张若昀','唐艺昕','戚薇','李承铉','范志毅','杨鸣','王楚钦','孙颖莎','全红婵','谷爱凌'
+];
+
+// 主题源额外强科技词（命中其一即视为科技相关；真科技测评/新品文标题总会含至少一个）
+const TOPIC_STRONG_EXTRA = [
+    // 设备/产品/品类
+    '手机','机型','平板','笔记本','笔记本','台式机','显示器','耳机','音箱','相机','摄像机','微单','单反','镜头',
+    '无人机','投影仪','智能手表','智能手环','路由器','充电器','电池','SSD','硬盘','内存','显卡','主板','机箱',
+    'CPU','GPU','NPU','芯片','处理器','屏幕','OLED','LCD','miniLED','刷新率','分辨率','像素',
+    // 品牌/公司
+    '华为','苹果','小米','OPPO','vivo','三星','荣耀','一加','红米','realme','iQOO','努比亚','魅族',
+    '联想','惠普','戴尔','华硕','宏碁','微星','雷神','机械革命','神舟','苹果','Apple','iPhone','iPad','MacBook',
+    '特斯拉','比亚迪','理想','蔚来','小鹏','问界','小米汽车','极氪','智己','岚图','深蓝',
+    '英伟达','NVIDIA','AMD','英特尔','高通','联发科','台积电','ARM','海思','麒麟','骁龙','天玑','苹果','Apple Silicon','M1','M2','M3','M4',
+    'OpenAI','ChatGPT','GPT','Claude','Gemini','DeepSeek','通义千问','文心一言','豆包','kimi','智谱','月之暗面','MiniMax','Sora',
+    // 数字
+    '万元','英寸','毫安','mAh','GHz','nm','3nm','5nm','7nm','Watt','W','Type-C','USB','HDMI','WiFi','Wi-Fi','5G','6G','NFC','AI算力',
+    // 动作
+    '跑分','评测','测评','开箱','上手','实拍','样张','首测','众测','横评','对比评测','深度评测','拆解','跑分','固件','升级','OTA','推送','发布','上市','发布','发布','发布','价格','起售价','零售价','渠道','预订','预售','开卖','开售'
+];
+
+// 强科技相关判断（用于主题源/混合源过滤）：标题或描述中是否含至少 1 个强科技词
+// （科技评测文/新品发布文/AI 行业文都必含此类词；纯娱乐文如明星剧/求婚/穿搭/护肤/赛事则不会有）
+function hasStrongTech(text) {
+    return STRONG_KEYWORDS.some(k => kwMatch(text, k)) || TOPIC_STRONG_EXTRA.some(k => kwMatch(text, k));
+}
+
+// 标题娱乐度检测：命中任何 CELEB_TERMS 或娱乐/婚恋/赛事/护肤/募捐等黑词直接返回 true（极强娱乐信号）
+const HARD_ENT_TERMS = [
+    ...CELEB_TERMS,
+    // 婚恋/家庭
+    '配偶','老婆','老公','夫妻','丈夫','新娘','伴郎','伴娘','恋爱','失恋','相亲','暗恋','表白','被甩','前夫','前妻','热恋','姐弟恋','闪婚','姐弟','夫妻档','夫妻','萌娃','喜当爹','喜当妈','喜提娃','小公主','小少爷',
+    // 赛事/体育
+    'NBA','CBA','世界杯','奥运','亚运','欧冠','西甲','意甲','德甲','中超','联赛','欧联','亚冠','UFC','WWE','F1','赛车','车队','积分榜','出线','淘汰赛','半决赛','决赛','MVP','FMVP','助攻王','得分王','射手王','金靴','金球','金手套','最佳阵容','夺冠','卫冕','联赛','赛季','比赛日','对阵','绝杀','逼平','补时','加时','点球','越位','红牌','黄牌','停赛','受伤','复出',
+    // 美妆/护肤/医美/瘦身
+    '美白','面霜','护肤','敏感肌','精华液','眼霜','洗面奶','乳液','肌底液','防晒霜','祛斑','抗皱','瘦脸','瘦身','减肥','抽脂','隆胸','整形','玻尿酸','肉毒素','水光针','美瞳','种睫毛','美甲','香水',
+    // 美食/餐厅/菜谱
+    '美食','菜谱','餐厅','饭店','菜系','年夜饭','小吃','甜点','蛋糕','奶茶','咖啡','茶饮','火锅','烧烤','自助餐',
+    // 旅游/民宿
+    '旅游','景区','游客','民宿','酒店','机票','签证','旅行','度假','跟团游','邮轮','打卡','出片','穷游',
+    // 教育/校园
+    '高考','考研','中考','录取','分数线','大学排名','教材','开学','期末','学霸','考公',
+    // 收藏/博物
+    '真迹','藏品','博物馆','博物院','文物','展览馆','大展',
+    // 命案/公安
+    '公安','打掉','命案','坠楼','诈骗案','抓获','逮捕','通缉','受贿',
+    // 选秀/综艺
+    '选秀','偶像练习生','创造营','青你','姐姐','哥哥','奔跑吧','极挑','歌手','天赐','全员','剧组','剧组','星女郎','谋女郎','谋男郎','星男郎','星公主','星哥','女郎','男郎'
+];
+
+// 简单娱乐词(只用于混合源/主题源的"反向证明非科技"——若标题含强娱乐词而无强科技词，丢弃)
+const SOFT_ENT_TERMS = [
+    '亮相','首秀','开嗓','开嗓门','开演','开唱','开讲','演讲','讲座','大学演讲','献唱','粉丝团','谢鼎','直击',
+    '求婚','官宣','领证','订婚','同居','绯闻','婚恋','告白','热恋','劈腿','小三','原配',
+    '剧组','开机','杀青','上映','开播','路演','首映','定档','排片','票房','档期','观影人次',
+    '颜值','穿搭','造型','写真','街拍','红毯','时尚','身材','腹肌','马甲线','整容','医美','首饰','珠宝',
+    '演唱会','歌友会','签售会','握手会','签售','首唱会','开嗓门','秀恩爱','撒狗粮','秀身材','网友直呼'
+];
+
 function countHits(text, list) { let n = 0; for (const k of list) if (kwMatch(text, k)) n++; return n; }
+function entHits(text) {
+    let n = 0;
+    for (const w of HARD_ENT_TERMS) if (kwMatch(text, w)) n++;
+    return n;
+}
+function softEntHits(text) {
+    let n = 0;
+    for (const w of SOFT_ENT_TERMS) if (kwMatch(text, w)) n++;
+    return n;
+}
 
 // 相关性判定
 //  - 标题命中一级（或混合源命中二级）排除词 → 直接丢弃
-//  - 混合源：需命中≥1个强科技词，或≥2个弱相关词（避免「微信+投资」蒙混）
-//  - 纯科技源：仅做标题排除，不过度删减（源本身即科技媒体）
+//  - 强娱乐信号（明星人名/赛事/婚恋/护肤/收藏/公安等）→ 直接丢弃，所有源一律拦截
+//  - 纯科技源：仅做强娱乐/一级排除词拦截，其他都视为科技相关（信任源本身）
+//  - 混合源/主题源：需至少 1 个强科技词；否则即便通过娱乐词也丢弃
 function isRelevant(title, full, mixed) {
     if (!full) return false;
     const tl = title.toLowerCase();
+    // 1) 一级/二级标题屏蔽词
     if (TITLE_BLOCK_T1.some(kw => kwMatch(tl, kw))) return false;
     if (mixed && TITLE_BLOCK_T2.some(kw => kwMatch(tl, kw))) return false;
-    if (!mixed) return true;
-    const strong = countHits(full, STRONG_KEYWORDS);
-    const soft = countHits(full, SOFT_KEYWORDS);
-    if (strong >= 1) return true;
-    return soft >= 2;
+    // 2) 强娱乐信号：明星人名 / 婚恋 / 赛事 / 护肤 / 博物 / 公安 等所有源一律拦截
+    if (entHits(tl) > 0) return false;
+    // 3) 混合源/主题源：必须含至少 1 个强科技词（防"开箱"+纯娱乐描述混入）
+    if (mixed) {
+        if (!hasStrongTech(full)) return false;
+    }
+    return true;
 }
 function extractTags(text) {
     if (!text) return [];
@@ -487,7 +581,18 @@ async function scrapeHTML(src) {
         // 支持异步 extract（如需要逐个请求文章页获取日期）
         const items = src.asyncExtract ? await src.asyncExtract($, src.url) : src.extract($, src.url);
         const articles = items.map(item => makeArticle(src, item));
-        const filtered = articles.filter(i => isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name)));
+        const filtered = articles.filter(i => {
+            const rel = isRelevant(i.title, i.title + ' ' + i.description, MIXED_SOURCES.includes(src.name));
+            if (!rel && process.env.DEBUG_DROP && ['新浪科技', '搜狐科技', '凤凰科技'].includes(src.name)) {
+                const tl = (i.title || '').toLowerCase();
+                let reason = '标题屏蔽词';
+                if (!TITLE_BLOCK_T1.some(kw => kwMatch(tl, kw)) && !(MIXED_SOURCES.includes(src.name) && TITLE_BLOCK_T2.some(kw => kwMatch(tl, kw)))) {
+                    reason = '无强科技关键词';
+                }
+                console.log(`  [DROP ${src.name}|${reason}] ${i.title}`);
+            }
+            return rel;
+        });
         console.log(`  => ${items.length}条${MIXED_SOURCES.includes(src.name) ? ', 科技' + filtered.length + '条' : '(纯科技源)'}`);
         return filtered;
     } catch(e) { console.log(`  => FAIL: ${e.message.substring(0,60)}`); return []; }
@@ -696,8 +801,9 @@ const htmlSources = [
                 if (href.startsWith('//')) href = 'https:' + href;
                 else if (href.startsWith('/')) href = 'https://tech.sina.com.cn' + href;
                 if (!/^https?:\/\//.test(href)) return;
-                // 仅保留新浪科技类：tech.sina.com.cn 或 finance.sina.com.cn 的 tech/roll 栏目
-                if (!/(tech|finance)\.sina\.com\.cn\/(tech|roll)\//.test(href)) return;
+                // 仅保留纯科技版面：tech.sina.com.cn 或 finance.sina.com.cn 的 tech 子频道；
+                // 排除 /roll/ 综合滚动（含体育/社会）与 /wm/ 财经理财，避免非科技漏入。
+                if (!/tech\.sina\.com\.cn\//.test(href) && !/finance\.sina\.com\.cn\/tech\//.test(href)) return;
                 if (seen.has(href)) return;
                 seen.add(href);
                 const time = parseDateFromText(href); // URL 形如 .../2026-07-10/doc-...shtml
@@ -839,8 +945,10 @@ async function fetchGoogleNews(src, existingTitles) {
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
 // 含站点兜底源(华尔街见闻/虎嗅/品玩/极客公园/快科技) 与 主题源(数码测评/新品发布/三星/索尼/尼康/佳能/科技专访/上市科技)
 const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技',
-    '新浪科技', '搜狐科技', '凤凰科技',
     '数码测评', '新品发布', '三星', '索尼', '尼康', '佳能', '科技专访', '上市科技'];
+
+// 主题源集合（用于后续主题强科技过滤与 30 天新鲜度窗口）
+const TOPIC_SOURCES = new Set(googleNewsSources.filter(s => s.topic).map(s => s.name));
 
 // ========== 主流程 ==========
 async function main() {
@@ -887,8 +995,32 @@ async function main() {
 
     // 非科技硬过滤：统一用 isRelevant 复核（混合源强词要求 + 标题排除词），防御性兜底
     const beforeNonTech = unique.length;
-    unique = unique.filter(a => isRelevant(a.title, a.title + ' ' + a.description, MIXED_SOURCES.includes(a.source)));
+    unique = unique.filter(a => {
+        const rel = isRelevant(a.title, a.title + ' ' + a.description, MIXED_SOURCES.includes(a.source));
+        if (!rel && process.env.DEBUG_DROP && ['新浪科技', '搜狐科技', '凤凰科技'].includes(a.source)) {
+            const tl = (a.title || '').toLowerCase();
+            let reason = '标题屏蔽词';
+            if (!TITLE_BLOCK_T1.some(kw => kwMatch(tl, kw)) && !(MIXED_SOURCES.includes(a.source) && TITLE_BLOCK_T2.some(kw => kwMatch(tl, kw)))) {
+                reason = '无强科技关键词(被相关性过滤)';
+            }
+            console.log(`  [DROP ${a.source}|${reason}] ${a.title}`);
+        }
+        return rel;
+    });
     if (unique.length < beforeNonTech) console.log(`\n🧹 非科技过滤: ${beforeNonTech} → ${unique.length} 篇`);
+
+    // 主题聚合源额外过滤：Google News 自由检索常会匹配到含"开箱/体验/首秀"软词但非科技的内容
+    // （如明星剧宣传、娱乐追星、网红八卦、高校开箱）。强制要求标题中至少命中 1 个强科技关键词，
+    // 只看标题（不看描述），因为描述常被污染或含泛科技词，标题更可靠。
+    const beforeTopicStrong = unique.length;
+    unique = unique.filter(a => {
+        if (!TOPIC_SOURCES.has(a.source) && !a.topic) return true;
+        const strong = countHits(a.title, STRONG_KEYWORDS);
+        if (strong >= 1) return true;
+        if (process.env.DEBUG_DROP) console.log(`  [DROP topic-strong|${a.source}] ${a.title}`);
+        return false;
+    });
+    if (unique.length < beforeTopicStrong) console.log(`\n🎯 主题源强科技过滤: ${beforeTopicStrong} → ${unique.length} 篇`);
 
     // 合并种子数据（4个反爬源的手动快照）
     const seedPath = path.join(__dirname, '..', 'data', 'seed-sources.json');
@@ -930,7 +1062,6 @@ async function main() {
     const LONG_WINDOW_SOURCES = ['澎湃新闻'];
     const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta'];
     // 主题源（自由检索聚合）放宽至 30 天，作为"按主题浏览"的合集；其最新条目仍会进入看板前列
-    const TOPIC_SOURCES = new Set(googleNewsSources.filter(s => s.topic).map(s => s.name));
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
