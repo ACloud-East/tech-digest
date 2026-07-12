@@ -306,8 +306,9 @@ const app = createApp({
         }
 
         // 数据源 / 主题源 分组展示（主题源为按主题聚合的视图，与真实数据源区分）
-        const themeSources = computed(() => techSources.value.filter(s => s.group === 'theme'));
-        const dataSources = computed(() => techSources.value.filter(s => s.group !== 'theme'));
+        // 注意：techSources 是普通数组（非 ref），直接用 .filter 即可，不要加 .value
+        const themeSources = computed(() => techSources.filter(s => s.group === 'theme'));
+        const dataSources = computed(() => techSources.filter(s => s.group !== 'theme'));
 
         const filteredTechNews = computed(() => {
             // 来源筛选和搜索在全部数据中进行，不受"显示前N条"的限制
