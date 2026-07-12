@@ -281,6 +281,12 @@ const standardSources = [
     // 真实扩量：Android Authority 覆盖安卓/手机/数码测评，Dark Reading 覆盖网络安全。
     { name: 'Android Authority', url: 'https://www.androidauthority.com/feed/', color: '#a4c639' },
     { name: 'Dark Reading', url: 'https://www.darkreading.com/rss.xml', color: '#1a1a2e' },
+    // 以下为补充的真实科技媒体直链 RSS（无需经 Google 解码，规避限流白屏），
+    // 作为稳定增量来源：小众软件(效率工具)、阮一峰周刊、酷壳(技术随笔)、美团技术团队。
+    { name: '小众软件', url: 'https://www.appinn.com/feed/', color: '#2e7d32' },
+    { name: '阮一峰周刊', url: 'https://www.ruanyifeng.com/blog/atom.xml', color: '#1565c0' },
+    { name: '酷壳', url: 'https://coolshell.cn/feed', color: '#6a1b9a' },
+    { name: '美团技术', url: 'https://tech.meituan.com/feed/', color: '#ff6f00' },
 ];
 
 async function fetchStandard(src) {
@@ -676,6 +682,77 @@ const htmlSources = [
             return (await enrichCnBetaArticles(items)).slice(0, 30);
         }
     },
+    // 新浪科技：科技频道首页直抓（https://tech.sina.com.cn/），链接为真实文章页，
+    // URL 中含发布日期可直接解析，无需经 Google 解码（规避 Google 限流导致白屏/丢文）。
+    { name: '新浪科技', url: 'https://tech.sina.com.cn/', color: '#e6162d',
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
+            $('a').each((i, el) => {
+                const $el = $(el);
+                let href = ($el.attr('href') || '').trim();
+                const title = ($el.attr('title') || $el.text() || '').trim().replace(/\s+/g, ' ');
+                if (title.length < 8 || title.length > 80) return;
+                if (!href) return;
+                if (href.startsWith('//')) href = 'https:' + href;
+                else if (href.startsWith('/')) href = 'https://tech.sina.com.cn' + href;
+                if (!/^https?:\/\//.test(href)) return;
+                // 仅保留新浪科技类：tech.sina.com.cn 或 finance.sina.com.cn 的 tech/roll 栏目
+                if (!/(tech|finance)\.sina\.com\.cn\/(tech|roll)\//.test(href)) return;
+                if (seen.has(href)) return;
+                seen.add(href);
+                const time = parseDateFromText(href); // URL 形如 .../2026-07-10/doc-...shtml
+                items.push({ title, url: href, time: time || '', description: '' });
+            });
+            console.log(`    新浪科技直抓 ${items.length} 条`);
+            return items.slice(0, 90);
+        }
+    },
+    // 搜狐科技：it.sohu.com 科技频道首页直抓，文章页为 sohu.com/a/... 真实直链；
+    // 过滤 track.sohu.com 广告推广，日期需逐个请求文章页提取（enrichArticleDates）。
+    { name: '搜狐科技', url: 'https://it.sohu.com/', color: '#d8402a',
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
+            $('a').each((i, el) => {
+                const $el = $(el);
+                let href = ($el.attr('href') || '').trim();
+                const title = ($el.attr('title') || $el.text() || '').trim().replace(/\s+/g, ' ');
+                if (title.length < 8 || title.length > 80) return;
+                if (!href) return;
+                if (href.startsWith('//')) href = 'https:' + href;
+                else if (href.startsWith('/')) href = 'https://it.sohu.com' + href;
+                if (!/^https?:\/\//.test(href)) return;
+                if (!/sohu\.com\/a\/\d+_/.test(href)) return; // 仅文章页，排除 track.sohu.com 推广
+                if (seen.has(href)) return;
+                seen.add(href);
+                items.push({ title, url: href, time: '', description: '' });
+            });
+            console.log(`    搜狐科技直抓 ${items.length} 条`);
+            return await enrichArticleDates(items.slice(0, 45));
+        }
+    },
+    // 凤凰科技：tech.ifeng.com 科技频道首页直抓，文章页为 tech.ifeng.com/c/... 真实直链；
+    // 日期需逐个请求文章页提取（enrichArticleDates）。
+    { name: '凤凰科技', url: 'https://tech.ifeng.com/', color: '#1e88e5',
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
+            $('a').each((i, el) => {
+                const $el = $(el);
+                let href = ($el.attr('href') || '').trim();
+                const title = ($el.attr('title') || $el.text() || '').trim().replace(/\s+/g, ' ');
+                if (title.length < 8 || title.length > 80) return;
+                if (!href) return;
+                if (href.startsWith('//')) href = 'https:' + href;
+                else if (href.startsWith('/')) href = 'https://tech.ifeng.com' + href;
+                if (!/^https?:\/\//.test(href)) return;
+                if (!/tech\.ifeng\.com\/c\/[A-Za-z0-9]+/.test(href)) return;
+                if (seen.has(href)) return;
+                seen.add(href);
+                items.push({ title, url: href, time: '', description: '' });
+            });
+            console.log(`    凤凰科技直抓 ${items.length} 条`);
+            return await enrichArticleDates(items.slice(0, 80));
+        }
+    },
 ];
 
 // ========== 4. Google News RSS（反爬/无RSS源的可靠兜底） ==========
@@ -704,6 +781,11 @@ const googleNewsSources = [
     { name: '佳能', query: '佳能 Canon OR 佳能 相机 OR 佳能 EOS', color: '#c0392b', topic: true },
     { name: '科技专访', query: '专访 OR 访谈 OR 对话 科技 OR 口述 创始人', color: '#37474f', topic: true },
     { name: '上市科技', query: 'IPO OR 科技公司 上市 OR 科技 财报 OR 独角兽 融资', color: '#1b5e20', topic: true },
+    // 以下为补充主题聚合源（30天窗口）：与上方主题源同理，按主题检索近30天科技文，
+    // 作为"按主题浏览"的合集扩量；解码依赖 Google 端点，由解码重试+安全护栏兜底（限流时不覆盖旧数据）。
+    { name: 'AI大模型', query: '大模型 OR 大语言模型 OR ChatGPT OR 国产大模型 OR 开源大模型 OR 推理模型', color: '#6a1b9a', topic: true },
+    { name: '芯片半导体', query: '芯片 OR 半导体 OR 光刻机 OR 英伟达 OR 台积电 OR 华为芯片 OR 先进制程', color: '#004d40', topic: true },
+    { name: '智能汽车', query: '智能汽车 OR 自动驾驶 OR 新能源车 OR 小米汽车 OR 特斯拉 OR 飞行汽车', color: '#0d47a1', topic: true },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
@@ -757,6 +839,7 @@ async function fetchGoogleNews(src, existingTitles) {
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
 // 含站点兜底源(华尔街见闻/虎嗅/品玩/极客公园/快科技) 与 主题源(数码测评/新品发布/三星/索尼/尼康/佳能/科技专访/上市科技)
 const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技',
+    '新浪科技', '搜狐科技', '凤凰科技',
     '数码测评', '新品发布', '三星', '索尼', '尼康', '佳能', '科技专访', '上市科技'];
 
 // ========== 主流程 ==========
@@ -879,9 +962,18 @@ async function main() {
 
     const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
-    fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
-    // 持久化解码缓存，供下次抓取命中（只对新文章解码，避免每小时全量重解）
+    // 持久化解码缓存（始终保存，供下次抓取命中，仅对新文章解码）
     fs.writeFileSync(path.join(__dirname, '..', 'data', 'decode-cache.json'), JSON.stringify(decodeCache, null, 2));
+    // 安全护栏：若本次总量远低于上一次（如 Google 限流导致解码源大面积失效），
+    // 不覆盖已有数据，避免把正常的 1300+ 文章误写成残缺数据。解码缓存在上方已保存。
+    const prevTotal = (() => { try { return JSON.parse(fs.readFileSync(outPath, 'utf8')).total || 0; } catch (_) { return 0; } })();
+    const floor = Math.max(1000, Math.floor(prevTotal * 0.85));
+    if (prevTotal && unique.length < floor) {
+        console.log(`\n⚠️ 抓取总量 ${unique.length} 远低于上次 ${prevTotal}（疑似 Google 限流致解码源失效），保留旧数据不覆盖。`);
+    } else {
+        fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+        console.log('\n已保存:', outPath);
+    }
 
     const bySource = {};
     unique.forEach(a => { bySource[a.source] = (bySource[a.source] || 0) + 1; });
