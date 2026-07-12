@@ -60,7 +60,31 @@ const STRONG_KEYWORDS = [
     // 汽车 / 新能源（含品牌与车型，见上方汽车小节）
     '汽车','新能源车','智能汽车','自动驾驶','智能驾驶','车联网','飞行汽车','eVTOL',
     // 医疗科技
-    '医疗科技','医疗AI','数字医疗','医疗器械','生物科技','基因','基因编辑','制药','AI制药','健康科技','医疗机器人','手术机器人','可穿戴医疗'
+    '医疗科技','医疗AI','数字医疗','医疗器械','生物科技','基因','基因编辑','制药','AI制药','健康科技','医疗机器人','手术机器人','可穿戴医疗',
+    // ===== 用户补充「扩量」主题：网络安全 / AI芯片 / 三星与国际品牌 / 大公司与品牌 / 测评 / 新品 / 专访 / CEO =====
+    // 网络安全 / 数据安全
+    '网络安全','网络攻击','黑客','黑客攻击','白帽','白客','漏洞','安全漏洞','零日','零日漏洞','勒索软件','勒索病毒',
+    '钓鱼','钓鱼邮件','木马','恶意软件','蠕虫','DDoS','供应链攻击','渗透','渗透测试','防火墙','入侵','后门',
+    '数据安全','信息安全','隐私','隐私保护','数据泄露','数据泄漏','加密','量子加密','网络安全法','APT','靶场',
+    // AI 芯片 / 算力
+    'AI芯片','算力芯片','推理芯片','训练芯片','GPU芯片','芯片设计','算力','智算','智算中心','超算','AI算力','异构计算',
+    // 三星 / 国际品牌
+    '三星','Samsung','Galaxy','索尼','Sony','LG','松下','西门子','博世','惠普','HP','戴尔','Dell','佳能','尼康','任天堂',
+    // 知名科技企业与品牌（上市大公司 / 互联网大厂）
+    '腾讯','腾讯科技','阿里巴巴','阿里','阿里云','蚂蚁','支付宝','字节跳动','抖音','TikTok','百度','百度智能云',
+    '美团','京东','京东科技','拼多多','网易','网易有道','快手','小米集团','小米','联想','联想集团','荣耀','大疆',
+    '商汤','科大讯飞','滴滴','携程','微博','哔哩哔哩','B站','哔哩','蔚来','小鹏','理想','比亚迪','宁德时代',
+    '寒武纪','地平线','用友','金山','360','搜狐','新浪','新浪科技','搜狐科技','亚马逊','谷歌','微软',
+    // 测评 / 评测 / 上手
+    '测评','评测','上手','开箱','体验','横评','对比评测','深度评测','跑分','实拍','样张','首测','众测',
+    // 新品发布 / 发布会
+    '新品发布','新品','发布会','亮相','首发','预售','官宣','曝光','官图','渲染图','预热','概念机','概念车','官博',
+    // 专访 / 访谈 / 对话
+    '专访','访谈','对话','口述','演讲','座谈','圆桌','对谈','自述',
+    // 企业高管 / 创始人
+    'CEO','董事长','创始人','总裁','高管','掌门人','联合创始人','合伙人','董事','CTO','CFO','COO','首席',
+    // 上市 / 财报 / 市值（与创投相关，扩量保留）
+    '财报','营收','净利','净利润','市值','股价','季报','年报','中报','分红','回购','路演'
 ];
 // 弱相关关键词：泛化业务/评测词，单独出现多为非科技，需累计≥2或配合强词才相关
 const SOFT_KEYWORDS = [
@@ -127,7 +151,12 @@ function extractTags(text) {
         '电脑硬件': ['电脑','笔记本','显卡','内存','ssd','主板','显示器','macbook','thinkpad','ipad','平板','机械键盘','鼠标','oled','miniled','ddr5'],
         '软件应用': ['软件','app','应用','操作系统','windows','macos','浏览器','chrome','开源','github','docker','linux'],
         '互联网': ['互联网','社交','电商','直播','短视频','字节跳动','腾讯','阿里','百度','美团','拼多多','京东','快手','小红书','b站','知乎','抖音','tiktok'],
-        '科技创投': ['融资','ipo','上市','估值','投资','创投','vc','pe','创业','独角兽','科创板','纳斯达克'],
+        '网络安全': ['网络安全','黑客','漏洞','数据泄露','勒索软件','钓鱼','渗透','防火墙','apt','恶意软件','ddos'],
+        'AI芯片': ['ai芯片','算力','英伟达','昇腾','寒武纪','gpu','npu'],
+        '大公司': ['腾讯','阿里','字节跳动','百度','小米','华为','美团','京东','拼多多','网易','快手','三星','联想','苹果','谷歌','微软','meta','特斯拉','英伟达'],
+        '测评/新品': ['测评','评测','上手','开箱','横评','跑分','新品发布','发布会','首发','亮相'],
+        '专访': ['专访','访谈','对话','口述','圆桌'],
+        '科技创投': ['融资','ipo','上市','估值','投资','创投','vc','pe','创业','独角兽','科创板','纳斯达克','财报','营收','市值'],
         '智能硬件': ['智能硬件','iot','可穿戴','智能家居','ar','vr','xr','vision pro','quest','机器人','无人机','3d打印','智能手表','airpods'],
         '区块链/Web3': ['区块链','web3','比特币','以太坊','nft','defi','加密','数字货币','dao','智能合约','元宇宙']
     };
@@ -653,27 +682,40 @@ const googleNewsSources = [
     // Google News 的 site:huxiu.com 可稳定拉取近 ~100 篇（含前沿科技/3C数码等板块），
     // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
     { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
+    // ===== 主题扩量源：自由检索词（非 site:），拉取近30天相关科技文，最大化看板体量 =====
+    // 这些源本身就是"主题检索"，几乎全为科技相关，故标记 topic:true 并放宽至 30 天窗口。
+    { name: '网络安全', query: '网络安全 OR 黑客 OR 漏洞 OR 数据泄露 OR 勒索软件 OR 钓鱼 OR 渗透测试', color: '#c62828', topic: true },
+    { name: 'AI芯片', query: 'AI芯片 OR 算力芯片 OR 英伟达 OR 华为昇腾 OR 寒武纪', color: '#6a1b9a', topic: true },
+    { name: '三星', query: '三星 Galaxy 手机 OR 三星 芯片 OR 三星 发布', color: '#0d47a1', topic: true },
+    { name: '科技大厂', query: '腾讯 OR 阿里巴巴 OR 字节跳动 OR 百度 OR 小米 OR 华为 OR 美团 OR 京东 OR 拼多多 OR 网易 OR 快手', color: '#00695c', topic: true },
+    { name: '数码测评', query: '测评 OR 评测 OR 上手 OR 开箱 OR 横评 OR 跑分', color: '#e65100', topic: true },
+    { name: '新品发布', query: '新品发布 OR 发布会 OR 首发 OR 亮相 OR 官宣', color: '#ad1457', topic: true },
+    { name: '科技专访', query: '专访 OR 访谈 OR 对话 科技 OR 口述 创始人', color: '#37474f', topic: true },
+    { name: '上市科技', query: 'IPO OR 科技公司 上市 OR 科技 财报 OR 独角兽 融资', color: '#1b5e20', topic: true },
 ];
 
 async function fetchGoogleNews(src, existingTitles) {
     try {
         console.log(`[GNews] ${src.name}`);
-        const q = encodeURIComponent('site:' + src.site);
-        const url = `https://news.google.com/rss/search?q=${q}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans`;
+        // 站点兜底源用 site:domain；主题扩量源用自由检索词（src.query）
+        const q = src.query ? src.query : 'site:' + src.site;
+        const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=zh-CN&gl=CN&ceid=CN:zh-Hans`;
         const feed = await parser.parseURL(url);
         const now = Date.now();
         const items = [];
         for (const it of (feed.items || [])) {
             const t = new Date(it.isoDate || it.pubDate || 0).getTime();
             // 放宽至 30 天：虎嗅在 MONTH_WINDOW 中保留一个月内全部科技文；
-            // 品玩不在 MONTH_WINDOW，最终仍由主流程 3 天窗口裁掉陈旧项。
+            // 品玩不在 MONTH_WINDOW，最终仍由主流程窗口裁掉陈旧项。
             if (isNaN(t) || (now - t) > 30 * 86400000) continue;
-            // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园等）
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu)\s*$/i, '').trim();
+            // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园/FreeBuf/36氪等）
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|IT之家)\s*$/i, '').trim();
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;
-            items.push(makeArticle(src, { title, url: it.link || '', time: it.isoDate || it.pubDate || '' }));
+            const art = makeArticle(src, { title, url: it.link || '', time: it.isoDate || it.pubDate || '' });
+            if (src.topic) art.topic = true; // 标记主题扩量源，新鲜度过滤放宽至 30 天
+            items.push(art);
             existingTitles.add(title);
         }
         console.log(`  => ${items.length}条(近30天, 已去重, 最终按源窗口裁切)`);
@@ -682,7 +724,9 @@ async function fetchGoogleNews(src, existingTitles) {
 }
 
 // ========== 混合源：需经相关性过滤（其余为纯科技源，仅做标题级排除） ==========
-const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技'];
+// 含站点兜底源(华尔街见闻/虎嗅/品玩/极客公园/快科技) 与 主题扩量源(网络安全/AI芯片/三星/科技大厂/数码测评/新品发布/科技专访/上市科技)
+const MIXED_SOURCES = ['华尔街见闻', '虎嗅', '品玩', '极客公园', '快科技',
+    '网络安全', 'AI芯片', '三星', '科技大厂', '数码测评', '新品发布', '科技专访', '上市科技'];
 
 // ========== 主流程 ==========
 async function main() {
@@ -764,12 +808,14 @@ async function main() {
     }
 
     // 新鲜度过滤：丢弃旧文，保证看板前列始终是最新内容
-    // 标准窗口 3 天；澎湃新闻等更新较慢的源放宽至 7 天；爱搞机/Dev.to 等低频源放宽至 30 天
-    const MAX_AGE_MS = 3 * 24 * 3600 * 1000;
-    const MAX_AGE_LONG_MS = 7 * 24 * 3600 * 1000;
+    // 标准窗口放宽至 7 天（原 3 天，扩量需要）；知名科技媒体放宽至 14 天；
+    // 低频/主题源放宽至 30 天（爱搞机/Dev.to/cnBeta/虎嗅/华尔街见闻/品玩 + 主题扩量源）。
+    const MAX_AGE_MS = 7 * 24 * 3600 * 1000;
+    const MAX_AGE_LONG_MS = 14 * 24 * 3600 * 1000;
     const MAX_AGE_MONTH_MS = 30 * 24 * 3600 * 1000;
-    const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园'];
-    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta', '虎嗅'];
+    const LONG_WINDOW_SOURCES = ['澎湃新闻', '极客公园', '36氪', '钛媒体', '少数派', '爱范儿', '量子位', '机器之心', 'InfoQ', '开源中国', 'Solidot', 'DoNews', '雷锋网'];
+    const MONTH_WINDOW_SOURCES = ['爱搞机', 'Dev.to', 'cnBeta', '虎嗅', '华尔街见闻', '品玩'];
+    const TOPIC_SOURCES = new Set(googleNewsSources.filter(s => s.topic).map(s => s.name));
     const before = unique.length;
     unique = unique.filter(a => {
         const t = new Date(a.time || 0).getTime();
@@ -777,11 +823,12 @@ async function main() {
         let maxAge = MAX_AGE_MS;
         // 种子兜底文章（实时为0时注入）同样放宽至 30 天，保证反爬源至少有内容
         if (a.seedFallback) maxAge = MAX_AGE_MONTH_MS;
+        else if (TOPIC_SOURCES.has(a.source) || a.topic) maxAge = MAX_AGE_MONTH_MS;
         else if (MONTH_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_MONTH_MS;
         else if (LONG_WINDOW_SOURCES.includes(a.source)) maxAge = MAX_AGE_LONG_MS;
         return (Date.now() - t) <= maxAge;
     });
-    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准3天/澎湃7天/爱搞机Dev.to虎嗅30天)`);
+    console.log(`\n🕒 新鲜度过滤: ${before} → ${unique.length} 篇 (标准7天/知名媒体14天/低频与主题源30天)`);
 
     // 修正/剔除未来时间戳：部分源（如 InfoQ）会给出未来发布时间，导致文章永久置顶且显示异常；
     // 个别解析误判（如 "Win11/10" 误作 11/10）也会产生未来日期。这些一律直接丢弃，
