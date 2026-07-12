@@ -126,6 +126,11 @@ ul { list-style: none; }
     box-shadow: 0 0 20px rgba(6, 182, 212, 0.08);
 }
 .nav-item i { width: 22px; text-align: center; font-size: 1.1rem; }
+.nav-item-disabled {
+    cursor: not-allowed; opacity: 0.5; pointer-events: none;
+}
+.nav-item-disabled i { width: 22px; text-align: center; font-size: 1.1rem; }
+.nav-item-disabled span { }
 .badge-coming {
     font-size: 0.62rem; padding: 2px 8px; border-radius: 10px;
     background: rgba(139, 92, 246, 0.2); color: var(--accent-purple);
