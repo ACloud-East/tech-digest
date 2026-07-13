@@ -238,9 +238,55 @@
                                 </div>
                             </div>
 
-                            <!-- 右栏：控制区 + 输出区 -->
-                            <div class="ai-control-section">
-                                <!-- 控制参数 -->
+                        <!-- 右栏：控制区 + 输出区 -->
+                        <div class="ai-control-section">
+                            <!-- API 设置（BYOK：用户自带 key） -->
+                            <div class="ai-params-card ai-api-card">
+                                <h3 class="ai-params-title">
+                                    <i class="fa-solid fa-key"></i> API 设置
+                                    <button type="button" class="ai-api-toggle" @click="aiApi.show = !aiApi.show">
+                                        {{ aiApi.show ? '收起' : '展开' }}
+                                    </button>
+                                </h3>
+                                <div v-show="aiApi.show">
+                                    <div class="ai-api-status" :class="aiApiStatus.cls">
+                                        <i :class="aiApiStatus.icon"></i> {{ aiApiStatus.text }}
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-key"></i> 我的 API Key</label>
+                                        <div class="ai-key-row">
+                                            <input :type="aiApi.showKey ? 'text' : 'password'" class="ai-input" v-model="aiApi.key" placeholder="sk-... 例如 VectorEngine / DeepSeek 的 key">
+                                            <button type="button" class="ai-eye-btn" @click="aiApi.showKey = !aiApi.showKey" :title="aiApi.showKey ? '隐藏' : '显示'">
+                                                <i :class="aiApi.showKey ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-server"></i> API 地址</label>
+                                        <select class="ai-input" v-model="aiApi.basePreset" @change="applyApiSettings">
+                                            <option value="vectorengine">VectorEngine（默认代理）</option>
+                                            <option value="deepseek">官方 DeepSeek</option>
+                                            <option value="custom">自定义</option>
+                                        </select>
+                                        <input v-if="aiApi.basePreset === 'custom'" type="text" class="ai-input ai-input-sub" v-model="aiApi.customBase" placeholder="https://你的API地址/v1" @input="applyApiSettings">
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-cube"></i> 模型</label>
+                                        <input type="text" class="ai-input" v-model="aiApi.model" placeholder="deepseek-chat" @input="applyApiSettings">
+                                    </div>
+
+                                    <div class="ai-api-actions">
+                                        <button type="button" class="ai-action-btn primary" @click="saveApiSettings">保存</button>
+                                        <button type="button" class="ai-action-btn" @click="clearApiSettings">清除</button>
+                                    </div>
+                                    <p class="ai-api-hint">key 仅保存在你本机浏览器（localStorage），不上传、不进代码仓库；用完直接在「我的 key」里更换即可。</p>
+                                </div>
+                            </div>
+
+                            <!-- 控制参数 -->
                                 <div class="ai-params-card">
                                     <h3 class="ai-params-title">
                                         <i class="fa-solid fa-sliders"></i> 生成参数
@@ -584,8 +630,8 @@
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="js/api.js?v=2607121825"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=7"></script>
+    <script src="js/ai-generator.js?v=8"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607121825"></script>
+    <script src="js/app.js?v=2607130001"></script>
 </body>
 </html>

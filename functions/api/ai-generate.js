@@ -42,14 +42,17 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: '缺少 prompt 字段' }), { status: 400, headers: acao });
     }
 
-    // 2) 读取密钥（仅 Cloudflare 环境可见，前端不可见）
-    const apiKey = env.VECTOR_ENGINE_KEY || env.DEEPSEEK_API_KEY;
+    // 2) 读取密钥：优先用「用户自带 key」（BYOK，从请求体带来），其次用站点服务端密文
+    const apiKey = (body.apiKey && String(body.apiKey).trim()) || env.VECTOR_ENGINE_KEY || env.DEEPSEEK_API_KEY;
     if (!apiKey) {
-        return new Response(JSON.stringify({ error: '服务端未配置 API key（请在 Cloudflare 设置 VECTOR_ENGINE_KEY）' }), { status: 500, headers: acao });
+        return new Response(JSON.stringify({ error: '未配置 API key：请在本页「API 设置」中填入你自己的 key，或联系站点管理员配置服务端默认 key。' }), { status: 400, headers: acao });
     }
 
-    // 3) 目标 API（默认 VectorEngine 代理；可用 VECTOR_ENGINE_BASE 覆盖为官方 api.deepseek.com）
-    const base = (env.VECTOR_ENGINE_BASE || 'https://api.vectorengine.cn/v1').replace(/\/$/, '');
+    // 3) 目标 API 地址：优先用户指定 base，其次服务端 VECTOR_ENGINE_BASE，默认 VectorEngine 代理
+    const base = (body.base || env.VECTOR_ENGINE_BASE || 'https://api.vectorengine.cn/v1').trim().replace(/\/$/, '');
+    if (!/^https:\/\//.test(base)) {
+        return new Response(JSON.stringify({ error: 'base 必须是 https 开头的 API 地址' }), { status: 400, headers: acao });
+    }
     const model = body.model || env.VECTOR_ENGINE_MODEL || 'deepseek-chat';
     const maxTokens = Math.min(Math.max(parseInt(body.wordCount, 10) || 800, 1) * 3, 4096);
 

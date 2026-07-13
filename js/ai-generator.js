@@ -7,7 +7,7 @@
 const AIGenerator = {
     config: {
         // 'local'  : 纯前端模板伪 AI（免费兜底，无需 key）
-        // 'cloud'  : 经同源 Cloudflare Function 代理调用大模型（key 存于服务端，浏览器不可见）
+        // 'cloud'  : 经同源 Cloudflare Function 代理调用大模型（支持 BYOK：用户自带 key）
         // 'deepseek': 浏览器直连 api.deepseek.com（需填 deepseekKey，key 会暴露于前端，不推荐）
         // 'openai' : 浏览器直连 api.openai.com（需填 openaiKey，key 会暴露于前端，不推荐）
         provider: 'cloud',
@@ -17,6 +17,16 @@ const AIGenerator = {
         deepseekModel: 'deepseek-chat',
         openaiKey: '',     // 仅 'openai' 模式使用，明文在前端不安全
         openaiModel: 'gpt-4o-mini',
+
+        // ===== BYOK：用户自带 key（存于浏览器 localStorage，仅本人可见） =====
+        userApiKey: '',    // 用户自己的 API key（如 sk-xxx）
+        userApiBase: '',   // 用户指定的 API 地址，留空则用站点默认（VectorEngine）
+        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-chat
+    },
+
+    // 是否使用「用户自带 key」
+    get useOwnKey() {
+        return !!(this.config.userApiKey && String(this.config.userApiKey).trim());
     },
 
     async generate(form) {
@@ -27,8 +37,10 @@ const AIGenerator = {
                 if (p === 'deepseek' && this.config.deepseekKey) return await this.generateViaDeepSeek(form);
                 if (p === 'openai' && this.config.openaiKey) return await this.generateViaOpenAI(form);
             } catch (e) {
+                // 用户自带 key 出错：显式抛出，便于用户看到「key 失效/余额不足」并去更换
+                if (this.useOwnKey) throw e;
                 console.warn('[AI] 云端生成失败，回退本地模板：', e.message);
-                // 任何云端异常都回退到本地模板，保证按钮始终有产出
+                // 未配置自带 key 时，任何云端异常都回退到本地模板，保证按钮始终有产出
             }
         }
         if (form.plain) {
@@ -37,17 +49,25 @@ const AIGenerator = {
         return await this.generateLocal(form);
     },
 
-    // ========== 经服务端代理生成（推荐：key 不进前端） ==========
+    // ========== 经服务端代理生成（支持 BYOK：用户自带 key 随请求带上） ==========
     async generateViaCloud(form) {
         const prompt = this.buildPrompt(form);
+        const body = {
+            prompt,
+            model: this.config.userApiModel || this.config.deepseekModel,
+            wordCount: form.wordCount || 800,
+        };
+        // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
+        if (this.useOwnKey) {
+            body.apiKey = this.config.userApiKey.trim();
+            if (this.config.userApiBase && this.config.userApiBase.trim()) {
+                body.base = this.config.userApiBase.trim();
+            }
+        }
         const resp = await fetch(this.config.endpoint || '/api/ai-generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                prompt,
-                model: this.config.deepseekModel,
-                wordCount: form.wordCount || 800,
-            }),
+            body: JSON.stringify(body),
             signal: AbortSignal.timeout(60000),
         });
         if (!resp.ok) {

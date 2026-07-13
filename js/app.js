@@ -86,6 +86,77 @@ const app = createApp({
         const aiResultPlain = ref('');    // 非结构式文本
         const aiTab = ref('structured');  // 'structured' | 'plain'
 
+        // ====== API 设置（BYOK：用户自带 key，仅存本机 localStorage） ======
+        const aiApi = ref({
+            show: false,
+            key: '',
+            basePreset: 'vectorengine', // vectorengine | deepseek | custom
+            customBase: '',
+            model: 'deepseek-chat',
+            showKey: false,
+        });
+
+        const LS_KEY = 'td_ai_api_v1';
+
+        function basePresetToUrl(preset, custom) {
+            if (preset === 'deepseek') return 'https://api.deepseek.com/v1';
+            if (preset === 'custom') return (custom || '').trim();
+            return ''; // vectorengine → 留空，由代理函数用默认地址
+        }
+
+        function applyApiSettings() {
+            const a = aiApi.value;
+            AIGenerator.config.userApiKey = (a.key || '').trim();
+            AIGenerator.config.userApiBase = basePresetToUrl(a.basePreset, a.customBase);
+            AIGenerator.config.userApiModel = (a.model || '').trim();
+        }
+
+        function loadApiSettings() {
+            try {
+                const raw = localStorage.getItem(LS_KEY);
+                if (raw) {
+                    const o = JSON.parse(raw);
+                    if (o.key) aiApi.value.key = o.key;
+                    if (o.basePreset) aiApi.value.basePreset = o.basePreset;
+                    if (o.customBase) aiApi.value.customBase = o.customBase;
+                    if (o.model) aiApi.value.model = o.model;
+                }
+            } catch (_) {}
+            applyApiSettings();
+        }
+
+        function saveApiSettings() {
+            const a = aiApi.value;
+            const payload = {
+                key: (a.key || '').trim(),
+                basePreset: a.basePreset,
+                customBase: (a.customBase || '').trim(),
+                model: (a.model || '').trim() || 'deepseek-chat',
+            };
+            try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch (_) {}
+            applyApiSettings();
+            alert('已保存：本次及之后的生成将使用你配置的 API。用完可在「我的 key」里直接更换。');
+        }
+
+        function clearApiSettings() {
+            aiApi.value.key = '';
+            aiApi.value.customBase = '';
+            try { localStorage.removeItem(LS_KEY); } catch (_) {}
+            applyApiSettings();
+            alert('已清除你的 key，将回退到站点默认 key / 本地模板。');
+        }
+
+        const aiApiStatus = computed(() => {
+            const k = (aiApi.value.key || '').trim();
+            if (k) {
+                const masked = k.length > 10 ? (k.slice(0, 6) + '…' + k.slice(-4)) : k;
+                return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '正在使用你自己的 key：' + masked };
+            }
+            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 key：将使用站点默认 key，若无则回退本地模板' };
+        });
+
+        loadApiSettings();
+
         const aiResultHtml = computed(() => {
             if (!aiResult.value) return '';
             return aiResult.value
