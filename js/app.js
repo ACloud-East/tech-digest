@@ -686,6 +686,11 @@ const app = createApp({
             fetchTechNews();
         });
 
+        // 可见字符计数：排除空格/制表符/换行等纯空白，更接近「字数」直觉
+        function visibleCharCount(text) {
+            return (text || '').replace(/\s/g, '').length;
+        }
+
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
@@ -698,7 +703,7 @@ const app = createApp({
             aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
-            aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings,
+            aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
             pptReady, pptDownloading, pptSlideCount,

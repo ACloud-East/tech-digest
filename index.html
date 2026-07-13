@@ -218,7 +218,7 @@
                                         <i class="fa-solid fa-file-lines"></i> 参考原文内容
                                     </label>
                                     <textarea class="ai-textarea ai-textarea-main" v-model="aiForm.content" placeholder="粘贴已有文章内容，AI将基于此重新创作优化..." rows="8"></textarea>
-                                    <span class="ai-char-count">{{ aiForm.content.length }} 字</span>
+                                    <span class="ai-char-count">{{ visibleCharCount(aiForm.content) }} 字</span>
                                 </div>
 
                                 <!-- 参考模板 -->
@@ -227,7 +227,7 @@
                                         <i class="fa-solid fa-copy"></i> 参考模板（可选）
                                     </label>
                                     <textarea class="ai-textarea" v-model="aiForm.template" placeholder="输入你期望的文章模板或参考范例，AI将模仿其风格..." rows="4"></textarea>
-                                    <span class="ai-char-count">{{ aiForm.template.length }} 字</span>
+                                    <span class="ai-char-count">{{ visibleCharCount(aiForm.template) }} 字</span>
                                 </div>
 
                                 <!-- 关键词 -->
@@ -644,6 +644,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=8"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607130001"></script>
+    <script src="js/app.js?v=2607130002"></script>
 </body>
 </html>
