@@ -697,6 +697,8 @@ const app = createApp({
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
             aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars,
             generateArticle, regenerateArticle, copyResult, downloadResult,
+            // AI 文案生成 - API 设置（BYOK）
+            aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
             pptReady, pptDownloading, pptSlideCount,
