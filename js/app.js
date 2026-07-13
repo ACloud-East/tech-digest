@@ -152,7 +152,7 @@ const app = createApp({
                 const masked = k.length > 10 ? (k.slice(0, 6) + '…' + k.slice(-4)) : k;
                 return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '正在使用你自己的 key：' + masked };
             }
-            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 key：将使用站点默认 key，若无则回退本地模板' };
+            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 key：将使用站点默认 API（VectorEngine / deepseek-chat）' };
         });
 
         loadApiSettings();

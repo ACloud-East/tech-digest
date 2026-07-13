@@ -378,6 +378,8 @@ ul { list-style: none; }
 }
 
 .ai-field { display: flex; flex-direction: column; gap: 6px; }
+.ai-field-grow { flex: 1; display: flex; flex-direction: column; }
+.ai-field-grow .ai-textarea-main { flex: 1; resize: none; }
 .ai-label {
     font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
     display: flex; align-items: center; gap: 6px;
@@ -461,6 +463,27 @@ ul { list-style: none; }
 .ai-api-actions .ai-action-btn.primary { background: var(--gradient-hero); color: #fff; border: none; }
 .ai-api-actions .ai-action-btn.primary:hover { color: #fff; box-shadow: 0 4px 16px rgba(6,182,212,0.3); }
 .ai-api-hint { font-size: 0.72rem; color: var(--text-muted); line-height: 1.5; margin: 0; }
+
+/* 站点默认 API 信息 */
+.ai-api-default {
+    background: rgba(6,182,212,0.06); border: 1px dashed rgba(6,182,212,0.35);
+    border-radius: var(--radius-md); padding: 12px;
+    display: flex; flex-direction: column; gap: 8px;
+}
+.ai-api-default-title {
+    font-size: 0.82rem; font-weight: 600; color: var(--text-primary);
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.ai-api-default-title i { color: var(--accent-cyan); }
+.ai-api-default-note {
+    margin-left: auto; font-size: 0.7rem; color: var(--text-muted); font-weight: 400;
+}
+.ai-api-default-row {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;
+}
+.ai-api-default-row span:first-child { color: var(--text-muted); flex: 0 0 auto; }
+.ai-api-default-row span:last-child { color: var(--text-primary); text-align: right; word-break: break-all; }
 
 /* 生成按钮 */
 .ai-generate-btn {
