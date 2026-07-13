@@ -6,24 +6,62 @@
 
 const AIGenerator = {
     config: {
-        provider: 'local', // 'local' | 'deepseek' | 'openai'
-        deepseekKey: '',
+        // 'local'  : 纯前端模板伪 AI（免费兜底，无需 key）
+        // 'cloud'  : 经同源 Cloudflare Function 代理调用大模型（key 存于服务端，浏览器不可见）
+        // 'deepseek': 浏览器直连 api.deepseek.com（需填 deepseekKey，key 会暴露于前端，不推荐）
+        // 'openai' : 浏览器直连 api.openai.com（需填 openaiKey，key 会暴露于前端，不推荐）
+        provider: 'cloud',
+        // 同源代理端点（Cloudflare Pages Functions 提供）；GitHub Pages 无函数会自动回退本地
+        endpoint: '/api/ai-generate',
+        deepseekKey: '',   // 仅 'deepseek' 模式使用，明文在前端不安全，建议用 'cloud' 模式
         deepseekModel: 'deepseek-chat',
-        openaiKey: '',
+        openaiKey: '',     // 仅 'openai' 模式使用，明文在前端不安全
         openaiModel: 'gpt-4o-mini',
     },
 
     async generate(form) {
-        if (this.config.provider === 'deepseek' && this.config.deepseekKey) {
-            return await this.generateViaDeepSeek(form);
-        }
-        if (this.config.provider === 'openai' && this.config.openaiKey) {
-            return await this.generateViaOpenAI(form);
+        const p = this.config.provider;
+        if (p === 'cloud' || p === 'deepseek' || p === 'openai') {
+            try {
+                if (p === 'cloud') return await this.generateViaCloud(form);
+                if (p === 'deepseek' && this.config.deepseekKey) return await this.generateViaDeepSeek(form);
+                if (p === 'openai' && this.config.openaiKey) return await this.generateViaOpenAI(form);
+            } catch (e) {
+                console.warn('[AI] 云端生成失败，回退本地模板：', e.message);
+                // 任何云端异常都回退到本地模板，保证按钮始终有产出
+            }
         }
         if (form.plain) {
             return await this.generatePlainLocal(form);
         }
         return await this.generateLocal(form);
+    },
+
+    // ========== 经服务端代理生成（推荐：key 不进前端） ==========
+    async generateViaCloud(form) {
+        const prompt = this.buildPrompt(form);
+        const resp = await fetch(this.config.endpoint || '/api/ai-generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt,
+                model: this.config.deepseekModel,
+                wordCount: form.wordCount || 800,
+            }),
+            signal: AbortSignal.timeout(60000),
+        });
+        if (!resp.ok) {
+            let detail = '';
+            try { detail = (await resp.json()).error || ''; } catch (_) {}
+            throw new Error('AI 服务 ' + resp.status + (detail ? '：' + detail : ''));
+        }
+        const data = await resp.json();
+        if (data.error) throw new Error('AI 服务：' + (typeof data.error === 'string' ? data.error : JSON.stringify(data.error)));
+        // 兼容 OpenAI / DeepSeek 返回结构 { choices:[{message:{content}}] }
+        const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content)
+            || data.content;
+        if (!content) throw new Error('AI 服务返回为空');
+        return this.parseApiResponse(content);
     },
 
     // ========== 本地生成（核心 - v3 重写） ==========
