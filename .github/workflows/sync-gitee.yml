@@ -1,0 +1,23 @@
+name: Sync to Gitee
+on:
+  push:
+    branches: [main]
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Push to Gitee
+        run: |
+          git remote add gitee https://oauth2:${{ secrets.GITEE_TOKEN }}@gitee.com/Acloud-East/tech-digest.git
+          git push gitee main --force
+      
+      - name: Deploy Gitee Pages (trigger rebuild)
+        run: |
+          curl -X POST https://gitee.com/Acloud-East/tech-digest/pages/builds \
+            -H "Content-Type: application/json" \
+            -d '{}'
