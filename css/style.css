@@ -379,7 +379,7 @@ ul { list-style: none; }
 
 .ai-field { display: flex; flex-direction: column; gap: 6px; }
 .ai-field-grow { flex: 1; display: flex; flex-direction: column; }
-.ai-field-grow .ai-textarea-main { flex: 1; resize: none; }
+.ai-field-grow .ai-textarea-main { flex: 1; resize: vertical; }
 .ai-label {
     font-size: 0.82rem; font-weight: 600; color: var(--text-secondary);
     display: flex; align-items: center; gap: 6px;
