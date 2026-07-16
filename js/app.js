@@ -326,10 +326,23 @@ const app = createApp({
             const maxT = times.length ? new Date(Math.max(...times)) : null;
             const spanDays = (minT && maxT) ? Math.max(1, Math.round((maxT - minT) / 86400000) + 1) : 1;
 
-            // 热词：对每篇文章的 tags 加权统计（标签是抓取时已提炼的关键词）
+            // 热词：以文章标签（抓取时已提炼的主题词）为主；若不足 30 个，
+            // 再用科技词表从标题/正文中补充高频词，让词云更饱满（纯本地，无需 API）
             const tagCount = {};
             arts.forEach(a => (a.tags || []).forEach(t => { const k = (t || '').trim(); if (k) tagCount[k] = (tagCount[k] || 0) + 1; }));
-            const hotWords = Object.entries(tagCount).sort((x, y) => y[1] - x[1]).slice(0, 24).map(([w, c]) => ({ w, c }));
+            const KW_DICT = ['苹果','华为','小米','特斯拉','英伟达','微软','谷歌','阿里','腾讯','百度','字节','OpenAI','ChatGPT','大模型','AIGC','半导体','新能源','电动车','自动驾驶','iPhone','安卓','鸿蒙','量子','机器人','5G','6G','GPU','算力','数据中心','操作系统','折叠屏','电池','卫星','航天','火箭','空间站','元宇宙','京东','美团','拼多多','比亚迪','蔚来','理想','小鹏','英特尔','AMD','高通','三星','索尼','任天堂','网易','抖音','快手','小红书','微博','Vision','Mac','Windows','Linux','RISC','脑机'];
+            const kwCount = {};
+            arts.forEach(a => {
+                const txt = ((a.title || '') + ' ' + (a.description || '')).toLowerCase();
+                const seen = new Set();
+                KW_DICT.forEach(k => { if (!seen.has(k) && txt.includes(k.toLowerCase())) { seen.add(k); kwCount[k] = (kwCount[k] || 0) + 1; } });
+            });
+            // 去掉与已有标签重复/包含关系的词，避免词云冗余
+            const tagKeys = Object.keys(tagCount);
+            const isRedundant = k => tagKeys.some(t => t.includes(k) || k.includes(t));
+            const kwEntries = Object.entries(kwCount).filter(([k]) => !isRedundant(k)).sort((x, y) => y[1] - x[1]);
+            const tagEntries = Object.entries(tagCount).sort((x, y) => y[1] - x[1]);
+            const hotWords = [...tagEntries, ...kwEntries].slice(0, 30).map(([w, c]) => ({ w, c }));
             const maxC = hotWords.length ? hotWords[0].c : 1;
             const minC = hotWords.length ? hotWords[hotWords.length - 1].c : 1;
             const palette = ['#6366f1', '#ec4899', '#06b6d4', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#3b82f6'];
@@ -338,15 +351,12 @@ const app = createApp({
                 h.color = palette[i % palette.length];
             });
 
-            // 来源活跃度 Top 12
-            const srcCount = {}, srcColor = {};
-            arts.forEach(a => {
-                const s = a.source; if (!s) return;
-                srcCount[s] = (srcCount[s] || 0) + 1;
-                if (a.sourceColor && !srcColor[s]) srcColor[s] = a.sourceColor;
-            });
+            // 来源活跃度 Top 12（使用鲜亮调色板，避免个别媒体品牌色为黑/深色时与背景板融合）
+            const srcPalette = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6', '#3b82f6', '#ef4444', '#14b8a6', '#f97316', '#a855f7', '#22c55e'];
+            const srcCount = {};
+            arts.forEach(a => { const s = a.source; if (!s) return; srcCount[s] = (srcCount[s] || 0) + 1; });
             const topSources = Object.entries(srcCount).sort((x, y) => y[1] - x[1]).slice(0, 12)
-                .map(([name, c]) => ({ name, c, color: srcColor[name] || getSourceColor(name) || '#64748b' }));
+                .map(([name, c], i) => ({ name, c, color: srcPalette[i % srcPalette.length] }));
             const maxSrc = topSources.length ? topSources[0].c : 1;
             topSources.forEach(s => s.pct = Math.round(s.c / maxSrc * 100));
 

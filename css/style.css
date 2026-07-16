@@ -206,6 +206,7 @@ ul { list-style: none; }
 .bar-fill {
     height: 100%; border-radius: 6px; min-width: 3px;
     transition: width 0.5s ease;
+    background-image: linear-gradient(180deg, rgba(255,255,255,0.22), rgba(0,0,0,0.10));
 }
 .bar-val { width: 42px; flex-shrink: 0; font-size: 0.78rem; color: var(--text-muted); text-align: left; }
 
@@ -265,6 +266,7 @@ ul { list-style: none; }
 .platform-btn.douyin.active { background: linear-gradient(135deg, #111, #333); border-color: #555; }
 .platform-btn.toutiao.active { background: linear-gradient(135deg, #e13b3f, #ff6b6b); }
 .platform-btn.baidu.active { background: linear-gradient(135deg, #2932e1, #6b7fff); }
+.platform-btn.zhihu.active { background: linear-gradient(135deg, #0084ff, #2e9bff); }
 
 /* ==================== Hot List (竖排) ==================== */
 .hot-list-container {
