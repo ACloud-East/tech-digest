@@ -23,7 +23,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          # 必须用 Node 22+：wrangler@latest 要求 Node >=22，否则部署步骤会直接报错退出
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
