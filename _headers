@@ -1,0 +1,3 @@
+# 数据文件每次都重新校验，避免 Cloudflare 边缘缓存 news.json 长达 7 天导致内容陈旧
+/data/*
+  Cache-Control: no-cache

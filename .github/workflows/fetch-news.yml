@@ -50,6 +50,20 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: update news data [$(date -u +%Y-%m-%d)]"
           git push
 
+      # 关键：fetch-news 用 GITHUB_TOKEN 提交的 push 不会触发其它 push 工作流
+      # （deploy-cloudflare.yml 仅监听 push），所以必须在本工作流内直接重新部署
+      # Cloudflare Pages，否则线上（tech-digest-74r.pages.dev）会一直停留在旧部署、
+      # 数据陈旧（曾出现“两天前”的问题）。
+      # 另外仓库根 _headers 已对 /data/* 设置 Cache-Control: no-cache，
+      # 配合每次重新部署，可保证用户拿到的是最新抓取的数据。
+      - name: Deploy to Cloudflare Pages
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+        run: |
+          npm install -g wrangler@latest
+          wrangler pages deploy . --project-name=tech-digest --branch=main --commit-dirty=true
+
       - name: Trigger Pages rebuild (instant CDN refresh)
         run: |
           curl -s -X POST \

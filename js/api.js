@@ -159,20 +159,25 @@ const API = {
         const cached = this.getCache(cacheKey);
         if (cached) return cached;
 
-        try {
-            // 直接fetch，不用AbortController避免超时问题
-            // 追加 Date.now() 既是 HTTP 缓存击穿，也确保每次刷新都拿到 cron 最新生成的文件
-            const r = await fetch('data/news.json?' + Date.now());
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            const data = await r.json();
-            if (data && data.articles && Array.isArray(data.articles)) {
-                const articles = data.articles.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
-                const payload = { articles, updateTime: data.updateTime || '' };
-                this.setCache(cacheKey, payload);
-                return payload;
+        // 依次尝试：带时间戳的缓存击穿地址 → 裸路径兜底。
+        // 说明：Cloudflare Pages 在某些情况下（部署异常/边缘缓存）会让带 query 的地址 404，
+        // 因此一旦失败立即回退到裸路径；配合仓库根 _headers 对 /data/* 设置 no-cache，
+        // 保证每次都能拿到 cron 最新生成的 news.json。
+        const candidates = ['data/news.json?' + Date.now(), 'data/news.json'];
+        for (const url of candidates) {
+            try {
+                const r = await fetch(url, { cache: 'no-store' });
+                if (!r.ok) continue;
+                const data = await r.json();
+                if (data && data.articles && Array.isArray(data.articles)) {
+                    const articles = data.articles.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+                    const payload = { articles, updateTime: data.updateTime || '' };
+                    this.setCache(cacheKey, payload);
+                    return payload;
+                }
+            } catch (e) {
+                console.warn('读取新闻数据失败 (' + url + '):', e.message);
             }
-        } catch (e) {
-            console.warn('读取新闻数据失败:', e.message);
         }
         return { articles: [], updateTime: '' };
     }
