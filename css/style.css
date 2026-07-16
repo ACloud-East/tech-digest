@@ -136,6 +136,83 @@ ul { list-style: none; }
     background: rgba(139, 92, 246, 0.2); color: var(--accent-purple);
     margin-left: auto; white-space: nowrap;
 }
+.badge-live {
+    font-size: 0.62rem; padding: 2px 8px; border-radius: 10px;
+    background: rgba(16, 185, 129, 0.18); color: #34d399;
+    margin-left: auto; white-space: nowrap;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+/* ==================== 风格分析面板 ==================== */
+.style-panel { max-width: var(--content-max-width); }
+.style-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 12px; margin-bottom: 22px;
+}
+.panel-title {
+    font-size: 1.35rem; font-weight: 700; color: var(--text-primary);
+    display: flex; align-items: center; gap: 10px; margin: 0;
+}
+.panel-title i { color: var(--accent-purple); }
+.panel-sub { margin: 6px 0 0; font-size: 0.82rem; color: var(--text-secondary); }
+.panel-sub strong { color: var(--accent-cyan); }
+.style-empty { text-align: center; padding: 80px 20px; color: var(--text-muted); font-size: 0.9rem; }
+
+.style-overview {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px;
+}
+.ov-card {
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: var(--radius-md); padding: 16px 18px;
+}
+.ov-num { font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan); line-height: 1.2; }
+.ov-num .ov-unit { font-size: 0.85rem; color: var(--text-muted); margin-left: 2px; font-weight: 500; }
+.ov-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; }
+
+.style-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;
+}
+.style-card {
+    background: var(--bg-card); border: 1px solid var(--border-color);
+    border-radius: var(--radius-md); padding: 18px 20px;
+}
+.card-title {
+    font-size: 1rem; font-weight: 600; color: var(--text-primary);
+    display: flex; align-items: center; gap: 8px; margin: 0 0 2px;
+}
+.card-title i { color: var(--accent-purple); }
+.card-hint { font-size: 0.72rem; color: var(--text-muted); margin: 0 0 14px; }
+
+.word-cloud {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+    padding: 8px 4px; line-height: 1.6;
+}
+.cloud-word {
+    font-weight: 700; cursor: default; transition: transform 0.15s ease, opacity 0.15s ease;
+    opacity: 0.92;
+}
+.cloud-word:hover { transform: scale(1.08); opacity: 1; }
+
+.bar-list { display: flex; flex-direction: column; gap: 10px; }
+.bar-row { display: flex; align-items: center; gap: 10px; }
+.bar-label {
+    width: 96px; flex-shrink: 0; font-size: 0.8rem; color: var(--text-secondary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: right;
+}
+.bar-track {
+    flex: 1; height: 10px; background: var(--bg-tertiary);
+    border-radius: 6px; overflow: hidden;
+}
+.bar-fill {
+    height: 100%; border-radius: 6px; min-width: 3px;
+    transition: width 0.5s ease;
+}
+.bar-val { width: 42px; flex-shrink: 0; font-size: 0.78rem; color: var(--text-muted); text-align: left; }
+
+@media (max-width: 880px) {
+    .style-overview { grid-template-columns: repeat(2, 1fr); }
+    .style-grid { grid-template-columns: 1fr; }
+}
 .sidebar-footer { padding: 16px; border-top: 1px solid var(--border-color); }
 .sidebar-stats { display: flex; gap: 8px; }
 .stat-item {

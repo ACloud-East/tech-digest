@@ -312,6 +312,84 @@ const app = createApp({
             return count;
         });
 
+        // ========== 风格分析（基于当前真实数据的纯客户端分析，无需 API）==========
+        const styleAnalysis = computed(() => {
+            const arts = techNews.value;
+            const total = arts.length;
+            if (!total) return null;
+
+            // 概览
+            const lens = arts.map(a => (a.description || '').length).filter(Boolean);
+            const avgLen = lens.length ? Math.round(lens.reduce((s, x) => s + x, 0) / lens.length) : 0;
+            const times = arts.map(a => new Date(a.time).getTime()).filter(t => !isNaN(t));
+            const minT = times.length ? new Date(Math.min(...times)) : null;
+            const maxT = times.length ? new Date(Math.max(...times)) : null;
+            const spanDays = (minT && maxT) ? Math.max(1, Math.round((maxT - minT) / 86400000) + 1) : 1;
+
+            // 热词：对每篇文章的 tags 加权统计（标签是抓取时已提炼的关键词）
+            const tagCount = {};
+            arts.forEach(a => (a.tags || []).forEach(t => { const k = (t || '').trim(); if (k) tagCount[k] = (tagCount[k] || 0) + 1; }));
+            const hotWords = Object.entries(tagCount).sort((x, y) => y[1] - x[1]).slice(0, 24).map(([w, c]) => ({ w, c }));
+            const maxC = hotWords.length ? hotWords[0].c : 1;
+            const minC = hotWords.length ? hotWords[hotWords.length - 1].c : 1;
+            const palette = ['#6366f1', '#ec4899', '#06b6d4', '#f59e0b', '#10b981', '#8b5cf6', '#ef4444', '#3b82f6'];
+            hotWords.forEach((h, i) => {
+                h.size = +(0.85 + (maxC === minC ? 0.6 : (h.c - minC) / (maxC - minC)) * 1.5).toFixed(2);
+                h.color = palette[i % palette.length];
+            });
+
+            // 来源活跃度 Top 12
+            const srcCount = {}, srcColor = {};
+            arts.forEach(a => {
+                const s = a.source; if (!s) return;
+                srcCount[s] = (srcCount[s] || 0) + 1;
+                if (a.sourceColor && !srcColor[s]) srcColor[s] = a.sourceColor;
+            });
+            const topSources = Object.entries(srcCount).sort((x, y) => y[1] - x[1]).slice(0, 12)
+                .map(([name, c]) => ({ name, c, color: srcColor[name] || getSourceColor(name) || '#64748b' }));
+            const maxSrc = topSources.length ? topSources[0].c : 1;
+            topSources.forEach(s => s.pct = Math.round(s.c / maxSrc * 100));
+
+            // 情感/倾向分布（基于标题+正文关键词匹配）
+            const POS = ['增长', '突破', '发布', '利好', '开源', '达成', '领先', '成功', '创新', '上涨', '获奖', '上线', '提升', '合作', '首发', '重磅', '亮眼', '回暖', '加速', '跃升', '新突破'];
+            const NEG = ['暴跌', '裁员', '风险', '警告', '危机', '下滑', '下跌', '亏损', '暂停', '泄露', '诉讼', '故障', '关闭', '失败', '争议', '批评', '质疑', '推迟', '下架', '处罚', '造假', '崩盘'];
+            let pos = 0, neg = 0, neu = 0;
+            arts.forEach(a => {
+                const txt = (a.title || '') + ' ' + (a.description || '');
+                let p = 0, n = 0;
+                POS.forEach(k => { if (txt.includes(k)) p++; });
+                NEG.forEach(k => { if (txt.includes(k)) n++; });
+                if (p > n) pos++; else if (n > p) neg++; else neu++;
+            });
+            const sentiment = [
+                { label: '正面', value: pos, color: '#10b981' },
+                { label: '中性', value: neu, color: '#94a3b8' },
+                { label: '负面', value: neg, color: '#ef4444' },
+            ];
+            const sMax = Math.max(pos, neg, neu, 1);
+            sentiment.forEach(s => s.pct = Math.round(s.value / sMax * 100));
+
+            // 内容长度分布
+            let short = 0, mid = 0, long = 0;
+            lens.forEach(l => { if (l < 100) short++; else if (l <= 400) mid++; else long++; });
+            const lengthBuckets = [
+                { label: '短 · <100字', value: short, color: '#06b6d4' },
+                { label: '中 · 100–400字', value: mid, color: '#6366f1' },
+                { label: '长 · >400字', value: long, color: '#f59e0b' },
+            ];
+            const lMax = Math.max(short, mid, long, 1);
+            lengthBuckets.forEach(b => b.pct = Math.round(b.value / lMax * 100));
+
+            const fmt = d => d ? `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}` : '—';
+
+            return {
+                total,
+                sources: new Set(arts.map(a => a.source).filter(Boolean)).size,
+                avgLen, spanDays, minT: fmt(minT), maxT: fmt(maxT),
+                hotWords, topSources, sentiment, lengthBuckets,
+            };
+        });
+
         const displayedTechNews = computed(() => techNews.value.slice(0, techDisplayCount.value));
         const hasMoreTech = computed(() => {
             // 筛选或搜索时隐藏"加载更多"
@@ -695,7 +773,7 @@ const app = createApp({
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techSourceFilter, techSearchQuery,
             loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, dataSources, themeSources, totalArticles, sourcesCount, totalSourcesCount,
-            filteredTechNews, displayedTechNews, hasMoreTech,
+            filteredTechNews, displayedTechNews, hasMoreTech, styleAnalysis,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
             // AI 文案生成
