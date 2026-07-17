@@ -179,7 +179,7 @@
                                     </article>
                                 </div>
                                 <div class="tech-load-more" v-if="hasMoreTech">
-                                    <button @click="loadMoreTech">加载更多（已显示 {{ techDisplayCount }} / {{ techNews.length }} 条）</button>
+                                    <button @click="loadMoreTech">加载更多</button>
                                 </div>
                             </div>
                             <div class="empty-state" v-if="!techLoading && !techError && filteredTechNews.length === 0">
