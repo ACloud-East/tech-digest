@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css?v=12">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -394,7 +394,7 @@
                         </div>
 
                         <!-- 输出结果区 -->
-                        <div class="ai-output-section" v-if="aiResult">
+                        <div class="ai-output-section" v-if="aiResult" :class="{ generating: aiGenerating }">
                             <div class="ai-output-header">
                                 <h3><i class="fa-solid fa-file-check"></i> 生成结果</h3>
                                 <div class="ai-output-actions">
@@ -708,8 +708,8 @@
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="js/api.js?v=2607121825"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=8"></script>
+    <script src="js/ai-generator.js?v=9"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607160003"></script>
+    <script src="js/app.js?v=2607160004"></script>
 </body>
 </html>

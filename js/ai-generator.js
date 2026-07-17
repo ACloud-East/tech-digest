@@ -29,13 +29,13 @@ const AIGenerator = {
         return !!(this.config.userApiKey && String(this.config.userApiKey).trim());
     },
 
-    async generate(form) {
+    async generate(form, onToken) {
         const p = this.config.provider;
         if (p === 'cloud' || p === 'deepseek' || p === 'openai') {
             try {
-                if (p === 'cloud') return await this.generateViaCloud(form);
-                if (p === 'deepseek' && this.config.deepseekKey) return await this.generateViaDeepSeek(form);
-                if (p === 'openai' && this.config.openaiKey) return await this.generateViaOpenAI(form);
+                if (p === 'cloud') return await this.generateViaCloud(form, onToken);
+                if (p === 'deepseek' && this.config.deepseekKey) return await this.generateViaDeepSeek(form, onToken);
+                if (p === 'openai' && this.config.openaiKey) return await this.generateViaOpenAI(form, onToken);
             } catch (e) {
                 // 用户自带 key 出错：显式抛出，便于用户看到「key 失效/余额不足」并去更换
                 if (this.useOwnKey) throw e;
@@ -44,18 +44,19 @@ const AIGenerator = {
             }
         }
         if (form.plain) {
-            return await this.generatePlainLocal(form);
+            return await this.generatePlainLocal(form, onToken);
         }
-        return await this.generateLocal(form);
+        return await this.generateLocal(form, onToken);
     },
 
     // ========== 经服务端代理生成（支持 BYOK：用户自带 key 随请求带上） ==========
-    async generateViaCloud(form) {
+    async generateViaCloud(form, onToken) {
         const prompt = this.buildPrompt(form);
         const body = {
             prompt,
             model: this.config.userApiModel || this.config.deepseekModel,
             wordCount: form.wordCount || 800,
+            stream: true,
         };
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
         if (this.useOwnKey) {
@@ -68,25 +69,59 @@ const AIGenerator = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(60000),
+            signal: AbortSignal.timeout(90000),
         });
         if (!resp.ok) {
             let detail = '';
             try { detail = (await resp.json()).error || ''; } catch (_) {}
             throw new Error('AI 服务 ' + resp.status + (detail ? '：' + detail : ''));
         }
+
+        const ct = (resp.headers.get('content-type') || '').toLowerCase();
+        // 流式：逐 token 回调，实现打字机效果
+        if (resp.body && ct.includes('text/event-stream')) {
+            const reader = resp.body.getReader();
+            const decoder = new TextDecoder();
+            let buf = '', acc = '';
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buf += decoder.decode(value, { stream: true });
+                let idx;
+                while ((idx = buf.indexOf('\n\n')) >= 0) {
+                    const raw = buf.slice(0, idx);
+                    buf = buf.slice(idx + 2);
+                    const dataLine = raw.split('\n').find(l => l.startsWith('data:'));
+                    if (!dataLine) continue;
+                    const data = dataLine.slice(5).trim();
+                    if (!data || data === '[DONE]') continue;
+                    let content = '';
+                    try {
+                        const j = JSON.parse(data);
+                        if (j.error) throw new Error('AI 服务：' + (j.error.message || j.error));
+                        content = j.content || '';
+                    } catch (e) { if (e.message && e.message.startsWith('AI 服务')) throw e; continue; }
+                    if (content) { acc += content; if (onToken) onToken(this.parseApiResponse(acc)); }
+                }
+            }
+            if (!acc) throw new Error('AI 服务返回为空');
+            if (onToken) onToken(this.parseApiResponse(acc));
+            return this.parseApiResponse(acc);
+        }
+
+        // 非流式（上游返回 JSON）：解析后做打字机展开
         const data = await resp.json();
         if (data.error) throw new Error('AI 服务：' + (typeof data.error === 'string' ? data.error : JSON.stringify(data.error)));
-        // 兼容 OpenAI / DeepSeek 返回结构 { choices:[{message:{content}}] }
-        const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content)
-            || data.content;
+        const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || data.content;
         if (!content) throw new Error('AI 服务返回为空');
-        return this.parseApiResponse(content);
+        const result = this.parseApiResponse(content);
+        if (onToken) await this._reveal(result.content, onToken, result.title);
+        return result;
     },
 
     // ========== 本地生成（核心 - v3 重写） ==========
-    async generateLocal(form) {
-        await this.delay(1200 + Math.random() * 800);
+    async generateLocal(form, onToken) {
+        await this.delay(500 + Math.random() * 400);
         const typeConfig = this.getTypeConfig(form.type);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
@@ -116,12 +151,14 @@ const AIGenerator = {
         // Step 6: 标点归一化，清除拼接产生的重复/粘连标点
         content = this._normalizePunctuation(content);
 
+        // 流式打字机展示
+        if (onToken) await this._reveal(content, onToken, title);
         return { title, content };
     },
 
-    /** 非结构式生成：独立生成连续文章，改写原文事实、不照抄 */
-    async generatePlainLocal(form) {
-        await this.delay(800 + Math.random() * 600);
+    /** 非结构式生成：独立成篇的连续散文，叙事角度与结构式完全不同，不照抄结构式骨架 */
+    async generatePlainLocal(form, onToken) {
+        await this.delay(500 + Math.random() * 400);
         const typeConfig = this.getTypeConfig(form.type);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
@@ -141,108 +178,89 @@ const AIGenerator = {
         const specFacts = source ? source.specs : [];
         const bgFacts = source ? source.background : [];
 
-        // 构建连续文章：引言 → 3个主体段 → 结语，每个事实都经过改写
         let article = '';
 
-        // ===== 引言（200-300字，不照抄原文第一句） =====
-        const introOptions = [];
-        if (date && company && product) {
-            introOptions.push(`${date}，${company}正式揭开了${product}的神秘面纱。在${audience.label}的热切期待中，这款产品的亮相不仅是一次常规发布，更折射出${company}在当前市场环境下的战略思考。`);
-            introOptions.push(`当${product}的消息在${date}传出时，${audience.label}的目光迅速聚焦到${company}身上。这不仅仅是一款新品的问世，更可能是细分赛道格局变化的开始。`);
-        }
+        // ===== 开篇：以一个画面 / 一个反问 / 一句判断切入（与结构式"在…期待中"截然不同） =====
+        const hooks = [];
         if (company && product) {
-            introOptions.push(`${company}的${product}一经发布便成为话题中心。对于${audience.label}而言，这既是期待已久的答案，也带来了新的思考——它究竟带来了哪些实质性的改变？`);
+            hooks.push(`走进任何一间数码卖场，你都会发现货架上多了一个值得停步的身影——那是${company}的${product}。它没有刻意喧哗，却用实打实的配置，把${audience.label}的视线悄悄留了下来。`);
+            hooks.push(`如果只能用一个词形容${company}这次的动作，大概会是"克制"。${product}不是堆料堆出来的怪物，而更像是一份写给${audience.label}的、想得很清楚的答案。`);
         }
-        introOptions.push(`${product}的到来，为${audience.label}提供了一个重新审视当前技术趋势的契机。从其定位和配置来看，这显然不是一次简单的例行更新。`);
-        article += (introOptions.length > 0 ? introOptions[Math.floor(Math.random() * introOptions.length)] : `${product}值得深入探讨。`);
+        hooks.push(`有时候，一款产品真正的分量，不在发布会当天的掌声里，而在它之后很长一段时间里，人们还会不会反复提起。${product}显然属于后者——它值得被慢下来认真聊一聊。`);
+        hooks.push(`我们总在追问"下一代到底新在哪"。而当${product}摆在面前时，问题也许该换成：它让我们的日常，具体好在了哪一个瞬间？`);
+        article += hooks[Math.floor(Math.random() * hooks.length)];
 
-        // 引言中融入1个核心事实（改写后）
-        if (featureFacts.length > 0) {
-            const rewritten = this._paraphraseFact(featureFacts[0], source);
-            article += rewritten;
-        }
-
-        // ===== 主体段1：功能与技术创新（改写，不照抄） =====
-        const p1Facts = featureFacts.slice(1, Math.min(featureFacts.length, 4));
+        // ===== 背景段：为什么是现在、为什么是它（区别于结构式的"参数/市场"分章） =====
         article += '\n\n';
-        const p1Openers = [
-            '从产品本身来看，' + product + '在多个维度上展现了迭代的诚意。',
-            '深入剖析' + product + '的升级之处，可以发现其改进并非流于表面。',
-            '具体到功能层面，' + product + '带来的变化值得逐一拆解。',
-        ];
-        article += p1Openers[Math.floor(Math.random() * p1Openers.length)];
-
-        if (p1Facts.length > 0) {
-            for (const f of p1Facts) {
-                const rewritten = this._paraphraseFact(f, source);
-                if (rewritten && !article.includes(rewritten.substring(0, 15))) {
-                    article += rewritten;
-                }
-            }
+        if (date) {
+            article += `${date}这个时间节点并不偶然。`;
         } else {
-            article += product + '的升级策略体现了对' + audience.label + '真实需求的深入理解，在核心体验上做出了有针对性的优化。';
+            article += `把视线拉回到当下的节点，这件事的发生并不偶然。`;
         }
-
-        // ===== 主体段2：技术参数与性能（改写） =====
-        article += '\n\n';
-        const p2Openers = [
-            '在技术规格层面，',
-            '参数往往是理解一款产品最直接的窗口。',
-            '翻开' + product + '的技术清单，',
-        ];
-        article += p2Openers[Math.floor(Math.random() * p2Openers.length)];
-
-        if (specFacts.length > 0) {
-            const p2Facts = specFacts.slice(0, 3);
-            // 将规格事实逐条改写后融入叙述，避免照抄原文
-            const reworded = p2Facts
-                .map(f => this._paraphraseFact(f, source, true))
-                .filter(f => f && f.length > 8);
-            if (reworded.length > 0) {
-                article += reworded.join('；') + '。';
-            }
+        if (company) {
+            article += `${company}选择在这个时候把${product}推到台前，背后是一连串关于节奏与取舍的判断：既不抢跑到技术尚未成熟，也不迟到让对手抢走话语权。对${audience.label}来说，这种"踩点"本身，就透露出这家公司的定力。`;
+        } else {
+            article += `它选择在这个时候登场，背后是一连串关于节奏与取舍的判断。对${audience.label}来说，这种"踩点"本身，就透露出操盘者的定力。`;
         }
-        // 补充分析（不照抄原文）
-        article += '这些数字背后，反映的是' + (company || '研发团队') + '对' + (product || '产品') + '的清晰定位——在性能与体验之间寻找最优解，而非单纯追逐参数。';
-
-        // ===== 主体段3：市场背景与行业意义（改写） =====
-        article += '\n\n';
-        const p3Openers = [
-            '放在更大的行业背景下来看，',
-            '跳出产品本身，从市场维度审视，',
-            '如果说产品力是内在，那么市场定位便是' + product + '的另一面镜子。',
-        ];
-        article += p3Openers[Math.floor(Math.random() * p3Openers.length)];
-
         if (bgFacts.length > 0) {
-            const p3Fact = this._paraphraseFact(bgFacts[0], source);
-            article += p3Fact;
-        }
-        // 市场分析补充
-        if (company && product) {
-            article += '在当前竞争格局下，' + company + '凭借' + product + '进一步完善了自身的产品矩阵。对于' + audience.label + '而言，这意味着更多元的选择空间，也推动着行业整体向更高标准看齐。';
-        } else {
-            article += product + '的出现恰逢其时，回应了' + audience.label + '在当下最关心的几个核心议题，也为市场提供了新的参照坐标。';
+            article += this._paraphraseFact(bgFacts[0], source) + '这句话放在这里，恰如其分地解释了它为何此刻出现。';
         }
 
-        // ===== 结语 =====
+        // ===== 主体段：把事实织进叙述，而不是列点（用不同连接词，避免与结构式雷同） =====
         article += '\n\n';
-        const endingOptions = [];
-        if (company && product) {
-            endingOptions.push(`总得来看，${product}不是一次简单的升级，而是${company}在技术演进路线上的又一次坚定落子。对于${audience.label}来说，它带来的不仅是参数上的满足，更是使用体验层面的切实提升。随着时间的推移，${product}的真实价值将在实际应用中逐步显现，而它所开启的方向，也值得行业持续关注。`);
-            endingOptions.push(`回到最初的问题：${product}值得关注吗？答案是肯定的。它体现了${company}对${audience.label}需求的深刻洞察，也在技术迭代与市场策略之间找到了自己的节奏。无论从哪个角度来看，这都是一款承载着诚意与野心的产品。`);
+        const bodyOpeners = [
+            `真正让人记住${product}的，是那些用起来才明白的细节。`,
+            `抛开参数表，${product}最打动人的部分，藏在使用的具体褶皱里。`,
+            `说回产品本身，让人愿意为它买单的理由，其实很朴素。`,
+        ];
+        article += bodyOpeners[Math.floor(Math.random() * bodyOpeners.length)];
+        const usedFacts = new Set();
+        const threadFacts = [...featureFacts.slice(0, 3), ...specFacts.slice(0, 2)];
+        for (const f of threadFacts) {
+            if (usedFacts.has(f)) continue;
+            usedFacts.add(f);
+            const rewritten = this._paraphraseFact(f, source, true);
+            if (rewritten && rewritten.length > 10 && !article.includes(rewritten.substring(0, 12))) {
+                article += rewritten;
+            }
         }
-        endingOptions.push(`${product}的故事才刚刚开始。它所带来的改变，或许不会在一夜之间重塑格局，但正是一步一步的积累，最终定义了行业的走向。对于${audience.label}而言，保持关注、理性判断，便是最好的姿态。`);
-        article += endingOptions[Math.floor(Math.random() * endingOptions.length)];
+        if (featureFacts.length === 0 && specFacts.length === 0) {
+            article += `${product}把力气花在了${audience.label}真正每天会碰到的地方，而不是纸面上好看的数字。这种务实，反而更经得起时间。`;
+        }
 
-        // 润色
+        // ===== 深一度：一个被忽略的视角（区别于结构式的"技术解析/市场格局"） =====
+        article += '\n\n';
+        const depthOpeners = [
+            `不过，比起"它有什么"，更值得想的是"它替谁省了心"。`,
+            `站在使用者那一侧看，${product}带来的改变往往是静悄悄的。`,
+            `把镜头再推近一点，会发现${product}真正聪明的地方，是做了减法。`,
+        ];
+        article += depthOpeners[Math.floor(Math.random() * depthOpeners.length)];
+        if (featureFacts.length > 3) {
+            article += this._paraphraseFact(featureFacts[3], source);
+        } else if (specFacts.length > 2) {
+            article += this._paraphraseFact(specFacts[2], source, true);
+        }
+        article += `对${audience.label}而言，这些看似微小的取舍，堆叠起来就是"顺手"和"别扭"之间的全部差距。技术的高下，常常就藏在这道缝隙里。`;
+
+        // ===== 收尾：开放式感悟，不写"总得来看"的总结腔 =====
+        article += '\n\n';
+        const closes = [];
+        if (company && product) {
+            closes.push(`所以，${product}到底值不值得？答案不在任何一篇评测的结论里，而在你某天用到它的那个瞬间。${company}把产品交了出来，剩下的判断，本就该属于${audience.label}自己。`);
+            closes.push(`回过头看，${company}做${product}这件事，更像在替一类人把话说清楚：好用的科技，应该是安静地待命，而不是忙着证明自己存在。这或许就是它最体面的地方。`);
+        }
+        closes.push(`科技产品的故事，从来都不是一条直线。${product}只是其中新的一笔，它划下的痕迹深不深，要等时间慢慢显影。而我们，只需保持好奇，也保持清醒。`);
+        article += closes[Math.floor(Math.random() * closes.length)];
+
+        // 润色 + 按目标字数调整 + 标点归一化
         article = this.polish(article, source);
         article = article.replace(/\n{3,}/g, '\n\n').trim();
-        // 按目标字数调整
         article = this.adjustWordCount(article, form.wordCount, source);
-        // 标点归一化
         article = this._normalizePunctuation(article);
 
+        // 流式打字机展示
+        if (onToken) await this._reveal(article, onToken, title);
         return { title, content: article };
     },
 
@@ -1099,8 +1117,21 @@ const AIGenerator = {
 
     delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); },
 
+    /** 打字机式逐字揭示：把已生成的文本分块回调给 onToken，营造流式输出观感（本地兜底/非流式上游使用） */
+    async _reveal(content, onToken, title = '') {
+        if (!onToken) return;
+        const chars = [...content];
+        let acc = '';
+        for (let i = 0; i < chars.length; i += 3) {
+            acc += (chars[i] || '') + (chars[i + 1] || '') + (chars[i + 2] || '');
+            onToken({ title, content: acc });
+            await new Promise(r => setTimeout(r, 14));
+        }
+        onToken({ title, content });
+    },
+
     // ========== API 生成（预留） ==========
-    async generateViaDeepSeek(form) {
+    async generateViaDeepSeek(form, onToken) {
         const prompt = this.buildPrompt(form);
         const resp = await fetch('https://api.deepseek.com/chat/completions', {
             method: 'POST',
@@ -1110,10 +1141,12 @@ const AIGenerator = {
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
         const data = await resp.json();
-        return this.parseApiResponse(data.choices[0].message.content);
+        const result = this.parseApiResponse(data.choices[0].message.content);
+        if (onToken) await this._reveal(result.content, onToken, result.title);
+        return result;
     },
 
-    async generateViaOpenAI(form) {
+    async generateViaOpenAI(form, onToken) {
         const prompt = this.buildPrompt(form);
         const resp = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -1123,7 +1156,9 @@ const AIGenerator = {
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
         const data = await resp.json();
-        return this.parseApiResponse(data.choices[0].message.content);
+        const result = this.parseApiResponse(data.choices[0].message.content);
+        if (onToken) await this._reveal(result.content, onToken, result.title);
+        return result;
     },
 
     buildPrompt(form) {
@@ -1141,7 +1176,11 @@ const AIGenerator = {
         if (form.content && form.content.length > 50) {
             prompt += `\n以下为参考原文，请基于这些事实进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述：\n${form.content.substring(0, 3000)}\n`;
         }
-        prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后是完整的正文。文章要有引言、分论点、过渡句和结论，像真正的科技媒体文章。`;
+        if (form.plain) {
+            prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。`;
+        } else {
+            prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后是完整的正文，使用 ## 二级标题划分章节（如 引言、核心参数、市场定位、总结等）。文章要有引言、分论点、过渡句和结论，像真正的科技媒体文章。`;
+        }
         return prompt;
     },
 

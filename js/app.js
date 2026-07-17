@@ -186,10 +186,11 @@ const app = createApp({
                 .join('\n');
         });
 
-        // 总字数
+        // 总字数（与生成目标口径一致：仅计 中文字符 + 字母数字，排除标点/空白/Markdown 标记）
         const aiTotalChars = computed(() => {
             const text = aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value;
-            return text.replace(/\s/g, '').length;
+            const m = (text || '').match(/[一-龥a-zA-Z0-9]/g);
+            return m ? m.length : 0;
         });
 
         // 类型/风格选中时同步label
@@ -200,7 +201,7 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
-        // AI 生成文章（模拟 + API 预留）
+        // AI 生成文章（模拟 + API 预留；结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
             updateAILabels();
             aiGenerating.value = true;
@@ -209,13 +210,23 @@ const app = createApp({
             aiTab.value = 'structured';
 
             try {
-                const result = await AIGenerator.generate(aiForm.value);
+                // 结构式：逐字流式展示（默认可见 tab）
+                const onToken = (partial) => {
+                    if (partial && partial.title) aiResultTitle.value = partial.title;
+                    if (partial && partial.content !== undefined) aiResult.value = partial.content;
+                };
+                const result = await AIGenerator.generate(aiForm.value, onToken);
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-                // 非结构式：AI 独立生成一篇连续文章
-                const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true });
+
+                // 非结构式：流式展示（隐藏，切到该 tab 时已就绪）
+                const onTokenPlain = (partial) => {
+                    if (partial && partial.content !== undefined) aiResultPlain.value = partial.content;
+                };
+                const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
                 aiResultPlain.value = plainResult.content;
+
                 // 滚动到结果区
                 await nextTick();
                 const outputEl = document.querySelector('.ai-output-section');

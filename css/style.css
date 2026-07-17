@@ -656,6 +656,17 @@ ul { list-style: none; }
 .ai-output-body p { margin-bottom: 10px; }
 .ai-output-body li { margin-left: 20px; margin-bottom: 4px; list-style: disc; }
 .ai-output-plain p { text-indent: 2em; margin-bottom: 12px; }
+
+/* 生成中：末尾闪烁打字光标，强化流式打字观感 */
+.ai-output-section.generating .ai-output-body::after {
+    content: '▋';
+    display: inline-block;
+    margin-left: 2px;
+    color: var(--accent-cyan);
+    font-weight: 400;
+    animation: ai-caret-blink 1s steps(1) infinite;
+}
+@keyframes ai-caret-blink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 .ai-output-char-count {
     text-align: right; margin-top: 16px; padding-top: 10px;
     border-top: 1px solid var(--border-color);

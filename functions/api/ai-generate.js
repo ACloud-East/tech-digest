@@ -56,27 +56,89 @@ export async function onRequestPost({ request, env }) {
     const model = body.model || env.VECTOR_ENGINE_MODEL || 'deepseek-chat';
     const maxTokens = Math.min(Math.max(parseInt(body.wordCount, 10) || 800, 1) * 3, 4096);
 
-    // 4) 转发到上游
+    // 4) 转发到上游（开启流式，实现打字机式输出）
     try {
         const upstream = await fetch(base + '/chat/completions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + apiKey,
+                'Accept': 'text/event-stream',
             },
             body: JSON.stringify({
                 model,
                 messages: [{ role: 'user', content: prompt }],
                 temperature: 0.8,
                 max_tokens: maxTokens,
+                stream: true,
             }),
         });
 
-        // 直接透传上游响应（OpenAI / DeepSeek 兼容结构，前端 parseApiResponse 可解析）
-        const data = await upstream.text();
-        return new Response(data, {
-            status: upstream.status,
-            headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' },
+        // 上游异常：原样报错
+        if (!upstream.ok) {
+            const txt = await upstream.text().catch(() => '');
+            return new Response(JSON.stringify({ error: '上游 API 调用失败（' + upstream.status + '）：' + txt.slice(0, 300) }),
+                { status: 502, headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' } });
+        }
+
+        // 上游不支持流式（无 body / 直接返回 JSON）：兜底为单次事件，前端会做打字机展开
+        if (!upstream.body) {
+            const txt = await upstream.text();
+            let content = txt;
+            try {
+                const j = JSON.parse(txt);
+                content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt;
+            } catch (_) {}
+            const sse = 'data: ' + JSON.stringify({ content }) + '\n\n' + 'data: [DONE]\n\n';
+            return new Response(sse, {
+                status: 200,
+                headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
+            });
+        }
+
+        // 流式透传：解析上游 SSE，抽取 delta.content，转成我们自己的 SSE 事件
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+        const reader = upstream.body.getReader();
+        let buf = '';
+
+        const stream = new ReadableStream({
+            async pull(controller) {
+                try {
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) { flushBuffer(); controller.enqueue(encoder.encode('data: [DONE]\n\n')); controller.close(); return; }
+                        buf += decoder.decode(value, { stream: true });
+                        flushBuffer();
+                    }
+                } catch (e) {
+                    controller.enqueue(encoder.encode('data: ' + JSON.stringify({ error: '流读出错：' + e.message }) + '\n\n'));
+                    controller.close();
+                }
+                function flushBuffer() {
+                    let idx;
+                    while ((idx = buf.indexOf('\n\n')) >= 0) {
+                        const raw = buf.slice(0, idx);
+                        buf = buf.slice(idx + 2);
+                        const dataLine = raw.split('\n').find(l => l.startsWith('data:'));
+                        if (!dataLine) continue;
+                        const data = dataLine.slice(5).trim();
+                        if (!data || data === '[DONE]') continue;
+                        let content = '';
+                        try {
+                            const j = JSON.parse(data);
+                            content = (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || j.content || '';
+                        } catch (_) { continue; }
+                        if (content) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ content }) + '\n\n'));
+                    }
+                }
+            },
+            cancel() { try { reader.cancel(); } catch (_) {} },
+        });
+
+        return new Response(stream, {
+            status: 200,
+            headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
         });
     } catch (e) {
         return new Response(JSON.stringify({ error: '上游 API 调用失败：' + e.message }), { status: 502, headers: acao });
