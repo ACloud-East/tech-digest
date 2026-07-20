@@ -1237,10 +1237,11 @@ const AIGenerator = {
         const styleLabel = styleMap[style.type] || style.type;
 
         let prompt = '';
+        const minChars = Math.round(wordCount * 0.85);
         if (isEnglish) {
             prompt += `Write a ${typeConfig.label} style tech article for a professional tech publication.\n`;
             prompt += `Title: ${form.title || 'Please generate an engaging title based on the content'}\n`;
-            prompt += `Target length: approximately ${wordCount} characters (Chinese-character-count standard; for English, aim for roughly ${Math.round(wordCount / 6)} words). The body text should be within ±15% of this target. Do not exceed ${maxBodyChars} characters of actual text (excluding title, punctuation, spaces, and Markdown markers).\n`;
+            prompt += `Target length: the body must be approximately ${wordCount} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). You must meet this target within a ±15% tolerance, i.e. between ${minChars} and ${maxBodyChars} characters. Expand each section with sufficient detail; do not write only one or two sentences per section.\n`;
             prompt += `Writing style: ${styleLabel}. The language should flow naturally, with well-structured paragraphs, like a finished piece from a professional tech media outlet.\n`;
             prompt += `Target audience: ${audience.label}\n`;
             if (form.keywords) prompt += `Core keywords: ${form.keywords}\n`;
@@ -1250,7 +1251,7 @@ const AIGenerator = {
         } else {
             prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
-            prompt += `目标字数：严格控制在 ${wordCount} 字左右（允许 ±15% 偏差）。正文实际字数（不含标题、标点、空格和 Markdown 标记）不得超过 ${maxBodyChars} 字。\n`;
+            prompt += `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
             prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
             prompt += `目标读者：${audience.label}\n`;
             if (form.keywords) prompt += `核心关键词：${form.keywords}\n`;
