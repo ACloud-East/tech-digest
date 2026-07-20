@@ -1128,48 +1128,48 @@ const AIGenerator = {
 
     /**
      * 将文本按段落裁剪到目标字符数（仅计中英文+数字），避免单篇生成结果远超用户设定的目标字数。
-     * 尽量保留完整段落，只在最后一段超出目标时截断到句子边界。
+     * 尽量保留完整段落；如果必须截断，保留前面完整的段落，并在最后一段内按句子边界截断，避免丢掉后续章节。
      */
     _fitToCharCount(text, target) {
         if (!target || target < 50) return text;
         const upper = Math.round(target * 1.15);
         const charCount = (s) => ((s || '').match(/[一-龥a-zA-Z0-9]/g) || []).length;
-        const total = charCount(text);
-        if (total <= upper) return text;
+        if (charCount(text) <= upper) return text;
 
         const paragraphs = text.split(/\n\s*\n/);
         let acc = 0;
-        let keepUntil = paragraphs.length;
+        let trimAt = -1; // 需要截断的段落索引
         for (let i = 0; i < paragraphs.length; i++) {
-            const c = charCount(paragraphs[i]);
-            if (acc + c > upper && keepUntil === paragraphs.length) {
-                keepUntil = i;
+            acc += charCount(paragraphs[i]);
+            if (acc > upper && trimAt < 0) {
+                trimAt = i;
                 break;
             }
-            acc += c;
         }
-        if (keepUntil === 0) keepUntil = 1; // 至少保留一段
-        let trimmed = paragraphs.slice(0, keepUntil).join('\n\n').trim();
+        if (trimAt < 0) return text; // 所有段落都未超出上限
+        if (trimAt === 0) trimAt = 1; // 至少保留一段
 
-        // 如果最后一段仍明显超出目标，尝试在句子边界截断
-        const last = paragraphs[keepUntil - 1] || '';
-        if (charCount(last) > target * 0.6) {
+        // 前面完整保留的段落
+        const kept = paragraphs.slice(0, trimAt);
+        const keptCount = kept.reduce((sum, p) => sum + charCount(p), 0);
+        const remaining = upper - keptCount;
+
+        // 最后一段若仍超出剩余预算，按句子边界截断
+        const last = paragraphs[trimAt] || '';
+        if (remaining > 0 && charCount(last) > remaining) {
             const sentences = last.split(/([。！？.?!]\s*)/);
             let sacc = 0, skeepUntil = sentences.length;
             for (let i = 0; i < sentences.length; i += 2) {
                 const c = charCount(sentences[i]);
-                if (sacc + c > target && skeepUntil === sentences.length) { skeepUntil = i; break; }
+                if (sacc + c > remaining && skeepUntil === sentences.length) { skeepUntil = i; break; }
                 sacc += c;
             }
             if (skeepUntil > 0) {
                 const trimmedLast = sentences.slice(0, skeepUntil).join('').trim();
-                if (trimmedLast) {
-                    paragraphs[keepUntil - 1] = trimmedLast;
-                    trimmed = paragraphs.slice(0, keepUntil).join('\n\n').trim();
-                }
+                if (trimmedLast) kept.push(trimmedLast);
             }
         }
-        return trimmed || text;
+        return kept.join('\n\n').trim() || text;
     },
 
     /** 打字机式逐字揭示：把已生成的文本分块回调给 onToken，营造流式输出观感（本地兜底/非流式上游使用） */
