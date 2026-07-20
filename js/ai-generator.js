@@ -1318,6 +1318,13 @@ const AIGenerator = {
             }
         }
 
+        // 通用「去 AI 味」硬性要求（无论是否提供原文、原文长短都生效）
+        if (isEnglish) {
+            prompt += `\nWRITING TONE (hard rules): Write like a real human columnist. NEVER open with hollow era-phrases ("In today's...", "With the rapid development of...", "In recent years..."). NEVER use template filler ("First... Second... Finally", "In conclusion", "It is worth mentioning", "It goes without saying"). Avoid mechanically bullet-listing one-line padding. Use natural transitions; never invent facts.\n`;
+        } else {
+            prompt += `\n【去 AI 味·硬性要求】像真人编辑/专栏作者一样写作。禁止用「在当今……」「随着……的快速发展」「近年来……」等空泛时代开场；禁止「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」「众所周知」等模板词；不要把内容硬拆成要点罗列、用一两句空话填字数。要有真实的人味与起承转合，绝不臆造事实。\n`;
+        }
+
         if (form.plain) {
             if (isEnglish) {
                 prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The rest should be a continuous essay-style body without ## subheadings and without bullet lists. Tone natural, like a column essay. Do not mechanically list points.`;
