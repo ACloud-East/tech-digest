@@ -92,6 +92,9 @@ const app = createApp({
         const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用）
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
+        const hoveredCite = ref(null);    // 当前鼠标悬停的内联引用编号
+        const hoveredSource = ref(null);  // 当前悬停的来源列表项编号
+        const citationTooltip = ref({ visible: false, cite: null, source: '', top: 0, left: 0 }); // 引用上标 tooltip
 
         // ====== API 设置（BYOK：用户自带 key，仅存本机 localStorage） ======
         const aiApi = ref({
@@ -165,34 +168,86 @@ const app = createApp({
         loadApiSettings();
         loadHistory();
 
-        const aiResultHtml = computed(() => {
-            if (!aiResult.value) return '';
-            return aiResult.value
-                .split('\n')
-                .filter(line => line.trim())
-                .map(line => {
-                    if (line.startsWith('## ')) return '<h2>' + line.slice(3) + '</h2>';
-                    if (line.startsWith('### ')) return '<h3>' + line.slice(4) + '</h3>';
-                    if (line.startsWith('- ')) return '<li>' + line.slice(2) + '</li>';
-                    if (line.match(/^\d+[\.\、]/)) return '<li>' + line.replace(/^\d+[\.\、]\s*/, '') + '</li>';
-                    return '<p>' + line + '</p>';
-                })
-                .join('\n');
-        });
+        // 把带 [1] 内联引用的文本解析为「块→引用段」结构，便于按段高亮与 tooltip
+        const aiResultBlocks = computed(() => parseCitedText(aiResult.value));
+        const aiResultPlainBlocks = computed(() => parseCitedText(aiResultPlain.value));
 
-        // 非结构式 HTML（去除 ## 标题，纯段落）
-        const aiResultPlainHtml = computed(() => {
-            if (!aiResultPlain.value) return '';
-            return aiResultPlain.value
-                .split('\n')
-                .filter(line => line.trim())
-                .map(line => {
-                    if (line.startsWith('## ')) return '<p><strong>' + line.slice(3) + '</strong></p>';
-                    if (line.startsWith('### ')) return '<p><strong>' + line.slice(4) + '</strong></p>';
-                    return '<p>' + line + '</p>';
-                })
-                .join('\n');
-        });
+        function parseCitedText(text) {
+            if (!text) return [];
+            const lines = text.split('\n').filter(line => line.trim());
+            const blocks = [];
+            lines.forEach(line => {
+                let type = 'p';
+                let content = line;
+                if (line.startsWith('## ')) { type = 'h2'; content = line.slice(3); }
+                else if (line.startsWith('### ')) { type = 'h3'; content = line.slice(4); }
+                else if (line.startsWith('- ')) { type = 'li'; content = line.slice(2); }
+                else if (/^\d+[\.\、]/.test(line)) { type = 'li'; content = line.replace(/^\d+[\.\、]\s*/, ''); }
+
+                const segments = [];
+                const parts = content.split(/(\[\d+(?:,\d+)*\]|\[\?\])/);
+                let currentText = '';
+                let hasCitation = false;
+
+                parts.forEach(part => {
+                    if (part.match(/^\[\d+(?:,\d+)*\]$/)) {
+                        hasCitation = true;
+                        const cites = part.slice(1, -1).split(',').map(n => parseInt(n, 10));
+                        segments.push({ text: currentText, cites });
+                        currentText = '';
+                    } else if (part === '[?]') {
+                        hasCitation = true;
+                        segments.push({ text: currentText, cites: ['?'] });
+                        currentText = '';
+                    } else {
+                        currentText += part;
+                    }
+                });
+                if (currentText || !hasCitation) {
+                    segments.push({ text: currentText, cites: [] });
+                }
+                blocks.push({ type, segments });
+            });
+            return blocks;
+        }
+
+        function isCiteActive(cites) {
+            if (!cites || !cites.length) return false;
+            return cites.some(c => String(c) === hoveredCite.value || String(c) === hoveredSource.value);
+        }
+
+        function showCiteTooltip(cite, event) {
+            hoveredCite.value = String(cite);
+            const target = event.target;
+            const container = target.closest('.ai-output-content');
+            if (!container) return;
+            const rect = target.getBoundingClientRect();
+            const contRect = container.getBoundingClientRect();
+            const src = aiResultSources.value[parseInt(cite, 10) - 1] || '未知来源';
+            citationTooltip.value = {
+                visible: true,
+                cite,
+                source: String(src).length > 120 ? String(src).slice(0, 120) + '…' : src,
+                top: rect.bottom - contRect.top + 8,
+                left: rect.left - contRect.left + rect.width / 2,
+            };
+        }
+
+        function hideCiteTooltip() {
+            hoveredCite.value = null;
+            citationTooltip.value.visible = false;
+        }
+
+        function scrollToSource(cite) {
+            const idx = parseInt(cite, 10) - 1;
+            if (idx < 0 || idx >= aiResultSources.value.length) return;
+            const items = document.querySelectorAll('.ai-sources-list li');
+            if (items[idx]) {
+                items[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                hoveredSource.value = String(cite);
+                setTimeout(() => { hoveredSource.value = null; }, 1200);
+            }
+        }
 
         // 总字数（与生成目标口径一致：仅计 中文字符 + 字母数字，排除标点/空白/Markdown 标记）
         const aiTotalChars = computed(() => {
@@ -209,10 +264,16 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
-        // 解析来源文本为列表（支持 URL 与纯文本说明）
-        function parseSources(str) {
-            if (!str || !str.trim()) return [];
-            return str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+        // 解析来源文本为列表（支持 URL 与纯文本说明），并把原文内容作为来源 1
+        function parseSources(str, originalContent) {
+            const list = [];
+            if (originalContent && originalContent.trim().length > 50) {
+                list.push('原文');
+            }
+            if (str && str.trim()) {
+                str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12).forEach(s => list.push(s));
+            }
+            return list.slice(0, 12);
         }
         function isUrl(s) { return /^https?:\/\//i.test((s || '').trim()); }
 
@@ -299,7 +360,7 @@ const app = createApp({
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
-                aiResultSources.value = parseSources(aiForm.value.sources);
+                aiResultSources.value = parseSources(aiForm.value.sources, aiForm.value.content);
                 saveToHistory({
                     id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
                     time: new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
@@ -893,9 +954,10 @@ const app = createApp({
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
             // AI 文案生成
-            aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
-            aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiHistory, aiHistoryOpen, isUrl, parseSources,
+            aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
+            aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
+            aiResultSources, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, restoreHistory, deleteHistory, clearHistory,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
@@ -912,4 +974,5 @@ const app = createApp({
         };
     }
 });
-app.mount('#app');
+const aiAppVm = app.mount('#app');
+window.aiAppVm = aiAppVm;
