@@ -19,6 +19,60 @@ function corsHeaders(origin) {
     return headers;
 }
 
+// 从 HTML 中提取正文：移除脚本/样式/导航/页脚等噪声，优先取 <main>/<article>/<body>
+function extractTextFromHtml(html) {
+    let cleaned = html
+        .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+        .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<svg[\s\S]*?<\/svg>/gi, ' ')
+        .replace(/<noscript[\s\S]*?<\/noscript>/gi, ' ')
+        .replace(/<nav[\s\S]*?<\/nav>/gi, ' ')
+        .replace(/<footer[\s\S]*?<\/footer>/gi, ' ')
+        .replace(/<header[\s\S]*?<\/header>/gi, ' ')
+        .replace(/<aside[\s\S]*?<\/aside>/gi, ' ')
+        .replace(/<!--[\s\S]*?-->/g, ' ');
+
+    const mainMatch = cleaned.match(/<main[\s\S]*?<\/main>/i);
+    const articleMatch = cleaned.match(/<article[\s\S]*?<\/article>/i);
+    const bodyMatch = cleaned.match(/<body[\s\S]*?<\/body>/i);
+    const content = mainMatch ? mainMatch[0] : (articleMatch ? articleMatch[0] : (bodyMatch ? bodyMatch[0] : cleaned));
+
+    return content
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+
+async function fetchSourceText(url, timeoutMs = 10000) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+        const resp = await fetch(url, {
+            signal: controller.signal,
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            },
+        });
+        if (!resp.ok) return { url, error: `HTTP ${resp.status}` };
+        const ct = (resp.headers.get('content-type') || '').toLowerCase();
+        if (!ct.includes('text/html')) return { url, error: `非 HTML 内容 (${ct})` };
+        const html = await resp.text();
+        const text = extractTextFromHtml(html);
+        return { url, text: text.slice(0, 6000) };
+    } catch (e) {
+        return { url, error: e.message || '抓取失败' };
+    } finally {
+        clearTimeout(timeoutId);
+    }
+}
+
 // 预检（浏览器跨域时触发）
 export async function onRequestOptions({ request }) {
     const origin = request.headers.get('Origin');
@@ -40,6 +94,25 @@ export async function onRequestPost({ request, env }) {
     const prompt = (body.prompt || '').trim();
     if (!prompt) {
         return new Response(JSON.stringify({ error: '缺少 prompt 字段' }), { status: 400, headers: acao });
+    }
+
+    // 2.1) 抓取用户提供的 URL 来源，并把正文注入 prompt（RAG）
+    let augmentedPrompt = prompt;
+    const sourceUrls = (body.sources || [])
+        .filter(s => /^https?:\/\//i.test(String(s).trim()))
+        .slice(0, 6);
+    if (sourceUrls.length) {
+        const fetched = await Promise.all(sourceUrls.map(url => fetchSourceText(url)));
+        augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文，请严格基于这些事实写作，并按 [1]、[2] 等编号标注对应来源：\n';
+        fetched.forEach((s, i) => {
+            augmentedPrompt += `\n[${i + 1}] URL: ${s.url}\n`;
+            if (s.error) {
+                augmentedPrompt += `（无法获取内容：${s.error}）\n`;
+            } else {
+                augmentedPrompt += `${s.text || ''}\n`;
+            }
+        });
+        augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧跟 [1]、[2] 等来源编号，与上方 URL 编号对应；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。';
     }
 
     // 2) 读取密钥：优先用「用户自带 key」（BYOK，从请求体带来），其次用站点服务端密文
@@ -71,7 +144,7 @@ export async function onRequestPost({ request, env }) {
             },
             body: JSON.stringify({
                 model,
-                messages: [{ role: 'user', content: prompt }],
+                messages: [{ role: 'user', content: augmentedPrompt }],
                 temperature: 0.8,
                 max_tokens: maxTokens,
                 stream: true,

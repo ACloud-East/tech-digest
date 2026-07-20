@@ -264,16 +264,10 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
-        // 解析来源文本为列表（支持 URL 与纯文本说明），并把原文内容作为来源 1
-        function parseSources(str, originalContent) {
-            const list = [];
-            if (originalContent && originalContent.trim().length > 50) {
-                list.push('原文');
-            }
-            if (str && str.trim()) {
-                str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12).forEach(s => list.push(s));
-            }
-            return list.slice(0, 12);
+        // 解析来源文本为列表（仅来自 form.sources，不再把原文作为来源 1）
+        function parseSources(str) {
+            if (!str || !str.trim()) return [];
+            return str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
         }
         function isUrl(s) { return /^https?:\/\//i.test((s || '').trim()); }
 
@@ -360,7 +354,7 @@ const app = createApp({
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
-                aiResultSources.value = parseSources(aiForm.value.sources, aiForm.value.content);
+                aiResultSources.value = parseSources(aiForm.value.sources);
                 saveToHistory({
                     id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
                     time: new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),

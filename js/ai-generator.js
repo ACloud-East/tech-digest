@@ -59,6 +59,9 @@ const AIGenerator = {
             max_tokens: this._estimateMaxTokens(form),
             stream: true,
         };
+        if (form.sources && form.sources.trim()) {
+            body.sources = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+        }
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
         if (this.useOwnKey) {
             body.apiKey = this.config.userApiKey.trim();
@@ -1286,26 +1289,30 @@ const AIGenerator = {
 
         if (form.content && form.content.length > 50) {
             if (isEnglish) {
-                prompt += `\nReference source material (this is Source [1] for citations; cite it as [1] when you use facts from it):\n${form.content.substring(0, 3000)}\n`;
+                prompt += `\nReference topic/draft material. Please rewrite and expand into a complete article; do not simply summarize or repeat. The actual source content from the URLs you will be provided with below (if any) should be used as the factual basis for citations:\n${form.content.substring(0, 3000)}\n`;
             } else {
-                prompt += `\n【参考原文】此为引用来源编号 [1]，正文中使用到的事实请务必用 [1] 标注：\n${form.content.substring(0, 3000)}\n`;
+                prompt += `\n【参考主题/草稿】请基于以下素材进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述。注意：下方提供的 URL 正文才是可被引用的来源，原文本身不作为引用来源：\n${form.content.substring(0, 3000)}\n`;
             }
         }
 
-        // 来源与引用：把原文作为 [1]，附加来源作为 [2..n]，并严格约束 hallucination
-        const srcList = [];
-        if (form.content && form.content.trim().length > 50) {
-            srcList.push(isEnglish ? 'Original text provided by the user (see above)' : '用户提供的原文（见上文）');
-        }
-        if (form.sources && form.sources.trim()) {
-            form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12).forEach(s => srcList.push(s));
-        }
-        if (srcList.length) {
-            const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
+        // 来源与引用：URL 正文由服务端抓取后注入 prompt，这里只给模型预习规则
+        const hasSources = form.sources && form.sources.trim();
+        if (hasSources) {
+            const srcList = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+            if (srcList.length) {
+                const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
+                if (isEnglish) {
+                    prompt += `\nThe following source URLs/texts will be fetched and appended to the end of this prompt. You must base factual claims on those sources and cite them inline as [1], [2], etc. matching the order below. The original draft above is NOT a citable source.\n${srcText}\n\n- Every factual claim must be followed by a citation [1], [2], etc.\n- If you cannot verify a fact against the appended sources, mark it with [?] or omit it.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Keep the article within the length limit; do not add a separate references section.\n`;
+                } else {
+                    prompt += `\n以下 URL/来源将在本提示词末尾被抓取正文并补充进来。你必须基于这些来源中的事实进行写作，并按 [1]、[2] 等编号标注对应来源。上方【参考主题/草稿】本身不作为引用来源，也不会出现在来源列表中。\n${srcText}\n\n- 每个事实性断言后面都必须紧跟一个来源编号 [1]、[2] 等，与下方抓取到的来源编号对应。\n- 如果某个信息无法从抓取到的来源中确认，请在该句末尾标注 [?]，或直接省略该信息。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 请严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节。\n`;
+                }
+            }
+        } else {
+            // 没有附加来源时，沿用旧的防杜撰要求
             if (isEnglish) {
-                prompt += `\nYou must follow these academic citation rules strictly:\n${srcText}\n\n- Every factual claim must be followed by a citation in the format [1], [2], etc., matching the source list above.\n- Use [1] only for facts that appear in the original text provided above.\n- Use [2], [3], etc. only for facts that come from the corresponding additional source.\n- If you cannot verify a fact against any of the listed sources, mark it with [?] or omit it entirely.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs. Do not add details that are not present in the sources (e.g., "1.0-inch Exmor RS", "S-Log3", "HLG", "4K 60p 10-bit 4:2:2") unless they are explicitly supported by an additional source and cited accordingly.\n- Keep the article within the length limit. Do not add a separate references section; source links are shown below the article.\n`;
+                prompt += `\nNo external sources were provided. Base the article only on the reference material above. Do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
             } else {
-                prompt += `\n你必须严格遵守以下学术引用规则：\n${srcText}\n\n- 每个事实性断言后面都必须紧跟一个来源编号，格式为 [1]、[2] 等，与上方来源列表对应。\n- [1] 仅用于标注改写自上文【参考原文】的事实。\n- [2]、[3] 等仅用于标注来自对应附加来源的事实。\n- 如果某个信息无法从上方任一来源中确认，请在该句末尾标注 [?]，或直接省略该信息。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。不要把原文未出现的内容（如“1.0英寸 Exmor RS”“S-Log3”“HLG”“4K 60p 10-bit 4:2:2”等）写进正文，除非它们被附加来源明确支持并正确标注。\n- 请严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节（来源链接会统一展示在文章下方）。\n`;
+                prompt += `\n未提供外部来源，请仅基于上方参考素材写作，不要捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
             }
         }
 
