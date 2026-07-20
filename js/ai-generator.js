@@ -1135,9 +1135,20 @@ const AIGenerator = {
         if (!target || target < 50) return text;
         const upper = Math.round(target * 1.15);
         const charCount = (s) => ((s || '').match(/[一-龥a-zA-Z0-9]/g) || []).length;
-        if (charCount(text) <= upper) return text;
 
-        const paragraphs = text.split(/\n\s*\n/);
+        // 文末「参考来源 / References」小节整体保留，不参与字数截断（避免被夹断丢失引用列表）
+        const refIdx = text.search(/\n#{1,4}\s*(参考来源|References|参考链接|Sources|引用来源)\b|\n(参考来源|References|参考链接|Sources|引用来源)\s*[:：]/);
+        let body = text, refBlock = '';
+        if (refIdx >= 0) {
+            body = text.slice(0, refIdx);
+            refBlock = text.slice(refIdx).replace(/^\n+/, '');
+        }
+
+        if (charCount(body) <= upper) {
+            return (body.trim() + (refBlock ? '\n\n' + refBlock : '')).trim();
+        }
+
+        const paragraphs = body.split(/\n\s*\n/);
         let acc = 0;
         let trimAt = -1; // 需要截断的段落索引
         for (let i = 0; i < paragraphs.length; i++) {
@@ -1147,7 +1158,7 @@ const AIGenerator = {
                 break;
             }
         }
-        if (trimAt < 0) return text; // 所有段落都未超出上限
+        if (trimAt < 0) return (body.trim() + (refBlock ? '\n\n' + refBlock : '')).trim(); // 所有段落都未超出上限
         if (trimAt === 0) trimAt = 1; // 至少保留一段
 
         // 前面完整保留的段落
@@ -1170,7 +1181,8 @@ const AIGenerator = {
                 if (trimmedLast) kept.push(trimmedLast);
             }
         }
-        return kept.join('\n\n').trim() || text;
+        const fittedBody = kept.join('\n\n').trim() || body;
+        return (fittedBody + (refBlock ? '\n\n' + refBlock : '')).trim();
     },
 
     /**
