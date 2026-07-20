@@ -38,6 +38,7 @@ const app = createApp({
             audience: 'tech_fans',
             language: 'zh_professional',
             extraInstructions: '',
+            sources: '',
             typeLabel: '数码评测',
             styleLabel: '专业客观'
         });
@@ -88,6 +89,9 @@ const app = createApp({
         const aiShowOutput = ref(false);  // 是否已显示结果面板（点击生成即展示）
         const aiGeneratingStructured = ref(false);
         const aiGeneratingPlain = ref(false);
+        const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用）
+        const aiHistory = ref([]);        // 历史记录
+        const aiHistoryOpen = ref(false); // 历史面板是否展开
 
         // ====== API 设置（BYOK：用户自带 key，仅存本机 localStorage） ======
         const aiApi = ref({
@@ -159,6 +163,7 @@ const app = createApp({
         });
 
         loadApiSettings();
+        loadHistory();
 
         const aiResultHtml = computed(() => {
             if (!aiResult.value) return '';
@@ -204,6 +209,63 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
+        // 解析来源文本为列表（支持 URL 与纯文本说明）
+        function parseSources(str) {
+            if (!str || !str.trim()) return [];
+            return str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+        }
+        function isUrl(s) { return /^https?:\/\//i.test((s || '').trim()); }
+
+        // ===== 历史记录（存本机 localStorage，跨会话保留） =====
+        const LS_HISTORY_KEY = 'td_ai_history_v1';
+        function loadHistory() {
+            try {
+                const raw = localStorage.getItem(LS_HISTORY_KEY);
+                if (raw) aiHistory.value = JSON.parse(raw) || [];
+            } catch (_) {}
+        }
+        function persistHistory() {
+            try { localStorage.setItem(LS_HISTORY_KEY, JSON.stringify(aiHistory.value.slice(0, 50))); } catch (_) {}
+        }
+        function saveToHistory(item) {
+            aiHistory.value.unshift(item);
+            if (aiHistory.value.length > 50) aiHistory.value = aiHistory.value.slice(0, 50);
+            persistHistory();
+        }
+        function deleteHistory(id) {
+            aiHistory.value = aiHistory.value.filter(h => h.id !== id);
+            persistHistory();
+        }
+        function clearHistory() {
+            if (!confirm('确定清空全部历史记录吗？')) return;
+            aiHistory.value = [];
+            persistHistory();
+        }
+        function restoreHistory(item) {
+            aiForm.value.type = item.type || 'review';
+            aiForm.value.style = item.style || 'professional';
+            aiForm.value.audience = item.audience || 'tech_fans';
+            aiForm.value.language = item.language || 'zh_professional';
+            aiForm.value.wordCount = item.wordCount || 800;
+            aiForm.value.title = item.inputTitle || '';
+            aiForm.value.content = item.inputContent || '';
+            aiForm.value.sources = item.inputSources || '';
+            aiForm.value.keywords = item.inputKeywords || '';
+            aiForm.value.template = item.inputTemplate || '';
+            aiForm.value.extraInstructions = item.inputExtra || '';
+            updateAILabels();
+            aiShowOutput.value = true;
+            aiResult.value = item.resultContent || '';
+            aiResultPlain.value = item.resultPlain || '';
+            aiResultTitle.value = item.resultTitle || '';
+            aiResultTime.value = item.time || '';
+            aiResultSources.value = item.inputSources ? parseSources(item.inputSources) : [];
+            aiTab.value = 'structured';
+            const outputEl = document.querySelector('.ai-output-section');
+            if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        function toggleHistory() { aiHistoryOpen.value = !aiHistoryOpen.value; }
+
         // AI 生成文章（结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
             updateAILabels();
@@ -235,6 +297,27 @@ const app = createApp({
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
                 aiResultPlain.value = plainResult.content;
                 aiGeneratingPlain.value = false; // 非结构式完成
+
+                // 来源展示 + 历史记录
+                aiResultSources.value = parseSources(aiForm.value.sources);
+                saveToHistory({
+                    id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+                    time: new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                    resultTitle: aiResultTitle.value,
+                    resultContent: aiResult.value,
+                    resultPlain: aiResultPlain.value,
+                    type: aiForm.value.type,
+                    style: aiForm.value.style,
+                    audience: aiForm.value.audience,
+                    language: aiForm.value.language,
+                    wordCount: aiForm.value.wordCount,
+                    inputTitle: aiForm.value.title,
+                    inputContent: aiForm.value.content,
+                    inputSources: aiForm.value.sources,
+                    inputKeywords: aiForm.value.keywords,
+                    inputTemplate: aiForm.value.template,
+                    inputExtra: aiForm.value.extraInstructions,
+                });
 
                 // 滚动到结果区
                 await nextTick();
@@ -812,6 +895,8 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
             aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
+            aiResultSources, aiHistory, aiHistoryOpen, isUrl, parseSources,
+            toggleHistory, restoreHistory, deleteHistory, clearHistory,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,

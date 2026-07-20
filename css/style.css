@@ -673,6 +673,117 @@ ul { list-style: none; }
     font-size: 0.75rem; color: var(--text-muted);
 }
 
+/* 数据来源 / 引用 */
+.ai-sources-box {
+    margin-top: 16px; padding: 14px 16px;
+    background: var(--bg-secondary); border: 1px solid var(--border-color);
+    border-radius: var(--radius); border-left: 3px solid var(--accent-cyan);
+}
+.ai-sources-title {
+    font-size: 0.85rem; font-weight: 600; color: var(--text-primary);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.ai-sources-title i { color: var(--accent-cyan); }
+.ai-sources-list { margin: 0 0 10px; padding-left: 20px; }
+.ai-sources-list li { margin-bottom: 4px; font-size: 0.8rem; word-break: break-all; }
+.ai-sources-list a { color: var(--accent-cyan); text-decoration: none; }
+.ai-sources-list a:hover { text-decoration: underline; }
+.ai-sources-note {
+    font-size: 0.72rem; color: var(--text-muted); line-height: 1.6;
+    display: flex; gap: 6px; align-items: flex-start;
+}
+.ai-sources-note i { margin-top: 2px; flex-shrink: 0; }
+
+/* 表单提示文字 */
+.ai-hint {
+    display: block; margin-top: 6px;
+    font-size: 0.72rem; color: var(--text-muted); line-height: 1.5;
+}
+
+/* ===== AI 历史记录抽屉（右侧） ===== */
+.ai-history-toggle {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    z-index: 1200; width: 44px; height: 56px;
+    background: var(--accent-cyan); color: #06222b;
+    border: none; border-radius: 12px 0 0 12px;
+    cursor: pointer; box-shadow: -4px 0 16px rgba(0,0,0,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; transition: width .2s ease;
+}
+.ai-history-toggle:hover { width: 50px; }
+.ai-history-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--color-danger, #ef4444); color: #fff;
+    min-width: 18px; height: 18px; padding: 0 4px;
+    border-radius: 9px; font-size: 0.65rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+}
+.ai-history-drawer {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: 340px; max-width: 86vw; z-index: 1300;
+    background: var(--bg-secondary); border-left: 1px solid var(--border-color);
+    box-shadow: -8px 0 32px rgba(0,0,0,0.35);
+    transform: translateX(100%); transition: transform .28s ease;
+    display: flex; flex-direction: column;
+}
+.ai-history-drawer.open { transform: translateX(0); }
+.ai-history-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; border-bottom: 1px solid var(--border-color);
+}
+.ai-history-header h3 {
+    font-size: 0.95rem; margin: 0; display: flex; align-items: center; gap: 8px;
+    color: var(--text-primary);
+}
+.ai-history-header h3 i { color: var(--accent-cyan); }
+.ai-history-actions { display: flex; align-items: center; gap: 8px; }
+.ai-history-clear {
+    background: transparent; border: 1px solid var(--border-color);
+    color: var(--text-muted); border-radius: 6px; padding: 3px 8px;
+    font-size: 0.72rem; cursor: pointer;
+}
+.ai-history-clear:hover { color: var(--color-danger, #ef4444); border-color: var(--color-danger, #ef4444); }
+.ai-history-close {
+    background: transparent; border: none; color: var(--text-muted);
+    font-size: 1rem; cursor: pointer;
+}
+.ai-history-close:hover { color: var(--text-primary); }
+.ai-history-list {
+    flex: 1; overflow-y: auto; padding: 10px;
+}
+.ai-history-item {
+    position: relative; padding: 12px 12px 12px 14px; margin-bottom: 10px;
+    background: var(--bg-tertiary); border: 1px solid var(--border-color);
+    border-radius: var(--radius); cursor: pointer; transition: border-color .15s;
+}
+.ai-history-item:hover { border-color: var(--accent-cyan); }
+.ai-history-item-title {
+    font-size: 0.84rem; font-weight: 600; color: var(--text-primary);
+    margin-bottom: 6px; padding-right: 28px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; line-height: 1.4;
+}
+.ai-history-item-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    font-size: 0.68rem; color: var(--text-muted);
+}
+.ai-history-item-meta span {
+    background: var(--bg-card); padding: 2px 6px; border-radius: 4px;
+}
+.ai-history-del {
+    position: absolute; top: 10px; right: 10px;
+    background: transparent; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 0.8rem; padding: 2px;
+}
+.ai-history-del:hover { color: var(--color-danger, #ef4444); }
+.ai-history-empty {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 12px;
+    color: var(--text-muted); text-align: center; padding: 30px;
+}
+.ai-history-empty i { font-size: 2rem; opacity: .5; }
+.ai-history-empty p { font-size: 0.78rem; line-height: 1.6; }
+
 /* 空状态 */
 .ai-empty-state {
     text-align: center; padding: 40px 20px;

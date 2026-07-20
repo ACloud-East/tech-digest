@@ -54,7 +54,11 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: 'base 必须是 https 开头的 API 地址' }), { status: 400, headers: acao });
     }
     const model = body.model || env.VECTOR_ENGINE_MODEL || 'deepseek-chat';
-    const maxTokens = Math.min(Math.max(parseInt(body.wordCount, 10) || 800, 1) * 2, 4096);
+    // 优先使用前端按语言估算的 token 上限（避免生成远超目标字数，防止「夹断」式截断）；
+    // 未提供时回退到 wordCount*2 兜底
+    const reqMaxTokens = parseInt(body.max_tokens, 10);
+    const fallbackMaxTokens = Math.min(Math.max(parseInt(body.wordCount, 10) || 800, 1) * 2, 4096);
+    const maxTokens = Math.min(Math.max(reqMaxTokens || fallbackMaxTokens, 50), 8192);
 
     // 4) 转发到上游（开启流式，实现打字机式输出）
     try {

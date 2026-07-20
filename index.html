@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=14">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -219,6 +219,15 @@
                                     </label>
                                     <textarea class="ai-textarea ai-textarea-main" v-model="aiForm.content" placeholder="粘贴已有文章内容，AI将基于此重新创作优化..." rows="8"></textarea>
                                     <span class="ai-char-count">{{ visibleCharCount(aiForm.content) }} 字</span>
+                                </div>
+
+                                <!-- 信息来源（可选，用于引用与来源展示） -->
+                                <div class="ai-field">
+                                    <label class="ai-label">
+                                        <i class="fa-solid fa-link"></i> 信息来源 / 引用链接（可选）
+                                    </label>
+                                    <textarea class="ai-textarea" v-model="aiForm.sources" placeholder="逐行粘贴来源链接或说明，例如：&#10;https://example.com/news/sony-pxw-z200&#10;索尼官网发布会实录" rows="3"></textarea>
+                                    <span class="ai-hint">勾选引用后，生成结果会标注 [1][2] 并在下方展示来源链接；AI 仅依据你提供的内容生成，关键数据请以来源原文为准。</span>
                                 </div>
 
                                 <!-- 参考模板 -->
@@ -437,6 +446,21 @@
                                 <div class="ai-output-body ai-output-plain" v-show="aiTab === 'plain'" :class="{ generating: aiGeneratingPlain }" v-html="aiResultPlainHtml"></div>
                                 <div class="ai-output-char-count">
                                     <span>总字数：{{ aiTotalChars }}</span>
+                                </div>
+                                <!-- 数据来源与引用 -->
+                                <div class="ai-sources-box" v-if="aiResultSources.length">
+                                    <div class="ai-sources-title">
+                                        <i class="fa-solid fa-link"></i> 数据来源 / 引用
+                                    </div>
+                                    <ol class="ai-sources-list">
+                                        <li v-for="(s, i) in aiResultSources" :key="i">
+                                            <a v-if="isUrl(s)" :href="s" target="_blank" rel="noopener noreferrer">{{ s }}</a>
+                                            <span v-else>{{ s }}</span>
+                                        </li>
+                                    </ol>
+                                    <div class="ai-sources-note">
+                                        <i class="fa-solid fa-circle-info"></i> 本内容由 AI 基于你提供的素材与来源生成，文中 [1][2] 等标注对应上方来源。关键数据（参数、价格、发布时间等）请以来源原文为准核实。
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -702,14 +726,47 @@
                 </div>
             </main>
         </div>
+
+        <!-- AI 生成历史（右侧抽屉，可展开/隐藏） -->
+        <button class="ai-history-toggle" :class="{ open: aiHistoryOpen }" @click="toggleHistory" title="生成历史记录">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span v-if="aiHistory.length" class="ai-history-badge">{{ aiHistory.length }}</span>
+        </button>
+
+        <aside class="ai-history-drawer" :class="{ open: aiHistoryOpen }">
+            <div class="ai-history-header">
+                <h3><i class="fa-solid fa-clock-rotate-left"></i> 生成历史</h3>
+                <div class="ai-history-actions">
+                    <button class="ai-history-clear" v-if="aiHistory.length" @click="clearHistory">清空</button>
+                    <button class="ai-history-close" @click="toggleHistory"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+            <div class="ai-history-list" v-if="aiHistory.length">
+                <div class="ai-history-item" v-for="h in aiHistory" :key="h.id" @click="restoreHistory(h)">
+                    <div class="ai-history-item-title">{{ h.resultTitle || '未命名文章' }}</div>
+                    <div class="ai-history-item-meta">
+                        <span>{{ h.time }}</span>
+                        <span>{{ (aiOptions.types.find(t => t.value === h.type) || {}).label || h.type }}</span>
+                        <span>{{ h.wordCount }}字</span>
+                    </div>
+                    <button class="ai-history-del" @click.stop="deleteHistory(h.id)" title="删除">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="ai-history-empty" v-else>
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <p>暂无历史记录<br>每次生成后会自动保存到这里</p>
+            </div>
+        </aside>
     </div>
 
     <script src="https://unpkg.com/vue@3.4.21/dist/vue.global.prod.js"></script>
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="js/api.js?v=2607121825"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=12"></script>
+    <script src="js/ai-generator.js?v=13"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607160005"></script>
+    <script src="js/app.js?v=2607160006"></script>
 </body>
 </html>

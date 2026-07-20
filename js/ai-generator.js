@@ -56,6 +56,7 @@ const AIGenerator = {
             prompt,
             model: this.config.userApiModel || this.config.deepseekModel,
             wordCount: form.wordCount || 800,
+            max_tokens: this._estimateMaxTokens(form),
             stream: true,
         };
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
@@ -101,7 +102,7 @@ const AIGenerator = {
                         if (j.error) throw new Error('AI 服务：' + (j.error.message || j.error));
                         content = j.content || '';
                     } catch (e) { if (e.message && e.message.startsWith('AI 服务')) throw e; continue; }
-                    if (content) { acc += content; if (onToken) onToken(this.parseApiResponse(acc)); }
+                    if (content) { acc += content; if (onToken) onToken(this.parseApiResponse(this._fitToCharCount(acc, form.wordCount))); }
                 }
             }
             if (!acc) throw new Error('AI 服务返回为空');
@@ -1172,6 +1173,17 @@ const AIGenerator = {
         return kept.join('\n\n').trim() || text;
     },
 
+    /**
+     * 按语言估算合适的 max_tokens，从源头抑制「先生成上千字再夹断」的现象。
+     * 中文约 1 字符/token；英文约 4 字符/token。预留约 15% 结构开销。
+     */
+    _estimateMaxTokens(form) {
+        const lang = this.getLanguageConfig(form.language);
+        const wordCount = parseInt(form.wordCount, 10) || 800;
+        const est = lang.lang === 'en' ? Math.round(wordCount * 0.7) : Math.round(wordCount * 1.8);
+        return Math.min(Math.max(est, 100), 8192);
+    },
+
     /** 打字机式逐字揭示：把已生成的文本分块回调给 onToken，营造流式输出观感（本地兜底/非流式上游使用） */
     async _reveal(content, onToken, title = '') {
         if (!onToken) return;
@@ -1191,7 +1203,7 @@ const AIGenerator = {
         const resp = await fetch('https://api.deepseek.com/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.config.deepseekKey },
-            body: JSON.stringify({ model: this.config.deepseekModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 2, 4096) }),
+            body: JSON.stringify({ model: this.config.deepseekModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: this._estimateMaxTokens(form) }),
             signal: AbortSignal.timeout(60000),
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
@@ -1207,7 +1219,7 @@ const AIGenerator = {
         const resp = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.config.openaiKey },
-            body: JSON.stringify({ model: this.config.openaiModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 2, 4096) }),
+            body: JSON.stringify({ model: this.config.openaiModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: this._estimateMaxTokens(form) }),
             signal: AbortSignal.timeout(60000),
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
@@ -1265,6 +1277,19 @@ const AIGenerator = {
                 prompt += `\nReference source material. Please reorganize, rewrite, and expand based on these facts to produce a complete article; do not simply summarize or repeat:\n${form.content.substring(0, 3000)}\n`;
             } else {
                 prompt += `\n以下为参考原文，请基于这些事实进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述：\n${form.content.substring(0, 3000)}\n`;
+            }
+        }
+
+        // 来源与引用：引导模型标注引用，并禁止杜撰链接
+        if (form.sources && form.sources.trim()) {
+            const srcList = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+            if (srcList.length) {
+                const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
+                if (isEnglish) {
+                    prompt += `\nSources provided by the user (cite these, do NOT invent other links):\n${srcText}\nWhen you use a fact from a source, cite it inline as [1], [2] etc. After the article, add a "## References" section listing the sources by number. Do not fabricate URLs.\n`;
+                } else {
+                    prompt += `\n用户提供的信息来源（请用中文引用，不要杜撰其他链接）：\n${srcText}\n正文中用到来源中的事实时，请用 [1]、[2] 上标式标注对应来源；文末追加「## 参考来源」小节，按编号列出上述来源。不要编造来源链接。\n`;
+                }
             }
         }
 
