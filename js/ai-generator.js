@@ -86,7 +86,7 @@ const AIGenerator = {
         if (resp.body && ct.includes('text/event-stream')) {
             const reader = resp.body.getReader();
             const decoder = new TextDecoder();
-            let buf = '', acc = '';
+            let buf = '', acc = '', metaAcc = null;
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
@@ -103,6 +103,7 @@ const AIGenerator = {
                     try {
                         const j = JSON.parse(data);
                         if (j.error) throw new Error('AI 服务：' + (j.error.message || j.error));
+                        if (j.meta) { metaAcc = j.meta; continue; }
                         content = j.content || '';
                     } catch (e) { if (e.message && e.message.startsWith('AI 服务')) throw e; continue; }
                     if (content) { acc += content; if (onToken) onToken(this.parseApiResponse(this._fitToCharCount(acc, form.wordCount))); }
@@ -111,6 +112,7 @@ const AIGenerator = {
             if (!acc) throw new Error('AI 服务返回为空');
             const fitted = this._fitToCharCount(acc, form.wordCount);
             const result = this.parseApiResponse(fitted);
+            if (metaAcc && metaAcc.sources) result.sourcesMeta = metaAcc.sources;
             if (onToken) onToken(result);
             return result;
         }
@@ -1289,9 +1291,9 @@ const AIGenerator = {
 
         if (form.content && form.content.length > 50) {
             if (isEnglish) {
-                prompt += `\nReference topic/draft material. Please rewrite and expand into a complete article; do not simply summarize or repeat. The actual source content from the URLs you will be provided with below (if any) should be used as the factual basis for citations:\n${form.content.substring(0, 3000)}\n`;
+                prompt += `\nBelow is YOUR OWN draft (the MAIN SUBJECT). Treat it as the spine of the article — rewrite it in a natural, human-editor voice, keeping its core facts, opinions and narrative flow. Do NOT just chop it up and pad with generic filler.\nFORBIDDEN: hollow openers ("In today's...", "With the rapid development of..."), template phrases ("First... Second... Finally", "In conclusion", "It is worth mentioning"), and mechanically breaking it into one-line bullet points. Write like a real columnist with natural transitions; never invent facts.\nDraft:\n${form.content.substring(0, 3000)}\n`;
             } else {
-                prompt += `\n【参考主题/草稿】请基于以下素材进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述。注意：下方提供的 URL 正文才是可被引用的来源，原文本身不作为引用来源：\n${form.content.substring(0, 3000)}\n`;
+                prompt += `\n以下是**你自己写的主体草稿（核心素材）**，请把它当作文章的骨架：用自然、像真人编辑一样的口吻重写，保留原文的核心事实、观点与叙事脉络，不要丢点、不要臆造。\n【严禁 AI 套话】禁止以下写法：用「在当今……」「随着……的快速发展」「近年来……」等空泛开场；用「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」等模板词；把原文硬拆成要点罗列、每段只用一两句空话填字数。要像专栏随笔/真实媒体成稿，有起承转合、过渡自然。\n草稿正文：\n${form.content.substring(0, 3000)}\n`;
             }
         }
 
@@ -1302,17 +1304,17 @@ const AIGenerator = {
             if (srcList.length) {
                 const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
                 if (isEnglish) {
-                    prompt += `\nThe following source URLs/texts will be fetched and appended to the end of this prompt. You must base factual claims on those sources and cite them inline as [1], [2], etc. matching the order below. The original draft above is NOT a citable source.\n${srcText}\n\n- Every factual claim must be followed by a citation [1], [2], etc.\n- If you cannot verify a fact against the appended sources, mark it with [?] or omit it.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Keep the article within the length limit; do not add a separate references section.\n`;
+                    prompt += `\nREFERENCE LITERATURE (to be fetched and appended at the end of this prompt, numbered [1], [2]...):\n${srcText}\n\n- The appended web texts are your REFERENCE LITERATURE. Any verifiable fact — specs, figures, prices, release dates, quotes, test results — MUST be grounded in these references and tagged with the matching [1]/[2] citation at the end of the sentence.\n- The draft above is the MAIN SUBJECT and is NOT a citable source; it will not appear in the reference list.\n- When the draft and a reference disagree, follow the reference and you may naturally note the difference.\n- If a fact cannot be verified from the references, mark it [?] or omit it.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Stay within the length limit; do not add a separate references section.\n`;
                 } else {
-                    prompt += `\n以下 URL/来源将在本提示词末尾被抓取正文并补充进来。你必须基于这些来源中的事实进行写作，并按 [1]、[2] 等编号标注对应来源。上方【参考主题/草稿】本身不作为引用来源，也不会出现在来源列表中。\n${srcText}\n\n- 每个事实性断言后面都必须紧跟一个来源编号 [1]、[2] 等，与下方抓取到的来源编号对应。\n- 如果某个信息无法从抓取到的来源中确认，请在该句末尾标注 [?]，或直接省略该信息。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 请严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节。\n`;
+                    prompt += `\n以下为**参考文献**（系统会在本提示词末尾抓取正文并补充进来，编号 [1]、[2]…）：\n${srcText}\n\n- 抓取到的网页正文是你的**参考文献**。凡是可核实的事实——规格参数、数据、价格、发布日期、引语、测试结果等——必须以参考文献为准，并在句末用对应的 [1]、[2] 编号标注来源。\n- 上方草稿是**主体内容**，本身**不作为引用来源**，也不会出现在来源列表里。\n- 若草稿与参考文献冲突，以参考文献为准，可在文中自然点出差异。\n- 如果某条信息无法从参考文献中确认，请在该句末尾标注 [?]，或直接省略。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节。\n`;
                 }
             }
         } else {
-            // 没有附加来源时，沿用旧的防杜撰要求
+            // 没有附加来源时：仍以真人口吻重写，且不得杜撰
             if (isEnglish) {
-                prompt += `\nNo external sources were provided. Base the article only on the reference material above. Do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
+                prompt += `\nNo external references were provided. The draft above is your only material. Rewrite it in your own human voice; do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
             } else {
-                prompt += `\n未提供外部来源，请仅基于上方参考素材写作，不要捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
+                prompt += `\n未提供外部参考文献，上方草稿是你唯一的素材。请用你自己的、像真人一样的口吻重写；不要捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
             }
         }
 

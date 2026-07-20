@@ -89,7 +89,8 @@ const app = createApp({
         const aiShowOutput = ref(false);  // 是否已显示结果面板（点击生成即展示）
         const aiGeneratingStructured = ref(false);
         const aiGeneratingPlain = ref(false);
-        const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用）
+        const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用，仅 http(s) URL）
+        const aiResultSourcesMeta = ref([]);  // 与 aiResultSources 一一对应：{url, ok, note}
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const hoveredCite = ref(null);    // 当前鼠标悬停的内联引用编号
@@ -264,10 +265,10 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
-        // 解析来源文本为列表（仅来自 form.sources，不再把原文作为来源 1）
+        // 解析来源文本为列表（仅保留 http(s) URL，与函数端抓取逻辑一致，便于按索引对应抓取状态）
         function parseSources(str) {
             if (!str || !str.trim()) return [];
-            return str.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+            return str.split(/[\n,，;；]+/).map(s => s.trim()).filter(s => /^https?:\/\//i.test(s)).slice(0, 6);
         }
         function isUrl(s) { return /^https?:\/\//i.test((s || '').trim()); }
 
@@ -315,6 +316,7 @@ const app = createApp({
             aiResultTitle.value = item.resultTitle || '';
             aiResultTime.value = item.time || '';
             aiResultSources.value = item.inputSources ? parseSources(item.inputSources) : [];
+            aiResultSourcesMeta.value = (item.sourcesMeta && Array.isArray(item.sourcesMeta)) ? item.sourcesMeta : [];
             aiTab.value = 'structured';
             const outputEl = document.querySelector('.ai-output-section');
             if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -330,6 +332,8 @@ const app = createApp({
             aiResultPlain.value = '';
             aiResultTitle.value = '';
             aiTab.value = 'structured';
+            // 立即展示来源框：只要用户填了来源 URL，框就出现，避免后续某次生成失败时整框丢失
+            aiResultSources.value = parseSources(aiForm.value.sources);
 
             try {
                 // 结构式：逐字流式展示（默认可见 tab）
@@ -341,6 +345,7 @@ const app = createApp({
                 const result = await AIGenerator.generate(aiForm.value, onToken);
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
+                aiResultSourcesMeta.value = result.sourcesMeta || [];
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
                 aiGeneratingStructured.value = false; // 结构式完成，光标停止
 
@@ -369,6 +374,7 @@ const app = createApp({
                     inputTitle: aiForm.value.title,
                     inputContent: aiForm.value.content,
                     inputSources: aiForm.value.sources,
+                    sourcesMeta: aiResultSourcesMeta.value,
                     inputKeywords: aiForm.value.keywords,
                     inputTemplate: aiForm.value.template,
                     inputExtra: aiForm.value.extraInstructions,
@@ -950,7 +956,7 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            aiResultSources, aiResultSourcesMeta, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, restoreHistory, deleteHistory, clearHistory,
             generateArticle, regenerateArticle, copyResult, downloadResult,

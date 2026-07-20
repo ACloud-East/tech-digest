@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=14">
+    <link rel="stylesheet" href="css/style.css?v=15">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -221,13 +221,13 @@
                                     <span class="ai-char-count">{{ visibleCharCount(aiForm.content) }} 字</span>
                                 </div>
 
-                                <!-- 信息来源（可选，用于引用与来源展示） -->
-                                <div class="ai-field">
+                                <!-- 信息来源（可选，作为参考文献被抓取引用） -->
+                                <div class="ai-field ai-field-ref">
                                     <label class="ai-label">
-                                        <i class="fa-solid fa-link"></i> 信息来源 / 引用链接（可选）
+                                        <i class="fa-solid fa-link"></i> 信息来源 / 参考文献链接（可选）
                                     </label>
-                                    <textarea class="ai-textarea" v-model="aiForm.sources" placeholder="逐行粘贴来源链接或说明，例如：&#10;https://example.com/news/sony-pxw-z200&#10;索尼官网发布会实录" rows="3"></textarea>
-                                    <span class="ai-hint">勾选引用后，生成结果会标注 [1][2] 并在下方展示来源链接；AI 仅依据你提供的内容生成，关键数据请以来源原文为准。</span>
+                                    <textarea class="ai-textarea" v-model="aiForm.sources" placeholder="逐行粘贴来源 URL，系统会自动抓取正文并作为 [1][2] 参考文献引用，例如：&#10;https://example.com/news/sony-pxw-z200&#10;https://www.apple.com/newsroom/..." rows="3"></textarea>
+                                    <span class="ai-hint">填 URL 即可：系统会抓取网页正文，模型基于这些<strong>参考文献</strong>生成并标注 [1][2] 引用。上方「参考原文」是你自己的<strong>主体草稿</strong>，不作为引用来源。</span>
                                 </div>
 
                                 <!-- 参考模板 -->
@@ -466,21 +466,22 @@
                                     </div>
                                 </div>
                                 <!-- 数据来源与引用 -->
-                                <div class="ai-sources-box" v-if="aiResultSources.length">
+                                <div class="ai-sources-box" v-if="aiResultSources.length || (aiForm.sources && aiForm.sources.trim())">
                                     <div class="ai-sources-title">
                                         <i class="fa-solid fa-link"></i> 数据来源 / 引用
                                     </div>
                                     <ol class="ai-sources-list">
                                         <li v-for="(s, i) in aiResultSources" :key="i"
-                                            :class="{ 'ai-source-active': hoveredSource === String(i + 1) || hoveredCite === String(i + 1) }"
+                                            :class="['ai-source-item', { 'ai-source-active': hoveredSource === String(i + 1) || hoveredCite === String(i + 1), 'ai-source-failed': aiResultSourcesMeta[i] && !aiResultSourcesMeta[i].ok }]"
                                             @mouseenter="hoveredSource = String(i + 1)"
                                             @mouseleave="hoveredSource = null">
                                             <a v-if="isUrl(s)" :href="s" target="_blank" rel="noopener noreferrer">{{ s }}</a>
                                             <span v-else>{{ s }}</span>
+                                            <span v-if="aiResultSourcesMeta[i] && !aiResultSourcesMeta[i].ok" class="ai-source-fail-note">（无法抓取：{{ aiResultSourcesMeta[i].note }}）</span>
                                         </li>
                                     </ol>
                                     <div class="ai-sources-note">
-                                        <i class="fa-solid fa-circle-info"></i> 本内容由 AI 基于你提供的参考主题与网页来源生成，系统会自动抓取上方 URL 的正文并引用。若 URL 无法抓取，对应事实将标为 [?]。关键数据请以来源原文为准核实。
+                                        <i class="fa-solid fa-circle-info"></i> 以上为系统自动抓取的<strong>参考文献</strong>，正文中的 [1][2] 对应其编号。抓取失败的来源会标注「（无法抓取）」，相关事实标 [?]。关键数据请以来源原文为准核实。
                                     </div>
                                 </div>
                             </div>
@@ -786,8 +787,8 @@
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="js/api.js?v=2607121825"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=17"></script>
+    <script src="js/ai-generator.js?v=18"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607200300"></script>
+    <script src="js/app.js?v=2607200301"></script>
 </body>
 </html>

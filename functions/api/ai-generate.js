@@ -65,7 +65,7 @@ async function fetchSourceText(url, timeoutMs = 10000) {
         if (!ct.includes('text/html')) return { url, error: `非 HTML 内容 (${ct})` };
         const html = await resp.text();
         const text = extractTextFromHtml(html);
-        return { url, text: text.slice(0, 6000) };
+        return { url, text: text.slice(0, 3500) };
     } catch (e) {
         return { url, error: e.message || '抓取失败' };
     } finally {
@@ -98,21 +98,31 @@ export async function onRequestPost({ request, env }) {
 
     // 2.1) 抓取用户提供的 URL 来源，并把正文注入 prompt（RAG）
     let augmentedPrompt = prompt;
+    let sourcesMeta = [];   // 抓取状态，流结束后的尾包回传前端
     const sourceUrls = (body.sources || [])
         .filter(s => /^https?:\/\//i.test(String(s).trim()))
         .slice(0, 6);
     if (sourceUrls.length) {
         const fetched = await Promise.all(sourceUrls.map(url => fetchSourceText(url)));
-        augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文，请严格基于这些事实写作，并按 [1]、[2] 等编号标注对应来源：\n';
+        // 注入总量封顶，避免长原文 + 多 URL 把上游上下文/超时打爆（降低 502 概率）
+        const MAX_TOTAL = 18000;
+        let budget = MAX_TOTAL;
+        augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文（参考文献），请严格基于这些事实写作，并按 [1]、[2] 等编号标注对应来源：\n';
         fetched.forEach((s, i) => {
-            augmentedPrompt += `\n[${i + 1}] URL: ${s.url}\n`;
+            let text = '';
             if (s.error) {
-                augmentedPrompt += `（无法获取内容：${s.error}）\n`;
-            } else {
-                augmentedPrompt += `${s.text || ''}\n`;
+                text = `（无法获取内容：${s.error}）`;
+            } else if (s.text) {
+                const allow = Math.max(400, budget);
+                text = s.text.slice(0, allow);
+                budget -= text.length;
             }
+            augmentedPrompt += `\n[${i + 1}] URL: ${s.url}\n${text}\n`;
         });
         augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧跟 [1]、[2] 等来源编号，与上方 URL 编号对应；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。';
+
+        // 抓取状态随响应返回，供前端在来源框标注「（无法抓取）」
+        sourcesMeta = fetched.map(s => ({ url: s.url, ok: !s.error, note: s.error || '' }));
     }
 
     // 2) 读取密钥：优先用「用户自带 key」（BYOK，从请求体带来），其次用站点服务端密文
@@ -145,7 +155,7 @@ export async function onRequestPost({ request, env }) {
             body: JSON.stringify({
                 model,
                 messages: [{ role: 'user', content: augmentedPrompt }],
-                temperature: 0.8,
+                temperature: 0.7,
                 max_tokens: maxTokens,
                 stream: true,
             }),
@@ -166,7 +176,8 @@ export async function onRequestPost({ request, env }) {
                 const j = JSON.parse(txt);
                 content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt;
             } catch (_) {}
-            const sse = 'data: ' + JSON.stringify({ content }) + '\n\n' + 'data: [DONE]\n\n';
+            const metaSse = sourcesMeta.length ? 'data: ' + JSON.stringify({ meta: { sources: sourcesMeta } }) + '\n\n' : '';
+            const sse = 'data: ' + JSON.stringify({ content }) + '\n\n' + metaSse + 'data: [DONE]\n\n';
             return new Response(sse, {
                 status: 200,
                 headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
@@ -184,7 +195,13 @@ export async function onRequestPost({ request, env }) {
                 try {
                     while (true) {
                         const { done, value } = await reader.read();
-                        if (done) { flushBuffer(); controller.enqueue(encoder.encode('data: [DONE]\n\n')); controller.close(); return; }
+                        if (done) {
+                            flushBuffer();
+                            if (sourcesMeta.length) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ meta: { sources: sourcesMeta } }) + '\n\n'));
+                            controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+                            controller.close();
+                            return;
+                        }
                         buf += decoder.decode(value, { stream: true });
                         flushBuffer();
                     }
