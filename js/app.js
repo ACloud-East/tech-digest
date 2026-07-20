@@ -85,6 +85,9 @@ const app = createApp({
         const aiResultTime = ref('');
         const aiResultPlain = ref('');    // 非结构式文本
         const aiTab = ref('structured');  // 'structured' | 'plain'
+        const aiShowOutput = ref(false);  // 是否已显示结果面板（点击生成即展示）
+        const aiGeneratingStructured = ref(false);
+        const aiGeneratingPlain = ref(false);
 
         // ====== API 设置（BYOK：用户自带 key，仅存本机 localStorage） ======
         const aiApi = ref({
@@ -201,16 +204,19 @@ const app = createApp({
             if (styleObj) aiForm.value.styleLabel = styleObj.label;
         }
 
-        // AI 生成文章（模拟 + API 预留；结构式优先流式打字展示，非结构式随后流式填充）
+        // AI 生成文章（结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
             updateAILabels();
             aiGenerating.value = true;
+            aiShowOutput.value = true;
             aiResult.value = '';
             aiResultPlain.value = '';
+            aiResultTitle.value = '';
             aiTab.value = 'structured';
 
             try {
                 // 结构式：逐字流式展示（默认可见 tab）
+                aiGeneratingStructured.value = true;
                 const onToken = (partial) => {
                     if (partial && partial.title) aiResultTitle.value = partial.title;
                     if (partial && partial.content !== undefined) aiResult.value = partial.content;
@@ -219,13 +225,16 @@ const app = createApp({
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                aiGeneratingStructured.value = false; // 结构式完成，光标停止
 
-                // 非结构式：流式展示（隐藏，切到该 tab 时已就绪）
+                // 非结构式：流式填充（隐藏，切到该 tab 时已就绪）
+                aiGeneratingPlain.value = true;
                 const onTokenPlain = (partial) => {
                     if (partial && partial.content !== undefined) aiResultPlain.value = partial.content;
                 };
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
                 aiResultPlain.value = plainResult.content;
+                aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 滚动到结果区
                 await nextTick();
@@ -236,10 +245,13 @@ const app = createApp({
                 aiResultTitle.value = '';
             } finally {
                 aiGenerating.value = false;
+                aiGeneratingStructured.value = false;
+                aiGeneratingPlain.value = false;
             }
         }
 
         function regenerateArticle() {
+            aiShowOutput.value = true;
             aiResult.value = '';
             aiResultPlain.value = '';
             aiResultTitle.value = '';
@@ -799,7 +811,7 @@ const app = createApp({
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultHtml,
-            aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars,
+            aiResultPlain, aiResultPlainHtml, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,

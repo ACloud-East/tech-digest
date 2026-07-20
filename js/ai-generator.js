@@ -105,8 +105,10 @@ const AIGenerator = {
                 }
             }
             if (!acc) throw new Error('AI 服务返回为空');
-            if (onToken) onToken(this.parseApiResponse(acc));
-            return this.parseApiResponse(acc);
+            const fitted = this._fitToCharCount(acc, form.wordCount);
+            const result = this.parseApiResponse(fitted);
+            if (onToken) onToken(result);
+            return result;
         }
 
         // 非流式（上游返回 JSON）：解析后做打字机展开
@@ -115,6 +117,7 @@ const AIGenerator = {
         const content = (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || data.content;
         if (!content) throw new Error('AI 服务返回为空');
         const result = this.parseApiResponse(content);
+        result.content = this._fitToCharCount(result.content, form.wordCount);
         if (onToken) await this._reveal(result.content, onToken, result.title);
         return result;
     },
@@ -1102,7 +1105,13 @@ const AIGenerator = {
     },
 
     getLanguageConfig(language) {
-        return { value: language };
+        const map = {
+            zh_professional: { value: 'zh_professional', label: '中文·专业', lang: 'zh', instruction: '请使用专业、规范、书面化的中文表达。' },
+            zh_casual: { value: 'zh_casual', label: '中文·口语化', lang: 'zh', instruction: '请使用口语化、轻松自然的中文表达，像朋友聊天一样。' },
+            zh_literary: { value: 'zh_literary', label: '中文·文艺', lang: 'zh', instruction: '请使用文艺、优美、有画面感和节奏感的中文表达。' },
+            en_professional: { value: 'en_professional', label: 'English·Professional', lang: 'en', instruction: 'Please write the entire article in English, using professional, formal, and polished language. The output should be in English only, except for necessary brand/product names. Ensure natural English expression suitable for a professional tech publication.' },
+        };
+        return map[language] || map.zh_professional;
     },
 
     extractKeyword(sentence) {
@@ -1116,6 +1125,52 @@ const AIGenerator = {
     },
 
     delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); },
+
+    /**
+     * 将文本按段落裁剪到目标字符数（仅计中英文+数字），避免单篇生成结果远超用户设定的目标字数。
+     * 尽量保留完整段落，只在最后一段超出目标时截断到句子边界。
+     */
+    _fitToCharCount(text, target) {
+        if (!target || target < 50) return text;
+        const upper = Math.round(target * 1.15);
+        const charCount = (s) => ((s || '').match(/[一-龥a-zA-Z0-9]/g) || []).length;
+        const total = charCount(text);
+        if (total <= upper) return text;
+
+        const paragraphs = text.split(/\n\s*\n/);
+        let acc = 0;
+        let keepUntil = paragraphs.length;
+        for (let i = 0; i < paragraphs.length; i++) {
+            const c = charCount(paragraphs[i]);
+            if (acc + c > upper && keepUntil === paragraphs.length) {
+                keepUntil = i;
+                break;
+            }
+            acc += c;
+        }
+        if (keepUntil === 0) keepUntil = 1; // 至少保留一段
+        let trimmed = paragraphs.slice(0, keepUntil).join('\n\n').trim();
+
+        // 如果最后一段仍明显超出目标，尝试在句子边界截断
+        const last = paragraphs[keepUntil - 1] || '';
+        if (charCount(last) > target * 0.6) {
+            const sentences = last.split(/([。！？.?!]\s*)/);
+            let sacc = 0, skeepUntil = sentences.length;
+            for (let i = 0; i < sentences.length; i += 2) {
+                const c = charCount(sentences[i]);
+                if (sacc + c > target && skeepUntil === sentences.length) { skeepUntil = i; break; }
+                sacc += c;
+            }
+            if (skeepUntil > 0) {
+                const trimmedLast = sentences.slice(0, skeepUntil).join('').trim();
+                if (trimmedLast) {
+                    paragraphs[keepUntil - 1] = trimmedLast;
+                    trimmed = paragraphs.slice(0, keepUntil).join('\n\n').trim();
+                }
+            }
+        }
+        return trimmed || text;
+    },
 
     /** 打字机式逐字揭示：把已生成的文本分块回调给 onToken，营造流式输出观感（本地兜底/非流式上游使用） */
     async _reveal(content, onToken, title = '') {
@@ -1136,12 +1191,13 @@ const AIGenerator = {
         const resp = await fetch('https://api.deepseek.com/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.config.deepseekKey },
-            body: JSON.stringify({ model: this.config.deepseekModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 3, 4096) }),
+            body: JSON.stringify({ model: this.config.deepseekModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 2, 4096) }),
             signal: AbortSignal.timeout(60000),
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
         const data = await resp.json();
         const result = this.parseApiResponse(data.choices[0].message.content);
+        result.content = this._fitToCharCount(result.content, form.wordCount);
         if (onToken) await this._reveal(result.content, onToken, result.title);
         return result;
     },
@@ -1151,12 +1207,13 @@ const AIGenerator = {
         const resp = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.config.openaiKey },
-            body: JSON.stringify({ model: this.config.openaiModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 3, 4096) }),
+            body: JSON.stringify({ model: this.config.openaiModel, messages: [{ role: 'user', content: prompt }], temperature: 0.8, max_tokens: Math.min(form.wordCount * 2, 4096) }),
             signal: AbortSignal.timeout(60000),
         });
         if (!resp.ok) throw new Error('API 请求失败: ' + resp.status);
         const data = await resp.json();
         const result = this.parseApiResponse(data.choices[0].message.content);
+        result.content = this._fitToCharCount(result.content, form.wordCount);
         if (onToken) await this._reveal(result.content, onToken, result.title);
         return result;
     },
@@ -1165,21 +1222,63 @@ const AIGenerator = {
         const typeConfig = this.getTypeConfig(form.type);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
-        let prompt = `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
-        prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
-        prompt += `目标字数：${form.wordCount}字左右\n`;
-        prompt += `写作风格：${style.type}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
-        prompt += `目标读者：${audience.label}\n`;
-        if (form.keywords) prompt += `核心关键词：${form.keywords}\n`;
-        if (form.template) prompt += `参考模板：\n${form.template}\n`;
-        if (form.extraInstructions) prompt += `额外要求：${form.extraInstructions}\n`;
-        if (form.content && form.content.length > 50) {
-            prompt += `\n以下为参考原文，请基于这些事实进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述：\n${form.content.substring(0, 3000)}\n`;
-        }
-        if (form.plain) {
-            prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。`;
+        const lang = this.getLanguageConfig(form.language);
+        const isEnglish = lang.lang === 'en';
+        const wordCount = parseInt(form.wordCount, 10) || 800;
+        const maxBodyChars = Math.round(wordCount * 1.2);
+        const styleMap = {
+            professional: '专业客观',
+            lively: '活泼轻松',
+            marketing: '营销推广',
+            technical: '技术硬核',
+            storytelling: '叙事故事',
+            concise: '简洁明了',
+        };
+        const styleLabel = styleMap[style.type] || style.type;
+
+        let prompt = '';
+        if (isEnglish) {
+            prompt += `Write a ${typeConfig.label} style tech article for a professional tech publication.\n`;
+            prompt += `Title: ${form.title || 'Please generate an engaging title based on the content'}\n`;
+            prompt += `Target length: approximately ${wordCount} characters (Chinese-character-count standard; for English, aim for roughly ${Math.round(wordCount / 6)} words). The body text should be within ±15% of this target. Do not exceed ${maxBodyChars} characters of actual text (excluding title, punctuation, spaces, and Markdown markers).\n`;
+            prompt += `Writing style: ${styleLabel}. The language should flow naturally, with well-structured paragraphs, like a finished piece from a professional tech media outlet.\n`;
+            prompt += `Target audience: ${audience.label}\n`;
+            if (form.keywords) prompt += `Core keywords: ${form.keywords}\n`;
+            if (form.template) prompt += `Reference template:\n${form.template}\n`;
+            if (form.extraInstructions) prompt += `Additional requirements: ${form.extraInstructions}\n`;
+            prompt += `Language requirement: ${lang.instruction}\n`;
         } else {
-            prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后是完整的正文，使用 ## 二级标题划分章节（如 引言、核心参数、市场定位、总结等）。文章要有引言、分论点、过渡句和结论，像真正的科技媒体文章。`;
+            prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
+            prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
+            prompt += `目标字数：严格控制在 ${wordCount} 字左右（允许 ±15% 偏差）。正文实际字数（不含标题、标点、空格和 Markdown 标记）不得超过 ${maxBodyChars} 字。\n`;
+            prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
+            prompt += `目标读者：${audience.label}\n`;
+            if (form.keywords) prompt += `核心关键词：${form.keywords}\n`;
+            if (form.template) prompt += `参考模板：\n${form.template}\n`;
+            if (form.extraInstructions) prompt += `额外要求：${form.extraInstructions}\n`;
+            prompt += `语言要求：${lang.instruction}\n`;
+        }
+
+        if (form.content && form.content.length > 50) {
+            if (isEnglish) {
+                prompt += `\nReference source material. Please reorganize, rewrite, and expand based on these facts to produce a complete article; do not simply summarize or repeat:\n${form.content.substring(0, 3000)}\n`;
+            } else {
+                prompt += `\n以下为参考原文，请基于这些事实进行重新组织、改写、扩展，生成一篇完整的文章，不要只是简单摘要或复述：\n${form.content.substring(0, 3000)}\n`;
+            }
+        }
+
+        if (form.plain) {
+            if (isEnglish) {
+                prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The rest should be a continuous essay-style body without ## subheadings and without bullet lists. Tone natural, like a column essay. Do not mechanically list points.`;
+            } else {
+                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。`;
+            }
+        } else {
+            if (isEnglish) {
+                prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The body should be complete, using ## subheadings to divide sections (e.g. Introduction, Core Specs, Market Positioning, Conclusion). The article should have an introduction, sub-arguments, transitions, and a conclusion, like a real tech media article.`;
+            } else {
+                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后是完整的正文，使用 ## 二级标题划分章节（如 引言、核心参数、市场定位、总结等）。文章要有引言、分论点、过渡句和结论，像真正的科技媒体文章。`;
+            }
         }
         return prompt;
     },

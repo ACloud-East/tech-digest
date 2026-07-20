@@ -657,8 +657,8 @@ ul { list-style: none; }
 .ai-output-body li { margin-left: 20px; margin-bottom: 4px; list-style: disc; }
 .ai-output-plain p { text-indent: 2em; margin-bottom: 12px; }
 
-/* 生成中：末尾闪烁打字光标，强化流式打字观感 */
-.ai-output-section.generating .ai-output-body::after {
+/* 生成中：末尾闪烁打字光标，强化流式打字观感（按 tab 独立控制） */
+.ai-output-body.generating::after {
     content: '▋';
     display: inline-block;
     margin-left: 2px;
