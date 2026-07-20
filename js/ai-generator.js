@@ -1298,9 +1298,9 @@ const AIGenerator = {
             if (srcList.length) {
                 const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
                 if (isEnglish) {
-                    prompt += `\nSources provided by the user (cite these, do NOT invent other links):\n${srcText}\nWhen you use a fact from a source, cite it inline as [1], [2] etc. After the article, add a "## References" section listing the sources by number. Do not fabricate URLs.\n`;
+                    prompt += `\nSources provided by the user (cite these, do NOT invent other links):\n${srcText}\nWhen you use a fact from a source, cite it inline as [1], [2] etc. matching the source number above. Keep the article within the length limit; do NOT add a separate references section (the source links are shown below the article). Do not fabricate URLs.\n`;
                 } else {
-                    prompt += `\n用户提供的信息来源（请用中文引用，不要杜撰其他链接）：\n${srcText}\n正文中用到来源中的事实时，请用 [1]、[2] 上标式标注对应来源；文末追加「## 参考来源」小节，按编号列出上述来源。不要编造来源链接。\n`;
+                    prompt += `\n用户提供的信息来源（请勿杜撰其他链接）：\n${srcText}\n正文中用到来源中的事实时，请用 [1]、[2] 上标式标注对应编号的来源；请严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节（来源链接会统一展示在文章下方）。不要编造来源链接。\n`;
                 }
             }
         }
