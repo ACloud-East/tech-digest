@@ -73,6 +73,70 @@ async function fetchSourceText(url, timeoutMs = 10000) {
     }
 }
 
+// 联网检索：优先 Tavily（直接返回 cleaned 正文，最契合 RAG），否则 Brave，再次 Wikipedia。
+// 返回 [{ title, url, content }]，失败或无 key 时返回 []。
+async function webSearch(query, env, n = 5) {
+    // 1) Tavily
+    if (env.TAVILY_API_KEY) {
+        try {
+            const resp = await fetch('https://api.tavily.com/search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.TAVILY_API_KEY },
+                body: JSON.stringify({ query, search_depth: 'advanced', max_results: n, include_raw_content: true }),
+            });
+            if (resp.ok) {
+                const j = await resp.json();
+                const results = (j.results || []).map(r => ({
+                    title: r.title || '',
+                    url: r.url,
+                    content: (r.content || r.raw_content || '').slice(0, 3500),
+                })).filter(r => r.url);
+                if (results.length) return results;
+            }
+        } catch (_) {}
+    }
+    // 2) Brave
+    if (env.BRAVE_API_KEY) {
+        try {
+            const resp = await fetch('https://api.search.brave.com/res/v1/web/search?q=' + encodeURIComponent(query) + '&count=' + n, {
+                headers: { 'Accept': 'application/json', 'X-Subscription-Token': env.BRAVE_API_KEY },
+            });
+            if (resp.ok) {
+                const j = await resp.json();
+                const results = ((j.web && j.web.results) || []).map(r => ({
+                    title: r.title || '',
+                    url: r.url,
+                    content: (r.description || '').slice(0, 1200),
+                })).filter(r => r.url);
+                // Brave 仅给摘要，对前 3 条补抓正文以充实引用
+                const top = results.slice(0, 3);
+                const fetched = await Promise.all(top.map(r => fetchSourceText(r.url)));
+                fetched.forEach((f, i) => { if (f.text) top[i].content = f.text; });
+                if (results.length) return results;
+            }
+        } catch (_) {}
+    }
+    // 3) Wikipedia（免费兜底，覆盖面有限但稳定）
+    try {
+        const resp = await fetch('https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(query) + '&format=json&srlimit=' + n, {
+            headers: { 'User-Agent': 'tech-digest-bot/1.0' },
+        });
+        if (resp.ok) {
+            const j = await resp.json();
+            const items = (j.query && j.query.search) || [];
+            const results = [];
+            for (const it of items) {
+                const title = it.title;
+                const url = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
+                const f = await fetchSourceText(url);
+                results.push({ title, url, content: f.text || (it.snippet || '').replace(/<[^>]+>/g, '') });
+            }
+            if (results.length) return results;
+        }
+    } catch (_) {}
+    return [];
+}
+
 // 预检（浏览器跨域时触发）
 export async function onRequestOptions({ request }) {
     const origin = request.headers.get('Origin');
@@ -96,33 +160,49 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: '缺少 prompt 字段' }), { status: 400, headers: acao });
     }
 
-    // 2.1) 抓取用户提供的 URL 来源，并把正文注入 prompt（RAG）
+    // 2.1) 聚合参考文献：用户提供的 URL + （可选）联网自动检索；注入 prompt 并回传前端
     let augmentedPrompt = prompt;
-    let sourcesMeta = [];   // 抓取状态，流结束后的尾包回传前端
+    let references = [];   // [{title, url, content, ok, note}]，流结束后随 meta 回传前端
+    const topic = (body.topic || '').toString().slice(0, 200);
+
+    // (a) 用户提供的 URL（作为补充参考文献）
     const sourceUrls = (body.sources || [])
         .filter(s => /^https?:\/\//i.test(String(s).trim()))
         .slice(0, 6);
     if (sourceUrls.length) {
         const fetched = await Promise.all(sourceUrls.map(url => fetchSourceText(url)));
-        // 注入总量封顶，避免长原文 + 多 URL 把上游上下文/超时打爆（降低 502 概率）
+        fetched.forEach(s => references.push({ title: s.url, url: s.url, content: s.text || '', ok: !s.error, note: s.error || '' }));
+    }
+
+    // (b) 联网自动检索（开启且未填 URL 时为主来源；已填 URL 时作为补充）
+    if (body.webSearch) {
+        try {
+            const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6);
+            for (const r of found) {
+                references.push({ title: r.title || r.url, url: r.url, content: r.content || '', ok: !!r.content, note: r.content ? '' : '未检索到正文' });
+            }
+        } catch (_) {
+            // 检索失败不影响生成，退化为基础重写
+        }
+    }
+
+    // 注入正文（带编号与总量预算上限，降低 502 概率）
+    if (references.length) {
         const MAX_TOTAL = 18000;
         let budget = MAX_TOTAL;
         augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文（参考文献），请严格基于这些事实写作，并按 [1]、[2] 等编号标注对应来源：\n';
-        fetched.forEach((s, i) => {
+        references.forEach((s, i) => {
             let text = '';
-            if (s.error) {
-                text = `（无法获取内容：${s.error}）`;
-            } else if (s.text) {
+            if (!s.ok || !s.content) {
+                text = s.note ? `（无法获取内容：${s.note}）` : '（无可用正文）';
+            } else {
                 const allow = Math.max(400, budget);
-                text = s.text.slice(0, allow);
+                text = s.content.slice(0, allow);
                 budget -= text.length;
             }
             augmentedPrompt += `\n[${i + 1}] URL: ${s.url}\n${text}\n`;
         });
         augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧跟 [1]、[2] 等来源编号，与上方 URL 编号对应；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。';
-
-        // 抓取状态随响应返回，供前端在来源框标注「（无法抓取）」
-        sourcesMeta = fetched.map(s => ({ url: s.url, ok: !s.error, note: s.error || '' }));
     }
 
     // 2) 读取密钥：优先用「用户自带 key」（BYOK，从请求体带来），其次用站点服务端密文
@@ -176,7 +256,7 @@ export async function onRequestPost({ request, env }) {
                 const j = JSON.parse(txt);
                 content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt;
             } catch (_) {}
-            const metaSse = sourcesMeta.length ? 'data: ' + JSON.stringify({ meta: { sources: sourcesMeta } }) + '\n\n' : '';
+            const metaSse = references.length ? 'data: ' + JSON.stringify({ meta: { references } }) + '\n\n' : '';
             const sse = 'data: ' + JSON.stringify({ content }) + '\n\n' + metaSse + 'data: [DONE]\n\n';
             return new Response(sse, {
                 status: 200,
@@ -197,7 +277,7 @@ export async function onRequestPost({ request, env }) {
                         const { done, value } = await reader.read();
                         if (done) {
                             flushBuffer();
-                            if (sourcesMeta.length) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ meta: { sources: sourcesMeta } }) + '\n\n'));
+                            if (references.length) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ meta: { references } }) + '\n\n'));
                             controller.enqueue(encoder.encode('data: [DONE]\n\n'));
                             controller.close();
                             return;

@@ -476,6 +476,25 @@ ul { list-style: none; }
 .ai-field-ref .ai-label { color: var(--accent-cyan); }
 .ai-field-ref .ai-textarea:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6,182,212,0.12); }
 
+/* 「联网搜索」开关 */
+.ai-toggle {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.84rem; font-weight: 600; color: var(--text-primary);
+    cursor: pointer; user-select: none;
+}
+.ai-toggle input { display: none; }
+.ai-toggle-track {
+    position: relative; width: 40px; height: 22px; border-radius: 999px;
+    background: var(--border-color); transition: background .2s; flex-shrink: 0;
+}
+.ai-toggle-thumb {
+    position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%;
+    background: #fff; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+.ai-toggle input:checked + .ai-toggle-track { background: var(--accent-cyan); }
+.ai-toggle input:checked + .ai-toggle-track .ai-toggle-thumb { transform: translateX(18px); }
+.ai-toggle i { color: var(--accent-cyan); width: 16px; text-align: center; }
+
 .ai-input {
     padding: 10px 14px; border-radius: var(--radius-md);
     background: var(--bg-secondary); border: 1px solid var(--border-color);

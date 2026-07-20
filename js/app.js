@@ -39,6 +39,7 @@ const app = createApp({
             language: 'zh_professional',
             extraInstructions: '',
             sources: '',
+            webSearch: false,   // 联网搜索开关（默认关）：开启后系统自动检索真实参数/数据并作为参考文献引用
             typeLabel: '数码评测',
             styleLabel: '专业客观'
         });
@@ -91,6 +92,7 @@ const app = createApp({
         const aiGeneratingPlain = ref(false);
         const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用，仅 http(s) URL）
         const aiResultSourcesMeta = ref([]);  // 与 aiResultSources 一一对应：{url, ok, note}
+        const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const hoveredCite = ref(null);    // 当前鼠标悬停的内联引用编号
@@ -224,11 +226,12 @@ const app = createApp({
             if (!container) return;
             const rect = target.getBoundingClientRect();
             const contRect = container.getBoundingClientRect();
-            const src = aiResultSources.value[parseInt(cite, 10) - 1] || '未知来源';
+            const ref = (aiResultReferences.value[parseInt(cite, 10) - 1]) || null;
+            const srcText = ref ? (ref.title ? ref.title + '\n' + ref.url : ref.url) : '未知来源';
             citationTooltip.value = {
                 visible: true,
                 cite,
-                source: String(src).length > 120 ? String(src).slice(0, 120) + '…' : src,
+                source: srcText.length > 160 ? srcText.slice(0, 160) + '…' : srcText,
                 top: rect.bottom - contRect.top + 8,
                 left: rect.left - contRect.left + rect.width / 2,
             };
@@ -241,7 +244,7 @@ const app = createApp({
 
         function scrollToSource(cite) {
             const idx = parseInt(cite, 10) - 1;
-            if (idx < 0 || idx >= aiResultSources.value.length) return;
+            if (idx < 0 || idx >= aiResultReferences.value.length) return;
             const items = document.querySelectorAll('.ai-sources-list li');
             if (items[idx]) {
                 items[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -317,6 +320,9 @@ const app = createApp({
             aiResultTime.value = item.time || '';
             aiResultSources.value = item.inputSources ? parseSources(item.inputSources) : [];
             aiResultSourcesMeta.value = (item.sourcesMeta && Array.isArray(item.sourcesMeta)) ? item.sourcesMeta : [];
+            aiResultReferences.value = (item.references && Array.isArray(item.references) && item.references.length)
+                ? item.references
+                : aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
             aiTab.value = 'structured';
             const outputEl = document.querySelector('.ai-output-section');
             if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -332,8 +338,9 @@ const app = createApp({
             aiResultPlain.value = '';
             aiResultTitle.value = '';
             aiTab.value = 'structured';
-            // 立即展示来源框：只要用户填了来源 URL，框就出现，避免后续某次生成失败时整框丢失
+            // 立即展示来源框：只要用户填了来源 URL 或开启联网搜索，框就出现，避免后续某次生成失败时整框丢失
             aiResultSources.value = parseSources(aiForm.value.sources);
+            aiResultReferences.value = aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
 
             try {
                 // 结构式：逐字流式展示（默认可见 tab）
@@ -345,7 +352,12 @@ const app = createApp({
                 const result = await AIGenerator.generate(aiForm.value, onToken);
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
-                aiResultSourcesMeta.value = result.sourcesMeta || [];
+                // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
+                aiResultReferences.value = (result.references && result.references.length)
+                    ? result.references
+                    : aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
+                aiResultSources.value = aiResultReferences.value.map(r => r.url);
+                aiResultSourcesMeta.value = aiResultReferences.value.map(r => ({ url: r.url, ok: r.ok, note: r.note }));
                 aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
                 aiGeneratingStructured.value = false; // 结构式完成，光标停止
 
@@ -374,6 +386,7 @@ const app = createApp({
                     inputTitle: aiForm.value.title,
                     inputContent: aiForm.value.content,
                     inputSources: aiForm.value.sources,
+                    references: aiResultReferences.value,
                     sourcesMeta: aiResultSourcesMeta.value,
                     inputKeywords: aiForm.value.keywords,
                     inputTemplate: aiForm.value.template,
@@ -956,7 +969,7 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiResultSourcesMeta, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, restoreHistory, deleteHistory, clearHistory,
             generateArticle, regenerateArticle, copyResult, downloadResult,
