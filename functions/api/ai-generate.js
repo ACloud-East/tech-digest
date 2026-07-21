@@ -205,6 +205,12 @@ export async function onRequestPost({ request, env }) {
         augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧跟 [1]、[2] 等来源编号，与上方 URL 编号对应；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。';
     }
 
+    // 若最终没有任何可用参考文献（联网检索失败且无用户链接），明确禁止虚构引用编号
+    const hasUsableRefs = references.some(r => r.ok && r.content);
+    if (!hasUsableRefs) {
+        augmentedPrompt += '\n\n（重要：本次未能从网络或用户链接获取到任何可用的参考文献正文。因此请不要使用 [1]、[2] 等引用编号，直接基于上方「参考原文」自然重写即可，绝对不要虚构引用或杜撰来源链接。）';
+    }
+
     // 2) 读取密钥：优先用「用户自带 key」（BYOK，从请求体带来），其次用站点服务端密文
     const apiKey = (body.apiKey && String(body.apiKey).trim()) || env.VECTOR_ENGINE_KEY || env.DEEPSEEK_API_KEY;
     if (!apiKey) {

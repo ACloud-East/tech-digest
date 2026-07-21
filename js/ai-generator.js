@@ -1317,15 +1317,15 @@ const AIGenerator = {
             } else {
                 // 仅开启联网搜索（未填 URL）：直接告知参考文献将由系统自动检索
                 if (isEnglish) {
-                    prompt += `\nREFERENCE LITERATURE will be auto-retrieved from the web by the system and appended at the end of this prompt, numbered [1], [2]... Use those real specs/figures/data as your references and tag them inline.\n- The draft above is the MAIN SUBJECT and is NOT a citable source.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n`;
+                    prompt += `\nREFERENCE LITERATURE will be auto-retrieved from the web by the system and appended at the end of this prompt, numbered [1], [2]... IF the system successfully retrieves sources, use those real specs/figures/data as your references and tag them inline. IF no sources are retrieved, DO NOT use [1]/[2] citation numbers and do not fabricate references; simply rewrite the draft in a natural human voice.\n- The draft above is the MAIN SUBJECT and is NOT a citable source.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n`;
                 } else {
-                    prompt += `\n系统将自动从网络检索真实参数/数据，作为**参考文献**补充到本提示词末尾，编号 [1]、[2]…。请基于这些真实数据写作，并在句末用对应编号标注来源；请优先用其中的真实参数/数据充实文章。\n- 上方草稿是**主体内容**，本身**不作为引用来源**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
+                    prompt += `\n系统会尝试自动从网络检索真实参数/数据，作为**参考文献**补充到本提示词末尾，编号 [1]、[2]…。若成功检索到资料，请基于这些真实数据写作，并在句末用对应编号标注来源，优先用其中的真实参数/数据充实文章；**若未检索到任何资料，则不要使用 [1]、[2] 等引用编号，直接基于上方草稿自然重写，不要虚构引用或来源**。\n- 上方草稿是**主体内容**，本身**不作为引用来源**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
                 }
             }
         } else {
             // 没有附加来源时：仍以真人口吻重写，且不得杜撰
             if (isEnglish) {
-                prompt += `\nNo external references were provided. The draft above is your only material. Rewrite it in your own human voice; do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
+                prompt += `\nNo external references were provided. The draft above is your only material. Rewrite it in your own human voice. Do NOT add generic filler summaries, do NOT mechanically expand each point with one empty sentence, and do NOT restructure it into a bullet list. Keep the original rhythm and density; only polish and connect naturally. Do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
             } else {
                 prompt += `\n未提供外部参考文献，上方草稿是你唯一的素材。请用你自己的、像真人一样的口吻重写；不要捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
             }
