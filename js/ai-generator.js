@@ -14,7 +14,7 @@ const AIGenerator = {
         // 同源代理端点（Cloudflare Pages Functions 提供）；GitHub Pages 无函数会自动回退本地
         endpoint: '/api/ai-generate',
         deepseekKey: '',   // 仅 'deepseek' 模式使用，明文在前端不安全，建议用 'cloud' 模式
-        deepseekModel: 'deepseek-chat',
+        deepseekModel: 'deepseek-v3',
         openaiKey: '',     // 仅 'openai' 模式使用，明文在前端不安全
         openaiModel: 'gpt-4o-mini',
 
@@ -63,8 +63,8 @@ const AIGenerator = {
             body.sources = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
         }
         if (form.webSearch) body.webSearch = true;
-        // 未开启联网搜索时，提高温度让输出更多样（避免 DeepSeek 重复输出评测套话模板）
-        if (!form.webSearch) body.temperature = 0.95;
+        // 温度保持稳健默认值：质量靠「体裁/主体贴合原文」的提示词保证，而非靠拉高温度
+        body.temperature = 0.7;
         body.topic = (form.title && form.title.trim()) || (form.content || '').replace(/\s+/g, ' ').trim().slice(0, 60);
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
         if (this.useOwnKey) {
@@ -137,7 +137,11 @@ const AIGenerator = {
     // ========== 本地生成（核心 - v3 重写） ==========
     async generateLocal(form, onToken) {
         await this.delay(500 + Math.random() * 400);
-        const typeConfig = this.getTypeConfig(form.type);
+        // 提供原文时，体裁由原文内容决定（避免把固件升级新闻套成单品评测模板）
+        const effectiveType = (form.content && form.content.length > 30)
+            ? this.detectTypeFromContent(form.content)
+            : form.type;
+        const typeConfig = this.getTypeConfig(effectiveType);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
 
@@ -174,7 +178,11 @@ const AIGenerator = {
     /** 非结构式生成：独立成篇的连续散文，叙事角度与结构式完全不同，不照抄结构式骨架 */
     async generatePlainLocal(form, onToken) {
         await this.delay(500 + Math.random() * 400);
-        const typeConfig = this.getTypeConfig(form.type);
+        // 提供原文时，体裁由原文内容决定
+        const effectiveType = (form.content && form.content.length > 30)
+            ? this.detectTypeFromContent(form.content)
+            : form.type;
+        const typeConfig = this.getTypeConfig(effectiveType);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
 
@@ -286,7 +294,8 @@ const AIGenerator = {
     parseSource(text, typeConfig) {
         const result = {
             product: '', company: '', versions: [], date: '',
-            features: [], specs: [], background: [], allFacts: []
+            features: [], specs: [], background: [], allFacts: [],
+            topic: '', models: []
         };
 
         // ===== 1) 公司名 =====
@@ -297,77 +306,82 @@ const AIGenerator = {
         for (const b of brands) {
             if (text.includes(b)) { company = b; break; }
         }
+        result.company = company;
 
         // ===== 2) 剔除 Markdown 标题行，避免 #小标题 混入正文 =====
         const bodyLines = text.split('\n').filter(l => !/^\s*#+\s/.test(l));
         const cleanText = bodyLines.join('\n');
         const titleLine = (text.split('\n')[0] || '').trim();
 
-        // ===== 3) 产品型号：综合打分，优先"最新/力作"且带完整前缀的型号 =====
-        const modelRegex = /[A-Za-z]{2,6}[-\s]?[A-Za-z]?\d{1,4}[A-Za-z]?/g;
-        const rawCandidates = [...new Set(cleanText.match(modelRegex) || [])];
-        // 丢弃纯子串候选（如 Z200 是 PXW-Z200 的子串）
-        const candidates = rawCandidates.filter(c =>
-            !rawCandidates.some(o => o !== c && o.length > c.length && o.includes(c))
-        );
+        // ===== 3) 设备/产品型号：精准识别，绝不可把 "Super 35mm" 这类画幅描述当型号 =====
+        // 仅匹配「大写字母前缀 + 数字」的真实型号（ILME-FX3 / FX30 / FX6 / FR7 / CineAltaV / ZV-E10 / A7M4 / α7 …）
+        const modelRegex = /\b(?:ILME-[A-Z]+\d+|CineAlta[A-Z]\d*|FX\d+|FR\d+|ZV-[A-Z]\d+|A\d{1,2}[A-Z]?|α\d[A-Z]?|[A-Z]{2,4}-?[A-Z]?\d{1,4}[A-Z]?)\b/g;
+        const rawModels = [...new Set(cleanText.match(modelRegex) || [])];
+        // 归一化：ILME-FX3 与 FX3 视为同一型号，保留短写；过滤掉纯修饰词
+        let models = [...new Set(rawModels.map(m => m.replace(/^ILME-/i, '')))]
+            .filter(m => !/^(Pro|Max|Ultra|Mini|Plus|Air|New|Super)$/i.test(m));
+        result.models = models;
 
-        const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        let bestModel = '';
-        let bestScore = -1e9;
-        for (const c of candidates) {
-            let score = c.length;                                   // 越完整越长越好
-            if (new RegExp(esc(c)).test(titleLine)) score += 12;   // 标题中出现
-            const nearNew = new RegExp('.{0,14}' + esc(c) + '.{0,8}(最新|新款|全新|力作|新一代|发布|推出|上市)').test(cleanText)
-                          || new RegExp('(最新|新款|全新|力作|新一代).{0,14}' + esc(c)).test(cleanText);
-            if (nearNew) score += 8;
-            const nearOld = new RegExp('(最初|此前|上代|前辈|原来的|老款|前代|早先).{0,12}' + esc(c)).test(cleanText);
-            if (nearOld) score -= 12;                              // 旧型号减分
-            if (score > bestScore) { bestScore = score; bestModel = c; }
+        // 固件版本号（Ver.x.x），与型号一同展示
+        const verMatches = text.match(/Ver\.?\s*\d+\.\d+/g) || [];
+        if (verMatches.length) {
+            result.versions = [...new Set([...models, ...verMatches])].slice(0, 8);
+        } else {
+            result.versions = models.slice(0, 6);
         }
 
-        // product 仅存型号（公司在标题/正文组合时再加，避免重复）
-        result.product = bestModel || '';
-        result.company = company;
-        result.versions = candidates.slice(0, 6);
+        // ===== 4) 事件主题识别（决定体裁，避免把「固件升级新闻」当成「单品评测」）=====
+        let topic = '';
+        if (/固件|系统更新|软件更新|版本升级|推送更新|OTA|系统升级|驱动更新|升级包/.test(text)) topic = '固件升级';
+        else if (/发布会|正式发布|推出|亮相|登场|上市/.test(text) && models.length) topic = '新品发布';
+        else if (/评测|上手|体验|深度使用|开箱/.test(text)) topic = '产品评测';
+        else if (/对比|横评|\bPK\b|对决|谁更值得/.test(text)) topic = '对比评测';
+        else if (/展会|大会|论坛|峰会|展期/.test(text)) topic = '活动报道';
+        result.topic = topic;
 
-        // 找公司名（兜底，若上面循环未命中）
-        if (!result.company) {
-            for (const b of brands) {
-                if (text.includes(b)) { result.company = b; break; }
+        // ===== 5) 主体（product）：必须来自真实型号，绝臆造 =====
+        if (models.length) {
+            const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            let ordered = models;
+            if (topic === '固件升级') {
+                // 固件升级：只取出现在「固件/升级/更新/版本/Ver」相关句子里的型号（FX3/FX30/FX6），
+                // 排除产品线下仅泛泛提及的型号（如 FX9/FR7/CineAltaV）
+                const fwSentences = cleanText.split(/[。！？；]/).filter(s => /固件|升级|更新|版本|Ver/.test(s)).join(' ');
+                const fwModels = models.filter(m => fwSentences.includes(m));
+                if (fwModels.length) ordered = fwModels;
+            } else {
+                const near = models.filter(m => new RegExp('.{0,20}' + esc(m) + '.{0,20}(固件|升级|更新|发布|推出|上市)').test(cleanText));
+                if (near.length) ordered = near;
             }
+            result.product = ordered.slice(0, 4).join('/');
+        } else if (company && topic) {
+            result.product = company + topic;
+        } else {
+            // 兜底：取标题去标点，绝盲目截 30 字
+            result.product = (titleLine.replace(/[,，。\s]+$/, '').slice(0, 24) || text.replace(/\s+/g, '').slice(0, 24)) || '本事件';
         }
 
-        // 找日期
+        // ===== 6) 日期 =====
         const dateMatch = text.match(/(\d{4}年\d{1,2}月\d{1,2}日)/);
         if (dateMatch) result.date = dateMatch[1];
 
-        // 提取版本号（固件 Ver.x.x）
-        const verMatches = text.match(/Ver\.?\s*\d+\.\d+/g) || [];
-        if (verMatches.length) result.versions = [...new Set([...result.versions, ...verMatches])].slice(0, 6);
-
-        // 提取所有句子：排除标题行（避免标题被当事实注入正文），并剔除残留 # 标题
+        // ===== 7) 句子分类：排除标题行，剔除残留 # 标题 =====
         const factText = bodyLines.length > 1 ? bodyLines.slice(1).join('\n') : cleanText;
         const sentences = factText.replace(/[\n\r]+/g, ' ')
             .split(/[。！？；]/)
             .map(s => s.replace(/^#+\s*/, '').trim())
             .filter(s => s.length > 8 && !/^#/.test(s));
 
-        // 分类句子
         sentences.forEach(s => {
             result.allFacts.push(s);
-            if (/新增|支持|允许|提升|优化|升级|改进|增加|加入|可以|能够/.test(s)) {
+            if (/新增|支持|允许|提升|优化|升级|改进|增加|加入|可以|能够|标志|扩展|完善/.test(s)) {
                 result.features.push(s);
-            } else if (/\d+[%倍档级]|ISO|fps|K\s*120|动态范围|分辨率|像素|Watt|功耗|mAh/.test(s)) {
+            } else if (/\d+[%倍档级]|ISO|fps|K\s*120|动态范围|分辨率|像素|Watt|功耗|mAh|档/.test(s)) {
                 result.specs.push(s);
-            } else if (/公司|品牌|产品线|系统|系列|愿景|致力于|一直|创作者|行业/.test(s)) {
+            } else if (/公司|品牌|产品线|系统|系列|愿景|致力于|一直|创作者|行业|索尼/.test(s)) {
                 result.background.push(s);
             }
         });
-
-        // 兜底：型号仍为空时，取标题前 30 字作为产品名
-        if (!result.product) {
-            result.product = titleLine.substring(0, 30).replace(/[,，。\s]+$/, '') || text.substring(0, 30).replace(/[,，。\s]+$/, '');
-        }
 
         return result;
     },
@@ -376,14 +390,32 @@ const AIGenerator = {
     buildTitle(source, typeConfig, userTitle) {
         if (userTitle && userTitle.length > 3) return userTitle;
         const prefix = source.date ? source.date + '，' : '';
-        const action = typeConfig.type === 'release' ? '正式发布' : typeConfig.label;
+        const subject = source.product || '';
+        // 事件型：公司 + 动作 + 主体（+ 主题），例如「索尼为 FX3/FX30/FX6 推送固件升级」
+        if (source.topic && source.company && subject) {
+            const actionMap = { '固件升级': '为', '新品发布': '推出', '产品评测': '评测', '对比评测': '对比', '活动报道': '报道' };
+            const action = actionMap[source.topic] || '更新';
+            if (source.topic === '固件升级') return prefix + source.company + action + subject + ' 推送固件升级';
+            return prefix + source.company + action + subject;
+        }
         if (source.product && source.company) {
-            return prefix + source.company + action + source.product;
+            return prefix + source.company + (typeConfig.type === 'release' ? '正式发布' : '：') + source.product;
         }
         if (source.company && source.versions.length) {
-            return prefix + source.company + action + source.versions.join('/') + '固件升级';
+            return prefix + source.company + '推送' + source.versions.join('/') + '固件升级';
         }
         return source.product || source.company + typeConfig.label;
+    },
+
+    /** 根据原文内容自动判定体裁：原文是「主体」，体裁必须贴合内容，绝不能把固件升级新闻套成单品评测 */
+    detectTypeFromContent(text) {
+        if (/固件|系统更新|软件更新|版本升级|推送更新|OTA|系统升级|驱动更新|升级包/.test(text)) return 'news';
+        if (/对比|横评|\bPK\b|对决|谁更值得/.test(text)) return 'comparison';
+        if (/评测|上手|体验|深度使用|开箱/.test(text)) return 'review';
+        if (/展会|大会|论坛|峰会|展期/.test(text)) return 'event';
+        if (/发布|推出|亮相|登场|上市/.test(text)) return 'release';
+        // 默认：粘贴的原文通常是资讯/公告，用科技快讯框架忠实改写
+        return 'news';
     },
 
     // 兜底标题生成
@@ -722,6 +754,15 @@ const AIGenerator = {
         const product = (source && source.product) || main;
         const comp = (source && source.company) || '';
         const date = (source && source.date) || '';
+        const versions = (source && source.versions && source.versions.filter(v => /Ver\./.test(v))) || [];
+
+        if (typeConfig.type === 'news') {
+            if (source && source.topic === '固件升级') {
+                const verText = versions.length ? `（对应版本 ${versions.slice(0, 3).join('、')}）` : '';
+                return `${date ? date + '，' : ''}${comp}为 ${product} 推送了全新固件升级${verText}。本次更新围绕操控稳定性、拍摄性能与传输能力展开，带来了若干创作者期待已久的新功能。下面为你梳理这次固件升级的重点变化与实用价值。`;
+            }
+            return `${date ? date + '，' : ''}${comp}${product}传来新动态。对于${audience.label}而言，这件事值得快速梳理核心要点、看清它对相关产品线的影响，以及后续值得关注的方向。`;
+        }
 
         if (typeConfig.type === 'release') {
             return date
@@ -740,6 +781,12 @@ const AIGenerator = {
     /** 结论（使用真实产品信息） */
     writeConclusionNew({ typeConfig, style, audience, main, company, source, extraInstructions }) {
         const product = (source && source.product) || main;
+        if (typeConfig.type === 'news') {
+            if (source && source.topic === '固件升级') {
+                return `## 总结\n\n总体而言，这次 ${product} 的固件升级虽然并非硬件换代，却在操控稳定性、拍摄自由度与传输效率上带来了实打实的体验提升。对于依赖这些设备创作的${audience.label}来说，及时升级到最新版本，往往能以最低成本获得更顺手的工作流。后续若有更多功能下放，我们也会持续跟进。`;
+            }
+            return `## 总结\n\n${product}的这次新动态，折射出${company || '厂商'}在相关赛道上的持续投入。对于${audience.label}而言，保持关注、看清趋势，比追逐一时的热点更有价值。我们也会持续跟踪后续进展。`;
+        }
         if (typeConfig.type === 'release') {
             return `## 总结\n\n${product}的发布是${company || '品牌'}在影像创作领域持续投入的又一次体现。对于${audience.label}而言，${product}不仅提供了新的选择，也展示了技术迭代的切实方向。随着固件升级和后期支持的推进，${product}的实际价值将进一步释放。`;
         }
@@ -1049,7 +1096,7 @@ const AIGenerator = {
             },
             interview: {
                 type: 'interview', label: '人物专访', keyword: '人物',
-                sections: ['核心观点', '深度对话', '行业洞察', '未来规划', '总结'],
+                sections: ['核心观点', '深度对话', '行业洞察', '未来规划'],
                 templates: ['专访${main}：${secondary}背后的思考','与${main}对话：科技人的理想与现实','${main}：${secondary}将迎来怎样的未来？','独家专访${main}：关于${secondary}的真实想法'],
                 conclusion: (main, secondary, kws, audience) => `与${main}的对话，让我们看到了一个科技从业者对${secondary || '行业'}的真实态度。既不盲目乐观，也不过度悲观，这种理性务实的判断，正是${audience.label}所需要的声音。期待未来能看到更多来自${main}的思考与实践。`
             },
@@ -1079,7 +1126,7 @@ const AIGenerator = {
             },
             news: {
                 type: 'news', label: '科技快讯', keyword: '资讯',
-                sections: ['新闻要点', '事件详情', '行业影响', '后续关注', '总结'],
+                sections: ['新闻要点', '事件详情', '行业影响', '后续关注'],
                 templates: ['${main}：${secondary}最新进展','${main}最新动态：${audience.label}速览','${main}消息传出：对${secondary}有何影响？','${main}：值得关注的新动向'],
                 conclusion: (main, secondary, kws, audience) => `以上就是关于${main}的最新情况。对于${audience.label}来说，这一事件值得保持关注，因为它可能对${secondary || '相关市场'}产生持续影响。我们也将持续跟踪后续进展，第一时间带来更新。`
             },
@@ -1287,10 +1334,13 @@ const AIGenerator = {
             if (form.extraInstructions) prompt += `Additional requirements: ${form.extraInstructions}\n`;
             prompt += `Language requirement: ${lang.instruction}\n`;
         } else {
-            prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
-            // 当未开启联网搜索且用户提供了原文时，这不是评测稿，是产品/技术介绍
-            if (!form.webSearch && form.content && form.content.length > 50) {
-                prompt += `这是一篇**产品/技术介绍文章**（不是评测！不是评测！不是评测！）。像专业科技媒体的新闻稿或产品解析一样写作——用事实和参数说话，禁止使用任何评测类套话（如「经过一段时间的深入体验」「客观来看/客观地说」「在实际使用中」「在发烧级测试中」「给出了自己的解决方案」「并非简单的堆砌」「对于数码爱好者而言」）。文章开头要直接进入主题，不要用「在数码爱好者的期待中」这类空洞引入。\n`;
+            if (form.content && form.content.length > 50) {
+                // 提供了原文：体裁由内容决定，主体必须严格取自原文，绝不臆造
+                prompt += `请基于下方用户提供的【原文】进行重写/精编，输出一篇自然流畅的科技文章。\n`;
+                prompt += `【体裁自定】请依据原文内容自行判断最合适的体裁（新闻稿 / 产品解析 / 技术介绍 / 行业分析等），切勿套用「数码评测」模板。若原文是固件升级、版本更新、发布会或行业资讯，就写成对应的资讯/解析稿。\n`;
+                prompt += `【主体必须来自原文】文章的主题、对象、型号、参数必须严格以原文为准，绝对禁止臆造或更改主体（例如把原文里的「Super 35mm 画幅」误当成产品名；若原文涉及多个设备如 FX3/FX30/FX6，就以这些真实设备为主体）。\n`;
+            } else {
+                prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
             }
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
             prompt += isAuto
