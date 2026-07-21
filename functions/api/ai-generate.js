@@ -73,9 +73,9 @@ async function fetchSourceText(url, timeoutMs = 10000) {
     }
 }
 
-// 联网检索：优先 Tavily（直接返回 cleaned 正文，最契合 RAG），否则 Brave，再次 Wikipedia。
-// 返回 [{ title, url, content }]，失败或无 key 时返回 []。
-async function webSearch(query, env, n = 5) {
+// 单次检索（一个 query）：优先 Tavily（直接返回 cleaned 正文，最契合 RAG），否则 Brave，再次 Wikipedia。
+async function searchOnce(query, env, n = 5) {
+    if (!query || !query.trim()) return [];
     // 1) Tavily
     if (env.TAVILY_API_KEY) {
         try {
@@ -108,7 +108,6 @@ async function webSearch(query, env, n = 5) {
                     url: r.url,
                     content: (r.description || '').slice(0, 1200),
                 })).filter(r => r.url);
-                // Brave 仅给摘要，对前 3 条补抓正文以充实引用
                 const top = results.slice(0, 3);
                 const fetched = await Promise.all(top.map(r => fetchSourceText(r.url)));
                 fetched.forEach((f, i) => { if (f.text) top[i].content = f.text; });
@@ -135,6 +134,19 @@ async function webSearch(query, env, n = 5) {
         }
     } catch (_) {}
     return [];
+}
+
+// 联网检索：主词命中不足时，用兜底词（型号/英文名等）重试并合并去重。
+// 返回 [{ title, url, content }]，失败或无 key 时返回 []。
+async function webSearch(query, env, n = 5, fallbackQuery) {
+    let results = await searchOnce(query, env, n);
+    // 命中少于 3 条时，用兜底词补充（避免「原文前 60 字碎句」这类差查询直接空手而归）
+    if (results.length < 3 && fallbackQuery && fallbackQuery.trim() && fallbackQuery.trim() !== String(query).trim()) {
+        const more = await searchOnce(fallbackQuery, env, n);
+        const seen = new Set(results.map(r => r.url));
+        for (const r of more) { if (!seen.has(r.url)) { results.push(r); seen.add(r.url); } }
+    }
+    return results.slice(0, n);
 }
 
 // 预检（浏览器跨域时触发）
@@ -177,7 +189,7 @@ export async function onRequestPost({ request, env }) {
     // (b) 联网自动检索（开启且未填 URL 时为主来源；已填 URL 时作为补充）
     if (body.webSearch) {
         try {
-            const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6);
+            const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6, body.topicFallback);
             for (const r of found) {
                 references.push({ title: r.title || r.url, url: r.url, content: r.content || '', ok: !!r.content, note: r.content ? '' : '未检索到正文' });
             }

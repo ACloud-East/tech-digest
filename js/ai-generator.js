@@ -65,7 +65,21 @@ const AIGenerator = {
         if (form.webSearch) body.webSearch = true;
         // 温度保持稳健默认值：质量靠「体裁/主体贴合原文」的提示词保证，而非靠拉高温度
         body.temperature = 0.7;
-        body.topic = (form.title && form.title.trim()) || (form.content || '').replace(/\s+/g, ' ').trim().slice(0, 60);
+        // 干净的检索词：优先关键词/标题，否则取原文首行（去标点），避免把「原文前 60 字碎句」当查询导致搜不到
+        const kw = (form.keywords && form.keywords.trim());
+        const ti = (form.title && form.title.trim());
+        let cleanTopic = kw || ti || '';
+        if (!cleanTopic && form.content) {
+            const firstLine = (form.content.split('\n')[0] || '').replace(/[#>*`\-–—\s]+/g, '').trim();
+            cleanTopic = (firstLine || form.content).replace(/\s+/g, ' ').trim().slice(0, 40);
+        }
+        body.topic = cleanTopic.slice(0, 80);
+        // 兜底检索词：从原文抽取型号/英文词（如 FX3 FX30 FX6），主词命中不足时函数端自动重试
+        if (form.content) {
+            const models = [...new Set((form.content.match(/[A-Za-z]+-?[A-Za-z]?\d+[A-Za-z]?/g) || []).map(m => m.replace(/^ILME-/i, '')))];
+            const fb = [kw, ti, models.join(' ')].filter(Boolean);
+            if (fb.length) body.topicFallback = fb.join(' ').slice(0, 80);
+        }
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
         if (this.useOwnKey) {
             body.apiKey = this.config.userApiKey.trim();
@@ -1244,13 +1258,25 @@ const AIGenerator = {
     },
 
     /**
+     * 自适应字数：参考【原文】篇幅决定目标字数，允许模型按内容增减。
+     * 原文 >= 120 字时，目标 ≈ 原文字数 ×1.1（略作展开），限制在合理区间；无原文时给默认中等篇幅。
+     */
+    computeAutoWordCount(form) {
+        const contentLen = (form.content || '').replace(/\s/g, '').length;
+        if (contentLen >= 120) {
+            return Math.min(Math.max(Math.round(contentLen * 1.1), 400), 2200);
+        }
+        return 800;
+    },
+
+    /**
      * 按语言估算合适的 max_tokens，从源头抑制「先生成上千字再夹断」的现象。
      * 中文约 1 字符/token；英文约 4 字符/token。预留约 15% 结构开销。
      */
     _estimateMaxTokens(form) {
         const lang = this.getLanguageConfig(form.language);
         const isAuto = form.wordCount === 'auto';
-        const wordCount = isAuto ? 1500 : (parseInt(form.wordCount, 10) || 800);
+        const wordCount = isAuto ? this.computeAutoWordCount(form) : (parseInt(form.wordCount, 10) || 800);
         const est = lang.lang === 'en' ? Math.round(wordCount * 0.7) : Math.round(wordCount * 1.8);
         return Math.min(Math.max(est, 100), 8192);
     },
@@ -1325,7 +1351,9 @@ const AIGenerator = {
             prompt += `Write a ${typeConfig.label} style tech article for a professional tech publication.\n`;
             prompt += `Title: ${form.title || 'Please generate an engaging title based on the content'}\n`;
             prompt += isAuto
-                ? `Target length: choose a natural length based on the content complexity, typically 500-1500 characters of actual text. Do not pad or stretch — let the material determine the scope.\n`
+                ? (form.content && form.content.replace(/\s/g, '').length >= 120
+                    ? `Target length: base the body length on the length of the SOURCE TEXT you were given — aim for about ${this.computeAutoWordCount(form)} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). A ±20% deviation is allowed: expand if the source is rich, trim if it is thin. Do not pad, and do not cut off core content.\n`
+                    : `Target length: choose a natural length based on the content complexity, typically 500-1500 characters of actual text. Do not pad or stretch — let the material determine the scope.\n`)
                 : `Target length: the body must be approximately ${wordCount} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). You must meet this target within a ±15% tolerance, i.e. between ${minChars} and ${maxBodyChars} characters. Expand each section with sufficient detail; do not write only one or two sentences per section.\n`;
             prompt += `Writing style: ${styleLabel}. The language should flow naturally, with well-structured paragraphs, like a finished piece from a professional tech media outlet.\n`;
             prompt += `Target audience: ${audience.label}\n`;
@@ -1344,7 +1372,9 @@ const AIGenerator = {
             }
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
             prompt += isAuto
-                ? `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`
+                ? (form.content && form.content.replace(/\s/g, '').length >= 120
+                    ? `目标字数：请参考你提供的【原文】篇幅，正文控制在约 ${this.computeAutoWordCount(form)} 字（不含标题、标点、空格、Markdown 标记）。允许 ±20% 偏差——原文信息多可适度展开，信息少可精简，不要硬凑字数，也不要截断核心内容。\n`
+                    : `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`)
                 : `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
             prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
             prompt += `目标读者：${audience.label}\n`;
