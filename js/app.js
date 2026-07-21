@@ -2,7 +2,7 @@
  * TechDigest v4 - 主应用
  * 新增 AI 文案生成面板
  */
-const { createApp, ref, computed, onMounted, nextTick } = Vue;
+const { createApp, ref, computed, onMounted, onBeforeUnmount, nextTick } = Vue;
 
 const app = createApp({
     setup() {
@@ -337,6 +337,7 @@ const app = createApp({
             if (outputEl) outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
         function toggleHistory() { aiHistoryOpen.value = !aiHistoryOpen.value; }
+        function closeHistory() { aiHistoryOpen.value = false; }
 
         // AI 生成文章（结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
@@ -961,7 +962,13 @@ const app = createApp({
             // 仅加载一次：不注册任何自动刷新（用户要求「禁止自动更新，只手动更新」）
             fetchSocialHotlist();
             fetchTechNews();
+            // 按 Esc 也可关闭生成历史面板
+            window.addEventListener('keydown', onKeydown);
         });
+        onBeforeUnmount(() => {
+            window.removeEventListener('keydown', onKeydown);
+        });
+        function onKeydown(e) { if (e.key === 'Escape') aiHistoryOpen.value = false; }
 
         // 可见字符计数：排除空格/制表符/换行等纯空白，更接近「字数」直觉
         function visibleCharCount(text) {
@@ -980,7 +987,7 @@ const app = createApp({
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
             aiResultSources, aiResultSourcesMeta, aiResultReferences, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
-            toggleHistory, restoreHistory, deleteHistory, clearHistory,
+            toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,
