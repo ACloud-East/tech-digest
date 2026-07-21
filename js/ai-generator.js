@@ -1330,9 +1330,9 @@ const AIGenerator = {
         } else {
             // 没有附加来源时：模型可以使用训练数据中已知的、广泛公开的真实参数（如芯片规格、镜头参数、产品尺寸等）来充实文章
             if (isEnglish) {
-                prompt += `\nNo external references were provided. The draft above is your primary material. You MAY use widely-public, verifiable technical facts from your training data (e.g. chip specs, lens parameters, product dimensions) to enrich the article naturally — these are NOT considered fabrication. Do NOT make up non-existent data, do NOT use [1]/[2] citation numbers, and do NOT add a references section. Write in a natural human voice with real substance, not generic filler.\n`;
+                prompt += `\nNo external references were provided. The draft above is your primary material. ACTIVELY enrich the article with widely-public, verifiable technical facts from your training data — chip specs, sensor details, lens parameters, dimensions, weights, interface standards, codecs, etc. These real publicly-known specs are NOT fabrication. Write a substantive tech article with concrete details, not a generic review filled with phrases like "after in-depth testing" or "objectively speaking". Do NOT use [1]/[2] citation numbers and do NOT add a references section. Write in a natural human voice.\n`;
             } else {
-                prompt += `\n未提供外部参考文献，上方草稿是你主要的素材。你**可以**使用训练数据中已知的、广泛公开的真实技术参数（如芯片规格、镜头参数、产品尺寸等）来充实文章——这不属于杜撰。但不要编造不存在的数据，不要使用 [1]、[2] 引用编号，也不要添加「参考来源」小节。用自然的人声写作，有真材实料，不要套话空话。\n`;
+                prompt += `\n未提供外部参考文献，上方草稿是你主要的素材。**请主动**用训练数据中已知的、广泛公开的真实技术参数来充实文章——芯片规格、传感器细节、镜头参数、尺寸重量、接口标准、编码格式等等。这些真实公开的规格不属于杜撰。写一篇有真材实料的科技文章，不要写那种「经过一段时间深入体验」「客观来看」「在发烧级使用中」的通用评测套话。不要使用 [1]、[2] 引用编号，也不要添加「参考来源」小节。用自然的人声写作。\n`;
             }
         }
 
