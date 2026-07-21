@@ -1286,6 +1286,10 @@ const AIGenerator = {
             prompt += `Language requirement: ${lang.instruction}\n`;
         } else {
             prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
+            // 当未开启联网搜索且用户提供了原文时，强调这不是评测稿，是产品/技术介绍
+            if (!form.webSearch && form.content && form.content.length > 50) {
+                prompt += `注意：本文不是评测稿，不要用「经过一段时间的深入体验」「客观来看」「在实际使用中」等评测套话。这是一篇基于公开资料的产品/技术介绍文章，用语要像专业科技媒体的新闻稿或产品解析，而非主观评测。\n`;
+            }
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
             prompt += isAuto
                 ? `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`
