@@ -1200,7 +1200,8 @@ const AIGenerator = {
      */
     _estimateMaxTokens(form) {
         const lang = this.getLanguageConfig(form.language);
-        const wordCount = parseInt(form.wordCount, 10) || 800;
+        const isAuto = form.wordCount === 'auto';
+        const wordCount = isAuto ? 1500 : (parseInt(form.wordCount, 10) || 800);
         const est = lang.lang === 'en' ? Math.round(wordCount * 0.7) : Math.round(wordCount * 1.8);
         return Math.min(Math.max(est, 100), 8192);
     },
@@ -1256,9 +1257,9 @@ const AIGenerator = {
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
         const lang = this.getLanguageConfig(form.language);
-        const isEnglish = lang.lang === 'en';
-        const wordCount = parseInt(form.wordCount, 10) || 800;
-        const maxBodyChars = Math.round(wordCount * 1.2);
+        const isAuto = form.wordCount === 'auto';
+        const wordCount = isAuto ? 1000 : (parseInt(form.wordCount, 10) || 800);
+        const maxBodyChars = isAuto ? 2500 : Math.round(wordCount * 1.2);
         const styleMap = {
             professional: '专业客观',
             lively: '活泼轻松',
@@ -1274,7 +1275,9 @@ const AIGenerator = {
         if (isEnglish) {
             prompt += `Write a ${typeConfig.label} style tech article for a professional tech publication.\n`;
             prompt += `Title: ${form.title || 'Please generate an engaging title based on the content'}\n`;
-            prompt += `Target length: the body must be approximately ${wordCount} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). You must meet this target within a ±15% tolerance, i.e. between ${minChars} and ${maxBodyChars} characters. Expand each section with sufficient detail; do not write only one or two sentences per section.\n`;
+            prompt += isAuto
+                ? `Target length: choose a natural length based on the content complexity, typically 500-1500 characters of actual text. Do not pad or stretch — let the material determine the scope.\n`
+                : `Target length: the body must be approximately ${wordCount} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). You must meet this target within a ±15% tolerance, i.e. between ${minChars} and ${maxBodyChars} characters. Expand each section with sufficient detail; do not write only one or two sentences per section.\n`;
             prompt += `Writing style: ${styleLabel}. The language should flow naturally, with well-structured paragraphs, like a finished piece from a professional tech media outlet.\n`;
             prompt += `Target audience: ${audience.label}\n`;
             if (form.keywords) prompt += `Core keywords: ${form.keywords}\n`;
@@ -1284,7 +1287,9 @@ const AIGenerator = {
         } else {
             prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
-            prompt += `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
+            prompt += isAuto
+                ? `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`
+                : `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
             prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
             prompt += `目标读者：${audience.label}\n`;
             if (form.keywords) prompt += `核心关键词：${form.keywords}\n`;
@@ -1323,19 +1328,19 @@ const AIGenerator = {
                 }
             }
         } else {
-            // 没有附加来源时：仍以真人口吻重写，且不得杜撰
+            // 没有附加来源时：模型可以使用训练数据中已知的、广泛公开的真实参数（如芯片规格、镜头参数、产品尺寸等）来充实文章
             if (isEnglish) {
-                prompt += `\nNo external references were provided. The draft above is your only material. Rewrite it in your own human voice. Do NOT add generic filler summaries, do NOT mechanically expand each point with one empty sentence, and do NOT restructure it into a bullet list. Keep the original rhythm and density; only polish and connect naturally. Do not invent specifications, data, prices, release dates, test results, quotes, or URLs.\n`;
+                prompt += `\nNo external references were provided. The draft above is your primary material. You MAY use widely-public, verifiable technical facts from your training data (e.g. chip specs, lens parameters, product dimensions) to enrich the article naturally — these are NOT considered fabrication. Do NOT make up non-existent data, do NOT use [1]/[2] citation numbers, and do NOT add a references section. Write in a natural human voice with real substance, not generic filler.\n`;
             } else {
-                prompt += `\n未提供外部参考文献，上方草稿是你唯一的素材。请用你自己的、像真人一样的口吻重写；不要捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
+                prompt += `\n未提供外部参考文献，上方草稿是你主要的素材。你**可以**使用训练数据中已知的、广泛公开的真实技术参数（如芯片规格、镜头参数、产品尺寸等）来充实文章——这不属于杜撰。但不要编造不存在的数据，不要使用 [1]、[2] 引用编号，也不要添加「参考来源」小节。用自然的人声写作，有真材实料，不要套话空话。\n`;
             }
         }
 
         // 通用「去 AI 味」硬性要求（无论是否提供原文、原文长短都生效）
         if (isEnglish) {
-            prompt += `\nWRITING TONE (hard rules): Write like a real human columnist. NEVER open with hollow era-phrases ("In today's...", "With the rapid development of...", "In recent years..."). NEVER use template filler ("First... Second... Finally", "In conclusion", "It is worth mentioning", "It goes without saying"). Avoid mechanically bullet-listing one-line padding. Use natural transitions; never invent facts.\n`;
+            prompt += `\nWRITING TONE (hard rules): Write like a real human columnist. NEVER open with hollow era-phrases ("In today's...", "With the rapid development of...", "In recent years..."). NEVER use template filler ("First... Second... Finally", "In conclusion", "It is worth mentioning", "It goes without saying"). Avoid mechanically bullet-listing one-line padding. Use natural transitions.\n`;
         } else {
-            prompt += `\n【去 AI 味·硬性要求】像真人编辑/专栏作者一样写作。禁止用「在当今……」「随着……的快速发展」「近年来……」等空泛时代开场；禁止「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」「众所周知」等模板词；不要把内容硬拆成要点罗列、用一两句空话填字数。要有真实的人味与起承转合，绝不臆造事实。\n`;
+            prompt += `\n【去 AI 味·硬性要求】像真人编辑/专栏作者一样写作。禁止用「在当今……」「随着……的快速发展」「近年来……」等空泛时代开场；禁止「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」「众所周知」等模板词；不要把内容硬拆成要点罗列、用一两句空话填字数。要有真实的人味与起承转合。\n`;
         }
 
         if (form.plain) {

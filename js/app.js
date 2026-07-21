@@ -34,7 +34,7 @@ const app = createApp({
             keywords: '',
             type: 'review',
             style: 'professional',
-            wordCount: 800,
+            wordCount: 'auto',
             audience: 'tech_fans',
             language: 'zh_professional',
             extraInstructions: '',
@@ -65,7 +65,7 @@ const app = createApp({
                 { value: 'storytelling', label: '叙事故事' },
                 { value: 'concise', label: '简洁明了' },
             ],
-            wordCounts: [500, 800, 1000, 1500, 2000],
+            wordCounts: ['auto', 500, 800, 1000, 1500, 2000],
             audiences: [
                 { value: 'tech_fans', label: '数码爱好者' },
                 { value: 'general', label: '普通消费者' },
