@@ -63,6 +63,8 @@ const AIGenerator = {
             body.sources = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
         }
         if (form.webSearch) body.webSearch = true;
+        // 未开启联网搜索时，提高温度让输出更多样（避免 DeepSeek 重复输出评测套话模板）
+        if (!form.webSearch) body.temperature = 0.95;
         body.topic = (form.title && form.title.trim()) || (form.content || '').replace(/\s+/g, ' ').trim().slice(0, 60);
         // 用户自带 key 时，把 key 与 base 一并带给代理函数（key 仅在本机 localStorage，不上 git）
         if (this.useOwnKey) {

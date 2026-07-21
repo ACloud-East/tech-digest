@@ -243,7 +243,7 @@ export async function onRequestPost({ request, env }) {
             body: JSON.stringify({
                 model,
                 messages: [{ role: 'user', content: augmentedPrompt }],
-                temperature: 0.7,
+                temperature: (typeof body.temperature === 'number' ? body.temperature : 0.7),
                 max_tokens: maxTokens,
                 stream: true,
             }),
