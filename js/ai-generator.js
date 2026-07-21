@@ -1332,8 +1332,10 @@ const AIGenerator = {
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
         const lang = this.getLanguageConfig(form.language);
+        const isEnglish = lang.lang === 'en';
         const isAuto = form.wordCount === 'auto';
         const wordCount = isAuto ? 1000 : (parseInt(form.wordCount, 10) || 800);
+        const targetWords = isAuto ? this.computeAutoWordCount(form) : wordCount;
         const maxBodyChars = isAuto ? 2500 : Math.round(wordCount * 1.2);
         const styleMap = {
             professional: '专业客观',
@@ -1431,9 +1433,9 @@ const AIGenerator = {
 
         if (form.plain) {
             if (isEnglish) {
-                prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The rest should be a continuous essay-style body without ## subheadings and without bullet lists. Tone natural, like a column essay. Do not mechanically list points.`;
+                prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The rest should be a continuous essay-style body without ## subheadings and without bullet lists. Tone natural, like a column essay. Do not mechanically list points. NOTE: an essay is NOT shorter — it must reach the SAME length as the structured version, i.e. about ${targetWords} characters of body text (±20%). Develop the material fully; do not compress just because there are no section headings.`;
             } else {
-                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。`;
+                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。注意：散文式不等于更短——它必须与结构式篇幅一致，正文同样要达到约 ${targetWords} 字（±20%），把内容写充实，不要因为不分小标题就压缩篇幅。`;
             }
         } else {
             if (isEnglish) {
