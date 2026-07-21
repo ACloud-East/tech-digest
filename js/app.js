@@ -117,6 +117,15 @@ const app = createApp({
             return ''; // vectorengine → 留空，由代理函数用默认地址
         }
 
+        // 各服务商对应的默认模型名（避免把 VectorEngine 的 deepseek-v3 误发给官方 DeepSeek）
+        const PRESET_DEFAULT_MODEL = { vectorengine: 'deepseek-v3', deepseek: 'deepseek-chat', custom: '' };
+
+        function onPresetChange() {
+            // 切换服务商时，把模型名重置为该服务商的默认（用户仍可手动改）
+            aiApi.value.model = PRESET_DEFAULT_MODEL[aiApi.value.basePreset] || '';
+            applyApiSettings();
+        }
+
         function applyApiSettings() {
             const a = aiApi.value;
             AIGenerator.config.userApiKey = (a.key || '').trim();

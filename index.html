@@ -280,7 +280,7 @@
                                         </div>
                                         <div class="ai-api-default-row"><span>平台</span><span>VectorEngine（DeepSeek 代理）</span></div>
                                         <div class="ai-api-default-row"><span>地址</span><span>https://api.vectorengine.cn/v1</span></div>
-                                        <div class="ai-api-default-row"><span>模型</span><span>deepseek-chat</span></div>
+                                        <div class="ai-api-default-row"><span>模型</span><span>deepseek-v3</span></div>
                                         <div class="ai-api-default-row"><span>key</span><span>由站点配置（服务端不可见）</span></div>
                                     </div>
 
@@ -296,7 +296,7 @@
 
                                     <div class="ai-field">
                                         <label class="ai-label"><i class="fa-solid fa-server"></i> API 地址</label>
-                                        <select class="ai-input" v-model="aiApi.basePreset" @change="applyApiSettings">
+                                        <select class="ai-input" v-model="aiApi.basePreset" @change="onPresetChange">
                                             <option value="vectorengine">VectorEngine（默认代理）</option>
                                             <option value="deepseek">官方 DeepSeek</option>
                                             <option value="custom">自定义</option>
@@ -306,7 +306,7 @@
 
                                     <div class="ai-field">
                                         <label class="ai-label"><i class="fa-solid fa-cube"></i> 模型</label>
-                                        <input type="text" class="ai-input" v-model="aiApi.model" placeholder="deepseek-chat" @input="applyApiSettings">
+                                        <input type="text" class="ai-input" v-model="aiApi.model" placeholder="deepseek-v3" @input="applyApiSettings">
                                     </div>
 
                                     <div class="ai-api-actions">
@@ -798,6 +798,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=28"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607211600"></script>
+    <script src="js/app.js?v=2607211620"></script>
 </body>
 </html>

@@ -21,7 +21,7 @@ const AIGenerator = {
         // ===== BYOK：用户自带 key（存于浏览器 localStorage，仅本人可见） =====
         userApiKey: '',    // 用户自己的 API key（如 sk-xxx）
         userApiBase: '',   // 用户指定的 API 地址，留空则用站点默认（VectorEngine）
-        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-chat
+        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-v3（VectorEngine 默认）
     },
 
     // 是否使用「用户自带 key」
