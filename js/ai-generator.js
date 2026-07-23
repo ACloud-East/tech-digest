@@ -1375,7 +1375,7 @@ const AIGenerator = {
             prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
             prompt += isAuto
                 ? (form.content && form.content.replace(/\s/g, '').length >= 120
-                    ? `目标字数：请参考你提供的【原文】篇幅，正文控制在约 ${this.computeAutoWordCount(form)} 字（不含标题、标点、空格、Markdown 标记）。允许 ±20% 偏差——原文信息多可适度展开，信息少可精简，不要硬凑字数，也不要截断核心内容。\n`
+                    ? `目标字数：请参考你提供的【原文】篇幅，正文控制在约 ${this.computeAutoWordCount(form)} 字（不含标题、标点、空格、Markdown 标记）。允许 ±20% 偏差，但设有硬性下限——正文不得少于约 ${Math.round(this.computeAutoWordCount(form) * 0.85)} 字，未达标视为未完成；原文信息多可适度展开，信息少也须把核心要点写充实，不要硬凑空话，也不要截断核心内容。\n`
                     : `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`)
                 : `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
             prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
@@ -1433,9 +1433,9 @@ const AIGenerator = {
 
         if (form.plain) {
             if (isEnglish) {
-                prompt += `\nOutput format: Markdown. The first line should be the title (# Title). The rest should be a continuous essay-style body without ## subheadings and without bullet lists. Tone natural, like a column essay. Do not mechanically list points. NOTE: an essay is NOT shorter — it must reach the SAME length as the structured version, i.e. about ${targetWords} characters of body text (±20%). Develop the material fully; do not compress just because there are no section headings.`;
+                prompt += `\nOutput format: Markdown. The first line is the title (# Title). Then write a continuous essay-style body WITHOUT ## subheadings and WITHOUT bullet lists — but you MUST develop the material as fully as a structured article (an essay is NOT a shorter summary). Follow this roadmap naturally without labeling it as headings: lead/opening → core specs & parameters explained one by one → use & creative scenarios → differences vs predecessors/competitors → closing. Each part must be substantial. HARD FLOOR: the body must be at least ${Math.round(targetWords * 0.85)} characters (ideally about ${targetWords}); falling short is a failure. Do not pad with fluff, but do not compress either.`;
             } else {
-                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文（仍可保留一个 # 大标题）。语气自然、像专栏随笔，不要机械地罗列要点。注意：散文式不等于更短——它必须与结构式篇幅一致，正文同样要达到约 ${targetWords} 字（±20%），把内容写充实，不要因为不分小标题就压缩篇幅。`;
+                prompt += `\n输出要求：用 Markdown 格式，第一行为标题（# 标题），之后写成一篇连贯的、不分 ## 小标题、不用分点列表的散文式正文。但必须像结构式一样把内容充分展开，不可压缩成摘要。建议脉络（不要写成小标题，自然融入行文）：开篇引入 → 核心规格与参数逐条解析 → 使用与创作场景 → 与前代/竞品的差异 → 收束。每一部分都要写充实。硬性下限：正文不得少于约 ${Math.round(targetWords * 0.85)} 字（理想约 ${targetWords} 字）；未达标视为未完成。不要堆空话，但也不要因为不分小标题就缩短篇幅。`;
             }
         } else {
             if (isEnglish) {
