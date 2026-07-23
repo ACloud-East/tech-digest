@@ -95,6 +95,9 @@ const app = createApp({
         const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
+        const contentFileInput = ref(null); // 原文上传的隐藏 file input
+        const contentParsing = ref(false);  // 正在解析 Word/PDF
+        const contentDragover = ref(false); // 拖拽悬停态
         const hoveredCite = ref(null);    // 当前鼠标悬停的内联引用编号
         const hoveredSource = ref(null);  // 当前悬停的来源列表项编号
         const citationTooltip = ref({ visible: false, cite: null, source: '', top: 0, left: 0 }); // 引用上标 tooltip
@@ -338,6 +341,64 @@ const app = createApp({
         }
         function toggleHistory() { aiHistoryOpen.value = !aiHistoryOpen.value; }
         function closeHistory() { aiHistoryOpen.value = false; }
+
+        // ====== 原文 Word / PDF 上传：前端提取文本填入「参考原文内容」 ======
+        function triggerContentFile() { if (contentFileInput.value) contentFileInput.value.click(); }
+
+        function onContentFile(e) {
+            const file = e.target.files && e.target.files[0];
+            if (file) handleContentFile(file);
+            e.target.value = '';
+        }
+        function onContentDrop(e) {
+            contentDragover.value = false;
+            const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+            if (file) handleContentFile(file);
+        }
+        async function handleContentFile(file) {
+            contentParsing.value = true;
+            try {
+                const name = (file.name || '').toLowerCase();
+                let text = '';
+                if (name.endsWith('.pdf')) text = await extractPdfText(file);
+                else if (name.endsWith('.docx')) text = await extractDocxText(file);
+                else throw new Error('仅支持 Word（.docx）与 PDF（.pdf）文件，旧版 .doc 暂不支持');
+                text = (text || '').replace(/\r\n/g, '\n').trim();
+                if (!text) throw new Error('未能从该文件提取到文本，可能为空文件或扫描件（图片型 PDF 无法识别）');
+                const existing = (aiForm.value.content || '').trim();
+                aiForm.value.content = existing ? existing + '\n\n' + text : text;
+            } catch (err) {
+                alert('解析失败：' + (err && err.message ? err.message : err));
+            } finally {
+                contentParsing.value = false;
+            }
+        }
+        function extractDocxText(file) {
+            return new Promise((resolve, reject) => {
+                if (typeof mammoth === 'undefined') { reject(new Error('文档解析库未加载，请刷新页面后重试')); return; }
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    try {
+                        const res = await mammoth.extractRawText({ arrayBuffer: reader.result });
+                        resolve(res.value || '');
+                    } catch (e) { reject(e); }
+                };
+                reader.onerror = () => reject(new Error('读取文件失败'));
+                reader.readAsArrayBuffer(file);
+            });
+        }
+        async function extractPdfText(file) {
+            if (typeof pdfjsLib === 'undefined') throw new Error('PDF 解析库未加载，请刷新页面后重试');
+            const buf = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            let text = '';
+            for (let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const content = await page.getTextContent();
+                text += content.items.map(it => it.str).join(' ') + '\n';
+            }
+            return text;
+        }
 
         // AI 生成文章（结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
@@ -964,6 +1025,10 @@ const app = createApp({
             fetchTechNews();
             // 按 Esc 也可关闭生成历史面板
             window.addEventListener('keydown', onKeydown);
+            // PDF.js worker 指向同源 CDN，避免跨域加载失败
+            if (typeof pdfjsLib !== 'undefined') {
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            }
         });
         onBeforeUnmount(() => {
             window.removeEventListener('keydown', onKeydown);
@@ -986,8 +1051,10 @@ const app = createApp({
             aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
             aiResultSources, aiResultSourcesMeta, aiResultReferences, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,
+            triggerContentFile, onContentFile, onContentDrop,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,

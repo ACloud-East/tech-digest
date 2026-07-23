@@ -515,6 +515,25 @@ ul { list-style: none; }
 .ai-textarea-sm { min-height: 60px; }
 .ai-char-count { font-size: 0.7rem; color: var(--text-muted); text-align: right; margin-top: -4px; }
 
+/* 原文上传按钮 / 拖拽区 */
+.ai-field-head { display: flex; align-items: center; gap: 8px; }
+.ai-upload-btn {
+    margin-left: auto; padding: 3px 10px; border: 1px dashed var(--accent-cyan);
+    background: transparent; color: var(--accent-cyan); border-radius: 6px;
+    font-size: 0.72rem; cursor: pointer; transition: background .15s, color .15s;
+}
+.ai-upload-btn:hover { background: var(--accent-cyan); color: #06222b; }
+.ai-file-hidden { display: none; }
+.ai-upload-status { margin-left: 8px; font-size: 0.7rem; color: var(--text-muted); }
+.ai-dropzone { position: relative; flex: 1; display: flex; }
+.ai-dropzone .ai-textarea-main { width: 100%; }
+.ai-dropzone.dragover { outline: 2px dashed var(--accent-cyan); outline-offset: 2px; border-radius: var(--radius); }
+.ai-dropzone-hint {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    gap: 8px; background: rgba(34,211,238,0.12); color: var(--accent-cyan);
+    font-size: 0.9rem; font-weight: 600; border-radius: var(--radius); pointer-events: none;
+}
+
 /* 参数卡片 */
 .ai-params-card {
     background: var(--bg-secondary); border: 1px solid var(--border-color);
