@@ -65,7 +65,7 @@ const app = createApp({
                 { value: 'storytelling', label: '叙事故事' },
                 { value: 'concise', label: '简洁明了' },
             ],
-            wordCounts: ['auto', 500, 800, 1000, 1500, 2000],
+            wordCounts: ['auto', 200, 300, 500, 800, 1000, 1500, 2000],
             audiences: [
                 { value: 'tech_fans', label: '数码爱好者' },
                 { value: 'general', label: '普通消费者' },
@@ -80,6 +80,23 @@ const app = createApp({
                 { value: 'en_professional', label: 'English·Professional' },
             ],
         });
+
+        // ====== 平台 / 文体预设：一键套用对应平台的文体与字数，便于多平台分发 ======
+        const platformPresets = [
+            { key: 'press', label: '发布会新闻稿', icon: 'fa-newspaper',
+              set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 'auto',
+                extraInstructions: '写成一篇标准发布会新闻稿：含导语、核心发布信息、关键规格参数、上市与价格信息、结语，客观正式、信息准确，不臆造。' } },
+            { key: 'scoop', label: '新品谍报/速递', icon: 'fa-bolt',
+              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto',
+                extraInstructions: '写成一篇新品谍报/速递风格文章：网感强、节奏快、突出最抓眼球的卖点，可略带悬念感，但数据必须来自原文。' } },
+            { key: 'weibo', label: '新品谍报微博', icon: 'fa-weibo',
+              set: { type: 'news', style: 'lively', audience: 'general', wordCount: '300',
+                extraInstructions: '写成一条微博：严格控制在 200 字以内，口语化有网感，带话题标签 #索尼电影机#，可加 1-2 个 emoji，不堆参数。不要使用 Markdown ## 小标题，输出为一段连贯正文（发布到社媒请使用结果区的「非结构式」标签）。' } },
+            { key: 'xhs', label: '小红书笔记', icon: 'fa-book-open',
+              set: { type: 'release', style: 'storytelling', audience: 'general', wordCount: '500',
+                extraInstructions: '写成小红书图文笔记文案：吸睛标题、多用 emoji、分段清晰、口语化有亲和力、带话题标签 #索尼电影机# #新品速递#，图赏风格，突出真实体验感。不要使用 Markdown ## 小标题，输出为一段连贯正文（发布到社媒请使用结果区的「非结构式」标签）。' } },
+        ];
+        function applyPlatformPreset(p) { Object.assign(aiForm.value, JSON.parse(JSON.stringify(p.set))); }
 
         const aiGenerating = ref(false);
         const aiResult = ref('');
@@ -1048,7 +1065,7 @@ const app = createApp({
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
             // AI 文案生成
-            aiForm, aiOptions, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
+            aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
             aiResultSources, aiResultSourcesMeta, aiResultReferences, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             contentFileInput, contentParsing, contentDragover,

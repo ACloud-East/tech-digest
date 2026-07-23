@@ -564,6 +564,19 @@ ul { list-style: none; }
     color: var(--accent-cyan); font-weight: 600;
 }
 
+/* 平台 / 文体预设 */
+.ai-label-tip { margin-left: auto; font-size: 0.68rem; font-weight: 400; color: var(--text-muted); }
+.ai-preset-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.ai-preset-chip {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+    padding: 7px 14px; border-radius: 8px;
+    background: linear-gradient(135deg, rgba(34,211,238,0.12), rgba(34,211,238,0.04));
+    border: 1px solid rgba(34,211,238,0.4); color: var(--accent-cyan);
+    font-size: 0.76rem; font-weight: 600; transition: var(--transition);
+}
+.ai-preset-chip:hover { background: var(--accent-cyan); color: #06222b; }
+.ai-preset-chip i { font-size: 0.82rem; }
+
 /* API 设置卡片（BYOK：用户自带 key） */
 .ai-api-card { gap: 12px; border-color: rgba(6,182,212,0.35); }
 .ai-api-toggle {
