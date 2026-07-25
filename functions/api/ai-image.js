@@ -25,6 +25,17 @@ function corsHeaders(origin) {
     return headers;
 }
 
+// ArrayBuffer → base64（不依赖 Buffer，兼容 Cloudflare Pages Functions 运行时）
+function arrayBufferToBase64(buf) {
+    const bytes = new Uint8Array(buf);
+    let binary = '';
+    const chunk = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+    }
+    return btoa(binary);
+}
+
 // 风格预设 → 英文风格关键词（主导画风，避免中文 prompt 在部分端点失效）
 const STYLE_EN = {
     xhs_fresh: 'xiaohongshu (RED) style illustration, soft pastel colors, clean lifestyle aesthetic, bright and inviting, high saturation, cute and trendy, appealing social-media cover',
@@ -110,8 +121,9 @@ async function genOpenAI(base, apiKey, model, prompt, size, seed) {
         if (item.url) {
             try {
                 const r2 = await fetch(item.url);
+                if (!r2.ok) return { ok: true, image: item.url };
                 const buf = await r2.arrayBuffer();
-                return { ok: true, image: 'data:image/png;base64,' + Buffer.from(buf).toString('base64') };
+                return { ok: true, image: 'data:image/png;base64,' + arrayBufferToBase64(buf) };
             } catch { return { ok: true, image: item.url }; }
         }
         return { ok: false, error: '上游未返回图像数据' };
@@ -177,12 +189,18 @@ async function genDashscope(base, apiKey, model, prompt, size, seed) {
                 const res = (pj.output.results && pj.output.results[0]) || {};
                 const url = res.url;
                 if (!url) return { ok: false, error: '万相成功但未返回图像 URL' };
-                // 3) 下载转 base64（规避前端再跨域）
+                // 3) 下载转 base64（规避前端再跨域；不依赖 Buffer，兼容 Pages 运行时）
                 try {
-                    const img = await fetch(url);
+                    const img = await fetch(url, {
+                        headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': 'https://dashscope.aliyuncs.com/' },
+                    });
+                    if (!img.ok) return { ok: true, image: url };
                     const buf = await img.arrayBuffer();
-                    return { ok: true, image: 'data:image/png;base64,' + Buffer.from(buf).toString('base64') };
-                } catch { return { ok: true, image: url }; }
+                    return { ok: true, image: 'data:image/png;base64,' + arrayBufferToBase64(buf) };
+                } catch (e) {
+                    console.error('WANX_IMG_FETCH_FAIL', e && e.message, String(url).slice(0, 70));
+                    return { ok: true, image: url };
+                }
             } else if (status === 'FAILED') {
                 const msg = (pj.output && pj.output.message) || JSON.stringify(pj).slice(0, 200);
                 return { ok: false, error: '万相生成失败：' + msg };
