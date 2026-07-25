@@ -149,6 +149,67 @@ async function webSearch(query, env, n = 5, fallbackQuery) {
     return results.slice(0, n);
 }
 
+// —— 事实护栏：防止模型用训练记忆臆造原文没有的规格/数字/成就 ——
+
+// 从 prompt 中提取「参考原文」（兜底用；优先使用请求体直接带来的 body.content）
+function extractSource(prompt) {
+    // 原文位于「草稿正文：/Draft:」之后，直到下一段指令（输出要求/参考文献/【）之前
+    const m = prompt.match(/(?:草稿正文|Draft)\s*[:：]\s*\n([\s\S]*?)(?=\n输出要求|\n以下为|\n【|$) ?/);
+    if (m && m[1].trim().length > 20) return m[1].trim();
+    return '';
+}
+
+// 是否需要触发事实纠正：成稿里出现了原文没有的具体数字/单位/规格名词，或短原文被扩写成大段
+// isSocial=true 时放宽：社媒语气常见「约90万日元」「240fps 丝滑」这类口语化改写，不应误判为臆造，
+// 仅在「短原文被大幅扩写」（典型臆造信号）时触发，把风格保真交给 correctDraft 的社媒语气约束。
+function needsFactCheck(text, src, isSocial) {
+    if (!src) return false;
+    if (isSocial) {
+        const sl = src.replace(/\s+/g, '').length;
+        const tl = text.replace(/\s+/g, '').length;
+        return sl < 220 && tl > sl * 2.2;
+    }
+    const numUnit = /\d+(?:\.\d+)?\s*(?:km\/h|km|fps|ms|μm|µm|mm|cm|kg|g|万日元|日元|万元|美元|美金|usd|\$|%|档|倍|bit|万像素|像素|年|月|日|项|小时|分钟|秒|万次|万张|万部)/gi;
+    const specNouns = [/\bExmor\b/gi, /\bCMOS\b/gi, /\bS-Cinetone\b/gi, /\bRAW\b/gi, /\bSDI\b/gi, /\b防抖\b/g, /\b动态范围\b/g, /\bND滤镜\b/g, /\b双基础\s*ISO\b/gi, /\bISO\b/gi, /\b传感器\b/g, /\b处理器\b/g, /\bBIONZ\b/gi, /\bXAVC\b/gi, /\b取景器\b/g, /\b液晶屏\b/g, /\b像素\b/g, /\b帧\b/g];
+    let m;
+    while ((m = numUnit.exec(text))) { if (!src.includes(m[0].replace(/\s+/g, ''))) return true; }
+    for (const p of specNouns) { p.lastIndex = 0; let mm; while ((mm = p.exec(text))) { if (!src.includes(mm[0])) return true; } }
+    // 触发器2：原文极短（一句引语/短讯），但成稿明显更长 → 大概率在扩展臆造
+    const sl = src.replace(/\s+/g, '').length;
+    const tl = text.replace(/\s+/g, '').length;
+    if (sl < 220 && tl > sl * 2.2) return true;
+    return false;
+}
+
+// 二次纠正：只依据原文重写，剔除所有原文没有的具体参数/数字/成就
+async function correctDraft(src, bad, opts) {
+    // 社媒（小红书/微博）风格：纠正时仍要保留 emoji、口语化、互动结尾，否则会把种草语气整个抹平
+    const socialStyle = (opts && (opts.platform === 'xhs' || opts.platform === 'weibo'))
+        ? '你同时必须保持小红书/社媒种草的活泼语气：带 emoji、口语化、分段清晰、结尾抛互动话题并带 #话题标签#，只是把其中臆造的具体参数/数字/成就替换为原文真实内容（或干脆删掉），不要退回成新闻稿或说明书。'
+        : '';
+    const sys = `你是严谨的事实编辑。用户提供的【原文】是唯一事实来源。下面【草稿】混入了一些原文未提及的规格、参数、数字、日期、价格、测试成绩或具体成就（来自模型记忆，属臆造）。请严格只依据原文重写：删除所有原文没有的具体参数/数字/成就，保留原文给出的事实与引语，语言自然流畅。${socialStyle}若原文只是一句人物引语或一条短讯，则写成简短资讯——介绍人物身份、列出原文提到的作品、原样呈现其评价、做一句中性总结，绝不扩展任何原文未写的内容（不要写该产品拍了哪部电影、取得什么成绩或支持什么参数）。只输出修正后的正文，不要任何解释。`;
+    const user = `【原文】\n${src}\n\n【需修正的草稿】\n${bad}\n\n请输出严格基于原文、无任何臆造的修正稿：`;
+    try {
+        const r = await fetch(opts.base + '/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + opts.apiKey },
+            body: JSON.stringify({ model: opts.model, messages: [{ role: 'system', content: sys }, { role: 'user', content: user }], temperature: opts.temperature || 0.3, max_tokens: opts.maxTokens, stream: false }),
+        });
+        if (!r.ok) return null;
+        const j = await r.json();
+        return (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || null;
+    } catch (_) { return null; }
+}
+
+// 将文本切成小段（按码点，避免切断 emoji），供前端打字机式渲染
+function chunkText(s, size = 24) {
+    const cps = Array.from(s || '');
+    if (!cps.length) return [''];
+    const out = [];
+    for (let i = 0; i < cps.length; i += size) out.push(cps.slice(i, i + size).join(''));
+    return out;
+}
+
 // 预检（浏览器跨域时触发）
 export async function onRequestOptions({ request }) {
     const origin = request.headers.get('Origin');
@@ -243,7 +304,7 @@ export async function onRequestPost({ request, env }) {
     const fallbackMaxTokens = Math.min(Math.max(parseInt(body.wordCount, 10) || 800, 1) * 2, 4096);
     const maxTokens = Math.min(Math.max(reqMaxTokens || fallbackMaxTokens, 50), 8192);
 
-    // 4) 转发到上游（开启流式，实现打字机式输出）
+    // 4) 转发到上游生成（先缓冲完整结果，做事实护栏校验，再向客户端做打字机式输出）
     try {
         const upstream = await fetch(base + '/chat/completions', {
             method: 'POST',
@@ -268,69 +329,50 @@ export async function onRequestPost({ request, env }) {
                 { status: 502, headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' } });
         }
 
-        // 上游不支持流式（无 body / 直接返回 JSON）：兜底为单次事件，前端会做打字机展开
-        if (!upstream.body) {
+        // 缓冲完整正文（兼容流式与非流式上游）
+        let firstText = '';
+        if (upstream.body) {
+            const dec = new TextDecoder();
+            const reader = upstream.body.getReader();
+            let buf = '';
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                buf += dec.decode(value, { stream: true });
+                let idx;
+                while ((idx = buf.indexOf('\n\n')) >= 0) {
+                    const raw = buf.slice(0, idx); buf = buf.slice(idx + 2);
+                    const dl = raw.split('\n').find(l => l.startsWith('data:')); if (!dl) continue;
+                    const d = dl.slice(5).trim(); if (!d || d === '[DONE]') continue;
+                    try { const j = JSON.parse(d); const c = (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || j.content || ''; if (c) firstText += c; } catch (_) {}
+                }
+            }
+        } else {
             const txt = await upstream.text();
-            let content = txt;
-            try {
-                const j = JSON.parse(txt);
-                content = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt;
-            } catch (_) {}
-            const metaSse = references.length ? 'data: ' + JSON.stringify({ meta: { references } }) + '\n\n' : '';
-            const sse = 'data: ' + JSON.stringify({ content }) + '\n\n' + metaSse + 'data: [DONE]\n\n';
-            return new Response(sse, {
-                status: 200,
-                headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
-            });
+            try { const j = JSON.parse(txt); firstText = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt; } catch (_) { firstText = txt; }
         }
 
-        // 流式透传：解析上游 SSE，抽取 delta.content，转成我们自己的 SSE 事件
-        const encoder = new TextEncoder();
-        const decoder = new TextDecoder();
-        const reader = upstream.body.getReader();
-        let buf = '';
+        // —— 事实护栏：原文存在时，拦截「原文没有的具体参数/数字/规格/成就」 ——
+        const srcText = (body.content && body.content.trim().length > 20)
+            ? body.content.trim()
+            : extractSource(augmentedPrompt);
+        // 社媒风格（小红书/微博）直接跳过事实纠正：种草 prompt 已要求「不编造素材外内容」，
+        // 而纠正步骤会把活泼语气抹平成新闻稿；小红书文案的口语化数字改写（如「约90万日元」）也属正常表达。
+        const isSocial = body.platform === 'xhs' || body.platform === 'weibo';
+        const suspicious = !!srcText && !isSocial && needsFactCheck(firstText, srcText, isSocial);
+        let finalText = firstText;
+        if (suspicious) {
+            const corrected = await correctDraft(srcText, firstText, { apiKey, base, model, maxTokens, temperature: 0.3, platform: body.platform });
+            if (corrected && corrected.trim().length > 10) finalText = corrected;
+        }
 
-        const stream = new ReadableStream({
-            async pull(controller) {
-                try {
-                    while (true) {
-                        const { done, value } = await reader.read();
-                        if (done) {
-                            flushBuffer();
-                            if (references.length) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ meta: { references } }) + '\n\n'));
-                            controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-                            controller.close();
-                            return;
-                        }
-                        buf += decoder.decode(value, { stream: true });
-                        flushBuffer();
-                    }
-                } catch (e) {
-                    controller.enqueue(encoder.encode('data: ' + JSON.stringify({ error: '流读出错：' + e.message }) + '\n\n'));
-                    controller.close();
-                }
-                function flushBuffer() {
-                    let idx;
-                    while ((idx = buf.indexOf('\n\n')) >= 0) {
-                        const raw = buf.slice(0, idx);
-                        buf = buf.slice(idx + 2);
-                        const dataLine = raw.split('\n').find(l => l.startsWith('data:'));
-                        if (!dataLine) continue;
-                        const data = dataLine.slice(5).trim();
-                        if (!data || data === '[DONE]') continue;
-                        let content = '';
-                        try {
-                            const j = JSON.parse(data);
-                            content = (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || j.content || '';
-                        } catch (_) { continue; }
-                        if (content) controller.enqueue(encoder.encode('data: ' + JSON.stringify({ content }) + '\n\n'));
-                    }
-                }
-            },
-            cancel() { try { reader.cancel(); } catch (_) {} },
-        });
-
-        return new Response(stream, {
+        // 向客户端做打字机式输出（将最终正文切成小段 SSE 推送）
+        const chunks = chunkText(finalText);
+        const metaSse = references.length
+            ? 'data: ' + JSON.stringify({ meta: { references, factChecked: suspicious } }) + '\n\n'
+            : (suspicious ? 'data: ' + JSON.stringify({ meta: { factChecked: true } }) + '\n\n' : '');
+        const sse = chunks.map(c => 'data: ' + JSON.stringify({ content: c }) + '\n\n').join('') + metaSse + 'data: [DONE]\n\n';
+        return new Response(sse, {
             status: 200,
             headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
         });

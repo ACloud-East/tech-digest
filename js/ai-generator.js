@@ -14,14 +14,14 @@ const AIGenerator = {
         // 同源代理端点（Cloudflare Pages Functions 提供）；GitHub Pages 无函数会自动回退本地
         endpoint: '/api/ai-generate',
         deepseekKey: '',   // 仅 'deepseek' 模式使用，明文在前端不安全，建议用 'cloud' 模式
-        deepseekModel: 'deepseek-v3',
+        deepseekModel: 'deepseek-chat',
         openaiKey: '',     // 仅 'openai' 模式使用，明文在前端不安全
         openaiModel: 'gpt-4o-mini',
 
         // ===== BYOK：用户自带 key（存于浏览器 localStorage，仅本人可见） =====
         userApiKey: '',    // 用户自己的 API key（如 sk-xxx）
         userApiBase: '',   // 用户指定的 API 地址，留空则用站点默认（VectorEngine）
-        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-v3（VectorEngine 默认）
+        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-chat（官方 DeepSeek 默认）
     },
 
     // 是否使用「用户自带 key」
@@ -59,12 +59,16 @@ const AIGenerator = {
             max_tokens: this._estimateMaxTokens(form),
             stream: true,
         };
+        // 把干净的原文一并带给服务端事实护栏（避免从 prompt 里反解原文导致误判）
+        if (form.content && form.content.trim()) body.content = form.content.trim();
+        // 社媒平台标记：让云端事实护栏在纠正时保留小红书/微博语气，而非抹平为新闻稿
+        if (form.platform) body.platform = form.platform;
         if (form.sources && form.sources.trim()) {
             body.sources = form.sources.split(/[\n,，;；]+/).map(s => s.trim()).filter(Boolean).slice(0, 12);
         }
         if (form.webSearch) body.webSearch = true;
-        // 温度保持稳健默认值：质量靠「体裁/主体贴合原文」的提示词保证，而非靠拉高温度
-        body.temperature = 0.7;
+        // 温度：社媒（小红书/微博）种草风需要更高创造力，略调高；其余保持稳健
+        body.temperature = (form.platform === 'xhs' || form.platform === 'weibo') ? 0.85 : 0.7;
         // 干净的检索词：优先关键词/标题，否则取原文首行（去标点），避免把「原文前 60 字碎句」当查询导致搜不到
         const kw = (form.keywords && form.keywords.trim());
         const ti = (form.title && form.title.trim());
@@ -133,6 +137,8 @@ const AIGenerator = {
             // 优先用函数回传的 references（联网检索/抓取结果），兼容旧 sources
             if (metaAcc && metaAcc.references && metaAcc.references.length) result.references = metaAcc.references;
             else if (metaAcc && metaAcc.sources) result.sourcesMeta = metaAcc.sources;
+            // 服务端事实护栏标记：true 表示本次生成经过「原文事实校验 / 自动纠正」
+            if (metaAcc && metaAcc.factChecked) result.factChecked = true;
             if (onToken) onToken(result);
             return result;
         }
@@ -1162,6 +1168,7 @@ const AIGenerator = {
             technical: { type: 'technical', howDescribe: '技术导向', howEvaluate: '技术' },
             storytelling: { type: 'storytelling', howDescribe: '故事化', howEvaluate: '叙事' },
             concise: { type: 'concise', howDescribe: '简洁', howEvaluate: '简洁' },
+            social: { type: 'social', howDescribe: '社媒种草', howEvaluate: '社交' },
         };
         return map[style] || map.professional;
     },
@@ -1205,7 +1212,8 @@ const AIGenerator = {
      */
     _fitToCharCount(text, target) {
         if (!target || target < 50) return text;
-        const upper = Math.round(target * 1.15);
+        // 放宽上限：目标字数是「参考值」，允许 ±50% 自然浮动，严禁为硬卡上限而夹断句子/价格/型号
+        const upper = Math.round(target * 1.5);
         const charCount = (s) => ((s || '').match(/[一-龥a-zA-Z0-9]/g) || []).length;
 
         // 文末「参考来源 / References」小节整体保留，不参与字数截断（避免被夹断丢失引用列表）
@@ -1271,14 +1279,14 @@ const AIGenerator = {
 
     /**
      * 按语言估算合适的 max_tokens，从源头抑制「先生成上千字再夹断」的现象。
-     * 中文约 1 字符/token；英文约 4 字符/token。预留约 15% 结构开销。
+     * 中文约 1.5 字符/token；英文约 0.75 词/token。预留约 25% 收尾余量，避免句子/价格被夹断。
      */
     _estimateMaxTokens(form) {
         const lang = this.getLanguageConfig(form.language);
         const isAuto = form.wordCount === 'auto';
         const wordCount = isAuto ? this.computeAutoWordCount(form) : (parseInt(form.wordCount, 10) || 800);
-        const est = lang.lang === 'en' ? Math.round(wordCount * 0.7) : Math.round(wordCount * 1.8);
-        return Math.min(Math.max(est, 100), 8192);
+        const est = lang.lang === 'en' ? Math.round(wordCount * 1.5) : Math.round(wordCount * 2.5);
+        return Math.min(Math.max(est, 200), 8192);
     },
 
     /** 打字机式逐字揭示：把已生成的文本分块回调给 onToken，营造流式输出观感（本地兜底/非流式上游使用） */
@@ -1327,7 +1335,62 @@ const AIGenerator = {
         return result;
     },
 
+    buildSocialPrompt(form) {
+        const isXhs = form.platform === 'xhs';
+        const socName = isXhs ? '小红书' : '微博';
+        const wordCount = parseInt(form.wordCount, 10) || (isXhs ? 500 : 200);
+        const topic = (form.title && form.title.trim()) ? form.title.trim() : (isXhs ? '最新科技好物' : '科技快讯');
+        let p = '';
+        p += `请写一篇发布到${socName}的种草/安利笔记，主题：「${topic}」。\n`;
+        p += `写作要求：\n`;
+        p += `① 标题必须吸睛且带 emoji，像「索尼FX5电影机来啦！🎬 4K 120p+AI自动构图，单兵作战神器」这种有钩子的短句；\n`;
+        p += `② 开篇直接用「姐妹们/宝子们/家人们」等口语称呼喊话，带强情绪与 emoji（✨🎬📸👀💬🌞🔥💡🥰）；\n`;
+        p += `③ 正文分段、每段都要有 emoji 点缀，语气像跟朋友安利：「真的绝了」「超心动」「谁懂啊」「太香了」「简直就是」「姐妹冲」；把卖点揉进个人体验里讲（「我最心动的是…」「作为独立创作者太友好了」），不要列参数表、不要用 ## 小标题、不要分点罗列；\n`;
+        p += `④ 结尾抛互动话题（「你们觉得呢？评论区聊聊呀～💬」），并带上话题标签（如 #索尼电影机# #新品速递# #数码好物#）；\n`;
+        p += `⑤ 全程活泼真诚有网感，字数控制在约 ${wordCount} 字以内。\n`;
+        if (form.content && form.content.trim().length > 30) {
+            p += `\n【参考素材】以下是必须依据的真实性信息（来自官方/原文），请从中挑选真实卖点来写，不要编造素材里没有的参数、价格、日期或成绩。`;
+            if (form.content.trim().replace(/\s+/g, '').length < 120) {
+                p += `注意：原文信息很少（可能只是一句评价或短讯），请据此写一条简短笔记即可，绝不要把原文没有的参数、成绩或细节补进去。`;
+            }
+            p += `\n${form.content.trim().slice(0, 2500)}\n`;
+        } else if (form.keywords) {
+            p += `\n可围绕这些关键词展开：${form.keywords}\n`;
+        }
+        // 把风格提醒放在最后（就近效应），避免模型读完技术素材后退回正式稿
+        p += `\n⚠️ 最后再强调一次：上面所有信息都必须用【小红书/社媒种草语气】输出——带 emoji、口语化、像跟朋友安利、分段清晰、结尾抛互动话题并带 #话题标签#，绝对不要写成新闻稿、说明书或参数列表。价格、型号、规格等具体信息请务必完整写出，不要只写一半；约 ${wordCount} 字左右即可，允许略高或略低，自然收尾，不要硬截句子。现在开始写：`;
+        return p;
+    },
+
+    buildWeiboPrompt(form) {
+        const wordCount = parseInt(form.wordCount, 10) || 300;
+        const topic = (form.title && form.title.trim()) ? form.title.trim() : '最新科技爆料';
+        let p = '';
+        p += `请写一篇发布到微博的科技爆料/资讯长图文案，主题：「${topic}」。\n`;
+        p += `写作要求：\n`;
+        p += `① 语气像数码博主爆料/科技资讯：接地气、有网感、口语化，但【严禁】小红书种草腔——禁用「姐妹们/宝子们/种草/谁懂啊/太香了/姐妹冲/家人们」这类词，保持「爆料/传闻/资讯」的调性；\n`;
+        p += `② 多用微博特有写法：「微博透露」「博主表示」「据网友爆料」「媒体结合线索猜测」「评论区有用户问…博主回复道…」；传闻类信息用「据传/疑似/预计/或」等词保留不确定语气，不要写成定论；\n`;
+        p += `③ 可带 1-2 个 emoji 点缀，不要每段都堆 emoji；不要用 ## 小标题，分段自然、像一条有节奏的微博长文；\n`;
+        p += `④ 结尾带话题标签（如 #vivoS60价格# #数码圈#），可抛一句轻互动（「你们觉得呢？」），但不要小红书式的长篇喊话；\n`;
+        p += `⑤ 字数控制在约 ${wordCount} 字以内，事实来自下方素材，不编造素材外参数。\n`;
+        if (form.content && form.content.trim().length > 30) {
+            p += `\n【素材】以下是必须依据的真实性信息（来自原文/爆料），请据此写成微博爆料/资讯，不要编造素材里没有的参数、价格或成绩：`;
+            if (form.content.trim().replace(/\s+/g, '').length < 120) {
+                p += `注意：素材信息很少，请据此写一条简短爆料即可，绝不要把原文没有的细节补进去。`;
+            }
+            p += `\n${form.content.trim().slice(0, 2500)}\n`;
+        } else if (form.keywords) {
+            p += `\n可围绕这些关键词展开：${form.keywords}\n`;
+        }
+        p += `\n⚠️ 最后强调：用【微博爆料/科技资讯语气】输出，像数码博主在爆料，绝不是小红书笔记。价格、型号、规格等具体信息请务必完整写出，不要只写一半；约 ${wordCount} 字左右即可，允许略高或略低，自然收尾，不要为了硬卡字数把句子夹断。现在开始写：`;
+        return p;
+    },
+
     buildPrompt(form) {
+        // 社媒走专用精简 prompt，避免通用「科技文章/基于原文重写」框架把语气拉回正式稿
+        // 小红书=种草风、微博=谍报/爆料风，语气不同，分别走各自的构造器
+        if (form.platform === 'xhs') return this.buildSocialPrompt(form);
+        if (form.platform === 'weibo') return this.buildWeiboPrompt(form);
         const typeConfig = this.getTypeConfig(form.type);
         const style = this.getStyleConfig(form.style);
         const audience = this.getAudienceConfig(form.audience);
@@ -1344,6 +1407,7 @@ const AIGenerator = {
             technical: '技术硬核',
             storytelling: '叙事故事',
             concise: '简洁明了',
+            social: '小红书/社媒种草风',
         };
         const styleLabel = styleMap[style.type] || style.type;
 
@@ -1366,9 +1430,16 @@ const AIGenerator = {
         } else {
             if (form.content && form.content.length > 50) {
                 // 提供了原文：体裁由内容决定，主体必须严格取自原文，绝不臆造
-                prompt += `请基于下方用户提供的【原文】进行重写/精编，输出一篇自然流畅的科技文章。\n`;
+                if (form.platform === 'xhs' || form.platform === 'weibo') {
+                    prompt += `请基于下方【原文】信息，改写成一篇小红书/社媒风格的种草笔记（口语化、带 emoji、有网感），事实必须严格来自原文，绝不臆造。\n`;
+                } else {
+                    prompt += `请基于下方用户提供的【原文】进行重写/精编，输出一篇自然流畅的科技文章。\n`;
+                }
                 prompt += `【体裁自定】请依据原文内容自行判断最合适的体裁（新闻稿 / 产品解析 / 技术介绍 / 行业分析等），切勿套用「数码评测」模板。若原文是固件升级、版本更新、发布会或行业资讯，就写成对应的资讯/解析稿。\n`;
                 prompt += `【主体必须来自原文】文章的主题、对象、型号、参数必须严格以原文为准，绝对禁止臆造或更改主体（例如把原文里的「Super 35mm 画幅」误当成产品名；若原文涉及多个设备如 FX3/FX30/FX6，就以这些真实设备为主体）。\n`;
+                prompt += `【绝对禁止臆造参数】除【原文】明确写出的信息外，你不得自行补充任何规格、型号、处理器/芯片名称、接口版本号（如 HDMI 1.4/2.0/2.1、USB 版本）、屏幕分辨率/像素、续航、重量以外的数值、上市具体年月日、固件功能、编码格式等。若原文只写「下月上市」，就写「下月上市」，不得自行推断为具体某月某日；若原文未提处理器、屏幕或具体接口版本，就直接不写，绝不可用你记忆里的同类产品参数去填补。原文给多少，你就用多少，多写一个原文没有的参数即视为不合格。\n`;
+                prompt += `【即使你"知道"也严禁写】即便你从训练数据中"知道"该产品/人物的参数、规格、历史表现或作品细节，也一律不得写入——因为你无法确认本次场景是否一致，且【原文】并未包含这些信息。只写原文白纸黑字给出的内容。\n`;
+                prompt += `【短引语/短讯写法】若【原文】只是一句人物引语或一条短讯（例如"某摄影师测试了 FX5 并称赞其机动性"），文章应写成一篇简短资讯：介绍人物身份、列出原文提到的其作品、原样呈现其评价，并做一句中性总结；绝对不要写"该产品拍了哪部电影""取得了什么测试成绩/参数（如 fps、ms、kg、像素、ISO、防抖、色彩科学等）""缩短了百分之多少工时"之类原文没有的内容。原文没给，就一个字都不要编。\n`;
             } else {
                 prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
             }
@@ -1378,17 +1449,36 @@ const AIGenerator = {
                     ? `目标字数：请参考你提供的【原文】篇幅，正文控制在约 ${this.computeAutoWordCount(form)} 字（不含标题、标点、空格、Markdown 标记）。允许 ±20% 偏差，但设有硬性下限——正文不得少于约 ${Math.round(this.computeAutoWordCount(form) * 0.85)} 字，未达标视为未完成；原文信息多可适度展开，信息少也须把核心要点写充实，不要硬凑空话，也不要截断核心内容。\n`
                     : `目标字数：根据内容复杂度自行决定合适篇幅，通常 500-1500 字即可（不含标题、标点、空格、Markdown 标记）。不要为了凑字数塞空话——让素材决定篇幅。\n`)
                 : `目标字数：正文必须控制在约 ${wordCount} 字（不含标题、标点、空格、Markdown 标记）。必须达到该目标，允许 ±15% 偏差，即 ${minChars}-${maxBodyChars} 字。每个章节段落都要充分展开，不要只写一两句话。\n`;
-            prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
+            if (form.platform === 'xhs' || form.platform === 'weibo') {
+                prompt += `写作风格：${styleLabel}，要求像真人用户在社媒分享的真实口吻——活泼、有情绪、带网感，绝不像新闻稿或说明书。\n`;
+            } else {
+                prompt += `写作风格：${styleLabel}，要求语言流畅、段落自然、像专业科技媒体发布的成品文章\n`;
+            }
             prompt += `目标读者：${audience.label}\n`;
             if (form.keywords) prompt += `核心关键词：${form.keywords}\n`;
             if (form.template) prompt += `参考模板：\n${form.template}\n`;
             if (form.extraInstructions) prompt += `额外要求：${form.extraInstructions}\n`;
-            prompt += `语言要求：${lang.instruction}\n`;
+            if (form.platform === 'xhs' || form.platform === 'weibo') {
+                prompt += `语言要求：请使用口语化、轻松自然、像朋友聊天一样的中文表达，活泼有网感，可大量使用 emoji，绝不要写成专业、规范、书面化的新闻腔。\n`;
+            } else {
+                prompt += `语言要求：${lang.instruction}\n`;
+            }
+
+            // —— 社媒文体（小红书/微博）专用：强制「种草/安利」语气，覆盖上文的正式/专业框架 ——
+            if (form.platform === 'xhs' || form.platform === 'weibo') {
+                const socName = form.platform === 'xhs' ? '小红书' : '微博';
+                prompt += `\n【社媒文体·强制要求】本篇是发布到${socName}的种草/安利文案，严禁写成新闻稿、说明书或数码评测模板：\n`;
+                prompt += `① 标题必须吸睛且带 emoji，像「索尼FX5电影机来啦！🎬 4K 120p+AI自动构图，单兵作战神器」这种有钩子的短句；\n`;
+                prompt += `② 开篇直接用「姐妹们/宝子们/家人们」等口语称呼喊话，带强情绪与 emoji（✨🎬📸👀💬🌞🔥💡🥰）；\n`;
+                prompt += `③ 正文分段、每段都要有 emoji 点缀，语气像跟朋友安利：「真的绝了」「超心动」「谁懂啊」「太香了」「简直就是」「姐妹冲」；把卖点揉进个人体验里讲（「我最心动的是…」「作为独立创作者太友好了」），不要列参数表、不要用 ## 小标题、不要分点罗列；\n`;
+                prompt += `④ 结尾抛互动话题（「你们觉得呢？评论区聊聊呀～💬」），并带上话题标签（如 #索尼电影机# #新品速递# #数码好物#）；\n`;
+                prompt += `⑤ 全程活泼真诚有网感，字数控制在约 ${wordCount} 字以内。事实仍须严格来自【原文】，不得臆造参数，但要用更生活化、更有情绪的方式表达。\n`;
+            }
         }
 
         if (form.content && form.content.length > 50) {
             if (isEnglish) {
-                prompt += `\nBelow is YOUR OWN draft (the MAIN SUBJECT). Treat it as the spine of the article — rewrite it in a natural, human-editor voice, keeping its core facts, opinions and narrative flow. Do NOT just chop it up and pad with generic filler.\nFORBIDDEN: hollow openers ("In today's...", "With the rapid development of..."), template phrases ("First... Second... Finally", "In conclusion", "It is worth mentioning"), and mechanically breaking it into one-line bullet points. Write like a real columnist with natural transitions; never invent facts.\nDraft:\n${form.content.substring(0, 3000)}\n`;
+                prompt += `\nBelow is YOUR OWN draft (the MAIN SUBJECT). Treat it as the spine of the article — rewrite it in a natural, human-editor voice, keeping its core facts, opinions and narrative flow. Do NOT just chop it up and pad with generic filler.\nFORBIDDEN: hollow openers ("In today's...", "With the rapid development of..."), template phrases ("First... Second... Finally", "In conclusion", "It is worth mentioning"), and mechanically breaking it into one-line bullet points. Write like a real columnist with natural transitions; never invent facts.\nABSOLUTELY NO FABRICATION: use ONLY the facts explicitly stated in the SOURCE above. Do NOT add any specs, model numbers, processor/chip names, interface versions (e.g. HDMI 1.4/2.0/2.1, USB versions), screen resolution/pixel counts, battery life, precise release dates, firmware features, or codec names from your own memory. If the source says "next month", write "next month" — do not infer a specific date. If the source omits the processor or screen, omit them too; never fill gaps with specs from similar products you know. Use exactly what the source gives, no more — adding even one spec not in the source is a failure.\nDraft:\n${form.content.substring(0, 3000)}\n`;
             } else {
                 prompt += `\n以下是**你自己写的主体草稿（核心素材）**，请把它当作文章的骨架：用自然、像真人编辑一样的口吻重写，保留原文的核心事实、观点与叙事脉络，不要丢点、不要臆造。\n【严禁 AI 套话】禁止以下写法：用「在当今……」「随着……的快速发展」「近年来……」等空泛开场；用「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」等模板词；把原文硬拆成要点罗列、每段只用一两句空话填字数。要像专栏随笔/真实媒体成稿，有起承转合、过渡自然。\n草稿正文：\n${form.content.substring(0, 3000)}\n`;
             }
@@ -1420,7 +1510,11 @@ const AIGenerator = {
             if (isEnglish) {
                 prompt += `\nNo external references were provided. The draft above is your primary material. ACTIVELY enrich the article with widely-public, verifiable technical facts from your training data — chip specs, sensor details, lens parameters, dimensions, weights, interface standards, codecs, etc. These real publicly-known specs are NOT fabrication. Write a substantive tech article with concrete details, not a generic review filled with phrases like "after in-depth testing" or "objectively speaking". Do NOT use [1]/[2] citation numbers and do NOT add a references section. Write in a natural human voice.\n`;
             } else {
-                prompt += `\n未提供外部参考文献，上方草稿是你主要的素材。**请主动**用训练数据中已知的、广泛公开的真实技术参数来充实文章——芯片规格、传感器细节、镜头参数、尺寸重量、接口标准、编码格式等等。这些真实公开的规格不属于杜撰。写一篇有真材实料的科技文章，不要写那种「经过一段时间深入体验」「客观来看」「在发烧级使用中」的通用评测套话。不要使用 [1]、[2] 引用编号，也不要添加「参考来源」小节。用自然的人声写作。\n`;
+                if (form.platform === 'xhs' || form.platform === 'weibo') {
+                    prompt += `\n未提供外部参考文献，上方【原文】是你唯一的素材。请用小红书/社媒种草语气把这些信息重新组织：口语化、带 emoji、分段清晰、结尾抛互动话题并带 #话题标签#，不要扩展原文没有的参数，也不要写成正式科技文章。\n`;
+                } else {
+                    prompt += `\n未提供外部参考文献，上方草稿是你主要的素材。**请主动**用训练数据中已知的、广泛公开的真实技术参数来充实文章——芯片规格、传感器细节、镜头参数、尺寸重量、接口标准、编码格式等等。这些真实公开的规格不属于杜撰。写一篇有真材实料的科技文章，不要写那种「经过一段时间深入体验」「客观来看」「在发烧级使用中」的通用评测套话。不要使用 [1]、[2] 引用编号，也不要添加「参考来源」小节。用自然的人声写作。\n`;
+                }
             }
         }
 

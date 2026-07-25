@@ -7,6 +7,25 @@ const API = {
     cachePrefix: 'td35_',
     cacheTTL: 30 * 1000, // 30秒：新闻更新快，用户希望刷新后立即看到最新数据
 
+    // 简易 HTML/实体清洗（兼容 RSS 里编码过的标签，如 &lt;p&gt;）
+    _decodeEntities(s) {
+        return (s || '')
+            .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+            .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&apos;/g, "'")
+            .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+            .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
+            .replace(/&nbsp;/g, ' ');
+    },
+    _stripHtml(s) {
+        return this._decodeEntities(s || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    },
+    _cleanArticle(a) {
+        if (!a) return a;
+        if (a.title) a.title = this._stripHtml(a.title);
+        if (a.description) a.description = this._stripHtml(a.description);
+        return a;
+    },
+
     getCache(key) {
         try {
             const c = localStorage.getItem(this.cachePrefix + key);
@@ -156,29 +175,53 @@ const API = {
 
     async fetchAllTechNews() {
         const cacheKey = 'tech_all_v37';
-        const cached = this.getCache(cacheKey);
-        if (cached) return cached;
 
-        // 依次尝试：带时间戳的缓存击穿地址 → 裸路径兜底。
-        // 说明：Cloudflare Pages 在某些情况下（部署异常/边缘缓存）会让带 query 的地址 404，
-        // 因此一旦失败立即回退到裸路径；配合仓库根 _headers 对 /data/* 设置 no-cache，
-        // 保证每次都能拿到 cron 最新生成的 news.json。
-        const candidates = ['data/news.json?' + Date.now(), 'data/news.json'];
-        for (const url of candidates) {
-            try {
-                const r = await fetch(url, { cache: 'no-store' });
-                if (!r.ok) continue;
-                const data = await r.json();
-                if (data && data.articles && Array.isArray(data.articles)) {
-                    const articles = data.articles.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
-                    const payload = { articles, updateTime: data.updateTime || '' };
-                    this.setCache(cacheKey, payload);
-                    return payload;
-                }
-            } catch (e) {
-                console.warn('读取新闻数据失败 (' + url + '):', e.message);
+        // 1) 实时抓取（刷新时带来最新文章，追加到顶部；失败不影响历史语料）
+        let live = null;
+        try {
+            const r = await fetch('/api/news', { cache: 'no-store' });
+            if (r.ok) {
+                const d = await r.json();
+                if (d && Array.isArray(d.articles)) live = d.articles;
+            }
+        } catch (e) {
+            console.warn('实时资讯抓取失败，仅展示历史语料:', e.message);
+        }
+
+        // 2) 历史语料库（用户长期搜集的 news.json，必须完整保留，不得丢弃）
+        let base = [];
+        let baseUpdate = '';
+        try {
+            const r = await fetch('data/news.json', { cache: 'no-store' });
+            if (r.ok) {
+                const d = await r.json();
+                if (d && Array.isArray(d.articles)) { base = d.articles; baseUpdate = d.updateTime || ''; }
+            }
+        } catch (e) {
+            console.warn('读取历史语料失败:', e.message);
+        }
+
+        // 3) 合并：历史为底，实时追加。
+        // 为保总量足够大，这里**只去掉同一次实时抓取内的重复**，允许与历史语料重复；
+        // 这样每次刷新都会继续增加数量，直到 8000 上限。
+        let merged = base.slice();
+        if (live && live.length) {
+            const seenLive = new Set();
+            for (const a of live) {
+                const k = (a.title || '').trim().toLowerCase();
+                if (k && !seenLive.has(k)) { seenLive.add(k); merged.push(a); }
             }
         }
-        return { articles: [], updateTime: '' };
+        // 清洗所有 HTML 残留（历史语料或实时接口都可能带编码过的标签）
+        merged = merged.map(a => this._cleanArticle(a));
+
+        merged.sort((x, y) => new Date(y.time || 0) - new Date(x.time || 0));
+        if (merged.length > 8000) merged = merged.slice(0, 8000); // 安全上限：每次刷新继续累加，直到 8000
+
+        // 刷新过 → 时间记为此刻；实时不可用 → 沿用历史语料的更新时间
+        const updateTime = live && live.length ? new Date().toISOString() : baseUpdate;
+        const payload = { articles: merged, updateTime, live: !!live, baseCount: base.length, liveCount: live ? live.length : 0 };
+        this.setCache(cacheKey, payload);
+        return payload;
     }
 };

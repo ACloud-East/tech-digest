@@ -65,7 +65,7 @@ const app = createApp({
                 { value: 'storytelling', label: '叙事故事' },
                 { value: 'concise', label: '简洁明了' },
             ],
-            wordCounts: ['auto', 200, 300, 500, 800, 1000, 1500, 2000],
+            wordCounts: ['auto', 300, 500, 800, 1000, 1500, 2000],
             audiences: [
                 { value: 'tech_fans', label: '数码爱好者' },
                 { value: 'general', label: '普通消费者' },
@@ -90,13 +90,19 @@ const app = createApp({
               set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto',
                 extraInstructions: '写成一篇新品谍报/速递风格文章：网感强、节奏快、突出最抓眼球的卖点，可略带悬念感，但数据必须来自原文。' } },
             { key: 'weibo', label: '新品谍报微博', icon: 'fa-weibo',
-              set: { type: 'news', style: 'lively', audience: 'general', wordCount: '300',
-                extraInstructions: '写成一条微博：严格控制在 200 字以内，口语化有网感，带话题标签 #索尼电影机#，可加 1-2 个 emoji，不堆参数。不要使用 Markdown ## 小标题，输出为一段连贯正文（发布到社媒请使用结果区的「非结构式」标签）。' } },
+              set: { type: 'news', style: 'social', audience: 'general', wordCount: 300, plain: true, platform: 'weibo', language: 'zh_casual',
+                extraInstructions: '写成微博科技爆料/资讯：网感接地气、像数码博主爆料，用「微博透露/博主表示/据网友爆料/评论区有用户问…博主回复…」这类写法，传闻保留「据传/疑似/预计」语气；带 1-2 个 emoji 与话题标签 #索尼电影机#，不要小红书种草腔（禁用姐妹们/种草/谁懂啊），不堆参数表、不使用 ## 小标题。' } },
             { key: 'xhs', label: '小红书笔记', icon: 'fa-book-open',
-              set: { type: 'release', style: 'storytelling', audience: 'general', wordCount: '500',
-                extraInstructions: '写成小红书图文笔记文案：吸睛标题、多用 emoji、分段清晰、口语化有亲和力、带话题标签 #索尼电影机# #新品速递#，图赏风格，突出真实体验感。不要使用 Markdown ## 小标题，输出为一段连贯正文（发布到社媒请使用结果区的「非结构式」标签）。' } },
+              set: { type: 'release', style: 'social', audience: 'general', wordCount: 500, plain: true, platform: 'xhs', language: 'zh_casual',
+                extraInstructions: '写成小红书图文笔记：吸睛带 emoji 的标题、开篇用姐妹们/宝子们喊话、每段配 emoji、口语化有亲和力、把卖点揉进个人体验、结尾抛互动话题并带 #话题标签#，禁止 ## 小标题和参数表堆砌。' } },
         ];
-        function applyPlatformPreset(p) { Object.assign(aiForm.value, JSON.parse(JSON.stringify(p.set))); }
+        function applyPlatformPreset(p) {
+            // 先重置社媒专属字段，否则非社媒预设会继承前一次点过的 platform/plain/zh_casual
+            aiForm.value.platform = null;
+            aiForm.value.plain = false;
+            aiForm.value.language = 'zh_professional';
+            Object.assign(aiForm.value, JSON.parse(JSON.stringify(p.set)));
+        }
 
         const aiGenerating = ref(false);
         const aiResult = ref('');
@@ -110,6 +116,7 @@ const app = createApp({
         const aiResultSources = ref([]);  // 当前结果对应的来源链接列表（展示用，仅 http(s) URL）
         const aiResultSourcesMeta = ref([]);  // 与 aiResultSources 一一对应：{url, ok, note}
         const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
+        const aiResultFactChecked = ref(false); // 服务端事实护栏是否触发（原文存在且经过校验/纠正）
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
@@ -123,9 +130,9 @@ const app = createApp({
         const aiApi = ref({
             show: false,
             key: '',
-            basePreset: 'vectorengine', // vectorengine | deepseek | custom
+            basePreset: 'vectorengine', // vectorengine(站点默认=官方DeepSeek) | deepseek | custom
             customBase: '',
-            model: 'deepseek-v3',
+            model: 'deepseek-chat',
             showKey: false,
         });
 
@@ -137,8 +144,8 @@ const app = createApp({
             return ''; // vectorengine → 留空，由代理函数用默认地址
         }
 
-        // 各服务商对应的默认模型名（避免把 VectorEngine 的 deepseek-v3 误发给官方 DeepSeek）
-        const PRESET_DEFAULT_MODEL = { vectorengine: 'deepseek-v3', deepseek: 'deepseek-chat', custom: '' };
+        // 各服务商对应的默认模型名（站点默认 vectorengine 现已指向官方 DeepSeek，模型名用 deepseek-chat）
+        const PRESET_DEFAULT_MODEL = { vectorengine: 'deepseek-chat', deepseek: 'deepseek-chat', custom: '' };
 
         function onPresetChange() {
             // 切换服务商时，把模型名重置为该服务商的默认（用户仍可手动改）
@@ -173,7 +180,7 @@ const app = createApp({
                 key: (a.key || '').trim(),
                 basePreset: a.basePreset,
                 customBase: (a.customBase || '').trim(),
-                model: (a.model || '').trim() || 'deepseek-v3',
+                model: (a.model || '').trim() || 'deepseek-chat',
             };
             try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch (_) {}
             applyApiSettings();
@@ -194,7 +201,7 @@ const app = createApp({
                 const masked = k.length > 10 ? (k.slice(0, 6) + '…' + k.slice(-4)) : k;
                 return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '正在使用你自己的 key：' + masked };
             }
-            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 key：将使用站点默认 API（VectorEngine / deepseek-v3）' };
+            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 key：将使用站点默认 API（官方 DeepSeek）' };
         });
 
         loadApiSettings();
@@ -440,6 +447,7 @@ const app = createApp({
                 const result = await AIGenerator.generate(aiForm.value, onToken);
                 aiResult.value = result.content;
                 aiResultTitle.value = result.title;
+                aiResultFactChecked.value = !!result.factChecked;
                 // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
                 aiResultReferences.value = (result.references && result.references.length)
                     ? result.references
@@ -1067,7 +1075,7 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,

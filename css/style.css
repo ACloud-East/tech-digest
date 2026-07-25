@@ -701,6 +701,12 @@ ul { list-style: none; }
 }
 .ai-output-meta span { display: flex; align-items: center; gap: 4px; }
 .ai-output-meta i { font-size: 0.7rem; }
+.ai-fact-badge {
+    display: inline-flex; align-items: center; gap: 4px; margin-left: 2px;
+    padding: 2px 8px; border-radius: 999px;
+    background: rgba(16, 185, 129, 0.12); color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.35); font-weight: 600;
+}
 .ai-output-title h2 {
     font-size: 1.3rem; font-weight: 700; color: var(--text-primary);
     margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);

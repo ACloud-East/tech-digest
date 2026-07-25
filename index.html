@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=21">
+    <link rel="stylesheet" href="css/style.css?v=22">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -18,7 +18,7 @@
                 <span>TechDigest</span>
             </div>
             <div class="top-bar-right">
-                <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '数据由服务器每小时自动抓取，最近一次抓取于 ' + dataUpdateAbsolute + '（点击刷新按钮只是重新加载已抓取的数据，不会触发新的抓取）' : ''">
+                <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '点击右上角刷新按钮即实时抓取各科技源最新资讯；最近一次成功抓取于 ' + dataUpdateAbsolute : ''">
                     <i class="fa-solid fa-cloud-arrow-down"></i> {{ dataAgeText }}
                 </span>
                 <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="刷新">
@@ -284,17 +284,6 @@
                                         <i :class="aiApiStatus.icon"></i> {{ aiApiStatus.text }}
                                     </div>
 
-                                    <div class="ai-api-default">
-                                        <div class="ai-api-default-title">
-                                            <i class="fa-solid fa-server"></i> 站点默认 API
-                                            <span class="ai-api-default-note">不填自己的 key 时使用</span>
-                                        </div>
-                                        <div class="ai-api-default-row"><span>平台</span><span>VectorEngine（DeepSeek 代理）</span></div>
-                                        <div class="ai-api-default-row"><span>地址</span><span>https://api.vectorengine.cn/v1</span></div>
-                                        <div class="ai-api-default-row"><span>模型</span><span>deepseek-v3</span></div>
-                                        <div class="ai-api-default-row"><span>key</span><span>由站点配置（服务端不可见）</span></div>
-                                    </div>
-
                                     <div class="ai-field">
                                         <label class="ai-label"><i class="fa-solid fa-key"></i> 我的 API Key</label>
                                         <div class="ai-key-row">
@@ -308,7 +297,7 @@
                                     <div class="ai-field">
                                         <label class="ai-label"><i class="fa-solid fa-server"></i> API 地址</label>
                                         <select class="ai-input" v-model="aiApi.basePreset" @change="onPresetChange">
-                                            <option value="vectorengine">VectorEngine（默认代理）</option>
+                                            <option value="vectorengine">站点默认（官方 DeepSeek）</option>
                                             <option value="deepseek">官方 DeepSeek</option>
                                             <option value="custom">自定义</option>
                                         </select>
@@ -470,6 +459,9 @@
                                     <span><i class="fa-solid fa-palette"></i> {{ aiForm.styleLabel }}</span>
                                     <span><i class="fa-solid fa-text-width"></i> {{ aiForm.wordCount }}字</span>
                                     <span><i class="fa-solid fa-clock"></i> {{ aiResultTime }}</span>
+                                    <span class="ai-fact-badge" v-if="aiResultFactChecked" title="本次生成已与原文逐条比对，自动剔除了原文没有的参数/数字/成就，确保不臆造">
+                                        <i class="fa-solid fa-shield-halved"></i> 已事实校验
+                                    </span>
                                 </div>
                                 <div class="ai-output-title" v-if="aiResultTitle">
                                     <h2>{{ aiResultTitle }}</h2>
@@ -822,10 +814,10 @@
     <script src="https://unpkg.com/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="js/api.js?v=2607121825"></script>
+    <script src="js/api.js?v=2607231500"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=31"></script>
+    <script src="js/ai-generator.js?v=41"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607211660"></script>
+    <script src="js/app.js?v=2607231800"></script>
 </body>
 </html>
