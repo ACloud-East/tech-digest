@@ -329,7 +329,18 @@ export async function onRequestPost({ request, env }) {
                 { status: 502, headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' } });
         }
 
-        // 缓冲完整正文（兼容流式与非流式上游）
+        // 缓冲完整正文（兼容流式与非流式、以及不同模型的内容字段路径）
+        const pickContent = (j) => {
+            if (!j) return '';
+            const ch = j.choices && j.choices[0];
+            if (ch) {
+                if (ch.delta && ch.delta.content) return ch.delta.content;
+                if (ch.message && ch.message.content) return ch.message.content;
+                if (ch.text) return ch.text;
+                if (ch.content) return ch.content;
+            }
+            return j.content || j.output || j.text || '';
+        };
         let firstText = '';
         if (upstream.body) {
             const dec = new TextDecoder();
@@ -344,12 +355,16 @@ export async function onRequestPost({ request, env }) {
                     const raw = buf.slice(0, idx); buf = buf.slice(idx + 2);
                     const dl = raw.split('\n').find(l => l.startsWith('data:')); if (!dl) continue;
                     const d = dl.slice(5).trim(); if (!d || d === '[DONE]') continue;
-                    try { const j = JSON.parse(d); const c = (j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content) || j.content || ''; if (c) firstText += c; } catch (_) {}
+                    try { const c = pickContent(JSON.parse(d)); if (c) firstText += c; } catch (_) {}
                 }
+            }
+            // 上游返回非流式 JSON（无 SSE 分隔）时，整体回退解析
+            if (!firstText && buf.trim()) {
+                try { firstText = pickContent(JSON.parse(buf.trim())); } catch (_) {}
             }
         } else {
             const txt = await upstream.text();
-            try { const j = JSON.parse(txt); firstText = (j.choices && j.choices[0] && j.choices[0].message && j.choices[0].message.content) || j.content || txt; } catch (_) { firstText = txt; }
+            try { firstText = pickContent(JSON.parse(txt)); } catch (_) { firstText = txt; }
         }
 
         // —— 事实护栏：原文存在时，拦截「原文没有的具体参数/数字/规格/成就」 ——
