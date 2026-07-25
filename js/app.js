@@ -132,7 +132,7 @@ const app = createApp({
             key: '',
             basePreset: 'vectorengine', // vectorengine(站点默认=官方DeepSeek) | deepseek | custom
             customBase: '',
-            model: 'deepseek-chat',
+            model: 'deepseek-v4-flash',
             showKey: false,
         });
 
@@ -144,8 +144,8 @@ const app = createApp({
             return ''; // vectorengine → 留空，由代理函数用默认地址
         }
 
-        // 各服务商对应的默认模型名（站点默认 vectorengine 现已指向官方 DeepSeek，模型名用 deepseek-chat）
-        const PRESET_DEFAULT_MODEL = { vectorengine: 'deepseek-chat', deepseek: 'deepseek-chat', custom: '' };
+        // 各服务商对应的默认模型名（官方 DeepSeek 最新 API 仅支持 deepseek-v4-pro / deepseek-v4-flash）
+        const PRESET_DEFAULT_MODEL = { vectorengine: 'deepseek-v4-flash', deepseek: 'deepseek-v4-flash', custom: '' };
 
         function onPresetChange() {
             // 切换服务商时，把模型名重置为该服务商的默认（用户仍可手动改）
@@ -180,7 +180,7 @@ const app = createApp({
                 key: (a.key || '').trim(),
                 basePreset: a.basePreset,
                 customBase: (a.customBase || '').trim(),
-                model: (a.model || '').trim() || 'deepseek-chat',
+                model: (a.model || '').trim() || 'deepseek-v4-flash',
             };
             try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch (_) {}
             applyApiSettings();

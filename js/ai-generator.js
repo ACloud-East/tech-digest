@@ -14,14 +14,14 @@ const AIGenerator = {
         // 同源代理端点（Cloudflare Pages Functions 提供）；GitHub Pages 无函数会自动回退本地
         endpoint: '/api/ai-generate',
         deepseekKey: '',   // 仅 'deepseek' 模式使用，明文在前端不安全，建议用 'cloud' 模式
-        deepseekModel: 'deepseek-chat',
+        deepseekModel: 'deepseek-v4-flash',
         openaiKey: '',     // 仅 'openai' 模式使用，明文在前端不安全
         openaiModel: 'gpt-4o-mini',
 
         // ===== BYOK：用户自带 key（存于浏览器 localStorage，仅本人可见） =====
         userApiKey: '',    // 用户自己的 API key（如 sk-xxx）
         userApiBase: '',   // 用户指定的 API 地址，留空则用站点默认（VectorEngine）
-        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-chat（官方 DeepSeek 默认）
+        userApiModel: '',  // 用户指定的模型名，留空则用 deepseek-v4-flash（官方 DeepSeek v4 默认）
     },
 
     // 是否使用「用户自带 key」
