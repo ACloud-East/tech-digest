@@ -168,7 +168,11 @@ const app = createApp({
                     if (o.key) aiApi.value.key = o.key;
                     if (o.basePreset) aiApi.value.basePreset = o.basePreset;
                     if (o.customBase) aiApi.value.customBase = o.customBase;
-                    if (o.model) aiApi.value.model = o.model;
+                    if (o.model) {
+                        // 官方最新 API 已弃用 deepseek-chat / deepseek-v3，自动升级到 v4 系列
+                        const DEPRECATED = ['deepseek-chat', 'deepseek-v3', 'deepseek-coder'];
+                        aiApi.value.model = DEPRECATED.includes(o.model) ? 'deepseek-v4-flash' : o.model;
+                    }
                 }
             } catch (_) {}
             applyApiSettings();
