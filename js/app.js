@@ -171,7 +171,7 @@ const app = createApp({
         ];
 
         const LS_IMG_KEY = 'td_img_api_v1';
-        const aiImgApi = ref({ show: false, key: '', base: 'https://api.openai.com/v1', model: 'gpt-image-1', showKey: false });
+        const aiImgApi = ref({ show: false, key: '', base: 'https://dashscope.aliyuncs.com', model: 'wanx2.1-t2i-turbo', showKey: false });
         function loadImgApiSettings() {
             try {
                 const raw = localStorage.getItem(LS_IMG_KEY);
@@ -186,16 +186,16 @@ const app = createApp({
         function saveImgApiSettings() {
             const payload = {
                 key: (aiImgApi.value.key || '').trim(),
-                base: (aiImgApi.value.base || '').trim() || 'https://api.openai.com/v1',
-                model: (aiImgApi.value.model || '').trim() || 'gpt-image-1',
+                base: (aiImgApi.value.base || '').trim() || 'https://dashscope.aliyuncs.com',
+                model: (aiImgApi.value.model || '').trim() || 'wanx2.1-t2i-turbo',
             };
             try { localStorage.setItem(LS_IMG_KEY, JSON.stringify(payload)); } catch (_) {}
             alert('已保存图像 API 设置（仅本机浏览器）。生成时将使用你配置的 Key。');
         }
         function clearImgApiSettings() {
             aiImgApi.value.key = '';
-            aiImgApi.value.base = 'https://api.openai.com/v1';
-            aiImgApi.value.model = 'gpt-image-1';
+            aiImgApi.value.base = 'https://dashscope.aliyuncs.com';
+            aiImgApi.value.model = 'wanx2.1-t2i-turbo';
             try { localStorage.removeItem(LS_IMG_KEY); } catch (_) {}
         }
         function importFromAiContent() {
@@ -210,11 +210,7 @@ const app = createApp({
             const text = (aiImageText.value || '').trim();
             if (!text) { aiImageError.value = '请先输入画面描述，或点「从AI文案导入参考原文」。'; return; }
             const key = (aiImgApi.value.key || '').trim();
-            if (!key) {
-                aiImgApi.value.show = true;
-                aiImageError.value = '未配置图像 API Key：请在右侧「图像 API 设置」中填入你的图像模型 Key（如 OpenAI DALL·E / 通义万相）。';
-                return;
-            }
+            // 若前端未填 Key，则由服务端预设的 IMAGE_KEY 兜底（通义万相站点默认）
             aiImageGenerating.value = true;
             aiImageError.value = '';
             aiImageResults.value = [];
@@ -253,6 +249,11 @@ const app = createApp({
             if (k) {
                 const masked = k.length > 10 ? (k.slice(0, 6) + '…' + k.slice(-4)) : k;
                 return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '正在使用你自己的图像 Key：' + masked };
+            }
+            const baseIsDs = (aiImgApi.value.base || '').includes('dashscope');
+            const isWanx = (aiImgApi.value.model || '').includes('wanx');
+            if (baseIsDs && isWanx) {
+                return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '站点已预置通义万相（wanx2.1），可直接生成；也可填自己的 Key 覆盖' };
             }
             return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 Key：请在下方填入图像模型 Key 后保存' };
         });

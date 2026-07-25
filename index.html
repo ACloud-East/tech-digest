@@ -624,23 +624,23 @@
                                         <div class="ai-field">
                                             <label class="ai-label"><i class="fa-solid fa-key"></i> 图像 API Key</label>
                                             <div class="ai-key-row">
-                                                <input :type="aiImgApi.showKey ? 'text' : 'password'" class="ai-input" v-model="aiImgApi.key" placeholder="sk-... / 你的图像模型 Key">
+                                                <input :type="aiImgApi.showKey ? 'text' : 'password'" class="ai-input" v-model="aiImgApi.key" placeholder="留空即用站点预置通义万相；也可填 sk-... / 你的 Key">
                                                 <button type="button" class="ai-eye-btn" @click="aiImgApi.showKey = !aiImgApi.showKey"><i :class="aiImgApi.showKey ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i></button>
                                             </div>
                                         </div>
                                         <div class="ai-field">
                                             <label class="ai-label"><i class="fa-solid fa-server"></i> API 地址</label>
-                                            <input type="text" class="ai-input" v-model="aiImgApi.base" placeholder="https://api.openai.com/v1（兼容 /images/generations 的端点）">
+                                            <input type="text" class="ai-input" v-model="aiImgApi.base" placeholder="https://dashscope.aliyuncs.com（通义万相原生接口，已预填）">
                                         </div>
                                         <div class="ai-field">
                                             <label class="ai-label"><i class="fa-solid fa-cube"></i> 图像模型</label>
-                                            <input type="text" class="ai-input" v-model="aiImgApi.model" placeholder="gpt-image-1 / dall-e-3 / 通义万相等">
+                                            <input type="text" class="ai-input" v-model="aiImgApi.model" placeholder="wanx2.1-t2i-turbo（通义万相，已预填）/ gpt-image-1 / dall-e-3">
                                         </div>
                                         <div class="ai-api-actions">
                                             <button type="button" class="ai-action-btn primary" @click="saveImgApiSettings">保存</button>
                                             <button type="button" class="ai-action-btn" @click="clearImgApiSettings">清除</button>
                                         </div>
-                                        <p class="ai-api-hint">key 仅保存在你本机浏览器（localStorage），不上传。支持兼容 OpenAI 图像接口的端点（DALL·E 3 / gpt-image-1 / 通义万相 / 硅基流动 SDXL 等）。</p>
+                                        <p class="ai-api-hint">站点已预置通义万相（wanx2.1），Key 仅存服务端、不上传前端。你也可以填自己的 Key 覆盖：支持通义万相原生接口 / 兼容 OpenAI 图像接口的端点（DALL·E 3 / gpt-image-1 / 硅基流动 SDXL 等）。</p>
                                     </div>
                                 </div>
 

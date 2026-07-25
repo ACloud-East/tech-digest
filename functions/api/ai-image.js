@@ -2,8 +2,15 @@
  * Cloudflare Pages Function — AI 插图生成代理（BYOK）
  * 前端把「画面描述 + 风格参数」发到这里，本函数持有用户的图像 API Key
  * （仅存在于浏览器 localStorage / Cloudflare 密文，前端代码永远拿不到），
- * 转发到兼容 OpenAI 图像格式的服务（DALL·E 3 / gpt-image-1 / 通义万相 / 硅基流动 SDXL 等），
+ * 转发到兼容 OpenAI 图像格式的服务（DALL·E 3 / gpt-image-1 / 硅基流动 SDXL 等），
+ * 或阿里百炼「通义万相」原生异步协议（wanx2.1，仅此协议可用），
  * 并行生成 4 张图，返回 base64，规避浏览器直连第三方 API 的 CORS 限制。
+ *
+ * 两条路径：
+ *   1) OpenAI 兼容：base 含 /compatible-mode/ 或 非 dashscope → POST {base}/images/generations
+ *   2) 通义万相原生：base 含 dashscope.aliyuncs.com 且不含 compatible-mode
+ *      → POST {base}/api/v1/services/aigc/text2image/image-synthesis (X-DashScope-Async: enable)
+ *      → 轮询 GET {base}/api/v1/tasks/{task_id} → 取 output.results[0].url → 转 base64
  */
 
 const ALLOWED_ORIGINS = [];
@@ -38,13 +45,22 @@ const MOOD_EN = {
     warm: 'warm golden-hour sunlight, cozy healing vibe',
 };
 
-// 画面比例 → OpenAI 图像 size（其他兼容端点一般也支持这些枚举）
+// OpenAI 兼容端点尺寸（用 x 分隔）
 const RATIO_SIZE = {
     '1:1': '1024x1024',
     '3:4': '1024x1792',
     '9:16': '1024x1792',
     '4:3': '1792x1024',
     '16:9': '1792x1024',
+};
+
+// 通义万相（wanx2.1）原生端点尺寸：单边长上限 1440，用 * 分隔
+const DASHSCOPE_SIZE = {
+    '1:1': '1024*1024',
+    '3:4': '768*1024',
+    '9:16': '720*1280',
+    '4:3': '1024*768',
+    '16:9': '1280*720',
 };
 
 // 同一主体生成 4 张时的轻微构图变体，保证 4 图有差异
@@ -71,24 +87,18 @@ function buildPrompt(text, style, mood, variantIdx) {
     ].filter(Boolean).join('. ') + '.';
 }
 
-async function genOne(base, apiKey, model, prompt, size) {
+// 路径 1：OpenAI 兼容 /images/generations
+async function genOpenAI(base, apiKey, model, prompt, size, seed) {
     const ctrl = new AbortController();
     const tid = setTimeout(() => ctrl.abort(), 60000);
     try {
+        const payload = { model, prompt, n: 1, size, response_format: 'b64_json' };
+        if (seed != null) payload.seed = seed;
         const resp = await fetch(base.replace(/\/$/, '') + '/images/generations', {
             method: 'POST',
             signal: ctrl.signal,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + apiKey,
-            },
-            body: JSON.stringify({
-                model,
-                prompt,
-                n: 1,
-                size,
-                response_format: 'b64_json',
-            }),
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
+            body: JSON.stringify(payload),
         });
         if (!resp.ok) {
             const txt = await resp.text().catch(() => '');
@@ -98,19 +108,83 @@ async function genOne(base, apiKey, model, prompt, size) {
         const item = (j.data && j.data[0]) || {};
         if (item.b64_json) return { ok: true, image: 'data:image/png;base64,' + item.b64_json };
         if (item.url) {
-            // 部分端点只返回 url，代理抓取后转 base64，避免前端再跨域
             try {
                 const r2 = await fetch(item.url);
                 const buf = await r2.arrayBuffer();
-                const b64 = Buffer.from(buf).toString('base64');
-                return { ok: true, image: 'data:image/png;base64,' + b64 };
-            } catch (e) {
-                return { ok: true, image: item.url };
-            }
+                return { ok: true, image: 'data:image/png;base64,' + Buffer.from(buf).toString('base64') };
+            } catch { return { ok: true, image: item.url }; }
         }
         return { ok: false, error: '上游未返回图像数据' };
     } catch (e) {
         return { ok: false, error: e.message || '请求失败' };
+    } finally {
+        clearTimeout(tid);
+    }
+}
+
+// 路径 2：通义万相（阿里百炼）原生异步协议
+async function genDashscope(base, apiKey, model, prompt, size, seed) {
+    const host = base.replace(/\/$/, '');
+    const ctrl = new AbortController();
+    const deadline = Date.now() + 90000;
+    const tid = setTimeout(() => ctrl.abort(), 90000);
+    try {
+        // 1) 提交异步任务
+        const sub = await fetch(host + '/api/v1/services/aigc/text2image/image-synthesis', {
+            method: 'POST',
+            signal: ctrl.signal,
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + apiKey,
+                'X-DashScope-Async': 'enable',
+            },
+            body: JSON.stringify({
+                model,
+                input: { prompt },
+                parameters: Object.assign({ size, n: 1 }, seed != null ? { seed } : {}),
+            }),
+        });
+        if (!sub.ok) {
+            const txt = await sub.text().catch(() => '');
+            return { ok: false, error: '万相提交' + sub.status + '：' + txt.slice(0, 200) };
+        }
+        const sj = await sub.json();
+        const taskId = sj.output && sj.output.task_id;
+        if (!taskId) return { ok: false, error: '万相未返回 task_id：' + JSON.stringify(sj).slice(0, 200) };
+
+        // 2) 轮询任务结果
+        while (Date.now() < deadline) {
+            await new Promise((r) => setTimeout(r, 2000));
+            const poll = await fetch(host + '/api/v1/tasks/' + taskId, {
+                method: 'GET',
+                signal: ctrl.signal,
+                headers: { Authorization: 'Bearer ' + apiKey },
+            });
+            if (!poll.ok) {
+                const txt = await poll.text().catch(() => '');
+                return { ok: false, error: '万相轮询' + poll.status + '：' + txt.slice(0, 200) };
+            }
+            const pj = await poll.json();
+            const status = pj.output && pj.output.task_status;
+            if (status === 'SUCCEEDED') {
+                const res = (pj.output.results && pj.output.results[0]) || {};
+                const url = res.url;
+                if (!url) return { ok: false, error: '万相成功但未返回图像 URL' };
+                // 3) 下载转 base64（规避前端再跨域）
+                try {
+                    const img = await fetch(url);
+                    const buf = await img.arrayBuffer();
+                    return { ok: true, image: 'data:image/png;base64,' + Buffer.from(buf).toString('base64') };
+                } catch { return { ok: true, image: url }; }
+            } else if (status === 'FAILED') {
+                const msg = (pj.output && pj.output.message) || JSON.stringify(pj).slice(0, 200);
+                return { ok: false, error: '万相生成失败：' + msg };
+            }
+            // PENDING / RUNNING → 继续轮询
+        }
+        return { ok: false, error: '万相生成超时（90s）' };
+    } catch (e) {
+        return { ok: false, error: e.message || '万相请求失败' };
     } finally {
         clearTimeout(tid);
     }
@@ -138,48 +212,31 @@ export async function onRequestPost({ request, env }) {
 
     const style = body.style || 'xhs_fresh';
     const mood = body.mood || 'natural';
-    const ratio = RATIO_SIZE[body.ratio] ? body.ratio : '3:4';
-    const size = RATIO_SIZE[ratio];
     const count = 4; // 一次固定 4 张
 
     const base = (body.base || env.IMAGE_BASE || 'https://api.openai.com/v1').trim().replace(/\/$/, '');
     const apiKey = (body.apiKey || env.IMAGE_KEY || '').trim();
     const model = (body.model || env.IMAGE_MODEL || 'gpt-image-1').trim();
-    const seed = body.seed ? parseInt(body.seed, 10) : null;
 
     if (!apiKey) {
-        return new Response(JSON.stringify({ error: '未配置图像 API Key：请在「AI生成插图 → 图像API设置」中填入你的图像模型 Key。' }), { status: 400, headers: acao });
+        return new Response(JSON.stringify({ error: '未配置图像 API Key：请在「AI生成插图 → 图像API设置」中填入你的图像模型 Key（站点已预置通义万相，留空即用站点默认）。' }), { status: 400, headers: acao });
     }
+
+    // 判定路径：base 含 dashscope 且非 compatible-mode → 通义万相原生协议
+    const isDashScope = base.includes('dashscope.aliyuncs.com') && !base.includes('/compatible-mode/');
+    const sizeMap = isDashScope ? DASHSCOPE_SIZE : RATIO_SIZE;
+    const ratio = sizeMap[body.ratio] ? body.ratio : '3:4';
+    const size = sizeMap[ratio];
+    const seed = body.seed ? parseInt(body.seed, 10) : null;
 
     // 并行生成 4 张（各自带轻微构图变体）
     const tasks = [];
     for (let i = 0; i < count; i++) {
         const p = buildPrompt(text, style, mood, i);
-        const payload = { model, prompt: p, n: 1, size, response_format: 'b64_json' };
-        if (seed != null) payload.seed = seed + i; // 同种子+偏移，4 张既相关又有差异
-        tasks.push(
-            fetch(base + '/images/generations', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + apiKey },
-                body: JSON.stringify(payload),
-            }).then(async (resp) => {
-                if (!resp.ok) {
-                    const txt = await resp.text().catch(() => '');
-                    return { ok: false, error: '上游' + resp.status + '：' + txt.slice(0, 200) };
-                }
-                const j = await resp.json();
-                const item = (j.data && j.data[0]) || {};
-                if (item.b64_json) return { ok: true, image: 'data:image/png;base64,' + item.b64_json };
-                if (item.url) {
-                    try {
-                        const r2 = await fetch(item.url);
-                        const buf = await r2.arrayBuffer();
-                        return { ok: true, image: 'data:image/png;base64,' + Buffer.from(buf).toString('base64') };
-                    } catch { return { ok: true, image: item.url }; }
-                }
-                return { ok: false, error: '上游未返回图像数据' };
-            }).catch((e) => ({ ok: false, error: e.message || '请求失败' }))
-        );
+        const seedOff = seed != null ? seed + i : null;
+        tasks.push(isDashScope
+            ? genDashscope(base, apiKey, model, p, size, seedOff)
+            : genOpenAI(base, apiKey, model, p, size, seedOff));
     }
 
     const results = await Promise.all(tasks);
@@ -190,5 +247,5 @@ export async function onRequestPost({ request, env }) {
         return new Response(JSON.stringify({ error: '图像生成全部失败：' + (errors[0] || '未知错误') + '。请检查图像 API Key / 地址 / 模型是否支持图像生成。' }), { status: 502, headers: acao });
     }
 
-    return new Response(JSON.stringify({ images, errors, ratio, style, mood }), { status: 200, headers: { ...acao, 'Cache-Control': 'no-store' } });
+    return new Response(JSON.stringify({ images, errors, ratio, style, mood, provider: isDashScope ? 'dashscope' : 'openai' }), { status: 200, headers: { ...acao, 'Cache-Control': 'no-store' } });
 }
