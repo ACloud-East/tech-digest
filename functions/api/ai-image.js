@@ -129,22 +129,28 @@ async function genDashscope(base, apiKey, model, prompt, size, seed) {
     const deadline = Date.now() + 90000;
     const tid = setTimeout(() => ctrl.abort(), 90000);
     try {
-        // 1) 提交异步任务
-        const sub = await fetch(host + '/api/v1/services/aigc/text2image/image-synthesis', {
-            method: 'POST',
-            signal: ctrl.signal,
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + apiKey,
-                'X-DashScope-Async': 'enable',
-            },
-            body: JSON.stringify({
-                model,
-                input: { prompt },
-                parameters: Object.assign({ size, n: 1 }, seed != null ? { seed } : {}),
-            }),
-        });
-        if (!sub.ok) {
+        // 1) 提交异步任务（带 429 重试退避，避免触发万相每秒速率限制）
+        let sub = null;
+        for (let attempt = 0; attempt < 4; attempt++) {
+            sub = await fetch(host + '/api/v1/services/aigc/text2image/image-synthesis', {
+                method: 'POST',
+                signal: ctrl.signal,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + apiKey,
+                    'X-DashScope-Async': 'enable',
+                },
+                body: JSON.stringify({
+                    model,
+                    input: { prompt },
+                    parameters: Object.assign({ size, n: 1 }, seed != null ? { seed } : {}),
+                }),
+            });
+            if (sub.ok) break;
+            if (sub.status === 429 && attempt < 3) {
+                await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+                continue;
+            }
             const txt = await sub.text().catch(() => '');
             return { ok: false, error: '万相提交' + sub.status + '：' + txt.slice(0, 200) };
         }
@@ -160,6 +166,7 @@ async function genDashscope(base, apiKey, model, prompt, size, seed) {
                 signal: ctrl.signal,
                 headers: { Authorization: 'Bearer ' + apiKey },
             });
+            if (poll.status === 429) { await new Promise((r) => setTimeout(r, 2000)); continue; }
             if (!poll.ok) {
                 const txt = await poll.text().catch(() => '');
                 return { ok: false, error: '万相轮询' + poll.status + '：' + txt.slice(0, 200) };
@@ -230,8 +237,10 @@ export async function onRequestPost({ request, env }) {
     const seed = body.seed ? parseInt(body.seed, 10) : null;
 
     // 并行生成 4 张（各自带轻微构图变体）
+    // 通义万相有每秒提交速率限制，错开提交以避免 429；OpenAI 兼容端点则直接并行
     const tasks = [];
     for (let i = 0; i < count; i++) {
+        if (isDashScope && i > 0) await new Promise((r) => setTimeout(r, 1500));
         const p = buildPrompt(text, style, mood, i);
         const seedOff = seed != null ? seed + i : null;
         tasks.push(isDashScope
