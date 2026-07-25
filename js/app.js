@@ -136,6 +136,128 @@ const app = createApp({
             showKey: false,
         });
 
+        // ===== AI 生成插图（BYOK 图像模型） =====
+        const aiImageText = ref('');
+        const aiImageStyle = ref('xhs_fresh');
+        const aiImageRatio = ref('3:4');
+        const aiImageMood = ref('natural');
+        const aiImageSeed = ref('');
+        const aiImageResults = ref([]);
+        const aiImageGenerating = ref(false);
+        const aiImageError = ref('');
+
+        const aiImageStyles = [
+            { key: 'xhs_fresh', label: '小红书清新', icon: 'fa-solid fa-heart' },
+            { key: 'jap_film', label: '日系胶片', icon: 'fa-solid fa-camera-retro' },
+            { key: 'flat_minimal', label: '极简扁平', icon: 'fa-solid fa-shapes' },
+            { key: '3d_cartoon', label: '3D卡通', icon: 'fa-solid fa-cube' },
+            { key: 'guochao', label: '国潮', icon: 'fa-solid fa-dragon' },
+            { key: 'realistic_ecom', label: '写实电商', icon: 'fa-solid fa-box-open' },
+            { key: 'watercolor', label: '水彩手绘', icon: 'fa-solid fa-paintbrush' },
+            { key: 'cyber_neon', label: '赛博霓虹', icon: 'fa-solid fa-bolt' },
+        ];
+        const aiImageRatios = [
+            { value: '1:1', label: '1:1 方图' },
+            { value: '3:4', label: '3:4 竖图' },
+            { value: '9:16', label: '9:16 竖屏' },
+            { value: '4:3', label: '4:3 横图' },
+            { value: '16:9', label: '16:9 横图' },
+        ];
+        const aiImageMoods = [
+            { value: 'natural', label: '自然光' },
+            { value: 'studio', label: '棚拍柔光' },
+            { value: 'night', label: '霓虹夜景' },
+            { value: 'warm', label: '暖阳治愈' },
+        ];
+
+        const LS_IMG_KEY = 'td_img_api_v1';
+        const aiImgApi = ref({ show: false, key: '', base: 'https://api.openai.com/v1', model: 'gpt-image-1', showKey: false });
+        function loadImgApiSettings() {
+            try {
+                const raw = localStorage.getItem(LS_IMG_KEY);
+                if (raw) {
+                    const o = JSON.parse(raw);
+                    if (o.key) aiImgApi.value.key = o.key;
+                    if (o.base) aiImgApi.value.base = o.base;
+                    if (o.model) aiImgApi.value.model = o.model;
+                }
+            } catch (_) {}
+        }
+        function saveImgApiSettings() {
+            const payload = {
+                key: (aiImgApi.value.key || '').trim(),
+                base: (aiImgApi.value.base || '').trim() || 'https://api.openai.com/v1',
+                model: (aiImgApi.value.model || '').trim() || 'gpt-image-1',
+            };
+            try { localStorage.setItem(LS_IMG_KEY, JSON.stringify(payload)); } catch (_) {}
+            alert('已保存图像 API 设置（仅本机浏览器）。生成时将使用你配置的 Key。');
+        }
+        function clearImgApiSettings() {
+            aiImgApi.value.key = '';
+            aiImgApi.value.base = 'https://api.openai.com/v1';
+            aiImgApi.value.model = 'gpt-image-1';
+            try { localStorage.removeItem(LS_IMG_KEY); } catch (_) {}
+        }
+        function importFromAiContent() {
+            const src = (aiForm.value.content || '').trim();
+            if (!src) { alert('「AI文案生成」的参考原文框为空，无法导入。请先在 AI 文案生成中填写参考原文内容。'); return; }
+            aiImageText.value = src;
+            activePanel.value = 'ai-image';
+            aiImageError.value = '';
+            alert('已从「AI文案生成 · 参考原文」导入内容到画面描述。可补充细节后点击「生成 4 张插图」。');
+        }
+        async function generateImages() {
+            const text = (aiImageText.value || '').trim();
+            if (!text) { aiImageError.value = '请先输入画面描述，或点「从AI文案导入参考原文」。'; return; }
+            const key = (aiImgApi.value.key || '').trim();
+            if (!key) {
+                aiImgApi.value.show = true;
+                aiImageError.value = '未配置图像 API Key：请在右侧「图像 API 设置」中填入你的图像模型 Key（如 OpenAI DALL·E / 通义万相）。';
+                return;
+            }
+            aiImageGenerating.value = true;
+            aiImageError.value = '';
+            aiImageResults.value = [];
+            try {
+                const resp = await fetch('/api/ai-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        text,
+                        style: aiImageStyle.value,
+                        ratio: aiImageRatio.value,
+                        mood: aiImageMood.value,
+                        seed: aiImageSeed.value || '',
+                        apiKey: key,
+                        base: (aiImgApi.value.base || '').trim(),
+                        model: (aiImgApi.value.model || '').trim(),
+                    }),
+                });
+                const data = await resp.json().catch(() => ({}));
+                if (!resp.ok) {
+                    aiImageError.value = data.error || ('生成失败（' + resp.status + '）');
+                } else {
+                    aiImageResults.value = data.images || [];
+                    if (data.errors && data.errors.length) {
+                        aiImageError.value = '部分失败：' + data.errors.join('；');
+                    }
+                }
+            } catch (e) {
+                aiImageError.value = '网络错误：' + (e.message || e);
+            } finally {
+                aiImageGenerating.value = false;
+            }
+        }
+        const aiImgApiStatus = computed(() => {
+            const k = (aiImgApi.value.key || '').trim();
+            if (k) {
+                const masked = k.length > 10 ? (k.slice(0, 6) + '…' + k.slice(-4)) : k;
+                return { cls: 'ok', icon: 'fa-solid fa-circle-check', text: '正在使用你自己的图像 Key：' + masked };
+            }
+            return { cls: 'warn', icon: 'fa-solid fa-circle-info', text: '未填 Key：请在下方填入图像模型 Key 后保存' };
+        });
+        loadImgApiSettings();
+
         const LS_KEY = 'td_ai_api_v1';
 
         function basePresetToUrl(preset, custom) {
@@ -1087,6 +1209,11 @@ const app = createApp({
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,
+            // AI 生成插图
+            aiImageText, aiImageStyle, aiImageRatio, aiImageMood, aiImageSeed,
+            aiImageResults, aiImageGenerating, aiImageError,
+            aiImageStyles, aiImageRatios, aiImageMoods,
+            aiImgApi, aiImgApiStatus, saveImgApiSettings, clearImgApiSettings, importFromAiContent, generateImages,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
             pptReady, pptDownloading, pptSlideCount,

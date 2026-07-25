@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=22">
+    <link rel="stylesheet" href="css/style.css?v=23">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -38,6 +38,10 @@
                     <div class="nav-item" :class="{ active: activePanel === 'ai-writer' }" @click="activePanel = 'ai-writer'">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
                         <span>AI文案生成</span>
+                    </div>
+                    <div class="nav-item" :class="{ active: activePanel === 'ai-image' }" @click="activePanel = 'ai-image'">
+                        <i class="fa-solid fa-image"></i>
+                        <span>AI生成插图</span>
                     </div>
                     <div class="nav-item" :class="{ active: activePanel === 'ppt-maker' }" @click="activePanel = 'ppt-maker'">
                         <i class="fa-solid fa-file-powerpoint"></i>
@@ -537,6 +541,137 @@
                     </div>
                 </div>
 
+                <!-- ========== AI生成插图 ========== -->
+                <div class="panel ai-image-panel" v-show="activePanel === 'ai-image'">
+                    <div class="ai-image-container">
+                        <div class="ai-image-header">
+                            <i class="fa-solid fa-image"></i>
+                            <h2>AI 生成小红书笔记插图</h2>
+                            <span class="ai-badge">图像模型驱动</span>
+                        </div>
+
+                        <div class="ai-image-body">
+                            <!-- 左栏：输入 + 风格参数 -->
+                            <div class="ai-image-input-section">
+                                <div class="ai-field">
+                                    <div class="ai-field-head">
+                                        <label class="ai-label"><i class="fa-solid fa-pen"></i> 画面描述 / 主题内容</label>
+                                        <button type="button" class="ai-import-btn" @click="importFromAiContent" :disabled="!(aiForm.content && aiForm.content.trim())" title="从「AI文案生成」的参考原文框导入内容">
+                                            <i class="fa-solid fa-arrow-down"></i> 从AI文案导入参考原文
+                                        </button>
+                                    </div>
+                                    <textarea class="ai-textarea ai-textarea-main" v-model="aiImageText" rows="7" placeholder="描述你想生成的画面：例如「索尼 FX9 III 电影摄影机摆放在影视拍摄片场，专业感、电影氛围」；或点上方按钮从 AI 文案的参考原文自动填入。"></textarea>
+                                    <span class="ai-hint">可直接粘贴 AI 文案生成的<strong>参考原文</strong>或<strong>小红书笔记</strong>。建议保留产品名/卖点等关键信息，画面更准。</span>
+                                    <span class="ai-char-count">{{ (aiImageText || '').length }} 字</span>
+                                </div>
+
+                                <!-- 风格参数面板 -->
+                                <div class="ai-params-card">
+                                    <h3 class="ai-params-title"><i class="fa-solid fa-sliders"></i> 风格参数</h3>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-cube"></i> 画面风格</label>
+                                        <div class="ai-image-style-grid">
+                                            <button type="button" class="ai-image-style-chip" v-for="s in aiImageStyles" :key="s.key" :class="{active: aiImageStyle===s.key}" @click="aiImageStyle=s.key">
+                                                <i class="fa-solid" :class="s.icon"></i> {{ s.label }}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-crop-simple"></i> 画面比例</label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="r in aiImageRatios" :key="r.value" :class="{active: aiImageRatio===r.value}">
+                                                <input type="radio" v-model="aiImageRatio" :value="r.value"><span>{{ r.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-sun"></i> 光照 / 氛围</label>
+                                        <div class="ai-radio-group">
+                                            <label class="ai-radio" v-for="m in aiImageMoods" :key="m.value" :class="{active: aiImageMood===m.value}">
+                                                <input type="radio" v-model="aiImageMood" :value="m.value"><span>{{ m.label }}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="ai-field">
+                                        <label class="ai-label"><i class="fa-solid fa-dice"></i> 随机种子（可选）</label>
+                                        <input type="text" class="ai-input" v-model="aiImageSeed" placeholder="留空随机；填数字可复现相近构图">
+                                    </div>
+
+                                    <button class="ai-generate-btn" @click="generateImages" :disabled="aiImageGenerating">
+                                        <i v-if="!aiImageGenerating" class="fa-solid fa-wand-magic-sparkles"></i>
+                                        <i v-if="aiImageGenerating" class="fa-solid fa-spinner spinning"></i>
+                                        {{ aiImageGenerating ? 'AI 生成中（4张）...' : '生成 4 张插图' }}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 右栏：结果 + 图像API设置 -->
+                            <div class="ai-image-result-section">
+                                <!-- 图像API设置 -->
+                                <div class="ai-params-card ai-api-card">
+                                    <h3 class="ai-params-title">
+                                        <i class="fa-solid fa-key"></i> 图像 API 设置
+                                        <button type="button" class="ai-api-toggle" @click="aiImgApi.show = !aiImgApi.show">{{ aiImgApi.show ? '收起' : '展开' }}</button>
+                                    </h3>
+                                    <div v-show="aiImgApi.show">
+                                        <div class="ai-api-status" :class="aiImgApiStatus.cls">
+                                            <i :class="aiImgApiStatus.icon"></i> {{ aiImgApiStatus.text }}
+                                        </div>
+                                        <div class="ai-field">
+                                            <label class="ai-label"><i class="fa-solid fa-key"></i> 图像 API Key</label>
+                                            <div class="ai-key-row">
+                                                <input :type="aiImgApi.showKey ? 'text' : 'password'" class="ai-input" v-model="aiImgApi.key" placeholder="sk-... / 你的图像模型 Key">
+                                                <button type="button" class="ai-eye-btn" @click="aiImgApi.showKey = !aiImgApi.showKey"><i :class="aiImgApi.showKey ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="ai-field">
+                                            <label class="ai-label"><i class="fa-solid fa-server"></i> API 地址</label>
+                                            <input type="text" class="ai-input" v-model="aiImgApi.base" placeholder="https://api.openai.com/v1（兼容 /images/generations 的端点）">
+                                        </div>
+                                        <div class="ai-field">
+                                            <label class="ai-label"><i class="fa-solid fa-cube"></i> 图像模型</label>
+                                            <input type="text" class="ai-input" v-model="aiImgApi.model" placeholder="gpt-image-1 / dall-e-3 / 通义万相等">
+                                        </div>
+                                        <div class="ai-api-actions">
+                                            <button type="button" class="ai-action-btn primary" @click="saveImgApiSettings">保存</button>
+                                            <button type="button" class="ai-action-btn" @click="clearImgApiSettings">清除</button>
+                                        </div>
+                                        <p class="ai-api-hint">key 仅保存在你本机浏览器（localStorage），不上传。支持兼容 OpenAI 图像接口的端点（DALL·E 3 / gpt-image-1 / 通义万相 / 硅基流动 SDXL 等）。</p>
+                                    </div>
+                                </div>
+
+                                <!-- 结果网格 -->
+                                <div class="ai-image-results">
+                                    <div class="ai-image-loading" v-if="aiImageGenerating">
+                                        <div class="spinner"></div>
+                                        <p>正在并行生成 4 张插图，请稍候…</p>
+                                    </div>
+                                    <div class="ai-image-error" v-if="aiImageError">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> {{ aiImageError }}
+                                    </div>
+                                    <div class="ai-image-grid" v-if="aiImageResults.length">
+                                        <div class="ai-image-card" v-for="(img, i) in aiImageResults" :key="i">
+                                            <img :src="img" :alt="'插图'+(i+1)" loading="lazy">
+                                            <div class="ai-image-card-actions">
+                                                <a class="ai-image-dl" :href="img" :download="'xhs-illustration-'+(i+1)+'.png'"><i class="fa-solid fa-download"></i> 下载</a>
+                                            </div>
+                                            <span class="ai-image-card-idx">{{ i + 1 }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="ai-image-empty" v-if="!aiImageGenerating && !aiImageResults.length && !aiImageError">
+                                        <i class="fa-solid fa-image"></i>
+                                        <p>输入画面描述并点击「生成 4 张插图」<br>每张图可单独下载</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ========== PPT生成 ========== -->
                 <div class="panel ppt-panel" v-show="activePanel === 'ppt-maker'">
                     <div class="ppt-container">
@@ -818,6 +953,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=41"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607231800"></script>
+    <script src="js/app.js?v=2607251800"></script>
 </body>
 </html>
