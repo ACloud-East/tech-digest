@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=24">
+    <link rel="stylesheet" href="css/style.css?v=25">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -559,10 +559,15 @@
                                         <button type="button" class="ai-import-btn" @click="importFromAiContent" :disabled="!(aiForm.content && aiForm.content.trim())" title="从「AI文案生成」的参考原文框导入内容">
                                             <i class="fa-solid fa-arrow-down"></i> 从AI文案导入参考原文
                                         </button>
+                                        <button type="button" class="ai-import-btn" @click="triggerImageFileInput" title="上传 Word / PDF / TXT，自动提取文字到画面描述">
+                                            <i class="fa-solid fa-file-arrow-up"></i> 上传Word/PDF
+                                        </button>
                                     </div>
-                                    <textarea class="ai-textarea ai-textarea-main" v-model="aiImageText" rows="7" placeholder="描述你想生成的画面：例如「索尼 FX9 III 电影摄影机摆放在影视拍摄片场，专业感、电影氛围」；或点上方按钮从 AI 文案的参考原文自动填入。"></textarea>
-                                    <span class="ai-hint">可直接粘贴 AI 文案生成的<strong>参考原文</strong>或<strong>小红书笔记</strong>。建议保留产品名/卖点等关键信息，画面更准。</span>
+                                    <textarea class="ai-textarea ai-textarea-main" v-model="aiImageText" rows="7" placeholder="描述你想生成的画面：例如「索尼 FX9 III 电影摄影机摆放在影视拍摄片场，专业感、电影氛围」；或点上方按钮从 AI 文案的参考原文 / Word / PDF 自动填入。"></textarea>
+                                    <span class="ai-hint">可直接粘贴 AI 文案生成的<strong>参考原文</strong>或<strong>小红书笔记</strong>，或<strong>上传 Word / PDF</strong> 自动提取。建议保留产品名/卖点等关键信息，画面更准。</span>
                                     <span class="ai-char-count">{{ (aiImageText || '').length }} 字</span>
+                                    <span class="ai-upload-status" v-if="aiImageParsing"><i class="fa-solid fa-spinner spinning"></i> 正在解析文档…</span>
+                                    <input ref="aiImageFileInput" type="file" accept=".docx,.pdf,.txt" class="ai-file-hidden" @change="handleImageFileUpload">
                                 </div>
 
                                 <!-- 风格参数面板 -->
@@ -646,23 +651,44 @@
 
                                 <!-- 结果网格 -->
                                 <div class="ai-image-results">
-                                    <div class="ai-image-loading" v-if="aiImageGenerating">
-                                        <div class="spinner"></div>
-                                        <p>正在并行生成 4 张插图，请稍候…</p>
+                                    <!-- 进度条：逐张填充，实时反馈 -->
+                                    <div class="ai-image-progress" v-if="aiImageGenerating">
+                                        <div class="ai-image-progress-bar">
+                                            <div class="ai-image-progress-fill" :style="{ width: ((aiImageProgress.done / aiImageProgress.total) * 100) + '%' }"></div>
+                                        </div>
+                                        <p class="ai-image-progress-text">
+                                            <i class="fa-solid fa-wand-magic-sparkles spinning-slow"></i>
+                                            正在生成插图… 已生成 {{ aiImageProgress.done }} / {{ aiImageProgress.total }} 张
+                                        </p>
                                     </div>
                                     <div class="ai-image-error" v-if="aiImageError">
                                         <i class="fa-solid fa-triangle-exclamation"></i> {{ aiImageError }}
                                     </div>
-                                    <div class="ai-image-grid" v-if="aiImageResults.length">
-                                        <div class="ai-image-card" v-for="(img, i) in aiImageResults" :key="i">
-                                            <img :src="img" :alt="'插图'+(i+1)" loading="lazy">
-                                            <div class="ai-image-card-actions">
-                                                <a class="ai-image-dl" :href="img" :download="'xhs-illustration-'+(i+1)+'.png'"><i class="fa-solid fa-download"></i> 下载</a>
-                                            </div>
+                                    <!-- 4 个槽位：有图显示图，失败显示错误，等待中显示骨架 -->
+                                    <div class="ai-image-grid" v-if="aiImageGenerating || aiImageHasResults">
+                                        <div class="ai-image-card" v-for="(slot, i) in aiImageResults" :key="i">
+                                            <template v-if="typeof slot === 'string'">
+                                                <img :src="slot" :alt="'插图'+(i+1)" loading="lazy">
+                                                <div class="ai-image-card-actions">
+                                                    <a class="ai-image-dl" :href="slot" :download="'xhs-illustration-'+(i+1)+'.png'"><i class="fa-solid fa-download"></i> 下载</a>
+                                                </div>
+                                            </template>
+                                            <template v-else-if="slot && slot.error">
+                                                <div class="ai-image-card-err">
+                                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                                    <span>第 {{ i + 1 }} 张失败</span>
+                                                </div>
+                                            </template>
+                                            <template v-else>
+                                                <div class="ai-image-skeleton">
+                                                    <div class="spinner"></div>
+                                                    <span>等待第 {{ i + 1 }} 张…</span>
+                                                </div>
+                                            </template>
                                             <span class="ai-image-card-idx">{{ i + 1 }}</span>
                                         </div>
                                     </div>
-                                    <div class="ai-image-empty" v-if="!aiImageGenerating && !aiImageResults.length && !aiImageError">
+                                    <div class="ai-image-empty" v-if="!aiImageGenerating && !aiImageHasResults && !aiImageError">
                                         <i class="fa-solid fa-image"></i>
                                         <p>输入画面描述并点击「生成 4 张插图」<br>每张图可单独下载</p>
                                     </div>
@@ -953,6 +979,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=41"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2607251900"></script>
+    <script src="js/app.js?v=2607252000"></script>
 </body>
 </html>

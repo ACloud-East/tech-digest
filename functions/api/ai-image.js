@@ -254,25 +254,54 @@ export async function onRequestPost({ request, env }) {
     const size = sizeMap[ratio];
     const seed = body.seed ? parseInt(body.seed, 10) : null;
 
-    // 并行生成 4 张（各自带轻微构图变体）
-    // 通义万相有每秒提交速率限制，错开提交以避免 429；OpenAI 兼容端点则直接并行
-    const tasks = [];
-    for (let i = 0; i < count; i++) {
-        if (isDashScope && i > 0) await new Promise((r) => setTimeout(r, 1500));
-        const p = buildPrompt(text, style, mood, i);
-        const seedOff = seed != null ? seed + i : null;
-        tasks.push(isDashScope
-            ? genDashscope(base, apiKey, model, p, size, seedOff)
-            : genOpenAI(base, apiKey, model, p, size, seedOff));
-    }
+    // 并行（通义万相错开提交）生成 4 张，逐张以 SSE 流式返回，便于前端展示进度条
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+        async start(controller) {
+            const send = (obj) => {
+                try { controller.enqueue(encoder.encode('data: ' + JSON.stringify(obj) + '\n\n')); } catch (_) {}
+            };
+            let done = 0;
+            let failCount = 0;
+            let firstError = '';
+            const jobs = [];
+            for (let i = 0; i < count; i++) {
+                if (isDashScope && i > 0) await new Promise((r) => setTimeout(r, 1500));
+                const p = buildPrompt(text, style, mood, i);
+                const seedOff = seed != null ? seed + i : null;
+                const job = (isDashScope
+                    ? genDashscope(base, apiKey, model, p, size, seedOff)
+                    : genOpenAI(base, apiKey, model, p, size, seedOff)
+                ).then((res) => {
+                    done++;
+                    if (res.ok) {
+                        send({ type: 'image', index: i, ok: true, image: res.image, done, total: count });
+                    } else {
+                        failCount++;
+                        if (!firstError) firstError = res.error || '生成失败';
+                        send({ type: 'image', index: i, ok: false, image: null, error: res.error, done, total: count });
+                    }
+                }).catch((e) => {
+                    done++;
+                    failCount++;
+                    if (!firstError) firstError = e.message || '生成失败';
+                    send({ type: 'image', index: i, ok: false, image: null, error: e.message || '生成失败', done, total: count });
+                });
+                jobs.push(job);
+            }
+            await Promise.all(jobs);
+            send({ type: 'done', done, total: count, allFailed: failCount === count, firstError });
+            controller.close();
+        },
+    });
 
-    const results = await Promise.all(tasks);
-    const images = results.filter((r) => r.ok && r.image).map((r) => r.image);
-    const errors = results.filter((r) => !r.ok).map((r) => r.error);
-
-    if (images.length === 0) {
-        return new Response(JSON.stringify({ error: '图像生成全部失败：' + (errors[0] || '未知错误') + '。请检查图像 API Key / 地址 / 模型是否支持图像生成。' }), { status: 502, headers: acao });
-    }
-
-    return new Response(JSON.stringify({ images, errors, ratio, style, mood, provider: isDashScope ? 'dashscope' : 'openai' }), { status: 200, headers: { ...acao, 'Cache-Control': 'no-store' } });
+    return new Response(stream, {
+        status: 200,
+        headers: {
+            ...acao,
+            'Content-Type': 'text/event-stream; charset=utf-8',
+            'Cache-Control': 'no-store',
+            'Connection': 'keep-alive',
+        },
+    });
 }

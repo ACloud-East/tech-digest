@@ -1361,6 +1361,45 @@ ul { list-style: none; }
 .ai-image-empty i { font-size: 2.6rem; opacity: 0.4; }
 .ai-image-empty p { font-size: 0.82rem; line-height: 1.6; margin: 0; }
 
+/* 进度条（逐张生成实时反馈） */
+.ai-image-progress { display: flex; flex-direction: column; gap: 8px; margin-bottom: 4px; }
+.ai-image-progress-bar {
+    width: 100%; height: 10px; border-radius: 999px; overflow: hidden;
+    background: var(--bg-tertiary); border: 1px solid var(--border-color);
+}
+.ai-image-progress-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-purple), var(--accent-cyan));
+    transition: width 0.5s ease;
+    box-shadow: 0 0 12px rgba(168,85,247,0.5);
+}
+.ai-image-progress-text {
+    margin: 0; font-size: 0.8rem; color: var(--text-secondary);
+    display: flex; align-items: center; gap: 6px;
+}
+.spinning-slow { animation: spin 2.4s linear infinite; color: var(--accent-purple); }
+
+/* 等待中的骨架占位 */
+.ai-image-skeleton {
+    aspect-ratio: 3 / 4; width: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+    background: linear-gradient(110deg, var(--bg-tertiary) 30%, rgba(168,85,247,0.08) 50%, var(--bg-tertiary) 70%);
+    background-size: 220% 100%; animation: aiShimmer 1.4s ease-in-out infinite; color: var(--text-muted); font-size: 0.78rem;
+}
+.ai-image-skeleton .spinner { width: 30px; height: 30px; border-width: 3px; }
+@keyframes aiShimmer {
+    0% { background-position: 120% 0; }
+    100% { background-position: -120% 0; }
+}
+
+/* 单图失败 */
+.ai-image-card-err {
+    aspect-ratio: 3 / 4; width: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 8px; padding: 10px;
+    background: rgba(239,68,68,0.08); color: #f87171; font-size: 0.78rem; text-align: center;
+}
+.ai-image-card-err i { font-size: 1.4rem; }
+
 /* ==================== Responsive ==================== */
 @media (max-width: 900px) {
     .ai-image-body { grid-template-columns: 1fr; }

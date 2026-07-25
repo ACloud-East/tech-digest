@@ -142,9 +142,12 @@ const app = createApp({
         const aiImageRatio = ref('3:4');
         const aiImageMood = ref('natural');
         const aiImageSeed = ref('');
-        const aiImageResults = ref([]);
+        const aiImageResults = ref([]); // 每张图占一个槽位：null=等待中, string=图片, {error}=失败
         const aiImageGenerating = ref(false);
         const aiImageError = ref('');
+        const aiImageProgress = ref({ done: 0, total: 4 });
+        const aiImageParsing = ref(false);
+        const aiImageFileInput = ref(null);
 
         const aiImageStyles = [
             { key: 'xhs_fresh', label: '小红书清新', icon: 'fa-solid fa-heart' },
@@ -213,7 +216,9 @@ const app = createApp({
             // 若前端未填 Key，则由服务端预设的 IMAGE_KEY 兜底（通义万相站点默认）
             aiImageGenerating.value = true;
             aiImageError.value = '';
-            aiImageResults.value = [];
+            aiImageProgress.value = { done: 0, total: 4 };
+            // 预置 4 个等待槽位，逐张填充，形成可见进度
+            aiImageResults.value = [null, null, null, null];
             try {
                 const resp = await fetch('/api/ai-image', {
                     method: 'POST',
@@ -229,13 +234,42 @@ const app = createApp({
                         model: (aiImgApi.value.model || '').trim(),
                     }),
                 });
-                const data = await resp.json().catch(() => ({}));
                 if (!resp.ok) {
+                    const data = await resp.json().catch(() => ({}));
                     aiImageError.value = data.error || ('生成失败（' + resp.status + '）');
-                } else {
-                    aiImageResults.value = data.images || [];
-                    if (data.errors && data.errors.length) {
-                        aiImageError.value = '部分失败：' + data.errors.join('；');
+                    aiImageResults.value = [];
+                    aiImageGenerating.value = false;
+                    return;
+                }
+                // 解析 SSE 流：每张图完成即推送，前端实时填充 + 进度条
+                const reader = resp.body.getReader();
+                const decoder = new TextDecoder();
+                let buf = '';
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += decoder.decode(value, { stream: true });
+                    let idx;
+                    while ((idx = buf.indexOf('\n\n')) !== -1) {
+                        const chunk = buf.slice(0, idx);
+                        buf = buf.slice(idx + 2);
+                        const line = chunk.split('\n').find((l) => l.startsWith('data:'));
+                        if (!line) continue;
+                        let payload;
+                        try { payload = JSON.parse(line.slice(5).trim()); } catch (_) { continue; }
+                        if (payload.type === 'image') {
+                            const arr = aiImageResults.value.slice();
+                            arr[payload.index] = payload.ok ? payload.image : { error: payload.error };
+                            aiImageResults.value = arr;
+                            aiImageProgress.value = { done: payload.done, total: payload.total };
+                        } else if (payload.type === 'done') {
+                            if (payload.allFailed) {
+                                aiImageError.value = '图像生成全部失败：' + (payload.firstError || '未知错误');
+                                aiImageResults.value = [];
+                            } else if (payload.firstError) {
+                                aiImageError.value = '部分失败：' + payload.firstError;
+                            }
+                        }
                     }
                 }
             } catch (e) {
@@ -244,6 +278,38 @@ const app = createApp({
                 aiImageGenerating.value = false;
             }
         }
+        function triggerImageFileInput() {
+            if (aiImageFileInput.value) aiImageFileInput.value.click();
+        }
+        async function handleImageFileUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (aiImageFileInput.value) aiImageFileInput.value.value = ''; // 允许重复选同一文件
+            if (!file) return;
+            const name = file.name.toLowerCase();
+            aiImageParsing.value = true;
+            try {
+                let text = '';
+                if (name.endsWith('.txt')) {
+                    text = await file.text();
+                } else if (name.endsWith('.docx')) {
+                    text = await extractDocxText(file);
+                } else if (name.endsWith('.pdf')) {
+                    text = await extractPdfText(file);
+                } else {
+                    throw new Error('仅支持 Word（.docx）、PDF（.pdf）、纯文本（.txt）');
+                }
+                text = (text || '').replace(/\r\n/g, '\n').trim();
+                if (!text) throw new Error('未能从该文件提取到文本，可能为空文件或扫描件（图片型 PDF 无法识别）');
+                const existing = (aiImageText.value || '').trim();
+                aiImageText.value = existing ? existing + '\n\n' + text : text;
+                aiImageError.value = '';
+            } catch (err) {
+                alert('解析失败：' + (err && err.message ? err.message : err));
+            } finally {
+                aiImageParsing.value = false;
+            }
+        }
+        const aiImageHasResults = computed(() => aiImageResults.value.some((x) => x));
         const aiImgApiStatus = computed(() => {
             const k = (aiImgApi.value.key || '').trim();
             if (k) {
@@ -1212,9 +1278,9 @@ const app = createApp({
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,
             // AI 生成插图
             aiImageText, aiImageStyle, aiImageRatio, aiImageMood, aiImageSeed,
-            aiImageResults, aiImageGenerating, aiImageError,
+            aiImageResults, aiImageGenerating, aiImageError, aiImageProgress, aiImageParsing, aiImageFileInput, aiImageHasResults,
             aiImageStyles, aiImageRatios, aiImageMoods,
-            aiImgApi, aiImgApiStatus, saveImgApiSettings, clearImgApiSettings, importFromAiContent, generateImages,
+            aiImgApi, aiImgApiStatus, saveImgApiSettings, clearImgApiSettings, importFromAiContent, generateImages, triggerImageFileInput, handleImageFileUpload,
             // PPT 生成
             pptForm, pptOptions, pptInputMode, pptThemes, pptGenerating, estimatedSlides,
             pptReady, pptDownloading, pptSlideCount,
