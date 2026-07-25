@@ -146,14 +146,22 @@ function parseNeteaseHtml(html, feed) {
             const url = mUrl[1];
             const title = stripHtml(mTitle[1]).replace(/&nbsp;/g, ' ').trim();
             if (!title) continue;
-            // nl-time 为北京时间(UTC+8)，转成 UTC ISO 以便统一排序
+            // nl-time 为北京时间(UTC+8)，转成 UTC ISO 以便统一排序；
+            // 跨天处理：若 nl-time 的时:分晚于当前北京时间，说明是「昨天」发布
             let time = new Date().toISOString();
             if (mTime) {
                 const tm = mTime[1].trim().match(/(\d{1,2}):(\d{2})/);
                 if (tm) {
-                    const local = new Date();
-                    local.setUTCHours(parseInt(tm[1], 10), parseInt(tm[2], 10), 0, 0);
-                    time = new Date(local.getTime() - 8 * 3600 * 1000).toISOString();
+                    const h = parseInt(tm[1], 10), min = parseInt(tm[2], 10);
+                    const bjMs = Date.now() + 8 * 3600 * 1000; // 当前北京时间
+                    const bj = new Date(bjMs);
+                    const curH = bj.getUTCHours(), curM = bj.getUTCMinutes();
+                    let ay = bj.getUTCFullYear(), amo = bj.getUTCMonth(), ad = bj.getUTCDate();
+                    if (h > curH || (h === curH && min > curM)) { // 晚于现在 → 昨天
+                        const yest = new Date(bjMs - 24 * 3600 * 1000);
+                        ay = yest.getUTCFullYear(); amo = yest.getUTCMonth(); ad = yest.getUTCDate();
+                    }
+                    time = new Date(Date.UTC(ay, amo, ad, h, min, 0, 0) - 8 * 3600 * 1000).toISOString();
                 }
             }
             out.push({
