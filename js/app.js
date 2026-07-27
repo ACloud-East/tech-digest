@@ -138,7 +138,7 @@ const app = createApp({
 
         // ===== AI 生成插图（BYOK 图像模型） =====
         const aiImageText = ref('');
-        const aiImageStyle = ref('realistic_ecom');
+        const aiImageStyle = ref('xhs_fresh');
         const aiImageRatio = ref('3:4');
         const aiImageMood = ref('natural');
         const aiImageSeed = ref('');
