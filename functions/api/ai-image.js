@@ -88,11 +88,13 @@ function buildPrompt(text, style, mood, variantIdx) {
     const subject = (text || '').trim().slice(0, 600);
     const variant = VARIANTS[variantIdx % VARIANTS.length];
     // 风格与构图用英文明确保真度，主体内容保留用户原文（中文端点可直接理解，英文端点由风格词主导）
+    // 通义万相（Qwen Wanx）易把汉字生成乱码，故强制：图中不要渲染中文/汉字，必要文字只用英文
     return [
         styleEn,
         moodEn,
         variant,
         'high quality, detailed, no extraneous text or watermark unless requested.',
+        'IMPORTANT: Do NOT render any Chinese characters, CJK text, or legible Chinese words in the image — Qwen Wanx often produces garbled or missing Chinese glyphs. If any text must appear, use English only. Prefer clean imagery without text.',
         'Subject / theme: ' + subject,
         'Suitable as a Xiaohongshu (RED) cover image.',
     ].filter(Boolean).join('. ') + '.';
