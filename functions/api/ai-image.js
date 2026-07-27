@@ -38,14 +38,14 @@ function arrayBufferToBase64(buf) {
 
 // 风格预设 → 英文风格关键词（主导画风，避免中文 prompt 在部分端点失效）
 const STYLE_EN = {
-    xhs_fresh: 'xiaohongshu (RED) style illustration, soft pastel colors, clean lifestyle aesthetic, bright and inviting, high saturation, cute and trendy, appealing social-media cover',
-    jap_film: 'japanese film photography style, muted tones, 35mm film grain, nostalgic, soft natural light',
-    flat_minimal: 'minimal flat vector illustration, simple geometric shapes, modern, clean solid background, bold flat colors',
-    '3d_cartoon': '3d cartoon render, claymation style, soft rounded shapes, pixar-like, vibrant and playful',
-    guochao: 'modern Chinese guochao (national trend) style, traditional motifs with modern twist, rich red and gold, ornamental',
-    realistic_ecom: 'professional product e-commerce photography, studio softbox lighting, sharp detail, clean white background',
-    watercolor: 'hand-drawn watercolor painting, soft color washes, artistic, visible paper texture',
-    cyber_neon: 'cyberpunk neon glow, dark background, vibrant neon lights, futuristic city mood',
+    xhs_fresh: 'xiaohongshu (RED) style product cover, product hero shot, soft pastel colors, clean lifestyle aesthetic, no people, high saturation, cute and trendy, appealing social-media cover',
+    jap_film: 'japanese film photography style product shot, muted tones, 35mm film grain, no people, nostalgic, soft natural light',
+    flat_minimal: 'minimal flat vector product illustration, product-centered, simple geometric shapes, no people, modern, clean solid background, bold flat colors',
+    '3d_cartoon': '3d cartoon product render, product hero shot, claymation style, no people, soft rounded shapes, pixar-like, vibrant and playful',
+    guochao: 'modern Chinese guochao (national trend) product shot, traditional motifs with modern twist, product-centered, no people, rich red and gold, ornamental',
+    realistic_ecom: 'professional product e-commerce photography, product hero shot, no people, no hands, studio softbox lighting, ultra sharp detail, clean minimal background, like an official Tmall or Amazon product listing image',
+    watercolor: 'hand-drawn watercolor product painting, product as main subject, no people, soft color washes, artistic, visible paper texture',
+    cyber_neon: 'cyberpunk neon product shot, product as hero subject, no people, dark background, vibrant neon lights, futuristic city mood',
 };
 
 // 光照/氛围 → 英文
@@ -74,12 +74,12 @@ const DASHSCOPE_SIZE = {
     '16:9': '1280*720',
 };
 
-// 同一主体生成 4 张时的轻微构图变体，保证 4 图有差异
+// 同一主体生成 4 张时的轻微构图变体，保证 4 图有差异（始终以产品为主角）
 const VARIANTS = [
-    'centered composition, subject in focus, clean background',
-    'wide environmental shot, subject within a real-life scene',
-    'close-up detail shot emphasizing texture and material',
-    'dynamic angled view, energetic and eye-catching layout',
+    'centered hero composition, product in sharp focus, clean solid background, product fills the frame',
+    'three-quarter angled product shot on a subtle neutral surface, soft shadow, no other objects',
+    'close-up detail shot emphasizing texture, material and craftsmanship of the product',
+    'dynamic low-angle product shot, energetic and eye-catching, isolated product on plain background',
 ];
 
 function buildPrompt(text, style, mood, variantIdx) {
@@ -89,14 +89,16 @@ function buildPrompt(text, style, mood, variantIdx) {
     const variant = VARIANTS[variantIdx % VARIANTS.length];
     // 风格与构图用英文明确保真度，主体内容保留用户原文（中文端点可直接理解，英文端点由风格词主导）
     // 通义万相（Qwen Wanx）易把汉字生成乱码，故强制：图中不要渲染中文/汉字，必要文字只用英文
+    // 用户反馈：主体必须是产品本身，不能变成人或抽象图案
     return [
         styleEn,
         moodEn,
         variant,
-        'high quality, detailed, no extraneous text or watermark unless requested.',
-        'IMPORTANT: Do NOT render any Chinese characters, CJK text, or legible Chinese words in the image — Qwen Wanx often produces garbled or missing Chinese glyphs. If any text must appear, use English only. Prefer clean imagery without text.',
-        'Subject / theme: ' + subject,
-        'Suitable as a Xiaohongshu (RED) cover image.',
+        'high quality, detailed, product photography, no extraneous text or watermark unless requested.',
+        'RULE: The PRODUCT described MUST be the single clear main subject, centered and filling the frame. NO people, NO human models, NO human hands, NO faces, NO crowd, NO lifestyle scene with persons. Product-only shot. If the description is abstract, illustrate a tangible product/object that represents it.',
+        'IMPORTANT: Do NOT render any Chinese characters, CJK text, or legible Chinese words in the image — Qwen Wanx often produces garbled or missing Chinese glyphs. If any text must appear (e.g. brand name), use English/Latin letters only. Prefer clean imagery without text.',
+        'Subject / product to depict: ' + subject,
+        'Suitable as an official e-commerce product cover image.',
     ].filter(Boolean).join('. ') + '.';
 }
 
