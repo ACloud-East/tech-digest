@@ -1184,7 +1184,7 @@ const app = createApp({
                 if (!window.pdfjsLib) {
                     await new Promise((resolve, reject) => {
                         const script = document.createElement('script');
-                        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                        script.src = 'vendor/pdf.min.js';
                         script.onload = resolve;
                         script.onerror = reject;
                         document.head.appendChild(script);
@@ -1282,7 +1282,7 @@ const app = createApp({
             window.addEventListener('keydown', onKeydown);
             // PDF.js worker 指向同源 CDN，避免跨域加载失败
             if (typeof pdfjsLib !== 'undefined') {
-                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
             }
         });
         onBeforeUnmount(() => {
