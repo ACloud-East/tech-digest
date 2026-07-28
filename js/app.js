@@ -804,6 +804,14 @@ const app = createApp({
                 fr.readAsDataURL(blob);
             });
         }
+        // 把经本站代理的配图 URL 还原为原始绝对地址（base64 抓取失败时，让 Word 尝试联网加载）
+        function originalFromProxied(url) {
+            try {
+                const m = String(url).match(/[?&]u=([^&]+)/);
+                if (m) return decodeURIComponent(m[1]);
+            } catch (_) {}
+            return url;
+        }
         // 把结构化块渲染为 Word 可识别的 HTML 片段（标题/列表/引用/配图）
         function renderBlocksToWordHtml(blocks, b64map, title) {
             const showCap = aiImageCaptionOn.value;
@@ -821,7 +829,7 @@ const app = createApp({
             for (const b of blocks) {
                 if (b.type === 'image') {
                     closeList();
-                    const src = (b64map && b64map[b.url]) || b.url;
+                    const src = (b64map && b64map[b.url]) || originalFromProxied(b.url);
                     body += '<p style="text-align:center"><img src="' + escapeHtml(src) + '" style="max-width:100%;max-height:460px;border-radius:8px"></p>';
                     if (showCap && b.alt) body += '<p style="text-align:center;font-size:9pt;color:#888">' + escapeHtml(b.alt) + '</p>';
                 } else if (b.type === 'h2') {
