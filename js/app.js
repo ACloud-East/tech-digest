@@ -117,6 +117,7 @@ const app = createApp({
         const aiResultSourcesMeta = ref([]);  // 与 aiResultSources 一一对应：{url, ok, note}
         const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
         const aiResultFactChecked = ref(false); // 服务端事实护栏是否触发（原文存在且经过校验/纠正）
+        const aiResultImages = ref([]);   // 本次生成从原文抽到的配图 URL（已走代理），注入正文展示
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
@@ -409,6 +410,12 @@ const app = createApp({
             const lines = text.split('\n').filter(line => line.trim());
             const blocks = [];
             lines.forEach(line => {
+                // 图片行：![alt](url) —— 由原文抽图注入正文后渲染为配图
+                if (/^!\[[^\]]*\]\([^)]*\)$/.test(line.trim())) {
+                    const m = line.trim().match(/^!\[([^\]]*)\]\(([^)]*)\)$/);
+                    blocks.push({ type: 'image', alt: m ? m[1] : '', url: m ? m[2] : '' });
+                    return;
+                }
                 let type = 'p';
                 let content = line;
                 if (line.startsWith('## ')) { type = 'h2'; content = line.slice(3); }
@@ -441,6 +448,31 @@ const app = createApp({
                 blocks.push({ type, segments });
             });
             return blocks;
+        }
+
+        // 将原文抽到的图片地址改写为「经本站代理」的 URL，绕过防盗链，使配图稳定显示
+        function proxiedImageUrl(u) {
+            try { return '/api/img-proxy?u=' + encodeURIComponent(u); } catch (_) { return u; }
+        }
+
+        // 把配图注入文章正文：第一张作封面（首个非空行之后），其余依次插在各 ## / ### 标题之后；
+        // 图不足则随正文分布，图多余则追加到文末。返回注入后的 Markdown 文本。
+        function injectImagesIntoContent(content, images) {
+            if (!content) return content;
+            const imgs = (images || []).map(proxiedImageUrl).filter(Boolean);
+            if (!imgs.length) return content;
+            const lines = content.split('\n');
+            const out = [];
+            let imgIdx = 0;
+            const pushImg = () => { if (imgIdx < imgs.length) { out.push('![配图' + (imgIdx + 1) + '](' + imgs[imgIdx] + ')'); imgIdx++; } };
+            let coverDone = false;
+            for (const line of lines) {
+                out.push(line);
+                if (!coverDone && line.trim()) { pushImg(); coverDone = true; }
+                else if (/^#{2,3}\s/.test(line)) { pushImg(); }
+            }
+            while (imgIdx < imgs.length) pushImg();
+            return out.join('\n');
         }
 
         function isCiteActive(cites) {
@@ -549,6 +581,7 @@ const app = createApp({
             aiResultTime.value = item.time || '';
             aiResultSources.value = item.inputSources ? parseSources(item.inputSources) : [];
             aiResultSourcesMeta.value = (item.sourcesMeta && Array.isArray(item.sourcesMeta)) ? item.sourcesMeta : [];
+            aiResultImages.value = (item.images && Array.isArray(item.images)) ? item.images : [];
             aiResultReferences.value = (item.references && Array.isArray(item.references) && item.references.length)
                 ? item.references
                 : aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
@@ -625,6 +658,7 @@ const app = createApp({
             aiResult.value = '';
             aiResultPlain.value = '';
             aiResultTitle.value = '';
+            aiResultImages.value = [];
             aiTab.value = 'structured';
             // 立即展示来源框：只要用户填了来源 URL 或开启联网搜索，框就出现，避免后续某次生成失败时整框丢失
             aiResultSources.value = parseSources(aiForm.value.sources);
@@ -638,7 +672,9 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResult.value = partial.content;
                 };
                 const result = await AIGenerator.generate(aiForm.value, onToken);
-                aiResult.value = result.content;
+                // 把原文抽到的配图注入正文（结构式 + 非结构式共用同一批图）
+                aiResultImages.value = (result.images || []).map(proxiedImageUrl);
+                aiResult.value = injectImagesIntoContent(result.content, result.images);
                 aiResultTitle.value = result.title;
                 aiResultFactChecked.value = !!result.factChecked;
                 // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
@@ -656,7 +692,7 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResultPlain.value = partial.content;
                 };
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
-                aiResultPlain.value = plainResult.content;
+                aiResultPlain.value = injectImagesIntoContent(plainResult.content, result.images);
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
@@ -677,6 +713,7 @@ const app = createApp({
                     inputSources: aiForm.value.sources,
                     references: aiResultReferences.value,
                     sourcesMeta: aiResultSourcesMeta.value,
+                    images: aiResultImages.value,
                     inputKeywords: aiForm.value.keywords,
                     inputTemplate: aiForm.value.template,
                     inputExtra: aiForm.value.extraInstructions,
@@ -1268,7 +1305,7 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiResultImages, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,

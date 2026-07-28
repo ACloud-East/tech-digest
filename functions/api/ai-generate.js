@@ -49,6 +49,60 @@ function extractTextFromHtml(html) {
         .trim();
 }
 
+// 提取页面标题（og:title / twitter:title / <title>），用于参考文献与配图说明
+function extractTitleFromHtml(html) {
+    let m = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
+    if (m && m[1].trim()) return m[1].trim();
+    m = html.match(/<meta[^>]+name=["']twitter:title["'][^>]+content=["']([^"']+)["']/i)
+        || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:title["']/i);
+    if (m && m[1].trim()) return m[1].trim();
+    m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+    if (m && m[1].trim()) return m[1].replace(/\s+/g, ' ').trim().slice(0, 120);
+    return '';
+}
+
+// 从 HTML 抽取配图链接：优先 og:image / twitter:image，再取正文区域 <img src>；
+// 绝对化相对 URL、去重、过滤图标/logo/非图片，最多返回 max 张。
+function extractImagesFromHtml(html, pageUrl, max = 8) {
+    const found = [];
+    const seen = new Set();
+
+    const push = (raw) => {
+        if (!raw) return;
+        let u = String(raw).trim();
+        if (!u || u.startsWith('data:') || u.startsWith('blob:')) return;
+        try {
+            u = new URL(u, pageUrl).href;
+        } catch (_) { return; }
+        if (!/^https?:\/\//i.test(u)) return;
+        const lc = u.toLowerCase();
+        // 过滤明显的小图标 / logo / 像素追踪
+        if (/\/favicon|\/icon[s]?[\/\._]|logo|tracking|pixel|spacer|blank\.gif|1x1/i.test(lc)) return;
+        const hasExt = /\.(jpg|jpeg|png|webp|gif|avif|bmp)(\?|$)/i.test(lc);
+        const looksImage = hasExt || /image|img|photo|pic|cover|banner|thumbnail/i.test(lc) || /\/(img|images|photo|photos|media|upload|pics|picture)\//i.test(lc);
+        if (!looksImage) return;
+        if (seen.has(u)) return;
+        seen.add(u);
+        found.push(u);
+    };
+
+    // 1) og:image / twitter:image（最可能是主图）
+    const metaRe = /<meta[^>]+(?:property|name)=["'](og:image|og:image:url|og:image:secure_url|twitter:image|twitter:image:src)["'][^>]+content=["']([^"']+)["']/gi;
+    let mm;
+    while ((mm = metaRe.exec(html))) push(mm[2]);
+    const metaRe2 = /<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](og:image|og:image:url|og:image:secure_url|twitter:image|twitter:image:src)["']/gi;
+    while ((mm = metaRe2.exec(html))) push(mm[1]);
+
+    // 2) 正文区域 <img src>
+    const region = (html.match(/<main[\s\S]*?<\/main>/i) || html.match(/<article[\s\S]*?<\/article>/i) || html.match(/<body[\s\S]*?<\/body>/i) || [null, html])[1] || html;
+    const imgRe = /<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi;
+    let im;
+    while ((im = imgRe.exec(region))) push(im[1]);
+
+    return found.slice(0, max);
+}
+
 async function fetchSourceText(url, timeoutMs = 10000) {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
@@ -65,7 +119,9 @@ async function fetchSourceText(url, timeoutMs = 10000) {
         if (!ct.includes('text/html')) return { url, error: `非 HTML 内容 (${ct})` };
         const html = await resp.text();
         const text = extractTextFromHtml(html);
-        return { url, text: text.slice(0, 3500) };
+        const title = extractTitleFromHtml(html);
+        const images = extractImagesFromHtml(html, url);
+        return { url, text: text.slice(0, 3500), title, images };
     } catch (e) {
         return { url, error: e.message || '抓取失败' };
     } finally {
@@ -110,7 +166,7 @@ async function searchOnce(query, env, n = 5) {
                 })).filter(r => r.url);
                 const top = results.slice(0, 3);
                 const fetched = await Promise.all(top.map(r => fetchSourceText(r.url)));
-                fetched.forEach((f, i) => { if (f.text) top[i].content = f.text; });
+                fetched.forEach((f, i) => { if (f.text) top[i].content = f.text; top[i].images = f.images || []; if (f.title) top[i].title = f.title; });
                 if (results.length) return results;
             }
         } catch (_) {}
@@ -128,7 +184,7 @@ async function searchOnce(query, env, n = 5) {
                 const title = it.title;
                 const url = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
                 const f = await fetchSourceText(url);
-                results.push({ title, url, content: f.text || (it.snippet || '').replace(/<[^>]+>/g, '') });
+                results.push({ title, url, content: f.text || (it.snippet || '').replace(/<[^>]+>/g, ''), images: f.images || [] });
             }
             if (results.length) return results;
         }
@@ -235,16 +291,23 @@ export async function onRequestPost({ request, env }) {
 
     // 2.1) 聚合参考文献：用户提供的 URL + （可选）联网自动检索；注入 prompt 并回传前端
     let augmentedPrompt = prompt;
-    let references = [];   // [{title, url, content, ok, note}]，流结束后随 meta 回传前端
+    let references = [];   // [{title, url, content, images, ok, note}]，流结束后随 meta 回传前端
+    let allImages = [];     // 所有来源抽到的配图 URL（去重汇总，供前端注入正文）
+    const addImages = (imgs) => {
+        (imgs || []).forEach(u => { if (!allImages.includes(u)) allImages.push(u); });
+    };
     const topic = (body.topic || '').toString().slice(0, 200);
 
-    // (a) 用户提供的 URL（作为补充参考文献）
+    // (a) 用户提供的 URL（作为补充参考文献，并抽取配图）
     const sourceUrls = (body.sources || [])
         .filter(s => /^https?:\/\//i.test(String(s).trim()))
         .slice(0, 6);
     if (sourceUrls.length) {
         const fetched = await Promise.all(sourceUrls.map(url => fetchSourceText(url)));
-        fetched.forEach(s => references.push({ title: s.url, url: s.url, content: s.text || '', ok: !s.error, note: s.error || '' }));
+        fetched.forEach(s => {
+            references.push({ title: s.title || s.url, url: s.url, content: s.text || '', images: s.images || [], ok: !s.error, note: s.error || '' });
+            addImages(s.images);
+        });
     }
 
     // (b) 联网自动检索（开启且未填 URL 时为主来源；已填 URL 时作为补充）
@@ -252,7 +315,8 @@ export async function onRequestPost({ request, env }) {
         try {
             const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6, body.topicFallback);
             for (const r of found) {
-                references.push({ title: r.title || r.url, url: r.url, content: r.content || '', ok: !!r.content, note: r.content ? '' : '未检索到正文' });
+                references.push({ title: r.title || r.url, url: r.url, content: r.content || '', images: r.images || [], ok: !!r.content, note: r.content ? '' : '未检索到正文' });
+                addImages(r.images);
             }
         } catch (_) {
             // 检索失败不影响生成，退化为基础重写
@@ -383,8 +447,10 @@ export async function onRequestPost({ request, env }) {
 
         // 向客户端做打字机式输出（将最终正文切成小段 SSE 推送）
         const chunks = chunkText(finalText);
-        const metaSse = references.length
-            ? 'data: ' + JSON.stringify({ meta: { references, factChecked: suspicious } }) + '\n\n'
+        const metaObj = { references, factChecked: suspicious };
+        if (allImages.length) metaObj.images = allImages.slice(0, 12);
+        const metaSse = references.length || allImages.length
+            ? 'data: ' + JSON.stringify({ meta: metaObj }) + '\n\n'
             : (suspicious ? 'data: ' + JSON.stringify({ meta: { factChecked: true } }) + '\n\n' : '');
         const sse = chunks.map(c => 'data: ' + JSON.stringify({ content: c }) + '\n\n').join('') + metaSse + 'data: [DONE]\n\n';
         return new Response(sse, {

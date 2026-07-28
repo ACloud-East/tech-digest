@@ -137,6 +137,8 @@ const AIGenerator = {
             // 优先用函数回传的 references（联网检索/抓取结果），兼容旧 sources
             if (metaAcc && metaAcc.references && metaAcc.references.length) result.references = metaAcc.references;
             else if (metaAcc && metaAcc.sources) result.sourcesMeta = metaAcc.sources;
+            // 原文抽到的配图（已绝对化 URL），供前端注入正文；空数组表示无图
+            if (metaAcc && metaAcc.images && metaAcc.images.length) result.images = metaAcc.images;
             // 服务端事实护栏标记：true 表示本次生成经过「原文事实校验 / 自动纠正」
             if (metaAcc && metaAcc.factChecked) result.factChecked = true;
             if (onToken) onToken(result);
