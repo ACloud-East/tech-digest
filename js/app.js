@@ -118,6 +118,7 @@ const app = createApp({
         const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
         const aiResultFactChecked = ref(false); // 服务端事实护栏是否触发（原文存在且经过校验/纠正）
         const aiResultImages = ref([]);   // 本次生成从原文抽到的配图 URL（原始地址），注入正文时会再走代理
+        const aiImageCaptionOn = ref(false);   // 配图是否显示名称/说明（默认关：图片不显示标题）
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
@@ -789,15 +790,82 @@ const app = createApp({
             }
         }
 
-        function downloadResult() {
-            const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') +
-                (aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value);
-            const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+        // —— 导出为 Word（.doc，图片内嵌 base64，离线可见）——
+        function escapeHtml(s) {
+            return String(s == null ? '' : s)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+        function blobToDataURL(blob) {
+            return new Promise((resolve, reject) => {
+                const fr = new FileReader();
+                fr.onload = () => resolve(fr.result);
+                fr.onerror = reject;
+                fr.readAsDataURL(blob);
+            });
+        }
+        // 把结构化块渲染为 Word 可识别的 HTML 片段（标题/列表/引用/配图）
+        function renderBlocksToWordHtml(blocks, b64map, title) {
+            const showCap = aiImageCaptionOn.value;
+            const renderSegments = (segs) => {
+                let h = '';
+                for (const s of (segs || [])) {
+                    h += escapeHtml(s.text || '');
+                    if (s.cites && s.cites.length) h += '<sup>[' + s.cites.join(',') + ']</sup>';
+                }
+                return h;
+            };
+            let body = '';
+            let inList = false;
+            const closeList = () => { if (inList) { body += '</ul>'; inList = false; } };
+            for (const b of blocks) {
+                if (b.type === 'image') {
+                    closeList();
+                    const src = (b64map && b64map[b.url]) || b.url;
+                    body += '<p style="text-align:center"><img src="' + escapeHtml(src) + '" style="max-width:100%;max-height:460px;border-radius:8px"></p>';
+                    if (showCap && b.alt) body += '<p style="text-align:center;font-size:9pt;color:#888">' + escapeHtml(b.alt) + '</p>';
+                } else if (b.type === 'h2') {
+                    closeList();
+                    body += '<h2>' + renderSegments(b.segments) + '</h2>';
+                } else if (b.type === 'h3') {
+                    closeList();
+                    body += '<h3>' + renderSegments(b.segments) + '</h3>';
+                } else if (b.type === 'li') {
+                    if (!inList) { body += '<ul>'; inList = true; }
+                    body += '<li>' + renderSegments(b.segments) + '</li>';
+                } else {
+                    closeList();
+                    body += '<p>' + renderSegments(b.segments) + '</p>';
+                }
+            }
+            closeList();
+            return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+                '<head><meta charset="utf-8"><title>' + escapeHtml(title) + '</title></head>' +
+                '<body><h1>' + escapeHtml(title) + '</h1>' + body + '</body></html>';
+        }
+
+        async function downloadResult() {
+            const title = aiResultTitle.value || 'AI生成文章';
+            const blocks = aiTab.value === 'plain' ? aiResultPlainBlocks.value : aiResultBlocks.value;
+            // 先把所有配图抓为 base64 内嵌（失败则保留在线 URL，Word 会尝试联网加载）
+            const imgBlocks = (blocks || []).filter(b => b.type === 'image');
+            const b64map = {};
+            await Promise.all(imgBlocks.map(async (b) => {
+                try {
+                    const r = await fetch(b.url);
+                    if (r.ok) { const blob = await r.blob(); b64map[b.url] = await blobToDataURL(blob); }
+                } catch (_) {}
+            }));
+            const html = renderBlocksToWordHtml(blocks, b64map, title);
+            // 带 BOM 的 UTF-8，确保中文不乱码；保存为 .doc，Word/WPS 可直接打开
+            const blob = new Blob(['﻿' + html], { type: 'application/msword;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = (aiResultTitle.value || 'AI生成文章') + '.md';
+            a.download = title + '.doc';
+            document.body.appendChild(a);
             a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
@@ -1342,7 +1410,7 @@ const app = createApp({
             // AI 文案生成
             aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
-            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiResultImages, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
+            aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiResultImages, aiImageCaptionOn, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,

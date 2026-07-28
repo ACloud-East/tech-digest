@@ -121,7 +121,7 @@ async function fetchSourceText(url, timeoutMs = 10000) {
         const text = extractTextFromHtml(html);
         const title = extractTitleFromHtml(html);
         const images = extractImagesFromHtml(html, url);
-        return { url, text: text.slice(0, 3500), title, images };
+        return { url, text: text.slice(0, 16000), title, images };
     } catch (e) {
         return { url, error: e.message || '抓取失败' };
     } finally {
@@ -325,7 +325,7 @@ export async function onRequestPost({ request, env }) {
 
     // 注入正文（带编号与总量预算上限，降低 502 概率）
     if (references.length) {
-        const MAX_TOTAL = 18000;
+        const MAX_TOTAL = 40000;
         let budget = MAX_TOTAL;
         augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文（参考文献），请严格基于这些事实写作，并按 [1]、[2] 等编号标注对应来源：\n';
         references.forEach((s, i) => {

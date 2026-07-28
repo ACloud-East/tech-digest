@@ -751,6 +751,17 @@ ul { list-style: none; }
     border-radius: 10px;
     font-weight: 600;
 }
+.ai-caption-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 2px;
+    font-size: 0.78rem;
+    color: var(--text-muted, #8a94a6);
+    cursor: pointer;
+    user-select: none;
+}
+.ai-caption-toggle input { width: 14px; height: 14px; accent-color: var(--accent-cyan); cursor: pointer; }
 
 /* 生成中：末尾闪烁打字光标，强化流式打字观感（按 tab 独立控制） */
 .ai-output-body.generating::after {

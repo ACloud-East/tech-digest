@@ -111,7 +111,7 @@ async function fetchSourceText(url, timeoutMs = 15000) {
         const text = extractTextFromHtml(html);
         const title = extractTitleFromHtml(html);
         const images = extractImagesFromHtml(html, url);
-        return { url, text: text.slice(0, 4000), title, images, ok: true };
+        return { url, text: text.slice(0, 16000), title, images, ok: true };
     } catch (e) {
         return { url, error: e.message || '抓取失败', ok: false };
     } finally {
