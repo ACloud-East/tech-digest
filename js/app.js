@@ -117,7 +117,7 @@ const app = createApp({
         const aiResultSourcesMeta = ref([]);  // 与 aiResultSources 一一对应：{url, ok, note}
         const aiResultReferences = ref([]);  // 参考文献列表（展示用）：[{title, url, ok, note}]，优先来自函数端联网检索/抓取结果
         const aiResultFactChecked = ref(false); // 服务端事实护栏是否触发（原文存在且经过校验/纠正）
-        const aiResultImages = ref([]);   // 本次生成从原文抽到的配图 URL（已走代理），注入正文展示
+        const aiResultImages = ref([]);   // 本次生成从原文抽到的配图 URL（原始地址），注入正文时会再走代理
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
@@ -650,6 +650,40 @@ const app = createApp({
             return text;
         }
 
+        // 预抓取「原文链接」中的正文与配图，填入参考原文框，确保无论云端/本地生成都基于真实内容
+        async function prefetchSourceUrls() {
+            const urls = parseSources(aiForm.value.sources);
+            if (!urls.length) return;
+            try {
+                const resp = await fetch('/api/fetch-source', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ urls }),
+                    signal: AbortSignal.timeout(20000),
+                });
+                if (!resp.ok) return;
+                const data = await resp.json();
+                const texts = [];
+                const imgs = [];
+                for (const r of (data.results || [])) {
+                    if (!r.ok) continue;
+                    if (r.title) texts.push(r.title);
+                    if (r.text) texts.push(r.text);
+                    (r.images || []).forEach(u => { if (!imgs.includes(u)) imgs.push(u); });
+                }
+                // 把抓取到的正文填入「参考原文内容」框（若已有内容则追加）
+                const existing = (aiForm.value.content || '').trim();
+                const fetchedText = texts.join('\n\n').trim();
+                if (fetchedText) {
+                    aiForm.value.content = existing ? existing + '\n\n' + fetchedText : fetchedText;
+                }
+                // 保存抽到的图（后续统一注入正文）
+                if (imgs.length) aiResultImages.value = imgs.slice(0, 12);
+            } catch (e) {
+                console.warn('[prefetchSourceUrls] 抓取失败:', e.message);
+            }
+        }
+
         // AI 生成文章（结构式优先流式打字展示，非结构式随后流式填充）
         async function generateArticle() {
             updateAILabels();
@@ -664,6 +698,9 @@ const app = createApp({
             aiResultSources.value = parseSources(aiForm.value.sources);
             aiResultReferences.value = aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
 
+            // 先把原文链接里的正文/图片预抓出来，再生成（云端失败走本地模板时也有料可写）
+            await prefetchSourceUrls();
+
             try {
                 // 结构式：逐字流式展示（默认可见 tab）
                 aiGeneratingStructured.value = true;
@@ -672,9 +709,9 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResult.value = partial.content;
                 };
                 const result = await AIGenerator.generate(aiForm.value, onToken);
-                // 把原文抽到的配图注入正文（结构式 + 非结构式共用同一批图）
-                aiResultImages.value = (result.images || []).map(proxiedImageUrl);
-                aiResult.value = injectImagesIntoContent(result.content, result.images);
+                // 优先用云端回传的图；若云端失败，使用预抓取到的图
+                if (result.images && result.images.length) aiResultImages.value = result.images;
+                aiResult.value = injectImagesIntoContent(result.content, aiResultImages.value);
                 aiResultTitle.value = result.title;
                 aiResultFactChecked.value = !!result.factChecked;
                 // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
@@ -692,7 +729,7 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResultPlain.value = partial.content;
                 };
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
-                aiResultPlain.value = injectImagesIntoContent(plainResult.content, result.images);
+                aiResultPlain.value = injectImagesIntoContent(plainResult.content, aiResultImages.value);
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
