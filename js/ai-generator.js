@@ -1494,10 +1494,19 @@ const AIGenerator = {
                 : [];
             if (srcList.length) {
                 const srcText = srcList.map((s, i) => `${i + 1}. ${s}`).join('\n');
-                if (isEnglish) {
-                    prompt += `\nREFERENCE LITERATURE (to be fetched and appended at the end of this prompt, numbered [1], [2]...):\n${srcText}\n\n- The appended web texts are your REFERENCE LITERATURE. Any verifiable fact — specs, figures, prices, release dates, quotes, test results — MUST be grounded in these references and tagged with the matching [1]/[2] citation at the end of the sentence.\n- The draft above is the MAIN SUBJECT and is NOT a citable source; it will not appear in the reference list.\n- When the draft and a reference disagree, follow the reference and you may naturally note the difference.\n- If a fact cannot be verified from the references, mark it [?] or omit it.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Stay within the length limit; do not add a separate references section.\n`;
+                if (form.webSearch) {
+                    if (isEnglish) {
+                        prompt += `\nREFERENCE LITERATURE (to be fetched and appended at the end of this prompt, numbered [1], [2]...):\n${srcText}\n\n- The appended web texts are your REFERENCE LITERATURE. Any verifiable fact — specs, figures, prices, release dates, quotes, test results — MUST be grounded in these references and tagged with the matching [1]/[2] citation at the end of the sentence.\n- The draft above is the MAIN SUBJECT and is NOT a citable source; it will not appear in the reference list.\n- When the draft and a reference disagree, follow the reference and you may naturally note the difference.\n- If a fact cannot be verified from the references, mark it [?] or omit it.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Stay within the length limit; do not add a separate references section.\n`;
+                    } else {
+                        prompt += `\n以下为**参考文献**（系统会在本提示词末尾抓取正文并补充进来，编号 [1]、[2]…；若已开启联网搜索，则包含系统自动从网络检索到的真实参数/数据）：\n${srcText}\n\n- 抓取到的网页正文是你的**参考文献**。凡是可核实的事实——规格参数、数据、价格、发布日期、引语、测试结果等——必须以参考文献为准，并在句末用对应的 [1]、[2] 编号标注来源；请优先用其中的真实数据充实文章。\n- 上方草稿是**主体内容**，本身**不作为引用来源**，也不会出现在来源列表里。\n- 若草稿与参考文献冲突，以参考文献为准，可在文中自然点出差异。\n- 如果某条信息无法从参考文献中确认，请在该句末尾标注 [?]，或直接省略。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节。\n`;
+                    }
                 } else {
-                    prompt += `\n以下为**参考文献**（系统会在本提示词末尾抓取正文并补充进来，编号 [1]、[2]…；若已开启联网搜索，则包含系统自动从网络检索到的真实参数/数据）：\n${srcText}\n\n- 抓取到的网页正文是你的**参考文献**。凡是可核实的事实——规格参数、数据、价格、发布日期、引语、测试结果等——必须以参考文献为准，并在句末用对应的 [1]、[2] 编号标注来源；请优先用其中的真实数据充实文章。\n- 上方草稿是**主体内容**，本身**不作为引用来源**，也不会出现在来源列表里。\n- 若草稿与参考文献冲突，以参考文献为准，可在文中自然点出差异。\n- 如果某条信息无法从参考文献中确认，请在该句末尾标注 [?]，或直接省略。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内，不要额外追加「参考来源」小节。\n`;
+                    // 仅提供原文链接、未开启联网搜索：作为背景资料，不生成引用编号
+                    if (isEnglish) {
+                        prompt += `\nBACKGROUND SOURCE PAGES (provided only for context and image extraction; do NOT cite them with [1]/[2] or add a references section):\n${srcText}\n\n- The system will fetch the web texts below and append them at the end of this prompt as background material only.\n- You may use them to understand the topic and enrich the article, but do NOT add any citation markers like [1], [2] or [?], and do NOT include a references section.\n- The draft above is the MAIN SUBJECT.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Stay within the length limit.\n`;
+                    } else {
+                        prompt += `\n以下为**参考原文/背景资料**（仅用于了解背景、提取配图，**严禁**在正文中标注 [1]、[2]、[?] 等引用编号，也不要写「参考来源」小节）：\n${srcText}\n\n- 系统会在本提示词末尾抓取这些网页正文，仅作为背景素材供你参考。\n- 你可以基于这些材料理解主题、充实内容，但正文中**不要**出现任何引用编号，也不要罗列来源。\n- 上方草稿是**主体内容**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内。\n`;
+                    }
                 }
             } else {
                 // 仅开启联网搜索（未填 URL）：直接告知参考文献将由系统自动检索

@@ -456,47 +456,68 @@ const app = createApp({
             try { return '/api/img-proxy?u=' + encodeURIComponent(u); } catch (_) { return u; }
         }
 
-        // 把配图注入文章正文：第一张作封面，其余按段落/标题均匀分布，避免扎堆。
+        // 把配图注入文章正文：第一张作封面，其余按段落比例均匀分布，避免扎堆。
         // 配图名称优先取所在章节标题，不再用“配图1/2/3”。
         function injectImagesIntoContent(content, images) {
             if (!content) return content;
             const imgs = (images || []).map(proxiedImageUrl).filter(Boolean);
             if (!imgs.length) return content;
             const lines = content.split('\n');
-            const out = [];
-            let imgIdx = 0;
-            let currentHeading = '';
-            let coverDone = false;
-            let paraCount = 0;
-            let lastImgPara = -99;
-            // 根据正文长度估算“每隔多少段放一张图”，让图均匀铺开，最少每2段、最多每4段
-            const totalParas = lines.filter(l => /^[^\s#\-*!\d]/.test(l)).length || 1;
-            const interval = imgs.length <= 1 ? 2 : Math.max(2, Math.min(4, Math.round(totalParas / imgs.length)));
-            const makeCaption = () => {
-                if (coverDone && currentHeading) return currentHeading.slice(0, 36) + ' - 图' + (imgIdx + 1);
-                const firstTitle = lines.find(l => /^#+\s+/.test(l));
-                if (firstTitle) return firstTitle.replace(/^#+\s*/, '').trim().slice(0, 36) + ' - 封面';
+
+            // 识别可插入位置：非空段落行（非标题、非列表项）
+            const paraLines = [];
+            const headingLines = [];
+            lines.forEach((line, idx) => {
+                const isHeading = /^#{1,3}\s/.test(line);
+                const isList = /^[-*!]\s/.test(line) || /^\d+[\.、]\s/.test(line);
+                const isEmpty = line.trim().length === 0;
+                if (isHeading) headingLines.push({ idx, title: line.replace(/^#+\s*/, '').trim() });
+                else if (!isEmpty && !isList) paraLines.push(idx);
+            });
+            if (!paraLines.length) return content;
+
+            // 计算每张图的插入行（按比例分布，封面插在首段后）
+            const insertMap = new Map(); // lineIdx -> [image indices]
+            const placeImg = (imgIdx, targetParaIndex) => {
+                const paraIdx = Math.max(0, Math.min(paraLines.length - 1, targetParaIndex));
+                let lineIdx = paraLines[paraIdx];
+                // 如果目标段前紧邻标题，则把图放在标题后，显得更贴合章节
+                const prevHeading = headingLines.filter(h => h.idx < lineIdx).pop();
+                if (prevHeading && lineIdx - prevHeading.idx <= 2) lineIdx = prevHeading.idx;
+                if (!insertMap.has(lineIdx)) insertMap.set(lineIdx, []);
+                insertMap.get(lineIdx).push(imgIdx);
+            };
+            placeImg(0, 0); // 封面
+            const restImgs = imgs.length - 1;
+            const restParas = Math.max(1, paraLines.length - 1);
+            for (let i = 1; i < imgs.length; i++) {
+                const ratio = restImgs === 1 ? 1 : (i - 1) / (restImgs - 1);
+                const paraIndex = Math.round(ratio * restParas);
+                placeImg(i, paraIndex);
+            }
+
+            const makeCaption = (imgIdx, currentHeading) => {
+                if (imgIdx === 0) {
+                    const firstTitle = lines.find(l => /^#+\s+/.test(l));
+                    if (firstTitle) return firstTitle.replace(/^#+\s*/, '').trim().slice(0, 36) + ' - 封面';
+                    return '封面';
+                }
+                if (currentHeading) return currentHeading.slice(0, 36) + ' - 图' + (imgIdx + 1);
                 return '图' + (imgIdx + 1);
             };
-            const pushImg = () => {
-                if (imgIdx < imgs.length) {
-                    out.push('![' + makeCaption() + '](' + imgs[imgIdx] + ')');
-                    imgIdx++;
-                    lastImgPara = paraCount;
-                }
-            };
-            for (const line of lines) {
+
+            const out = [];
+            let currentHeading = '';
+            for (let idx = 0; idx < lines.length; idx++) {
+                const line = lines[idx];
                 out.push(line);
-                if (/^##\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
-                else if (/^###\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
-                const isHeading = /^#{1,3}\s/.test(line);
-                const isPara = !isHeading && line.trim().length > 0 && !/^[-*!]\s/.test(line) && !/^\d+[\.、]/.test(line);
-                if (isPara) paraCount++;
-                if (!coverDone && isPara) { pushImg(); coverDone = true; }
-                else if (isHeading && imgIdx < imgs.length && paraCount - lastImgPara >= 1) { pushImg(); }
-                else if (isPara && imgIdx < imgs.length && paraCount - lastImgPara >= interval) { pushImg(); }
+                if (/^#{1,3}\s+/.test(line)) currentHeading = line.replace(/^#+\s*/, '').trim();
+                if (insertMap.has(idx)) {
+                    for (const imgIdx of insertMap.get(idx)) {
+                        out.push('![' + makeCaption(imgIdx, currentHeading) + '](' + imgs[imgIdx] + ')');
+                    }
+                }
             }
-            while (imgIdx < imgs.length) pushImg();
             return out.join('\n');
         }
 
@@ -539,11 +560,14 @@ const app = createApp({
             }
         }
 
-        // 与 Microsoft Word「字数」口径保持一致：每个 CJK 字符算 1，每个连续英文/数字串算 1 个词；
+        // 与 WPS/Word「字数」口径保持一致：
+        // - 每个 CJK 字符算 1
+        // - 每个连续英文/数字串算 1 个词
+        // - 每个 CJK 全角标点（，。、；：？！「」『』【】《》（）等）算 1
         // 基于已渲染块计算，不计 Markdown 标记、不计隐藏的图片 URL。
         function wordCountLikeWord(text) {
             if (!text) return 0;
-            const re = /[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf]|[a-zA-Z0-9_]+/g;
+            const re = /[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf]|[a-zA-Z0-9_]+|[\u3000-\u303f\uff01-\uff60\uffe0-\uffee\ufe10-\ufe1f\ufe30-\ufe4f]/g;
             let c = 0, m;
             while ((m = re.exec(text))) c++;
             return c;
@@ -772,7 +796,9 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResultPlain.value = partial.content;
                 };
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
-                aiResultPlain.value = injectImagesIntoContent(plainResult.content, aiResultImages.value);
+                // 保险：若模型仍生成 [1]/[?] 引用编号，在非结构式中强制移除
+                const plainTextNoCite = (plainResult.content || '').replace(/\[(\d+|\?)\]/g, '');
+                aiResultPlain.value = injectImagesIntoContent(plainTextNoCite, aiResultImages.value);
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
