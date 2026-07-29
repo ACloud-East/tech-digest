@@ -77,7 +77,7 @@ function extractTitleFromHtml(html) {
     return '';
 }
 
-function extractImagesFromHtml(html, pageUrl, max = 12) {
+function extractImagesFromHtml(html, pageUrl, max = 30) {
     const found = [];
     const seen = new Set();
 

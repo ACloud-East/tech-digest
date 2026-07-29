@@ -456,8 +456,8 @@ const app = createApp({
             try { return '/api/img-proxy?u=' + encodeURIComponent(u); } catch (_) { return u; }
         }
 
-        // 把配图注入文章正文：第一张作封面（首个非空行之后），其余依次插在各 ## / ### 标题之后；
-        // 图不足则随正文分布，图多余则追加到文末。配图名称优先取所在章节标题，不再用“配图1/2/3”。
+        // 把配图注入文章正文：第一张作封面，其余按段落/标题均匀分布，避免扎堆。
+        // 配图名称优先取所在章节标题，不再用“配图1/2/3”。
         function injectImagesIntoContent(content, images) {
             if (!content) return content;
             const imgs = (images || []).map(proxiedImageUrl).filter(Boolean);
@@ -467,9 +467,13 @@ const app = createApp({
             let imgIdx = 0;
             let currentHeading = '';
             let coverDone = false;
+            let paraCount = 0;
+            let lastImgPara = -99;
+            // 根据正文长度估算“每隔多少段放一张图”，让图均匀铺开，最少每2段、最多每4段
+            const totalParas = lines.filter(l => /^[^\s#\-*!\d]/.test(l)).length || 1;
+            const interval = imgs.length <= 1 ? 2 : Math.max(2, Math.min(4, Math.round(totalParas / imgs.length)));
             const makeCaption = () => {
                 if (coverDone && currentHeading) return currentHeading.slice(0, 36) + ' - 图' + (imgIdx + 1);
-                // 封面用第一行标题/主标题
                 const firstTitle = lines.find(l => /^#+\s+/.test(l));
                 if (firstTitle) return firstTitle.replace(/^#+\s*/, '').trim().slice(0, 36) + ' - 封面';
                 return '图' + (imgIdx + 1);
@@ -478,14 +482,19 @@ const app = createApp({
                 if (imgIdx < imgs.length) {
                     out.push('![' + makeCaption() + '](' + imgs[imgIdx] + ')');
                     imgIdx++;
+                    lastImgPara = paraCount;
                 }
             };
             for (const line of lines) {
                 out.push(line);
                 if (/^##\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
                 else if (/^###\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
-                if (!coverDone && line.trim()) { pushImg(); coverDone = true; }
-                else if (/^#{2,3}\s/.test(line)) { pushImg(); }
+                const isHeading = /^#{1,3}\s/.test(line);
+                const isPara = !isHeading && line.trim().length > 0 && !/^[-*!]\s/.test(line) && !/^\d+[\.、]/.test(line);
+                if (isPara) paraCount++;
+                if (!coverDone && isPara) { pushImg(); coverDone = true; }
+                else if (isHeading && imgIdx < imgs.length && paraCount - lastImgPara >= 1) { pushImg(); }
+                else if (isPara && imgIdx < imgs.length && paraCount - lastImgPara >= interval) { pushImg(); }
             }
             while (imgIdx < imgs.length) pushImg();
             return out.join('\n');
@@ -530,11 +539,29 @@ const app = createApp({
             }
         }
 
-        // 总字数（与生成目标口径一致：仅计 中文字符 + 字母数字，排除标点/空白/Markdown 标记）
+        // 与 Microsoft Word「字数」口径保持一致：每个 CJK 字符算 1，每个连续英文/数字串算 1 个词；
+        // 基于已渲染块计算，不计 Markdown 标记、不计隐藏的图片 URL。
+        function wordCountLikeWord(text) {
+            if (!text) return 0;
+            const re = /[\u4e00-\u9fa5\u3040-\u309f\u30a0-\u30ff\u3400-\u4dbf]|[a-zA-Z0-9_]+/g;
+            let c = 0, m;
+            while ((m = re.exec(text))) c++;
+            return c;
+        }
         const aiTotalChars = computed(() => {
-            const text = aiTab.value === 'plain' ? aiResultPlain.value : aiResult.value;
-            const m = (text || '').match(/[一-龥a-zA-Z0-9]/g);
-            return m ? m.length : 0;
+            const blocks = aiTab.value === 'plain' ? aiResultPlainBlocks.value : aiResultBlocks.value;
+            let count = wordCountLikeWord(aiResultTitle.value);
+            for (const b of (blocks || [])) {
+                if (b.type === 'image') {
+                    if (aiImageCaptionOn.value && b.alt) count += wordCountLikeWord(b.alt);
+                    continue;
+                }
+                for (const seg of (b.segments || [])) {
+                    count += wordCountLikeWord(seg.text);
+                    if (seg.cites && seg.cites.length) count += seg.cites.length;
+                }
+            }
+            return count;
         });
 
         // 类型/风格选中时同步label
@@ -865,6 +892,7 @@ const app = createApp({
             return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
                 '<head>' +
                 '<meta charset="utf-8"><title>' + escapeHtml(title) + '</title>' +
+                '<xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml>' +
                 '<style>' +
                 '@page { size: 210mm 297mm; margin: 2cm; } ' +
                 'body { font-family: "Microsoft YaHei", "SimHei", "PingFang SC", sans-serif; font-size: 12pt; line-height: 1.75; color: #222; } ' +
@@ -1453,7 +1481,7 @@ const app = createApp({
             triggerContentFile, onContentFile, onContentDrop,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // AI 文案生成 - API 设置（BYOK）
-            aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount,
+            aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount, wordCountLikeWord,
             // AI 生成插图
             aiImageText, aiImageStyle, aiImageRatio, aiImageMood, aiImageSeed,
             aiImageResults, aiImageGenerating, aiImageError, aiImageProgress, aiImageParsing, aiImageFileInput, aiImageHasResults,
