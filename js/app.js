@@ -457,7 +457,7 @@ const app = createApp({
         }
 
         // 把配图注入文章正文：第一张作封面（首个非空行之后），其余依次插在各 ## / ### 标题之后；
-        // 图不足则随正文分布，图多余则追加到文末。返回注入后的 Markdown 文本。
+        // 图不足则随正文分布，图多余则追加到文末。配图名称优先取所在章节标题，不再用“配图1/2/3”。
         function injectImagesIntoContent(content, images) {
             if (!content) return content;
             const imgs = (images || []).map(proxiedImageUrl).filter(Boolean);
@@ -465,10 +465,25 @@ const app = createApp({
             const lines = content.split('\n');
             const out = [];
             let imgIdx = 0;
-            const pushImg = () => { if (imgIdx < imgs.length) { out.push('![配图' + (imgIdx + 1) + '](' + imgs[imgIdx] + ')'); imgIdx++; } };
+            let currentHeading = '';
             let coverDone = false;
+            const makeCaption = () => {
+                if (coverDone && currentHeading) return currentHeading.slice(0, 36) + ' - 图' + (imgIdx + 1);
+                // 封面用第一行标题/主标题
+                const firstTitle = lines.find(l => /^#+\s+/.test(l));
+                if (firstTitle) return firstTitle.replace(/^#+\s*/, '').trim().slice(0, 36) + ' - 封面';
+                return '图' + (imgIdx + 1);
+            };
+            const pushImg = () => {
+                if (imgIdx < imgs.length) {
+                    out.push('![' + makeCaption() + '](' + imgs[imgIdx] + ')');
+                    imgIdx++;
+                }
+            };
             for (const line of lines) {
                 out.push(line);
+                if (/^##\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
+                else if (/^###\s+(.+)$/.test(line)) currentHeading = RegExp.$1.trim();
                 if (!coverDone && line.trim()) { pushImg(); coverDone = true; }
                 else if (/^#{2,3}\s/.test(line)) { pushImg(); }
             }
@@ -848,7 +863,20 @@ const app = createApp({
             }
             closeList();
             return '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
-                '<head><meta charset="utf-8"><title>' + escapeHtml(title) + '</title></head>' +
+                '<head>' +
+                '<meta charset="utf-8"><title>' + escapeHtml(title) + '</title>' +
+                '<style>' +
+                '@page { size: 210mm 297mm; margin: 2cm; } ' +
+                'body { font-family: "Microsoft YaHei", "SimHei", "PingFang SC", sans-serif; font-size: 12pt; line-height: 1.75; color: #222; } ' +
+                'h1 { font-size: 20pt; text-align: center; margin-bottom: 24pt; } ' +
+                'h2 { font-size: 15pt; margin-top: 20pt; margin-bottom: 10pt; } ' +
+                'h3 { font-size: 13pt; margin-top: 14pt; margin-bottom: 8pt; } ' +
+                'p { margin: 8pt 0; text-align: justify; } ' +
+                'ul { margin: 8pt 0; padding-left: 24pt; } ' +
+                'li { margin: 4pt 0; } ' +
+                'img { display: block; margin: 12pt auto; max-width: 100%; }' +
+                '</style>' +
+                '</head>' +
                 '<body><h1>' + escapeHtml(title) + '</h1>' + body + '</body></html>';
         }
 

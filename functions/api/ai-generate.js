@@ -19,6 +19,23 @@ function corsHeaders(origin) {
     return headers;
 }
 
+function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+function cleanArticleText(text) {
+    if (!text) return text;
+    // 去掉原文自带的脚注标记 [1] [2]…，避免模型误当成引用编号输出
+    text = text.replace(/\s*\[\d+\]\s*/g, ' ');
+    // 去掉长篇星号/横线分隔符之后的页脚/声明
+    text = text.replace(/\s*[*＊](?:\s*[*＊]){19,}[\s\S]*$/, '');
+    text = text.replace(/\s*[-—](?:\s*[-—]){19,}[\s\S]*$/, '');
+    // 去掉常见页脚/版权/备案/联系信息及其后的所有内容
+    const footerMarkers = ['版权所有', 'ICP备', '京公网安备', '隐私政策', '责任声明', '联系我们', '关于索尼集团公司', '若有合作意向，请填写此', '相关联系方式：', '索尼集团公司是一家'];
+    const re = new RegExp('\\s(' + footerMarkers.map(escapeRegExp).join('|') + ')\\s');
+    const m = text.match(re);
+    if (m) text = text.slice(0, m.index + 1).trim();
+    return text.replace(/\s+/g, ' ').trim();
+}
+
 // 从 HTML 中提取正文：移除脚本/样式/导航/页脚等噪声，优先取 <main>/<article>/<body>
 function extractTextFromHtml(html) {
     let cleaned = html
@@ -37,7 +54,7 @@ function extractTextFromHtml(html) {
     const bodyMatch = cleaned.match(/<body[\s\S]*?<\/body>/i);
     const content = mainMatch ? mainMatch[0] : (articleMatch ? articleMatch[0] : (bodyMatch ? bodyMatch[0] : cleaned));
 
-    return content
+    const text = content
         .replace(/<[^>]+>/g, ' ')
         .replace(/&nbsp;/g, ' ')
         .replace(/&amp;/g, '&')
@@ -47,6 +64,7 @@ function extractTextFromHtml(html) {
         .replace(/&#39;/g, "'")
         .replace(/\s+/g, ' ')
         .trim();
+    return cleanArticleText(text);
 }
 
 // 提取页面标题（og:title / twitter:title / <title>），用于参考文献与配图说明
@@ -63,12 +81,12 @@ function extractTitleFromHtml(html) {
 }
 
 // 从 HTML 抽取配图链接：优先 og:image / twitter:image，再取正文区域 <img src>；
-// 绝对化相对 URL、去重、过滤图标/logo/非图片，最多返回 max 张。
+// 绝对化相对 URL、去重、过滤图标/logo/视频封面/非图片，最多返回 max 张。
 function extractImagesFromHtml(html, pageUrl, max = 8) {
     const found = [];
     const seen = new Set();
 
-    const push = (raw) => {
+    const push = (raw, ctx = '') => {
         if (!raw) return;
         let u = String(raw).trim();
         if (!u || u.startsWith('data:') || u.startsWith('blob:')) return;
@@ -77,9 +95,12 @@ function extractImagesFromHtml(html, pageUrl, max = 8) {
         } catch (_) { return; }
         if (!/^https?:\/\//i.test(u)) return;
         const lc = u.toLowerCase();
-        // 过滤明显的小图标 / logo / 像素追踪
+        const ctxLc = ctx.toLowerCase();
+        // 过滤明显的小图标 / logo / 像素追踪 / 视频相关
         if (/\/favicon|\/icon[s]?[\/\._]|logo|tracking|pixel|spacer|blank\.gif|1x1/i.test(lc)) return;
-        const hasExt = /\.(jpg|jpeg|png|webp|gif|avif|bmp)(\?|$)/i.test(lc);
+        if (/video|play|poster|plyr|embed|youtube|bilibili|vimeo|youku|\.gif(\?|$)/i.test(lc)) return;
+        if (/\b(play|video|poster|plyr|player|embed)\b/.test(ctxLc)) return;
+        const hasExt = /\.(jpg|jpeg|png|webp|avif|bmp)(\?|$)/i.test(lc);
         const looksImage = hasExt || /image|img|photo|pic|cover|banner|thumbnail/i.test(lc) || /\/(img|images|photo|photos|media|upload|pics|picture)\//i.test(lc);
         if (!looksImage) return;
         if (seen.has(u)) return;
@@ -96,9 +117,20 @@ function extractImagesFromHtml(html, pageUrl, max = 8) {
 
     // 2) 正文区域 <img src>
     const region = (html.match(/<main[\s\S]*?<\/main>/i) || html.match(/<article[\s\S]*?<\/article>/i) || html.match(/<body[\s\S]*?<\/body>/i) || [null, html])[1] || html;
-    const imgRe = /<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi;
+    const imgRe = /<img\b[^>]*>/gi;
     let im;
-    while ((im = imgRe.exec(region))) push(im[1]);
+    while ((im = imgRe.exec(region))) {
+        const tag = im[0];
+        const srcMatch = tag.match(/\bsrc=["']([^"']+)["']/i);
+        if (!srcMatch) continue;
+        // 跳过低分辨率图标/播放按钮
+        const width = (tag.match(/\bwidth=["']?(\d+)/i) || ['', ''])[1];
+        const height = (tag.match(/\bheight=["']?(\d+)/i) || ['', ''])[1];
+        const w = parseInt(width, 10) || 0;
+        const h = parseInt(height, 10) || 0;
+        if ((w && h && w < 120 && h < 120) || (w && w < 60) || (h && h < 60)) continue;
+        push(srcMatch[1], tag);
+    }
 
     return found.slice(0, max);
 }
