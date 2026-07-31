@@ -53,6 +53,15 @@ const API = {
         } finally { clearTimeout(t); }
     },
 
+    // 带超时的原始 fetch：超时/网络挂起时 reject，绝不会无限等待导致界面一直转圈
+    async fetchWithTimeout(url, timeoutMs) {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+            return await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+        } finally { clearTimeout(t); }
+    },
+
     // ========== 热搜：uapis.cn 格式解析 ==========
     async fetchHotFromUApi(type) {
         const data = await this.fetchJSON(`https://uapis.cn/api/v1/misc/hotboard?type=${type}`);
@@ -176,29 +185,47 @@ const API = {
     async fetchAllTechNews() {
         const cacheKey = 'tech_all_v37';
 
-        // 1) 实时抓取（刷新时带来最新文章，追加到顶部；失败不影响历史语料）
+        // 先读本地缓存兜底：任何网络异常/超时都至少有一份可见数据，绝不白屏或一直转
+        const cached = this.getCache(cacheKey);
+
+        // 1) 实时抓取 与 2) 历史语料 并行拉取，各自带超时（关键修复：
+        //    原实现用裸 fetch 且无超时、且串行等待，单个慢源/CDN 挂起就会让界面永久转圈）。
+        const LIVE_MS = 25000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 25s 余量（实时数据体较小，先到先渲染）
+        const BASE_MS = 20000;   // data/news.json：1.4MB，用户侧走 CDN+gzip 通常 1~2s；沙箱出口受限时会超时降级（仅失历史语料，不影响实时）
+        const [liveResp, baseResp] = await Promise.allSettled([
+            this.fetchWithTimeout('/api/news', LIVE_MS),
+            this.fetchWithTimeout('data/news.json', BASE_MS),
+        ]);
+
+        // 1) 实时抓取（刷新时带来最新文章，追加到顶部；失败/超时不影响历史语料）
         let live = null;
-        try {
-            const r = await fetch('/api/news', { cache: 'no-store' });
-            if (r.ok) {
-                const d = await r.json();
+        if (liveResp.status === 'fulfilled' && liveResp.value && liveResp.value.ok) {
+            try {
+                const d = await liveResp.value.json();
                 if (d && Array.isArray(d.articles)) live = d.articles;
-            }
-        } catch (e) {
-            console.warn('实时资讯抓取失败，仅展示历史语料:', e.message);
+            } catch (e) { console.warn('实时资讯解析失败，仅展示历史语料:', e.message); }
+        } else {
+            const reason = liveResp.reason && (liveResp.reason.message || liveResp.reason.name);
+            console.warn('实时资讯抓取失败/超时，仅展示历史语料:', reason);
         }
 
         // 2) 历史语料库（用户长期搜集的 news.json，必须完整保留，不得丢弃）
         let base = [];
         let baseUpdate = '';
-        try {
-            const r = await fetch('data/news.json', { cache: 'no-store' });
-            if (r.ok) {
-                const d = await r.json();
+        if (baseResp.status === 'fulfilled' && baseResp.value && baseResp.value.ok) {
+            try {
+                const d = await baseResp.value.json();
                 if (d && Array.isArray(d.articles)) { base = d.articles; baseUpdate = d.updateTime || ''; }
-            }
-        } catch (e) {
-            console.warn('读取历史语料失败:', e.message);
+            } catch (e) { console.warn('历史语料解析失败:', e.message); }
+        } else {
+            const reason = baseResp.reason && (baseResp.reason.message || baseResp.reason.name);
+            console.warn('读取历史语料失败/超时:', reason);
+        }
+
+        // 实时与历史都拿不到，但本地有缓存 → 用缓存兜底（至少不白屏/不空转）
+        if ((!live || !live.length) && (!base || !base.length) && cached) {
+            this.setCache(cacheKey, cached); // 续命缓存 TTL
+            return cached;
         }
 
         // 3) 合并：历史为底，实时追加。

@@ -208,7 +208,7 @@ async function fetchOne(url, feed, timeoutMs) {
     }
 }
 
-async function fetchFeed(feed, timeoutMs = 15000) {
+async function fetchFeed(feed, timeoutMs = 8000) {
     let result = await fetchOne(feed.url, feed, timeoutMs);
     // 主源失败时依次尝试 fallback URL 列表（支持多镜像容错）
     if ((!result || result.length === 0) && feed.fallback) {
@@ -222,7 +222,23 @@ async function fetchFeed(feed, timeoutMs = 15000) {
 }
 
 export async function onRequestGet() {
-    const results = await Promise.all(FEEDS.map(f => fetchFeed(f)));
+    // 整体执行预算：超过此时间就返回已收集到的部分结果，绝不无限等待。
+    // 防止多个源同时变慢时函数体跑到 Cloudflare 函数超时上限，导致前端一直转圈。
+    const OVERALL_MS = 12000;
+    const deadline = Date.now() + OVERALL_MS;
+    const buckets = new Array(FEEDS.length);
+    await Promise.race([
+        Promise.all(FEEDS.map((f, i) => {
+            // 单源超时不超过 8s，且不超过剩余预算（至少为 3s，避免尾部过短）
+            const budget = Math.min(8000, Math.max(3000, deadline - Date.now()));
+            return fetchFeed(f, budget)
+                .then(r => { buckets[i] = r || []; })
+                .catch(() => { buckets[i] = []; });
+        })),
+        // 兜底：预算耗尽即返回已完成的源（剩余源在当前批次被丢弃，下次刷新再补）
+        new Promise(res => setTimeout(res, OVERALL_MS + 800)),
+    ]);
+    const results = buckets.filter(Array.isArray);
     const seen = new Set();
     let articles = [];
     for (const list of results) {
@@ -235,7 +251,7 @@ export async function onRequestGet() {
     articles.sort((x, y) => new Date(y.time) - new Date(x.time));
     // 限制总量，避免前端渲染压力
     if (articles.length > 500) articles = articles.slice(0, 500);
-    return new Response(JSON.stringify({ articles, updateTime: new Date().toISOString(), live: true }), {
+    return new Response(JSON.stringify({ articles, updateTime: new Date().toISOString(), live: true, partial: results.length < FEEDS.length }), {
         headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
     });
 }

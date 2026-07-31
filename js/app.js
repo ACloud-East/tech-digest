@@ -1143,6 +1143,9 @@ const app = createApp({
         async function fetchTechNews() {
             techLoading.value = true; techError.value = '';
             techDisplayCount.value = techPageSize;
+            // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
+            // 也保证 30s 后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
+            const watchdog = setTimeout(() => { techLoading.value = false; }, 30000);
             try {
                 const res = await API.fetchAllTechNews();
                 techNews.value = res.articles || [];
@@ -1151,7 +1154,10 @@ const app = createApp({
             } catch(e) {
                 techError.value = e.message || '科技资讯加载失败';
                 techNews.value = [];
-            } finally { techLoading.value = false; }
+            } finally {
+                clearTimeout(watchdog);
+                techLoading.value = false;
+            }
         }
 
         function loadMoreTech() { techDisplayCount.value += techPageSize; }
