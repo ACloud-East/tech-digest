@@ -1505,7 +1505,13 @@ const AIGenerator = {
                     if (isEnglish) {
                         prompt += `\nBACKGROUND SOURCE PAGES (provided only for context and image extraction; do NOT cite them with [1]/[2] or add a references section):\n${srcText}\n\n- The system will fetch the web texts below and append them at the end of this prompt as background material only.\n- You may use them to understand the topic and enrich the article, but do NOT add any citation markers like [1], [2] or [?], and do NOT include a references section.\n- The draft above is the MAIN SUBJECT.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n- Stay within the length limit.\n`;
                     } else {
-                        prompt += `\n以下为**参考原文/背景资料**（仅用于了解背景、提取配图，**严禁**在正文中标注 [1]、[2]、[?] 等引用编号，也不要写「参考来源」小节）：\n${srcText}\n\n- 系统会在本提示词末尾抓取这些网页正文，仅作为背景素材供你参考。\n- 你可以基于这些材料理解主题、充实内容，但正文中**不要**出现任何引用编号，也不要罗列来源。\n- 上方草稿是**主体内容**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内。\n`;
+                        const noDraft = !(form.content && form.content.trim().length > 50);
+                        if (noDraft) {
+                            // 只给了原文链接、没贴草稿：抓来的网页正文就是本文唯一核心素材，必须以其为主体撰写
+                            prompt += `\n以下为**原文链接**（系统抓取后将作为本文唯一核心素材）：\n${srcText}\n\n系统会在本提示词末尾抓取这些网页的**完整正文**并附在最后。由于上方没有提供草稿，这些抓取的【原文】就是本文**唯一的核心素材**——请以其内容为主体撰写文章：把其中的产品、规格参数、发布信息、引语等如实组织成一篇完整、连贯、有信息量的文章，严禁只写「活动值得关注」「围绕活动展开」这类空泛模板套话。\n- 正文中不要出现 [1]、[2]、[?] 等引用编号，也不要罗列来源链接。\n- 绝对禁止：捏造任何原文没有的规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接；原文给了多少，就用多少。\n- 严格把篇幅控制在字数要求内。\n`;
+                        } else {
+                            prompt += `\n以下为**参考原文/背景资料**（仅用于了解背景、提取配图，**严禁**在正文中标注 [1]、[2]、[?] 等引用编号，也不要写「参考来源」小节）：\n${srcText}\n\n- 系统会在本提示词末尾抓取这些网页正文，仅作为背景素材供你参考。\n- 你可以基于这些材料理解主题、充实内容，但正文中**不要**出现任何引用编号，也不要罗列来源。\n- 上方草稿是**主体内容**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n- 严格把篇幅控制在字数要求内。\n`;
+                        }
                     }
                 }
             } else {

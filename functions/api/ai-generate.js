@@ -384,12 +384,17 @@ export async function onRequestPost({ request, env }) {
     // 鏈紑鍚仈缃戞悳绱㈡椂锛屽皢鐢ㄦ埛鎻愪緵鐨勫師鏂囬摼鎺ヤ綔涓鸿儗鏅祫鏂欏紩鍏ワ紝涓嶇敓鎴愬紩鐢ㄧ紪鍙?
     if (backgroundSources.length && !body.webSearch) {
         const MAX_BG = 16000;
-        augmentedPrompt += '\n\n【参考原文/背景资料】以下是你可参考的原文内容（仅用于了解背景和提取配图，不要在正文中标注 [1]、[2] 等引用编号，也不要写「参考来源」小节）：\n';
+        const noDraft = !(body.content && String(body.content).trim().length > 50);
+        augmentedPrompt += noDraft
+            ? '\n\n【抓取原文·本文核心素材】以下是系统抓取的网页正文（上方未提供草稿，因此这些是本文唯一核心素材）：\n'
+            : '\n\n【参考原文/背景资料】以下是你可参考的原文内容（仅用于了解背景和提取配图，不要在正文中标注 [1]、[2] 等引用编号，也不要写「参考来源」小节）：\n';
         backgroundSources.forEach((s, i) => {
             const text = s.content ? s.content.slice(0, MAX_BG) : '';
             augmentedPrompt += `\n[背景${i + 1}] URL: ${s.url}\n${text}\n`;
         });
-        augmentedPrompt += '\n提示：以上材料仅供参考，请严格联合上方打稿和主要素材写作，不要在正文中使用引用编号或列出来源。';
+        augmentedPrompt += noDraft
+            ? '\n提示：上方没有草稿，请【严格以以上抓取的原文内容为主体】撰写文章——把其中的产品、规格、发布信息、引语等如实组织成一篇完整、连贯、有信息量的文章；正文中不要使用 [1]、[2] 等引用编号，也不要写「参考来源」小节。绝对禁止捏造原文没有的规格/参数/数据/价格/日期。'
+            : '\n提示：以上材料仅供参考，请严格联合上方打稿和主要素材写作，不要在正文中使用引用编号或列出来源。';
     }
     const hasUsableRefs = references.some(r => r.ok && r.content);
     if (!hasUsableRefs && body.webSearch) {
