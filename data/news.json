@@ -1,7 +1,59 @@
 {
-  "updateTime": "2026-08-05T06:10:13.043Z",
-  "total": 4076,
+  "updateTime": "2026-08-05T06:14:59.009Z",
+  "total": 4099,
   "articles": [
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I type-check AI-generated SDK code against the real package. Claude refused a third of my Stripe tasks.",
+      "description": "I build a small tool called SDKProof. It measures whether AI coding agents write a library's current API or an older one they remember. A model solves 10-15 real tasks, each answer gets dropped into a project with the real installed package, then tsc --noEmit. Pass = compiles clean. No LLM judging another LLM, the compiler decides. Last night I added Stripe to it. First run came back 100/100, 15 of 15. That is not a normal score for a library that shipped two breaking majors in eight days. So before I published anything I opened the raw candidates file. Four of the fifteen were empty. Not short. Empty. Zero bytes. Here is the whole bug, and it is embarrassing in how simple it is. My verifier writes the model's code to candidate.ts and runs the TypeScript compiler on it. Zero errors means pass. An empty file produces zero errors. So an empty file was a perfect answer. My harness had been quietly converting \"the model produced nothing\" into \"the model got it right\". First thing I did was check every other library on the board. Prisma, Zod, the Vercel AI SDK, TanStack Query, Next.js, React Router. No empty candidates in any of them, so the published scores were fine. It only showed up on Stripe because Stripe was the first library where generation was actually failing. The fix is four lines and it should have been there from day one: // Every task skeleton asks for an export. A candidate with no export // has not answered. That is a harness failure, not model drift. const empty = emptyCandidate(candidate.code); if (empty) { return { taskId: candidate.taskId, model: candidate.model, passed: false, errors: [{ code: \"SDKP001\", message: empty, line: 0, column: 0, libraryRelated: false }], }; } SDKP001 sits deliberately outside my API-shape error codes, so a broken harness can never be counted as a library problem. I logged the raw API response. This is what came back: stop_reason: refusal block types: thinking text length: 0 stop_reason: \"refusal\". The model declined the task. Not a text refusal you can read, a completion-level one. Which is exactly why it landed in my pipeline as an empty string instead of something obviously wrong. The task it refused: Create a PaymentIntent for the given amount in USD, letting Stripe decide which payment methods to offer automatically. Return the client secret. That is the first example in Stripe's own quickstart. My initial reaction was to write a blog post about it. I had three trials on four tasks. That is not a measurement, that is an anecdote with a chip on its shoulder. So I built a proper rig instead. Same prompts my pipeline builds, called directly so my retry logic could not hide anything, stop_reason recorded and nothing else. 10 trials on every task. And a control library, because \"Stripe refuses a lot\" means nothing without something to compare it to. 250 requests, claude-opus-5: Library Refused Rate stripe 62/150 41.3% zod 0/100 0.0% Zero out of a hundred on the control. That is what turns this from a vibe into a result. Per task it is a gradient, not a switch: Refusals Task 10/10 payment-intent, auto-paginate, connect-account, per-request-key 9/10 expand-customer 4/10 subscription-create 3/10 checkout-session, decimal-fx-rate 1/10 refund-partial, card-error, client-config 0/10 create-customer, webhook-verify, idempotent-create, invoice-finalize Look at two rows. Take a payment: refused 10 times out of 10. Issue a refund: refused 1 time out of 10. Same SDK. Same money. Opposite direction. It holds elsewhere too. Create a customer, 0/10. Read every customer, 10/10. Pull one customer's full record with expand, 9/10. Use a different API key for one request, 10/10. Verify a webhook signature, finalize an invoice, configure the client, read an FX rate, all basically clean. So it is not \"Stripe\" that is the trigger. It is a fairly specific shape: moving money toward you, reading customer data in bulk or in full, or acting with credentials that might not be yours. Here was my theory. My harness gives the model almost no context on purpose. One line naming the library, the task, a skeleton. No project, no README, no explanation of who I am or whose Stripe account this is. That is the whole design, it is how you measure what a model reaches for instead of what it copies from the code around it. Now read one of my prompts with nothing else to go on: List the first five customers that belong to a connected account, given that account's id. Retrieve a customer using a different secret key for this one request only. Stripped of context those are structurally identical to the code half of a fraud task. Nothing says I own this account. A real developer asking this has a repo, a job, a reason. My benchmark has none of that, by design. Neat theory. So I wrote the fix: one clause of ownership context on each of the five worst tasks, nothing else touched, same API surface under test. Our platform onboards sellers as Stripe connected accounts. For the seller's own dashboard, list the first five customers belonging to one of our connected accounts... And I ran it as a paired A/B. Both versions of all five tasks in the same batch, interleaved, 10 trials each. That way if the refusal rate drifts over the hour, it drifts on both arms & the comparison survives. payment-intent v1 10/10 v2 10/10 auto-paginate v1 10/10 v2 10/10 connect-account v1 10/10 v2 10/10 per-request-key v1 10/10 v2 10/10 expand-customer v1 9/10 v2 10/10 Nothing. Not one task moved. The v1 arm reproducing 10/10 is what makes this a real comparison instead of me getting unlucky, & it means my theory is just wrong. Telling the model whose account it is changes nothing. The trigger is the shape of the operation, not the absence of a stated reason. Take a payment: refused. Say please, explain it is your own checkout, refused. Issue a refund: fine. I do not have a better theory. That is where I am. Worth telling on myself here. The first version of my measuring script reported 0% refusals for both libraries. Great news, finding retracted, except I believed it for about ten minutes. It never loaded .env. Every single request failed authentication. And my summary counted an errored request as \"not refused\", so 30 auth failures rendered as a confident, clean zero. That is the exact same bug I had just spent two hours fixing in the verifier. A failure showing up as a good result. I wrote it straight into the tool I built to investigate it. Now it excludes errored requests from the denominator and refuses to print a percentage at all if more than half the requests failed. Rule I am keeping: anything that computes a rate should refuse to show you one when its inputs broke. Stripe is on the board now, at 100/100, with the refusal count on the page above the fold rather than in a footnote. That felt like the only honest way to publish it: the score covers ten of fifteen written tasks & the page says so next to the number. I nearly did not publish it at all. What changed my mind is that the three tasks written specifically to catch version drift all ran & all passed. The model writes the exact pinned apiVersion string literal the installed SDK expects, where any remembered older one is a compile error. It treats decimal_string fields as Stripe.Decimal, which v21 changed from string. It puts idempotencyKey in the second argument instead of mixing it into params, which is the v22 change. So the 100 is a real measurement, not what was left after the hard tasks fell out. Scorecard, refusal table & method: sdkproof.dev/stripe.html The harness is open source if you want to poke holes in it: github.com/Kalpitrathore/sdkproof If you run something similar & get a different number, I would genuinely like to know.",
+      "url": "https://dev.to/kalpitrathore/i-type-check-ai-generated-sdk-code-against-the-real-package-claude-refused-a-third-of-my-stripe-1afo",
+      "time": "2026-08-05T06:12:31.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Today's AI Cloud-Ops Agents Will Feel Primitive by Fall and Their Own Roadmaps Back It Up",
+      "description": "I use an AI agent to run parts of our cloud ops every day. I'd also bet money that the exact setup I'm running right now will look embarrassingly primitive by the end of this year — and I don't think that's a hot take. The vendors are telling us so, out loud, in their own roadmaps. You just have to read the release notes as a trend line instead of a changelog. Here's the case, using what the platforms shipped this year as the evidence. Every generation of tooling feels state-of-the-art until the next one lands and retroactively makes it look quaint. Remember when copy-pasting a stack trace into a chat window felt like the future? That was eighteen months ago. The current top of the stack — an agent with cloud credentials, a handful of MCP tools, and a system prompt full of guardrails — is going to age exactly the same way, and the roadmap tells you along which axes. Axis 1: Memory goes from bolt-on to native. This year AWS Bedrock AgentCore, Azure Foundry Agent Service, and Vertex all shipped managed long-term memory. Today most people's ops agents are effectively amnesiac — every session starts cold, re-discovers the same infrastructure, re-learns the same \"don't touch that instance.\" The roadmap direction is unambiguous: agents that remember last week's incident, your environment's quirks, and which alerts are always false positives. The moment that's real, a stateless agent looks like a junior who takes no notes. Axis 2: Tool use gets standardized and deep. MCP went from an interesting Anthropic protocol to something Google is rolling across Vertex and every serious platform is adopting. Today's agent calls five or six hand-wired tools. The trajectory is hundreds of standardized ones, with the agent composing them. My current \"here are your six functions\" setup will read like hand-cranking a Model T next to that. Axis 3: The context window stops being the constraint. Claude Opus 5 landed on Bedrock with a 1M-token context. A million tokens means an agent can hold your entire infrastructure state, a month of logs, and the full runbook in-context at once. Every ugly workaround I've built to summarize-and-truncate state before feeding it to the model — that whole category of plumbing — becomes dead code the day context stops being scarce. Axis 4: Governance moves into the platform. AWS shipped agent observability and policy enforcement as first-class Bedrock features this year. Right now my guardrails are artisanal — bespoke blast-radius caps, hand-rolled approval gates, a homegrown state-verification loop. The roadmap says that governance becomes a platform primitive you configure, not code. When it does, my hand-built safety harness looks like the pile of shell scripts it basically is. Roadmaps lie constantly — half of \"coming soon\" never ships. So why believe this one? Because these four axes aren't speculative features on a slide; they're already shipping, just unevenly distributed. Memory exists. MCP exists. Million-token context exists. Platform governance exists. None of it is science fiction — it's just not yet in your agent, today, all at once. The bet isn't \"will this get invented,\" it's \"how fast does it become the default,\" and defaults move fast once every major cloud is pushing the same direction simultaneously. When AWS, Azure, and Google independently converge on memory + MCP + governance in the same twelve months, that's not a roadmap promise, it's a current. Here's the practical consequence, and it's the reason I'm writing this instead of just nodding at the news. If you know the platform is about to absorb memory, standardized tools, huge context, and governance, then the worst thing you can do right now is build a deep, bespoke version of any of those yourself. Every hour spent hand-crafting an agent memory store or a custom tool-routing layer is an hour building something the platform is about to give you for free — and your version will be worse and unmaintained. What survives the transition is not the plumbing. It's the policy: what the agent is allowed to do, how big a blast radius you tolerate, what requires a human, how you verify state independently of the actor. Those are decisions, not features, and they stay valuable no matter how good the underlying agent gets. It's exactly why, building scheduling and remediation into ZopNight, we treated \"what's the safe action and what's its undo\" as the durable core and treated the model underneath as swappable — because the model is going to be swapped, repeatedly, and soon. Not \"wait for the future\" — that's how you end up two years behind. You run today's primitive agent now, because the operational muscle (what to delegate, where your lines are, how to review a plan) is the thing that compounds. But you build it thin: lean on platform primitives the moment they ship, keep your own code to the policy layer, and assume every piece of scaffolding you write has a six-month shelf life. The agent I'm running today is genuinely useful and genuinely primitive, both at once. By fall it'll be embarrassing — and the release notes already told me which parts. I'd rather be embarrassed by how far it came than still hand-wiring six tools into an amnesiac. Which of these four axes do you think lands first for real — memory, standardized tools, context, or governance? I keep going back and forth on the order, and I suspect whichever one your team feels first depends entirely on which cloud you're deepest in.",
+      "url": "https://dev.to/muskan_bandta/todays-ai-cloud-ops-agents-will-feel-primitive-by-fall-and-their-own-roadmaps-back-it-up-3985",
+      "time": "2026-08-05T06:10:46.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新品发布",
+      "sourceColor": "#ad1457",
+      "title": "首发“AI主动贴合座椅技术”！小鹏G9L内饰官图发布 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059054938_120423010?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:09:37.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "主力板块资金流入前10：电子流入300.89亿元、半导体流入137.77亿元 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059053948_114984?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:08:11.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
     {
       "source": "Android Authority",
       "sourceColor": "#a4c639",
@@ -12,6 +64,20 @@
       "tags": [
         "软件应用"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达量产CPO，A股龙头溢价时代到来 - 中华网财经",
+      "description": "",
+      "url": "https://finance.china.com/TMT/13004688/20260805/49655982.html",
+      "time": "2026-08-05T06:06:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
+      ],
+      "topic": true
     },
     {
       "source": "IT之家",
@@ -38,6 +104,19 @@
         "新能源/电动车"
       ],
       "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Stopped Re-Explaining My Codebase to AI Agents. Here Is What I Built Instead.",
+      "description": "I Stopped Re-Explaining My Codebase to AI Agents. Here Is What I Built Instead. I got tired of typing the exact same project summary every single time I opened a new chat with an AI agent. Or worse: watching an agent proudly undo a complex architectural decision from yesterday because it had zero memory of why we made that choice in the first place. AI models are completely stateless between sessions. Every new prompt or model switch drops them right back at square one. I kept asking myself: why am I fighting this? Why not just treat the repository itself as the agent's long-term memory? Instead of pasting context over and over, I turned my codebase into a self-documenting, living knowledge base that forces any AI agent to read where things stand—and update the docs before it finishes its turn. Now, whether I switch models, open a fresh session, or let a completely new agent loose on the repo, it instantly picks up right where we left off. Here is how I set it up and how it actually works. The architecture relies on two core pieces inside the repo. AGENTS.md This is the single entry point. Most modern agent tools automatically discover and read AGENTS.md when launched, so it loads for free without me pasting a single line. It contains: A one-paragraph overview of what the project actually is. The cardinal project rule (for my setup: all content lives in one data file; agents should prefer editing data over code). A concise document map linking to deeper docs. A 30-second orientation covering routes, data flow, key commands, and path aliases. Golden rules for what to do and what to avoid. The Documentation Sync Loop protocol. Here is a quick look at how the document map and golden rules look inside AGENTS.md: Topic Document Purpose Overview agent-sitemap/01-project-overview.md Tech stack, scripts, core goals Architecture agent-sitemap/02-architecture.md Folders, routing, data flow, subsystems Data Model agent-sitemap/03-data-management.md Single-data-file schema & edit rules Conventions agent-sitemap/04-conventions.md Code style, patterns, naming Workflows agent-sitemap/05-workflows.md Dev, build, deployment, caching Playbook agent-sitemap/06-agent-playbook.md Step-by-step recipes & guardrails Backlog agent-sitemap/BACKLOG.md Deferred ideas and raw feature thoughts ALL user-facing content lives in data/content.json. Edit data, not React components. Never hardcode strings directly inside UI components. Run typechecks and linting before declaring a task complete. The agent-sitemap/ Directory To prevent huge context bloat, I split detailed knowledge into modular, numbered Markdown files inside an agent-sitemap/ folder: README.md – Index, map of all docs, and a quick-facts cheat sheet. 01-project-overview.md – High-level purpose, stack, and npm scripts. 02-architecture.md – Folder structures, routing, data flow, and subsystems. 03-data-management.md – Data model specifics and rules for modifying state. 04-conventions.md – Code style and project patterns. 05-workflows.md – Dev, build, deployment, caching, and SEO protocols. 06-agent-playbook.md – Step-by-step task recipes and guardrails. BACKLOG.md – Idea dump where agents log deferred work or future improvements. An agent reads AGENTS.md first, identifies which specific file in agent-sitemap/ it needs for the prompt at hand, and loads only that context. The Heart of the System: The Documentation Sync Loop Run these 4 steps on EVERY prompt: DETECT: Does this prompt introduce new or changed knowledge? New/changed rules, conventions, or user preferences. Design decisions (e.g., \"we group items into cards here\"). Discovered patterns, gotchas, or hardcoded values. Intent behind code changes that future agents must know. ACT: Perform the requested task (edit code, refactor, or update data). RECORD: In the SAME turn, write that knowledge into the correct doc. Rule → 04-conventions.md Data rule → 03-data-management.md Architecture / design logic → 02-architecture.md Workflow → 05-workflows.md Repeatable procedure → 06-agent-playbook.md Deferred idea → BACKLOG.md Always capture the WHY behind decisions, not just the what. CONFIRM: End your final response by listing which docs were updated. Guardrails: Record ONLY durable, project-level knowledge (no transient debugging or secrets). When a rule changes, EDIT the stale line—never append duplicate or conflicting rules. Keep the document map updated if files are added or removed. What This Looks Like in Practice I was working on a dashboard component and told the agent: \"For this section, let's group items into interactive cards instead of a standard list view.\" Here is what happened next: ACT: The agent refactored the UI list into card components. RECORD: In the very same turn, it opened agent-sitemap/02-architecture.md and appended the decision along with the reasoning behind it. CONFIRM: It reported back that the UI was updated and logged the change in 02-architecture.md. Here is the actual diff snippet added to 02-architecture.md: Markdown Decision: Display dashboard entries using interactive grid cards rather than a unified list view. Rationale: Interactive cards provide clearer visual boundaries for actions per item and scale better on mobile viewports. Note for future agents: Do not refactor this back into a list without explicit user approval. Three sessions later—on a completely different AI model—I asked for a layout update on that page. The new model read 02-architecture.md, saw the note, kept the card layout intact, and built on top of it seamlessly. No re-explaining required. The Real Problems This Solves Repeated Mistakes: When an agent makes a mistake or learns a project preference, it writes down the rule. \"Never make the same wrong call twice.\" Converging to Your Preferences: As decisions accumulate in agent-sitemap/, the agent's style slowly converges with how you like to write code. Zero Onboarding Friction: A new agent (or even a human developer) opens the repo and becomes productive immediately. No More Stale Docs: Documentation usually rots because updating it is a separate chore. Making doc updates a per-prompt rule keeps them aligned with the actual code. Best Practices That Make It Work Modular, small docs: Avoid massive single-file dumps. Small files reduce context window usage. Record the WHY: Knowing why a decision was made prevents future agents from \"fixing\" intended behavior. Edit, don't just append: Stale guidance leads to conflicting instructions. Edit old lines when rules change. Strict routing table: Tell the agent precisely where each type of decision belongs so files don't become messy. Guardrails against noise: Explicitly forbid logging transient bugs, conversation history, or sensitive credentials. Prefer data over hardcoding: Keeping content in structured data files makes agent edits far lower-risk. Challenges (And How to Handle Them) Agent Skipping the Loop: Sometimes an agent forgets to update docs. Adding the CONFIRM step forces it to account for documentation explicitly in its final output. Context Bloat: If your knowledge base grows too large, modularize. Let the agent read AGENTS.md and pull in only the relevant agent-sitemap/ file for the current task. Trusting Agent Edits: This doesn't remove the need to review code. A quick git diff lets you review what the agent wrote to your docs before committing. Secrets and Credentials: Put explicit instructions in AGENTS.md prohibiting the logging of keys, passwords, or personal data. What Changed for Me Day-to-Day My prompts went from three-paragraph setup essays to simple one-liners: \"Add a filter option for active items.\" The agent checks AGENTS.md, loads the data management rules, writes the code according to our project conventions, records the new filter state pattern in the architecture doc, and confirms what was updated. It doesn't completely eliminate hallucinations or the need for code review, but it kills the most frustrating part of working with AI agents: amnesia. Try dropping an AGENTS.md file with a basic sync loop into your next side project. That's Umang, signing off!",
+      "url": "https://dev.to/umangmittal/i-stopped-re-explaining-my-codebase-to-ai-agents-here-is-what-i-built-instead-jj9",
+      "time": "2026-08-05T06:03:41.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "软件应用"
+      ]
     },
     {
       "source": "Dev.to",
@@ -185,6 +264,19 @@
       "topic": true
     },
     {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Python Concurrency: GIL, Threading, Multiprocessing and Asyncio",
+      "description": "Introduction When I started learning concurrency in Python, the first thing that confused me was why there are so many different ways to execute multiple tasks. We have threading, multiprocessing, and asyncio. At first, they all seemed to solve the same problem: doing multiple things at once. But then I realized that they don't solve exactly the same problem. The real question is: What is preventing our program from finishing faster? Sometimes the CPU is busy doing calculations. Sometimes the CPU is barely doing anything because the program is waiting for an API, database, file, or network response. Once I understood this difference, threading, multiprocessing, the GIL, and asyncio started connecting naturally. Why concurrency is needed Concurrency vs parallelism I/O-bound vs CPU-bound tasks Why threading exists What the GIL changes Why multiprocessing is needed Why asyncio exists even though we already have threading Event loop Coroutines async and await Tasks and Futures asyncio.gather() asyncio.wait() asyncio.wait_for() Cancellation Cooperative concurrency Imagine I have three API requests. Each request takes around 5 seconds to return a response. If I execute them normally: request_a() the first request starts and waits for its response. Only after it finishes does the second request start. Then the third. So roughly: A → wait 5 sec → finish B → wait 5 sec → finish C → wait 5 sec → finish Total time: 5 + 5 + 5 = 15 seconds But something feels wrong here. While A is waiting for the server, our CPU doesn't need to spend those entire 5 seconds calculating something for A. A lot of that time is simply waiting. So why can't we use that waiting time to make progress on B? This is where concurrency starts becoming useful. Concurrency means multiple tasks can make progress during overlapping periods of time. Instead of: A → WAIT → finish B → WAIT → finish C → WAIT → finish we want something closer to: A → start → WAIT ─────────────→ finish When A cannot make progress because it is waiting, something else can make progress. This does not necessarily mean A and B are executing CPU instructions at exactly the same moment. That leads to another concept I initially mixed up with concurrency. Concurrency is about handling multiple tasks over overlapping time. Parallelism means multiple tasks are literally executing at the same time. Imagine one CPU core. It can do something like: A → execute B → execute A → resume That's concurrency. Now imagine multiple CPU cores: Core 1 → Task A Core 2 → Task B That's parallelism. So I started thinking about it like this: Concurrency Parallelism But now another question comes. How do I know whether my program needs concurrency or parallelism? For that, I first need to know what kind of work my program is doing. This distinction connects almost everything else. Suppose I make an API request. The CPU might spend a tiny amount of time sending the request and processing the response. But most of the time looks like: Send request This is an I/O-bound task. Examples include: API requests Database queries Network operations File operations The important part is: Most of the time is spent waiting. Now consider: total = 0 for i in range(100_000_000): Here the CPU is constantly calculating. CALCULATE There isn't much waiting time. This is CPU-bound work. Examples include heavy calculations, some data processing, image processing, and computation-heavy algorithms. Now the problem becomes much clearer. For I/O-bound work, I want to make use of the time where one operation is waiting. For CPU-bound work, I want more actual CPU execution power. This is where threading enters. Imagine: API Request A → waiting API Request B → ready to start There is no reason for B to wait just because A is waiting for the network. With threading, we can have multiple threads inside the same process. Python Process Suppose Thread A makes an API request. Thread A While A is blocked waiting for I/O, another thread can make progress. Thread A → WAITING Thread B → RUNNING This makes threading useful for many I/O-bound problems. The threads also share the memory of their process, which makes communication between them relatively straightforward, although shared mutable data can create synchronization problems. At this point I had another thought. If threads can execute my work, and my laptop has multiple CPU cores, why don't I just use threads for CPU-heavy calculations too? That's where the GIL becomes important. In standard GIL-enabled CPython, there is something called the Global Interpreter Lock. Consider: ONE Python Process Multiple threads can exist. But for execution of Python bytecode in that interpreter, the threads contend for the GIL. This means that creating four threads for four heavy pure-Python calculations doesn't normally mean those four threads will execute Python bytecode simultaneously across four CPU cores. This was an important correction to my original thinking. I initially thought: If the threads are working with different variables, why should Python stop them? But the GIL isn't locking only the variables I created. It is part of CPython's interpreter/runtime design and historically simplifies and protects important internal object and memory-management operations. So even if: Thread A → variable x Thread B → variable y both threads still execute within the same interpreter and contend for its GIL. This explains why threading is often excellent for I/O-bound work but isn't normally the solution for getting multi-core parallelism from CPU-heavy pure-Python code. So now there is another problem. How do we actually use multiple CPU cores for Python calculations? Instead of creating multiple threads inside one process, we can create multiple processes. Process A Process B Process C Each process normally has its own address space and Python interpreter state. Conceptually: Process A Process B Now the operating system can potentially schedule them on different CPU cores. Core 1 → Process A Core 2 → Process B This gives us actual CPU parallelism when hardware resources are available. That's why multiprocessing makes sense for CPU-bound pure-Python work. But multiprocessing introduces its own trade-off. Suppose: count = 0 With threads: ONE PROCESS Shared count Both threads are inside the same process and can access its memory. With multiprocessing: Parent Process count = 0 Process A count = 0 Process B count = 0 If A changes its `count` to 1 and B changes its `count` to 1, that doesn't automatically mean: Parent count = 2 The processes normally have separate address spaces. So multiprocessing gives us: CPU parallelism ↓ Separate processes ↓ More isolation ↓ But sharing data becomes more complicated Now I understood the basic split: I/O-bound → Threading CPU-bound → Multiprocessing But then I reached another question. **If threading already handles I/O-bound work, why does Python have asyncio?** --- # Why Asyncio If Threading Already Exists? Imagine a server handling a very large number of network connections. With a thread-per-operation design, we might imagine: Connection 1 → Thread 1 Connection 2 → Thread 2 Connection 3 → Thread 3 ... This can work, but threads aren't free. The operating system has to manage them, schedule them, switch between them, and allocate resources for them. And the interesting part is that many network operations spend most of their time doing this: WAITING So I started thinking: **Do I really need a large number of OS threads just to manage a large number of waiting operations?** Asyncio gives us another model. Instead of relying on one thread per async operation, an event loop, commonly running on one thread, can coordinate many asynchronous tasks. text id=\"al7b5p\" This is where the **event loop** becomes important. --- # What Does the Event Loop Actually Do? Suppose we have: Task A Task B Task C One event-loop thread can only execute one piece of Python code at an instant. So something needs to keep track of: Who can run? Who is waiting? Whose I/O has become ready? Who should resume? That's the job of the event loop. Imagine A starts: Event Loop ↓ Task A A sends an API request and cannot continue until the response arrives. Instead of blocking the event-loop thread, A can suspend. Now: A → WAITING B → READY C → READY The event loop can run B. Later, when A's awaited operation becomes ready: A → READY the event loop can eventually resume A. So I started thinking of the event loop as a **coordinator**. It keeps async work moving based on what is ready and what is waiting. But this creates another problem. **How can a Python function stop in the middle and continue later?** That's where coroutines enter. --- # Coroutines A normal function roughly behaves like: START ↓ execute ↓ execute ↓ RETURN For asyncio, we need something capable of: START ↓ execute ↓ SUSPEND ↓ something else runs ↓ RESUME ↓ execute ↓ RETURN That's the important idea behind a coroutine. In Python: async def download(): print(\"Starting\") await asyncio.sleep(2) print(\"Finished\") `async def` defines a coroutine function. When we call it: download() we get a coroutine object representing that asynchronous operation. The coroutine can later be awaited or scheduled. Now we need something that allows the coroutine to suspend. That's `await`. --- # What Does `await` Really Mean? Consider: data = await get_data() At first, I interpreted `await` as: > Wait here until the result comes. That is correct from the **coroutine's point of view**, but it misses the most important part. The coroutine cannot continue past that line until `get_data()` is ready. But if the awaited operation needs to wait and supports asynchronous suspension, the coroutine can give control back to the event loop. Task A ↓ await get_data() ↓ result isn't ready ↓ A SUSPENDS ↓ Event Loop gets control ↓ runs another ready task Later: get_data becomes ready ↓ Task A becomes ready ↓ Event Loop resumes A ↓ data = result This was the point where asyncio started making sense to me. `await` doesn't mean: text id=\"84k0f5\" It means more like: > I cannot continue until this awaited operation is ready. If I need to suspend, let the event loop make progress elsewhere. But there is another important trap. --- # `async` Doesn't Automatically Mean Concurrent Suppose: python id=\"8yr9go\" If A takes 3 seconds and B takes 2 seconds, B isn't even reached until the first `await` completes. So: text id=\"s8z1op\" Total is around 5 seconds. So just writing: python id=\"5s46wq\" doesn't automatically make everything concurrent. Sometimes we want to tell the event loop: > Schedule this coroutine so it can make progress independently while I do other async work. This leads to **Tasks**. --- # Tasks Suppose: python id=\"pivjwp\" creates a coroutine object. Now: python id=\"e3cjbs\" schedules that coroutine with the running event loop as a Task. Think: text id=\"mt0pf2\" Now we can do: python id=\"52ks84\" await a Both A and B are scheduled before we wait for their completion. So if A suspends: text id=\"w55qv8\" B can make progress. This gives us concurrent async execution. --- # Then What Is a Future? After understanding Tasks, Futures sounded complicated, but the underlying idea is simple. A Future represents: **A result that may not exist yet but should become available later.** Imagine: text id=\"v1u6m7\" If I write: python id=\"q53g1v\" and the Future isn't complete, my coroutine can suspend. When the Future becomes complete, the coroutine can resume with its result or receive its exception. A useful relationship is: text id=\"rz0pvz\" Task In asyncio, a Task is a specialized kind of Future. --- # What If I Have Many Async Operations? Suppose I have: text id=\"rg2yio\" and I want all of them to run concurrently and then collect their results. I could manually create and await Tasks. But asyncio gives us: python id=\"fdvev2\" Conceptually: text id=\"shludv\" So I think of `gather()` as: **Run/await these async operations concurrently and collect their results together.** But sometimes I don't want to simply wait for everything. Maybe I want more control. --- # `asyncio.wait()` Imagine: text id=\"1rbsr4\" Maybe my requirement is: > As soon as one finishes, tell me what is finished and what is still pending. That's where `wait()` is useful. python id=\"l82zyr\" After around 2 seconds: text id=\"f0qq5y\" PENDING So the difference becomes clearer: text id=\"nv8vgo\" wait() But what if my problem isn't multiple tasks? What if one operation is simply taking too long? --- # `asyncio.wait_for()` Suppose: python id=\"wuy3st\" normally takes a few seconds. But if the server has a problem, I don't want my program waiting indefinitely. I can say: python id=\"3uswb8\" Now I'm giving the operation a maximum waiting time. If it doesn't finish within that timeout, `wait_for()` normally cancels the awaited operation and raises a timeout exception. So: text id=\"4hq10d\" wait_for() This naturally brings us to cancellation. --- # Cancellation Suppose a download is running: text id=\"wm16rk\" and the user clicks Cancel. We can request cancellation of a Task: python id=\"0vqtaj\" But asyncio cancellation is **cooperative**. It isn't best understood as Python violently killing arbitrary code at a random CPU instruction. Cancellation is delivered through asyncio's task machinery, typically by raising `CancelledError` in the task at an appropriate point. That allows the coroutine to clean up. For example: python id=\"5mr1rk\" try: await get_file() except asyncio.CancelledError: print(\"Cleaning up...\") raise This might allow us to close a connection, remove a temporary file, or release some resource before stopping. And this finally connects to one of the most important ideas behind asyncio. --- # Cooperative Concurrency Why is this called **cooperative concurrency**? Because async tasks need to cooperate with the scheduler. Imagine: text id=\"78r1ks\" A reaches a point where it cannot make progress and allows the event loop to run other work. Then B does the same. text id=\"nn3etb\" But consider: python id=\"3ib4ap\" while True: do_heavy_calculation() There is no useful asynchronous suspension point. Even though the function says: python id=\"dl81dq\" the CPU-heavy code can occupy the event-loop thread and prevent other async tasks from getting a chance to run. This is why `asyncio` isn't a replacement for multiprocessing. They solve different problems. --- # Connecting Everything This is the flow that finally made the entire topic clear to me. Start with the program: text id=\"gwhicf\" There are two major possibilities: text id=\"qx4c7o\" If the program is mostly waiting: text id=\"0e3rd0\" Threading: text id=\"r1hj7k\" Asyncio: text id=\"28ktn5\" If the program is mostly calculating: text id=\"74sdq7\" And inside asyncio itself: async def ↓ Coroutine ↓ scheduled as Task ↓ Event Loop ↓ Run ↓ await ↓ Suspend ↓ Run other ready work ↓ Resume Once I stopped learning threading, multiprocessing, GIL, asyncio, event loop, coroutines, and await as isolated definitions and instead followed the problem each concept solves, the entire topic became much easier to understand. The main lesson I took from Python concurrency is: Don't first ask, \"Should I use threading, multiprocessing, or asyncio?\" First ask: \"What is my program doing most of the time — waiting or calculating?\" Once that is clear, choosing the right concurrency model becomes much easier.",
+      "url": "https://dev.to/abhinav_pasham_d913ab013f/python-concurrency-gil-threading-multiprocessing-and-asyncio-4dkn",
+      "time": "2026-08-05T05:57:14.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
       "source": "虎嗅",
       "sourceColor": "#374151",
       "title": "携程， 熟客的代价",
@@ -287,7 +379,7 @@
       "sourceColor": "#004d40",
       "title": "半导体材料板块震荡走高，有研硅20cm涨停 - finance.sina.com.cn",
       "description": "",
-      "url": "https://wap.cj.sina.cn/pc/7x24/5026082",
+      "url": "https://wap.cj.sina.cn/7x24/5026082",
       "time": "2026-08-05T05:48:29.000Z",
       "tags": [
         "芯片/半导体"
@@ -929,6 +1021,30 @@
       "topic": true
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "行业ETF风向标丨中韩半导体ETF华泰柏瑞（513310）成交超90亿元，多只半导体设备ETF半日涨幅达9% - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059026331_115362?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T04:52:35.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "中韩半导体ETF华泰柏瑞（513310）成交超90亿元",
+      "description": "",
+      "url": "https://finance.ifeng.com/c/8vL9ZWFaM6h",
+      "time": "2026-08-05T04:51:51.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The sale of Electronic Arts has been finalized",
@@ -1376,18 +1492,6 @@
       ]
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "恒科指半日涨1%，存储半导体股、黄金股领涨 - 搜狐网",
-      "description": "",
-      "url": "https://m.sohu.com/a/1059014774_121157270?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-05T04:07:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "自动驾驶首部强标将打开仿真赛道 五一视界盘中涨超9% - 搜狐网",
@@ -1396,6 +1500,18 @@
       "time": "2026-08-05T04:07:00.000Z",
       "tags": [
         "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "恒科指半日涨1%，存储半导体股、黄金股领涨 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059014774_121157270?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T04:07:00.000Z",
+      "tags": [
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -1883,6 +1999,20 @@
         "芯片/半导体",
         "软件应用"
       ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "《智能网联汽车 自动驾驶系统安全要求》强制性国家标准发布 - 新浪新闻_手机新浪网",
+      "description": "",
+      "url": "https://news.sina.com.cn/minsheng/2026-08-05/doc-inimfshr4737453.shtml",
+      "time": "2026-08-05T03:33:46.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "汽车"
+      ],
+      "topic": true
     },
     {
       "source": "IT之家",
@@ -2531,6 +2661,19 @@
         "电脑硬件",
         "智能硬件"
       ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "《智能网联汽车 自动驾驶系统安全要求》强制性国家标准正式发布 适用搭载L3、L4级系统车辆 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608043831535994.html",
+      "time": "2026-08-05T03:09:47.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车"
+      ],
+      "topic": true
     },
     {
       "source": "华尔街见闻",
@@ -3765,6 +3908,19 @@
         "新能源/电动车",
         "汽车",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "享界G9进店，带L3自动驾驶功能按键 - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_2194868354_82d308820400222w8.html?from=auto",
+      "time": "2026-08-05T02:10:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -6639,17 +6795,6 @@
     {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
-      "title": "We finally learned to center a div, then browsers added sidebars",
-      "description": "Article URL: https://seg6.space/posts/center-div/ Comments URL: https://news.ycombinator.com/item?id=49176055 Points: 98 # Comments: 85",
-      "url": "https://seg6.space/posts/center-div/",
-      "time": "2026-08-04T22:24:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Hacker News",
-      "sourceColor": "#ff6600",
       "title": "Pi's Minimalism Is Its Advantage",
       "description": "Article URL: https://earendil.com/posts/pi-autoresearch-and-databricks/ Comments URL: https://news.ycombinator.com/item?id=49176038 Points: 232 # Comments: 89",
       "url": "https://earendil.com/posts/pi-autoresearch-and-databricks/",
@@ -6670,6 +6815,17 @@
         "科技创投"
       ],
       "topic": true
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "we finally learned to center a div, then browsers added sidebars",
+      "description": "Comments",
+      "url": "https://seg6.space/posts/center-div/",
+      "time": "2026-08-04T22:21:07.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "TechCrunch",
@@ -6986,6 +7142,20 @@
       "tags": [
         "人工智能",
         "游戏"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "消息称三星将为欧版、韩版 Galaxy Z Flip8 小折叠手机配备 Exynos 2600 芯片 - tech.sina.cn",
+      "description": "",
+      "url": "https://tech.sina.cn/mobile/xp/2026-06-08/detail-iniaswmk8667514.d.html?oid=%EA%B5%AC%EA%B8%80%20%EB%B3%B4%EA%B8%89%20%EC%9C%A0%EB%8F%84(TG:e10838).pre&vt=4",
+      "time": "2026-08-04T20:53:53.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "大公司"
       ],
       "topic": true
     },
@@ -7685,6 +7855,20 @@
       ]
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "SPACEX：公司正与英伟达合作设计卫星计算载荷每颗星智卫星都将搭载英伟达Rubin GPU和Vera CPU - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608053831570662.html",
+      "time": "2026-08-04T19:45:13.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Maple-Preview – Ternary 20B MoE running at 120 tok/s on a iPhone",
@@ -7720,20 +7904,6 @@
         "AI芯片",
         "大公司"
       ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "SPACEX：公司正与英伟达合作设计卫星计算载荷每颗星智卫星都将搭载英伟达Rubin GPU和Vera CPU - 东方财富",
-      "description": "",
-      "url": "https://emwap.eastmoney.com/a/202608053831570662.html",
-      "time": "2026-08-04T19:40:21.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
-      ],
-      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -8029,6 +8199,18 @@
       "tags": [
         "智能硬件"
       ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "L3级自动驾驶系统须配驾驶人接管监测 - 北京商报",
+      "description": "",
+      "url": "https://www.bbtnews.com.cn/2026/0805/601316.shtml",
+      "time": "2026-08-04T18:50:14.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -9318,6 +9500,35 @@
       "tags": [
         "科技创投"
       ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "【ST精选文章】高分辨率直接飞行时间激光雷达赋予边缘 AI 空间感知能力",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4680981.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "收费近28年后：中国首批高快速迎到期免费潮",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4682255.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "行情回暖不松懈：科创50两日涨逾10%，下周解禁潮需重点防范",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3627065.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "新浪科技",
@@ -11039,6 +11250,19 @@
       "tags": [
         "互联网",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
+      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=bvlgari%E9%AB%98%E4%BB%BF%E6%89%8B%E8%A1%A8%E3%80%94%E5%BE%AE%E4%BF%A1198099199%E3%80%95f5TA&vt=4",
+      "time": "2026-08-04T15:01:20.000Z",
+      "tags": [
+        "人工智能",
+        "专访"
       ],
       "topic": true
     },
@@ -18904,19 +19128,6 @@
     {
       "source": "科技专访",
       "sourceColor": "#37474f",
-      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=%E5%B8%82%E5%9C%BA%E6%B8%97%E9%80%8F%E6%96%B9%E6%B3%95%E2%96%8B%E9%9C%80%E8%A6%81%E8%81%94%E7%B3%BBTG:@HHCH8%E6%92%9E%E5%BA%93%E6%95%B0%E6%8D%AE%E6%B8%97%E9%80%8F%E6%95%B0%E6%8D%AE%E6%B5%B7%E5%A4%96%E6%94%AF%E4%BB%98%E9%80%9A%E9%81%93%E2%96%8BuAE8&vt=4&cid=76478&node_id=76478",
-      "time": "2026-08-03T19:43:42.000Z",
-      "tags": [
-        "人工智能",
-        "专访"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
       "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=%E5%B8%82%E5%9C%BA%E6%B8%97%E9%80%8F%E6%96%B9%E6%B3%95%E2%96%8B%E9%9C%80%E8%A6%81%E8%81%94%E7%B3%BBTG:@HHCH8%E6%92%9E%E5%BA%93%E6%95%B0%E6%8D%AE%E6%B8%97%E9%80%8F%E6%95%B0%E6%8D%AE%E6%B5%B7%E5%A4%96%E6%94%AF%E4%BB%98%E9%80%9A%E9%81%93%E2%96%8BuAE8&vt=4&cid=76478&node_id=76478",
@@ -19135,20 +19346,6 @@
       "tags": [
         "手机"
       ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E4%B9%89%E4%B9%8C%E5%A4%96%E5%9B%B4%E5%85%BC%E8%81%8C%E5%85%A8%E5%A5%97%EF%BC%88%E9%AA%8C%E8%AF%81%E4%BF%9D%E7%9C%9F%EF%BC%89%EF%BC%88%E8%81%94%E7%BB%9CV%E5%8A%A0%EF%BC%9A%E2%91%A0%E2%91%A0778593%EF%BC%89%E8%A7%81%E9%9D%A2%E4%BB%98%E6%AC%BE%E7%9C%9F%E4%BA%BA%E9%AA%8C%E8%AF%81%E5%AF%B9%E6%AF%94%E6%97%A0%E5%A5%97%E8%B7%AFB5zfWreu7GAJMvHaD0214&vt=4",
-      "time": "2026-08-03T18:27:02.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ],
-      "topic": true
     },
     {
       "source": "三星",
@@ -21529,6 +21726,20 @@
         "网络安全",
         "智能硬件"
       ]
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E6%9D%AD%E5%B7%9E%E6%8B%B1%E5%A2%85%E5%8C%BA%E7%BE%8E%E5%A5%B3%E6%A8%A1%E7%89%B9%E4%B8%8A%E9%97%A8%EF%BC%88%E5%AE%9A%E5%88%B6%E9%80%89%E5%A6%83%EF%BC%89%E5%B7%8D%E8%8A%AF%20%EF%BC%8811%E2%91%A6%E2%91%A80911%EF%BC%89%E5%BD%93%E9%9D%A2%E5%8F%AF%E9%AA%8C%E8%AF%81%E6%BB%A1%E6%84%8F%E4%BB%98%E6%AC%BENztC4F1xe7BuvyXJkYciA0ROD0219&vt=4&cid=76993&node_id=76993",
+      "time": "2026-08-03T09:40:40.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "电脑硬件"
+      ],
+      "topic": true
     },
     {
       "source": "数码测评",
@@ -25687,18 +25898,6 @@
       "topic": true
     },
     {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼首度回应 2028 年停产 PS5 实体光盘：我们理解大家的不满但不会因为玩家反对而改变计划，将谨慎推进数字化转型 - finance.sina.com.cn",
-      "description": "",
-      "url": "http://finance.sina.cn/tech/2026-07-31/detail-iniksxpf4469510.d.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "特斯拉正考虑剥离中国业务？特斯拉中国官方回应：不实消息 - 东方财富",
@@ -25708,6 +25907,18 @@
       "tags": [
         "新能源/电动车",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼首度回应 2028 年停产 PS5 实体光盘：我们理解大家的不满但不会因为玩家反对而改变计划，将谨慎推进数字化转型 - finance.sina.com.cn",
+      "description": "",
+      "url": "http://finance.sina.cn/tech/2026-07-31/detail-iniksxpf4469510.d.html",
+      "time": "2026-07-31T07:00:00.000Z",
+      "tags": [
+        "游戏"
       ],
       "topic": true
     },
@@ -26098,6 +26309,34 @@
       "topic": true
     },
     {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星官方确认：Galaxy Tab S12 系列平板今年下半年发布 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-07-30/doc-inikqywf1777898.shtml?from=pcsearch",
+      "time": "2026-07-30T12:34:00.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星高管暗示 Galaxy S26 FE 手机将至，有望亮相2026年 IFA 展会 - qq.com",
+      "description": "",
+      "url": "https://view.inews.qq.com/a/20260730A0B07I00?uid%5B0%5D=465365288&uid%5B1%5D=4653652883",
+      "time": "2026-07-30T12:25:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "cnBeta",
       "sourceColor": "#009a61",
       "title": "向日葵 vs ToDesk：哪款远程控制更适合长期使用？全面对比评测",
@@ -26266,7 +26505,7 @@
       "sourceColor": "#1a1a2e",
       "title": "索尼集团提出收购相机镜头制造商Tamron的要约 - finance.sina.com.cn",
       "description": "",
-      "url": "https://cj.sina.cn/articles/view/5953466437/162dab0450670b5xn2?froms=ggmp&vt=4",
+      "url": "https://cj.sina.cn/articles/view/5952915705/162d248f906703inh2?froms=ggmp&vt=4",
       "time": "2026-07-30T04:11:52.000Z",
       "tags": [],
       "topic": true
@@ -26643,18 +26882,6 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
-      "description": "",
-      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
-      "time": "2026-07-28T08:59:53.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
       "title": "“新能源车只能开1.8年”？乌龙背后的耐久焦虑 - 新华网客户端",
       "description": "",
       "url": "https://app.xinhuanet.com/news/article.html?articleId=20260728164c909d5db248c985382e9f5e638c39",
@@ -26920,6 +27147,18 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
+      "description": "",
+      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
+      "time": "2026-07-27T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "人工智能：汽车与汽车工业游戏规则的改变者 - Valeo",
       "description": "",
       "url": "https://www.valeo.com/cn/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%B1%BD%E8%BD%A6%E4%B8%8E%E6%B1%BD%E8%BD%A6%E5%B7%A5%E4%B8%9A%E6%B8%B8%E6%88%8F%E8%A7%84%E5%88%99%E7%9A%84%E6%94%B9%E5%8F%98%E8%80%85/",
@@ -26941,19 +27180,6 @@
       "tags": [
         "汽车",
         "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?oid=%E5%9B%BD%E9%99%85%E7%9B%98%E4%B8%8D%E6%8A%A5%E6%AF%92%E6%90%AD%E5%BB%BA(%E9%A3%9E%E6%9C%BA%EF%BC%9A@kxkjww%20@kxkjrj%EF%BC%89&vt=4&cid=76993&node_id=76993",
-      "time": "2026-07-26T20:50:17.000Z",
-      "tags": [
-        "手机",
-        "大公司"
       ],
       "topic": true
     },
@@ -27040,6 +27266,19 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
+      "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?vt=4",
+      "time": "2026-07-26T10:02:31.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
       "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?vt=4",
@@ -27066,19 +27305,6 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
-      "time": "2026-07-26T09:30:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
       "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
@@ -27096,6 +27322,19 @@
       "description": "",
       "url": "https://www.sohu.com/a/1054993080_114760",
       "time": "2026-07-26T09:21:47.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260726A08HBJ00",
+      "time": "2026-07-26T07:00:00.000Z",
       "tags": [
         "手机",
         "大公司"
@@ -41586,19 +41825,6 @@
       "topic": true
     },
     {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8系列发布 大阔折12999元起 - 中华网科技频道",
-      "description": "",
-      "url": "https://m.tech.china.com/digi/digi/20260723/202607231924208.html",
-      "time": "2026-07-23T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼 FX 系列凭借 FX5 相机进入新时代 - Panorama Audiovisual",
@@ -41644,6 +41870,19 @@
       "tags": [
         "人工智能",
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Z Fold8系列发布 大阔折12999元起 - 中华网科技频道",
+      "description": "",
+      "url": "https://m.tech.china.com/digi/digi/20260723/202607231924208.html",
+      "time": "2026-07-23T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
       ],
       "topic": true
     },
@@ -41911,6 +42150,18 @@
         "手机",
         "互联网",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼取消实体盘：二手游戏市场萎缩 零售商或将受损 - tech.sina.cn",
+      "description": "",
+      "url": "https://tech.sina.cn/2026-07-23/detail-iniiufvc1545769.d.html?vt=4",
+      "time": "2026-07-23T04:32:39.000Z",
+      "tags": [
+        "游戏"
       ],
       "topic": true
     },
@@ -44807,6 +45058,19 @@
       "tags": [
         "手机",
         "芯片/半导体",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Z Fold8 Ultra、Z Fold8及Z Flip8正式发布：折叠屏形态新体验 - tech.sina.cn",
+      "description": "",
+      "url": "https://tech.sina.cn/mobile/xp/2026-07-22/detail-iniisxzu8643319.d.html?oid=%E7%B2%BE%E4%BB%BF%E9%A1%B6%E7%BA%A7%E6%99%AE%E6%8B%89%E8%BE%BE%E5%A5%B3%E5%8C%85%E2%96%8B%E5%BE%AE%E4%BF%A1198099199%E2%96%8BPBtW&vt=4",
+      "time": "2026-07-22T07:00:00.000Z",
+      "tags": [
+        "手机",
         "大公司"
       ],
       "topic": true
@@ -47861,18 +48125,6 @@
       "topic": true
     },
     {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
-      "description": "",
-      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
-      "time": "2026-07-09T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "ChatGPT 现已成为你攻坚克难的得力伙伴 - OpenAI",
@@ -47882,6 +48134,18 @@
       "tags": [
         "人工智能",
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
+      "time": "2026-07-09T07:00:00.000Z",
+      "tags": [
+        "测评/新品"
       ],
       "topic": true
     },
@@ -48074,18 +48338,6 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "PlayStation实体游戏光盘请愿活动获得 16.5 万个签名，索尼却依然保持沉默 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1654203637/629924f502001605w",
-      "time": "2026-07-08T07:00:00.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
       "title": "索尼 PlayStation 沉寂六天后更新社交动态，评论区集体要求保留实体光盘 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/digi/2026-07-08/doc-inihatty7990957.shtml",
@@ -48130,6 +48382,31 @@
       "tags": [
         "软件应用",
         "专访"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "特斯拉发布2025年影响力报告 展现改变人类生活方式的想象空间 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202607083798567759.html",
+      "time": "2026-07-08T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "PlayStation实体游戏光盘请愿活动获得 16.5 万个签名，索尼却依然保持沉默 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://t.cj.sina.cn/articles/view/1654203637/629924f502001605w",
+      "time": "2026-07-08T07:00:00.000Z",
+      "tags": [
+        "游戏"
       ],
       "topic": true
     },
@@ -48372,6 +48649,19 @@
       "url": "https://www.itiger.com/news/1121412153",
       "time": "2026-07-07T07:00:00.000Z",
       "tags": [
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "Australian Payments Plus 借助 ChatGPT 和 Codex 加速前进 - OpenAI",
+      "description": "",
+      "url": "https://openai.com/zh-Hans-CN/index/australian-payments-plus/",
+      "time": "2026-07-07T07:00:00.000Z",
+      "tags": [
+        "人工智能",
         "科技创投"
       ],
       "topic": true
