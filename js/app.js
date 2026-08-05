@@ -21,6 +21,9 @@ const app = createApp({
         const techNews = ref([]);
         const techLoading = ref(false);
         const techError = ref('');
+        // 加载进度（阶段 + 百分比 + 已下载字节）：驱动进度条与状态文字，避免长加载时毫无反馈
+        // percent: 0~100 为确定进度；-1 表示服务端分块压缩传输、总大小未知，走不确定动画
+        const techLoadProgress = ref({ stage: 'idle', label: '', percent: 0, indeterminate: false, loaded: 0, total: 0 });
         const techSourceFilter = ref('all');
         const techSearchQuery = ref('');
         const techPageSize = 50;
@@ -1143,13 +1146,15 @@ const app = createApp({
         async function fetchTechNews() {
             techLoading.value = true; techError.value = '';
             techDisplayCount.value = techPageSize;
+            // 初始进度（覆盖上一次残留），让进度条从 0 起步
+            techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
             // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
             // 必须晚于 api.js 中最长的单项预算（BASE_MS=45s），否则会在归档还在传输时
             // 提前把转圈关掉，让用户误以为"只有实时那几百条"。故设为 55s。
             const watchdog = setTimeout(() => { techLoading.value = false; }, 55000);
             try {
-                const res = await API.fetchAllTechNews();
+                const res = await API.fetchAllTechNews((p) => { techLoadProgress.value = p; });
                 techNews.value = res.articles || [];
                 dataUpdateTime.value = res.updateTime || '';
                 updateTimestamp();
@@ -1224,6 +1229,13 @@ const app = createApp({
                 if (diff < 604800000) return `${Math.floor(diff/86400000)}天前`;
                 return d.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
             } catch { return ts; }
+        }
+        // 字节 → 友好体积（用于进度条「已下载 X MB」展示）
+        function formatMB(bytes) {
+            const b = Number(bytes) || 0;
+            if (b >= 1048576) return (b / 1048576).toFixed(2) + ' MB';
+            if (b >= 1024) return (b / 1024).toFixed(0) + ' KB';
+            return b + ' B';
         }
         function truncate(text, len) {
             if (!text) return '';
@@ -1500,11 +1512,11 @@ const app = createApp({
 
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
-            techNews, techLoading, techError, techSourceFilter, techSearchQuery,
+            techNews, techLoading, techError, techLoadProgress, techSourceFilter, techSearchQuery,
             loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, dataSources, themeSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech, styleAnalysis,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
-            refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, truncate,
+            refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, formatMB, truncate,
             // AI 文案生成
             aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,

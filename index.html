@@ -152,8 +152,18 @@
 
                         <div class="tech-list-container">
                             <div class="loading-overlay" v-if="techLoading">
-                                <div class="spinner"></div>
-                                <p>正在从 {{ techSources.length }} 个数据源加载科技资讯...</p>
+                                <div class="progress-card">
+                                    <div class="progress-track" :class="{ indeterminate: techLoadProgress.indeterminate }">
+                                        <div class="progress-fill" :style="techLoadProgress.percent >= 0 ? { width: techLoadProgress.percent + '%' } : {}"></div>
+                                    </div>
+                                    <div class="progress-meta">
+                                        <span class="progress-label">{{ techLoadProgress.label || '正在加载科技资讯...' }}</span>
+                                        <span class="progress-percent" v-if="techLoadProgress.percent >= 0">{{ techLoadProgress.percent }}%</span>
+                                    </div>
+                                    <div class="progress-bytes" v-if="techLoadProgress.loaded">
+                                        {{ formatMB(techLoadProgress.loaded) }}<template v-if="techLoadProgress.total"> / {{ formatMB(techLoadProgress.total) }}</template>
+                                    </div>
+                                </div>
                             </div>
                             <div class="error-message" v-if="techError">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -987,10 +997,10 @@
     <script src="vendor/pptxgen.bundle.js"></script>
     <script src="vendor/mammoth.browser.min.js"></script>
     <script src="vendor/pdf.min.js"></script>
-    <script src="js/api.js?v=2608050330"></script>
+    <script src="js/api.js?v=2608051400"></script>
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=45"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608050330"></script>
+    <script src="js/app.js?v=2608051400"></script>
 </body>
 </html>

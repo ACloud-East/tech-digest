@@ -62,6 +62,36 @@ const API = {
         } finally { clearTimeout(t); }
     },
 
+    // 带超时的「流式」fetch + 解析 JSON：通过 response.body.getReader() 边下边回报字节进度，
+    // 让大体积的历史归档（data/news.json，当前 3MB+）也能显示真实下载进度，而不是干等转圈。
+    // onProgress(loadedBytes, totalBytes) —— totalBytes 为 0 表示服务端用分块压缩传输、拿不到总大小（此时只能显示已下载量）。
+    async streamFetchJSON(url, timeoutMs, onProgress) {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        try {
+            const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const total = Number(resp.headers.get('content-length')) || 0;
+            const reader = resp.body.getReader();
+            const chunks = [];
+            let loaded = 0;
+            for (;;) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                chunks.push(value);
+                loaded += value.length;
+                if (onProgress) onProgress(loaded, total);
+            }
+            // 合并分片后解析（一次性 JSON.parse 比边下边流式解析更稳）
+            const buf = new Uint8Array(loaded);
+            let pos = 0;
+            for (const c of chunks) { buf.set(c, pos); pos += c.length; }
+            return JSON.parse(new TextDecoder('utf-8').decode(buf));
+        } finally {
+            clearTimeout(t);
+        }
+    },
+
     // ========== 热搜：uapis.cn 格式解析 ==========
     async fetchHotFromUApi(type) {
         const data = await this.fetchJSON(`https://uapis.cn/api/v1/misc/hotboard?type=${type}`);
@@ -182,7 +212,8 @@ const API = {
         { key: 'darkreading', name: 'Dark Reading', color: '#1a1a2e' },
     ],
 
-    async fetchAllTechNews() {
+    async fetchAllTechNews(onProgress) {
+        onProgress = onProgress || (() => {});
         const cacheKey = 'tech_all_v37';
 
         // 先读本地缓存兜底：任何网络异常/超时都至少有一份可见数据，绝不白屏或一直转
@@ -195,39 +226,62 @@ const API = {
                                  // 上限 8000 篇时约 6MB / gzip ~2MB）。实测 CDN 正常回源仅 2.1s，
                                  // 但弱网首屏可能十几秒；归档是看板主体，宁可多等也不要丢，故给到 45s。
                                  // 超时只丢历史归档，实时部分不受影响（两者并行、各自独立超时）。
-        const [liveResp, baseResp] = await Promise.allSettled([
-            this.fetchWithTimeout('/api/news', LIVE_MS),
-            this.fetchWithTimeout('data/news.json', BASE_MS),
-        ]);
 
-        // 1) 实时抓取（刷新时带来最新文章，追加到顶部；失败/超时不影响历史语料）
-        let live = null;
-        if (liveResp.status === 'fulfilled' && liveResp.value && liveResp.value.ok) {
-            try {
-                const d = await liveResp.value.json();
-                if (d && Array.isArray(d.articles)) live = d.articles;
-            } catch (e) { console.warn('实时资讯解析失败，仅展示历史语料:', e.message); }
-        } else {
-            const reason = liveResp.reason && (liveResp.reason.message || liveResp.reason.name);
-            console.warn('实时资讯抓取失败/超时，仅展示历史语料:', reason);
-        }
+        // ---- 进度状态机：实时抓取(小/快) 与 历史归档(大/慢) 并行，各自回报，合成统一进度 ----
+        const prog = { liveDone: false, archStarted: false, archLoaded: 0, archTotal: 0, archKnown: false, merging: false };
+        const fmtMB = (b) => b >= 1048576 ? (b / 1048576).toFixed(2) + ' MB'
+            : b >= 1024 ? (b / 1024).toFixed(0) + ' KB' : b + ' B';
+        const emit = () => {
+            let percent, label, indeterminate = false;
+            if (prog.merging) {
+                percent = 96; label = '正在合并文章、去重并排序…';
+            } else if (prog.archStarted) {
+                if (prog.archKnown && prog.archTotal) {
+                    const frac = Math.min(1, prog.archLoaded / prog.archTotal);
+                    percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
+                    label = `正在下载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                } else {
+                    percent = -1; indeterminate = true; // 服务端分块压缩传输、拿不到总大小 → 走不确定动画 + 已下载量
+                    label = `正在下载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知）`;
+                }
+            } else {
+                percent = prog.liveDone ? 12 : 4;
+                label = prog.liveDone ? '实时资讯已就绪，正在准备历史归档…' : '正在抓取实时科技资讯…';
+            }
+            onProgress({ stage: prog.merging ? 'merge' : (prog.archStarted ? 'archive' : 'live'), label, percent, indeterminate, loaded: prog.archLoaded, total: prog.archTotal });
+        };
+        emit();
 
-        // 2) 历史语料库（用户长期搜集的 news.json，必须完整保留，不得丢弃）
-        let base = [];
-        let baseUpdate = '';
-        if (baseResp.status === 'fulfilled' && baseResp.value && baseResp.value.ok) {
+        // 1) 实时抓取（小体积，先到先渲染；失败不影响历史语料）。完成后回报，让进度条推进到 12%
+        const liveTask = (async () => {
             try {
-                const d = await baseResp.value.json();
-                if (d && Array.isArray(d.articles)) { base = d.articles; baseUpdate = d.updateTime || ''; }
-            } catch (e) { console.warn('历史语料解析失败:', e.message); }
-        } else {
-            const reason = baseResp.reason && (baseResp.reason.message || baseResp.reason.name);
-            console.warn('读取历史语料失败/超时:', reason);
-        }
+                const r = await this.fetchWithTimeout('/api/news', LIVE_MS);
+                if (r && r.ok) {
+                    const d = await r.json();
+                    if (d && Array.isArray(d.articles)) { prog.liveDone = true; emit(); return d.articles; }
+                }
+            } catch (e) { console.warn('实时资讯抓取失败/超时，仅展示历史语料:', e.message); }
+            emit();
+            return null;
+        })();
+
+        // 2) 历史语料库（用户长期搜集的 news.json，必须完整保留）。流式下载，逐字节回报进度
+        const archiveTask = (async () => {
+            try {
+                const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
+                    prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = total; prog.archKnown = !!total; emit();
+                });
+                if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
+            } catch (e) { console.warn('读取历史语料失败/超时:', e.message); }
+            return null;
+        })();
+
+        const [live, base] = await Promise.all([liveTask, archiveTask]);
 
         // 实时与历史都拿不到，但本地有缓存 → 用缓存兜底（至少不白屏/不空转）
         if ((!live || !live.length) && (!base || !base.length) && cached) {
             this.setCache(cacheKey, cached); // 续命缓存 TTL
+            onProgress({ stage: 'done', label: '联网拉取失败，已使用本地缓存展示', percent: 100, indeterminate: false, loaded: 0, total: 0 });
             return cached;
         }
 
@@ -238,7 +292,8 @@ const API = {
         // 真正让数量增长的是服务端：scripts/fetch-news.js 已改为累加归档（每小时并入新文，
         // 上限 8000），data/news.json 会持续变大，前端总数随之自然增长。
         // 这里仍只去掉「同一次实时抓取内」的重复、允许与历史归档重复，以免总量被削。
-        let merged = base.slice();
+        prog.merging = true; emit();
+        let merged = (base && base.articles) ? base.articles.slice() : [];
         if (live && live.length) {
             const seenLive = new Set();
             for (const a of live) {
@@ -253,9 +308,10 @@ const API = {
         if (merged.length > 8000) merged = merged.slice(0, 8000); // 安全上限：每次刷新继续累加，直到 8000
 
         // 刷新过 → 时间记为此刻；实时不可用 → 沿用历史语料的更新时间
-        const updateTime = live && live.length ? new Date().toISOString() : baseUpdate;
-        const payload = { articles: merged, updateTime, live: !!live, baseCount: base.length, liveCount: live ? live.length : 0 };
+        const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
+        const payload = { articles: merged, updateTime, live: !!live, baseCount: (base && base.articles) ? base.articles.length : 0, liveCount: live ? live.length : 0 };
         this.setCache(cacheKey, payload);
+        onProgress({ stage: 'done', label: `加载完成，共 ${merged.length} 篇`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
         return payload;
     }
 };
