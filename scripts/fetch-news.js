@@ -984,7 +984,7 @@ async function fetchGoogleNews(src, existingTitles) {
             // 品玩不在 MONTH_WINDOW，最终仍由主流程窗口裁掉陈旧项。
             if (isNaN(t) || (now - t) > 30 * 86400000) continue;
             // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园/FreeBuf/36氪等）
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao|IT之家)\s*$/i, '').trim();
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao\.com|fengniao|IT之家)\s*$/i, '').trim();
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // keep 白名单：仅站点兜底源配置时用（如蜂鸟网社区杂内容多），标题须命中任一关键词才保留，否则跳过
             if (src.keep && !src.keep.some(k => title.includes(k))) continue;
