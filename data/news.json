@@ -1,7 +1,19 @@
 {
-  "updateTime": "2026-08-05T10:14:11.444Z",
-  "total": 5017,
+  "updateTime": "2026-08-05T10:18:01.463Z",
+  "total": 5037,
   "articles": [
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "AI支出暴增2013%！马斯克原来在给黄仁勋“打工”？",
+      "description": "该季度资本支出高达183.7亿美元，其中AI支出更是同比增长2013%至158.3亿美元（约合人民币1068亿元），叠加即将到来的股票解禁后抛售压力，这都成为投资者主要的担忧点。 不过，马斯克一如既往地乐观预…",
+      "url": "https://www.sohu.com/a/1059030047_115978?scm=10001.341_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-05 10:16",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
     {
       "source": "搜狐科技",
       "sourceColor": "#d8402a",
@@ -13,6 +25,32 @@
         "手机",
         "软件应用",
         "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "REPL — วิธีคุยกับคอมพิวเตอร์ที่ LISP สอนโลก",
+      "description": "คุณเคยนึกไหมว่าก่อนที่จะมี >>> ใน Python, node console, การคุยกับคอมพิวเตอร์มันเป็นยังไง? คำตอบคือ... คุณไม่ได้คุยกับมัน คุณเขียนโปรแกรมทั้งก้อนบน punch card, ยัดเข้าเครื่อง, รอ output ออกมา, แล้วค่อยรู้ว่ามี bug หรือเปล่า REPL เปลี่ยนทั้งหมดนั้น REPL ย่อมาจาก Read-Eval-Print Loop — วงจรง่าย ๆ สี่ขั้นตอน: 1. READ — อ่านสิ่งที่คุณพิมพ์ 2. EVAL — ประมวลผลมัน 3. PRINT — แสดงผลลัพธ์ 4. LOOP — กลับไปรอ input ถัดไป วงจรนี้เกิดจาก LISP ในทศวรรษ 1960s — read, eval, และ print คือ primitive function สามตัวของภาษา เวลาเราเฉลิมฉลอง LISP เรามักพูดถึง garbage collection, lambda, macro — แต่ REPL ต่างออกไป REPL ไม่ใช่ \"feature\"... มันคือ วิธีคิด ลองนึกภาพ programmer ปี 1965: เขียนโค้ดบนกระดาษ เจาะ punch card ยื่นให้ operator รอคิว (อาจเป็นชั่วโมง หรือเป็นวัน) เครื่องรัน ได้ output เจอ bug — กลับไปข้อ 1 นี่คือ batch processing — ทั้งวงการเป็นแบบนี้ ลองเทียบกับวันนี้: คุณพิมพ์ 2 + 2 → enter → 4 ปรากฏในเสี้ยววินาที REPL ทำให้วงจร feedback จาก \"เป็นวัน\" เหลือ \"เป็นวินาที\" นี่คือการเปลี่ยน paradigm ที่ใหญ่กว่า feature ใด ๆ ที่ LISP คิด — มันเปลี่ยนวิธีที่มนุษย์ interact กับคอมพิวเตอร์ จาก \"สั่งแล้วรอ\" เป็น \"สนทนา\" read-eval-print loop ไม่ได้เกิดจาก philosophy หรือ manifesto — มันเกิดจากความจำเป็น AI researchers ที่ MIT กำลังเขียนโปรแกรมที่ต้องลองผิดลองถูกตลอดเวลา เขียนโปรแกรมทั้งก้อนไม่ได้ — เพราะยังไม่รู้ด้วยซ้ำว่าอยากให้มันทำอะไร พวกเขาต้องการ ทดลองทีละ expression — เห็นผลลัพธ์ทันที แล้วปรับสมมติฐาน LISP — ด้วยความที่ทุกอย่างเป็น expression, ทุก expression ให้ผลลัพธ์ — เหมาะกับวิธีนี้อย่างเป็นธรรมชาติ คำว่า \"read-eval-print loop\" ปรากฏครั้งแรกใน MACLISP Reference Manual (1974, David Moon) REPL ไม่ใช่แค่ terminal ที่พิมพ์คำสั่งได้ มันเปลี่ยนวิธีที่เรา: วิธีเก่า วิธี REPL อ่าน documentation → ท่องจำ → เขียน ทดลอง → ดูผล → เข้าใจ รอ compile ทั้งโปรเจกต์ ทดสอบทีละฟังก์ชัน กลัวผิด เพราะแก้ยาก ผิดได้เร็ว แก้ได้เร็ว code คือ artifacts สำเร็จรูป code คือ conversation นี่คือรากฐานของ exploratory programming — ปรัชญาที่บอกว่าเราไม่จำเป็นต้องรู้ทุกอย่างก่อนเริ่มเขียน เราเรียนรู้ระหว่างเขียนได้ REPL ตัวแรกของโลก — read, eval, print ในวงจรอนันต์ Guido van Rossum เริ่มพัฒนา Python ปลายปี 1989 เปิดตัวสู่สาธารณะครั้งแรกในเดือนกุมภาพันธ์ 1991 — REPL (>>>) เป็นส่วนหนึ่งของภาษามาตั้งแต่แรก โดยเอาไอเดียมาจาก LISP และ ABC language (ภาษาที่ Guido ช่วยพัฒนาก่อนหน้านี้) สิ่งที่ Python เพิ่ม: readability — REPL ที่อ่านง่าย, error message ที่มนุษย์เข้าใจ, และ philosophy \"มาเพื่อให้คนเขียน, ไม่ใช่ให้ compiler อ่าน\" Matz สร้าง IRB (Interactive Ruby) — สำหรับคนที่อยากลอง Ruby แบบ real-time (Ruby มี DNA LISP — Matz บอกว่า \"Ruby was a Lisp originally, in theory\") Joe Hewitt สร้าง Firebug extension สำหรับ Firefox — เป็นครั้งแรกที่ browser มี interactive console แบบ REPL: inspect DOM, ทดลอง JavaScript, ดู network request — ทั้งหมดใน browser โดยไม่ต้องเปิด terminal แยก วงการ frontend dev เปลี่ยนไปตลอดกาล Ryan Dahl ให้ JavaScript มี REPL นอก browser — frontend dev สามารถลอง JS แบบ interactive โดยไม่ต้องเปิด browser เลย ทีม Chrome ของ Google ต่อยอดจาก WebKit Inspector (ต้นแบบของ Safari) สร้าง DevTools ที่มี Console ในตัว — แนวคิด interactive debugging ใน browser ที่ Firebug บุกเบิกไว้ กลายเป็น standard ในทุก browser หลังจากนั้น Fernando Pérez ต่อยอด REPL ของ Python ให้เป็น notebook — ผสมโค้ด, ผลลัพธ์, markdown, กราฟ ในหน้าเดียว นี่คือ REPL เวอร์ชันที่สมบูรณ์แบบที่สุดสำหรับ data science Rust — ภาษาที่ compile ช้าเป็นชั่วโมง — มี playground ออนไลน์ที่ทำตัวเป็น REPL: เขียน → รัน → เห็นผล → ปรับ → รันใหม่ — ทั้งหมดใน browser Feedback loop ที่สั้นที่สุดคืออาวุธที่ทรงพลังที่สุด — programmer ที่ทดลองเร็ว เรียนรู้เร็วกว่า programmer ที่รอ compile ภาษาไม่ควร \"ถูกต้องตั้งแต่ compile\" ควร \"เรียนรู้ระหว่างเขียน\" — REPL ทำให้ภาษากลายเป็นเครื่องมือคิด ไม่ใช่แค่เครื่องมือผลิต Simple ideas win — read → eval → print → loop — 4 คำ, 4 ขั้นตอน, เปลี่ยนวิธีมนุษย์เขียนโค้ดไปตลอดกาล อ่านเพิ่ม MACLISP Reference Manual (1974) — ที่มาของคำว่า \"read-eval-print loop\" Paul Graham — \"Revenge of the Nerds\" — \"Lisp was the first language to have an interactive REPL\" Bret Victor — \"Inventing on Principle\" — ทำไม feedback ที่ทันทีถึงเปลี่ยนวิธีเราคิด Jupyter Project — REPL สำหรับ data science 📅 สิงหาคม 2026 | ⚠️ ตรวจสอบข้อมูล ณ วันที่เขียน",
+      "url": "https://dev.to/gophernment/repl-withiikhuykabkhmphiwetrthii-lisp-snolk-31dg",
+      "time": "2026-08-05T10:14:29.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "消息称长鑫拒绝苹果压价，坚持要求内存采购价不低于三星电子和 SK 海力士",
+      "description": "IT之家 8 月 5 日消息，据韩媒《Digital Daily》今日报道，苹果公司近期考虑将中国长鑫存储（CXMT）作为新的供应链以降低成本，但目前在进一步降价谈判中遭遇困难。 报道称，苹果公司曾与长鑫存储就移动 DRAM（包括 LPDDR5X）的供应价格进行谈判，以缓解其下一代 iPhone 和智能设备产品线的制造成本压力，但遭到拒绝。 长鑫存储坚持要求内存采购价格高于或与三星电子或 SK 海力士的报价相近。这意味着，在成品市场拥有强大议价能力的苹果公司，实际上已被长鑫存储的定价策略所阻碍。 报道认为，长鑫存储之所以能够大胆拒绝苹果的降价要求，关键在于华为、小米等中国 IT 巨头的大规模“抢购”。中国成品制造商通过签订长期合同，抢占了长鑫存储的 DRAM 订单，以实现国内市场的自给自足。因此，长鑫存储不再有理由向苹果的降价要求妥协。 值得注意的是，三星电子和 SK 海力士正积极部署超高价值的 AI 内存产品线，例如 HBM4、LPCAMM2 和 eSSD。通过成功重组业务，专注于高价值产品，三星电子和 SK 海力士在下半年与全球大型科技公司进行的长期价格谈判中获得了无可匹敌的定价权。 根据 Counterpoint Research 最新报告，三星电子在 2026 年第二季度全球 DRAM 内存市场的营收占比较 2026Q1 进一步增长 1 个百分点至 39%，而美光的市场占有率已达到 25%，距 26% 的 SK 海力士只有一步之遥。 IT之家注意到，在传统三强之外，另外两家主要 DRAM 制造商长鑫存储和南亚科技在上一季度营收分别同比增长 716% 和 690%。机构认为，长鑫存储跻身 DRAM 第四巨头已成必然，剩下的仅是时间问题。",
+      "url": "https://www.ithome.com/0/986/176.htm",
+      "time": "2026-08-05T10:14:13.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
       ]
     },
     {
@@ -37,6 +75,19 @@
       "time": "2026-08-05T10:12:14.000Z",
       "tags": [
         "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Auditability vs. Forced Determinism : Future of Agentic AI",
+      "description": "Why AI Agents Need the Right Goal, Not an Impossible One This Article is for those who are building Vertical AI Solutions, for those who believe in science and specially for those who believe LLMs with all these generative powers are still scientific inventions and they fall under rules of mathematics and science The Illusion of the AI Hype Cycle Look at the last few YC batches, close to 90% of the companies are AI-driven, and most of them are vertical AI companies: they don’t build the underlying model, they build a layer on top of one, applying it to a specific industry or workflow. Marketing budgets are massive, seed rounds are enormous, and the narrative is being scripted largely by frontier LLM providers whose hundred-billion-dollar valuations depend on keeping the hype alive. I’m a founder building infrastructure in this exact market, and this piece is really about the bet we made, and why we made it instead of chasing the more marketable promise everyone else is selling. Here’s the question nobody in this market wants to answer directly: has anyone built a core AI primitive that is actually deterministic, the same output for the same input, every time, the way traditional APIs have always worked? No. And no amount of RAG, added context, or agentic optimization on top of the model changes that. A History of Patching a Fundamental Flaw I will never discredit that — it remains one of the most astonishing technical breakthroughs of our era. However, as the industry attempted to move from impressive consumer demos to mission-critical enterprise workflows, the core weakness of LLMs became glaringly obvious: their inherent unpredictability. To solve this, the industry went through rapid layers of band-aids: Vector Databases: Tools like Pinecone and Chroma brought semantic search into the spotlight. While useful, vector databases are fundamentally logical evolutions of traditional databases — they simply store mathematical embeddings and allow similarity queries. Retrieval-Augmented Generation (RAG): RAG was hailed as the ultimate cure for LLM hallucinations and memory limits. The promise was simple: restrict the LLM to your custom data boundaries. In practice, enterprises quickly learned that RAG merely reduces hallucinations; it does not eliminate them. Agentic Optimizations: Chaining reasoning steps, adding tool calls, orchestrating multi-agent workflows, these make agents more capable, but every added step is another probabilistic decision, not a step toward predictability. Observability & Open Knowledge Frameworks: Today, market interest has shifted to observability frameworks, knowledge graphs, and initiatives like Google’s Knowledge Graph solutions. Every single one of these top-layer solutions attempts the exact same impossible task: forcing a probabilistic system to behave deterministically. Vertical AI companies are the clearest example of this pattern at scale — they stack RAG, context, and agentic workflows on top of a foundation model, hoping the combination will feel deterministic enough for their customers to trust. It never quite gets there, because the layer isn’t the problem. The model underneath it is. [ Traditional Software ] → Input + Deterministic Code → 100% Predictable Output [ Generative AI Agent ] → Input + Probabilistic LLM → Variable / Evolving Output Why You Cannot Force Determinism on an LLM LLMs are Math, and the Math is Probabilistic At their core, no matter how many hundreds of billions of parameters they have, LLMs perform next-token prediction. They select the statistically most probable answer given a prompt. Probability, by definition, is non-deterministic. Models Continuously Evolve Frontier models are updated, fine-tuned, and retrained constantly. If a model’s underlying parameters or alignment weights change over time, its outputs will inevitably drift, even when presented with identical inputs. Stack a multi-step agent chain with tool calls and accumulating context on top, and the drift compounds with every added layer instead of canceling out. If a system relies on probability and undergoes continuous learning, expecting it to produce rigid, 100% deterministic results is a mathematical contradiction. No stack of tooling on top changes that, it can only ever manage the consequences of it. The Path Forward: From Determinism to Auditability AI is fundamentally reshaping market dynamics, and its leverage is undeniable. However, we need to change our approach. Instead of wasting resources attempting to force non-deterministic models into rigid boxes, we must accept their probabilistic nature and focus on Constrained Reliability through Auditability. You cannot control what you cannot track inside a black box. If you accept that AI agents will drift, evolve, and occasionally make unexpected decisions, the enterprise requirement shifts from predictability to strict auditability and governance. And auditability only works as a continuous process, not a one-time fix. A model that drifts today will drift differently tomorrow, after the next fine-tune, after context windows grow, after agent chains get longer. A one-time audit tells you what happened yesterday. What’s actually needed is a standing process that watches every execution, indefinitely: continuous auditability, paired with human oversight that can intervene before an unexpected decision reaches production, and a feedback loop that keeps improving the system as it evolves. Run that consistently, and the agent doesn’t become deterministic — it stays sound and reliable anyway, in the way that actually matters to an enterprise: you always know what it did, why it did it, and you catch the moments it goes wrong before they cause damage. This is the exact realization that shaped what we built. How ZizkaDB Solves the AI Reliability Problem Source (Github , Cloud) Rather than promising an impossible magic fix that claims to make LLMs 100% deterministic, ZizkaDB is an open-source operational database built specifically for AI agents — providing the continuous state management, behavioral tracing, and auditing infrastructure needed to run autonomous agents safely in production, not as a one-off check but as a standing process. Here is how ZizkaDB tackles the core enterprise agent problem: Causal Lineage & Context Memory (why() and at()) Standard loggers only capture raw input and output, leaving you guessing when an agent makes an erroneous decision. ZizkaDB tracks causal lineage natively (using functions like db.why()). It allows developers to walk backward through an agent’s execution tree to reveal the exact root cause, parent event, and system state at any point in time. Parameter Snapshots & Drift Tracking AI agents change behavior over time as prompt context expands and data accumulates. ZizkaDB records parameter snapshots, context windows, and environmental parameters at execution time. When an agent’s output drifts, you can isolate and inspect the exact temporal context that caused the deviation. Deep Internal Auditing & Human Oversight Instead of treating the agent execution pipeline as a black box, ZizkaDB logs every tool call, context injection, and reasoning step. It integrates seamlessly into production loops with native SDKs for Python, TypeScript, LangChain, CrewAI, and MCP. This visibility allows teams to trigger real-time human oversight before unintended decisions reach production environments — and to keep refining the system continuously as the underlying model keeps changing. Conclusion What we need is pragmatic, robust infrastructure that recognizes AI for what it is: a powerful, probabilistic engine that requires active, continuous governance, not a one-time fix. You cannot make an AI agent strictly deterministic, no matter how many layers you stack on top of it. But with ZizkaDB, you can make it auditable, manageable, and trustworthy enough for the enterprise. Explore the open-source runtime on GitHub or sign up for instant deployment on ZizkaDB Cloud.",
+      "url": "https://dev.to/mir_arshadalitalpur_1b3/auditability-vs-forced-determinism-future-of-agentic-ai-55ae",
+      "time": "2026-08-05T10:11:51.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
       ]
     },
     {
@@ -91,7 +142,7 @@
       "source": "IT之家",
       "sourceColor": "#e13b3f",
       "title": "WPS 超级会员年卡 138 → 63 元：低至 5.25 元 / 月，官方补贴购开启",
-      "description": "WPS 超级会员年卡日常大促价 138 元，今日按下方步骤下单，仅需 63 元年内好价。 分享 3 人领 39 元叠加红包：点此分享 点击下方卡片领 15 元加码券 + 加购物车 1 件 加车后 → 京东 App 搜索“WPS 会员”系统大概率发放立减 21 元 *，实付仅需 63 元： 京东 WPS 超级会员 1 年卡 372 天多重优惠 63 元领 15 元券 *21 元立减由京东系统发放，如果搜索一次不弹出，可不同时段多搜几次。如果就是不弹，可换号尝试。 WPS 超级会员基础套餐比较适合用户个人日常使用，可满足办公以及学习的日常需求，会员权益包括 PDF 权益包、图片权益包、思维导图权益包、模板库权益包、素材库权益包等。 WPS 新版超级会员特权 分享 3 人领 39 元叠加红包：点此分享 点击下方卡片领 15 元加码券 + 加购物车 1 件 加车后 → 京东 App 搜索“WPS 会员”系统大概率发放立减 21 元 *，实付仅需 63 元： 京东 WPS 超级会员 1 年卡 372 天多重优惠 63 元领 15 元券",
+      "description": "WPS 超级会员年卡日常大促价 138 元，今日按下方步骤下单，仅需 63 元年内好价。 分享 3 人领 39 元叠加红包：点此分享 点击下方卡片领 15 元加码券 + 加购物车 1 件 加车后 → 京东 App 搜索“WPS 会员”系统大概率发放立减 21 元优惠 *，实付仅需 63 元： 京东 WPS 超级会员 1 年卡 372 天多重优惠 63 元领 15 元券 *21 元立减由京东系统发放，如果搜索一次不弹出，可不同时段多搜几次。如果就是不弹，可换号尝试。 WPS 超级会员基础套餐比较适合用户个人日常使用，可满足办公以及学习的日常需求，会员权益包括 PDF 权益包、图片权益包、思维导图权益包、模板库权益包、素材库权益包等。 WPS 新版超级会员特权 分享 3 人领 39 元叠加红包：点此分享 点击下方卡片领 15 元加码券 + 加购物车 1 件 加车后 → 京东 App 搜索“WPS 会员”系统大概率发放立减 21 元 *，实付仅需 63 元： 京东 WPS 超级会员 1 年卡 372 天多重优惠 63 元领 15 元券",
       "url": "https://www.ithome.com/0/986/173.htm",
       "time": "2026-08-05T10:09:28.000Z",
       "tags": [
@@ -99,6 +150,18 @@
         "互联网",
         "大公司"
       ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "企业AI落地进入深水区：为什么“本体论+大模型”成为关键",
+      "description": "",
+      "url": "https://news.mydrivers.com/1/1141/1141643.htm",
+      "time": "2026-08-05T10:06:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
     },
     {
       "source": "智能汽车",
@@ -459,6 +522,18 @@
       ]
     },
     {
+      "source": "超能网",
+      "sourceColor": "#00a0e9",
+      "title": "《无尽帝国2》1.0正式版将于9月17日推出：新增可玩派系，同步登陆主机及PC",
+      "description": "《无尽帝国2（ENDLESS Legend 2）》是一款由AMPLITUDE Studios开发、Hooded Horse发布的幻想类策略游戏，去年已经在PC端开启了抢先体验。现在官方宣布，1.0正式版将于2026年9月17日推出，包含了1个新的可游玩派系、2个新的叛乱派系、以及1个新的小派系，同步登陆到XBOX Series X|S、PlayStation 5、以及PC平台。 if (IsMobile()) { jQuery(\"iframe\").attr(\"width\", \"100%\"); jQuery(\"iframe\").attr(\"height\", jQuery(\"#post_body\").width() * 9 / 16); } else jQuery(\"iframe\").attr(\"height\", jQuery(\"#post_body\").width() * 9 / 16 + 120); 手机通道：哔哩哔哩 面对不断退去的海洋与接踵而至的灾变，玩家必须建立并发展由多座城市组成的庞大帝国，在持续变化的地貌上争夺霸权。集结由强大英雄率领的精锐部队，发挥每位英雄独特的属性与技能，并揭开隐藏在这个世界核心深处的秘密。 神秘的塑沙灵将作为游戏的第六个主要派系登场。作为赛亚达最古老的文明，塑沙灵仍然记得这颗星球尚未被海洋覆盖时的模样。将赛亚达重新改造成昔日的沙漠世界，是他们肩负的神圣使命。与《无尽帝国2》中的所有主要派系一样，塑沙灵将通过一条全新的派系任务讲述自己的故事，同时带来全新单位、英雄、技术和特质，其中的特质也将开放给自定义派系创建器使用。 目前《无尽帝国2》在Steam上，国区价格为199元，游戏支持简体中文界面和字幕。",
+      "url": "http://www.expreview.com/107418.html",
+      "time": "2026-08-05T09:50:00.000Z",
+      "tags": [
+        "手机",
+        "游戏"
+      ]
+    },
+    {
       "source": "新品发布",
       "sourceColor": "#ad1457",
       "title": "安全与轻薄新突破 华为MateBook Pro S首发一区双像素技术防窥屏 - 搜狐网",
@@ -653,6 +728,19 @@
       "topic": true
     },
     {
+      "source": "量子位",
+      "sourceColor": "#00796b",
+      "title": "淘天开启2027届应届生招聘：AI技术类岗位占比超9成",
+      "description": "阿里巴巴淘天集团开启2027届应届生招聘。",
+      "url": "https://www.qbitai.com/2026/08/466998.html",
+      "time": "2026-08-05T09:38:49.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - 手机新浪网",
@@ -731,6 +819,18 @@
       ]
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "尊界两款MPV均支持L3级自动驾驶 只待相关法规出台 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059154239_115831?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T09:36:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
       "source": "InfoQ",
       "sourceColor": "#0277bd",
       "title": "FDE 又不够了",
@@ -762,6 +862,17 @@
       "tags": [
         "人工智能",
         "芯片/半导体",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "伊朗称霍尔木兹海峡不会立即开放",
+      "description": "据CCTV国际时讯，伊朗国家电视台今天（8月5日）援引知情人士消息，伊朗与阿曼就霍尔木兹海峡船舶通行安排可能达成的协议，并不意味着海峡将立即恢复开放。消息称，伊朗与阿曼的相关谈判仅涉及双方就船舶通行秩序进行协调，与美国无关。消息人士同时表示，如果美国继续存在伊朗方面所称的“违规行为”，即便伊朗与阿曼达成协议，霍尔木兹海峡也不会恢复开放，其重新开放仍取决于美国改变相关行为并纠正其“违规行为”。 此前，特朗普表示霍尔木兹海峡很快开放，否则伊朗将遭打击。据新华社，在谈及与伊朗方面的接触，特朗普称：“我们的磋商进展非常顺利。伊朗方面不愿承认，你知道这确实让人有些尴尬。你刚对外说我们谈得很好，结果伊朗那边就有人跳出来说‘我们根本没见过面’。这纯粹是假话。他们其实是想达成协议的。” 被问及如果伊朗再次退出谈判美国会如何应对时，特朗普回答说：“他们如果再次反悔，将遭受非常猛烈的打击。”但他同时表示，“希望不要用到它（打击）”。 持续更新中 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3778746",
+      "time": "2026-08-05T09:34:08.000Z",
+      "tags": [
         "科技创投"
       ]
     },
@@ -869,17 +980,6 @@
       "topic": true
     },
     {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "伊朗称霍尔木兹海峡不会立即开放",
-      "description": "据CCTV国际时讯，伊朗国家电视台今天（8月5日）援引知情人士消息，伊朗与阿曼就霍尔木兹海峡船舶通行安排可能达成的协议，并不意味着海峡将立即恢复开放。消息称，伊朗与阿曼的相关谈判仅涉及双方就船舶通行秩序进行协调，与美国无关。消息人士同时表示，如果美国继续存在伊朗方面所称的“违规行为”，即便伊朗与阿曼达成协议，霍尔木兹海峡也不会恢复开放，其重新开放仍取决于美国改变相关行为并纠正其“违规行为”。 此前，特朗普表示霍尔木兹海峡很快开放，否则伊朗将遭打击。据新华社，在谈及与伊朗方面的接触，特朗普称：“我们的磋商进展非常顺利。伊朗方面不愿承认，你知道这确实让人有些尴尬。你刚对外说我们谈得很好，结果伊朗那边就有人跳出来说‘我们根本没见过面’。这纯粹是假话。他们其实是想达成协议的。” 被问及如果伊朗再次退出谈判美国会如何应对时，特朗普回答说：“他们如果再次反悔，将遭受非常猛烈的打击。”但他同时表示，“希望不要用到它（打击）”。 持续更新中 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778746",
-      "time": "2026-08-05T09:31:11.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
       "source": "Android Authority",
       "sourceColor": "#a4c639",
       "title": "I love Google Messages, but I still miss these 5 iMessage features",
@@ -897,6 +997,17 @@
       "time": "2026-08-05T09:30:24.000Z",
       "tags": [
         "电脑硬件"
+      ]
+    },
+    {
+      "source": "Solidot",
+      "sourceColor": "#546e7a",
+      "title": "新药研发推动实验猴价格翻倍",
+      "description": "中国创新药研发快速发展，带动实验猴需求激增、价格接近翻倍，而这造成的供应紧张可能拖慢新药试验进度。今年 6 月一家国家级实验室以每只17.8 万的价格采购 40 只食蟹猴，价格较一年前接近翻倍。下一代癌症疗法开发商 Excalipoint Therapeutics 联合创始人兼首席财务官朱杰伦预计，实验猴明年每只售价可能突破 20 万元，较一两年前的略高于 10 万元接近翻倍。部分药物在获准进入临床试验前，必须通过猴体试验评估安全性。灵长类动物与人类生理结构相近，可用于观察药物在体内的运行及对器官的影响。单个生物药研发项目可能需要十几只至 100 只实验猴。业内人士和分析师指出，实验猴养殖场供应总体稳定，价格上涨主要是因为生物药和下一代疗法大量涌现，导致涉及灵长类动物的试验需求远超现有承载能力。目前中国约占全球创新药研发管线的三分之一，并已成为全球临床试验的首要目的地。",
+      "url": "https://www.solidot.org/story?sid=85014",
+      "time": "2026-08-05T09:30:01.000Z",
+      "tags": [
+        "科技创投"
       ]
     },
     {
@@ -923,17 +1034,6 @@
         "手机",
         "游戏",
         "智能硬件"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "淘天开启2027届应届生招聘：AI技术类岗位占比超9成",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316216",
-      "time": "2026-08-05T09:27:26.000Z",
-      "tags": [
-        "人工智能"
       ]
     },
     {
@@ -1312,19 +1412,6 @@
       ]
     },
     {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "华为余承东：内存高昂涨价，手机之后可能都要大规模涨价",
-      "description": "8月5日下午，华为常务董事、产品投资评审委员会主任、终端BG董事长余承东在华为新品发布会上表示，内存高昂涨价，所有的手机之后可能都要大规模涨价，否则在原来的价格都是亏损销售。 本文来源：界面新闻 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778743",
-      "time": "2026-08-05T09:08:11.000Z",
-      "tags": [
-        "手机",
-        "电脑硬件",
-        "大公司"
-      ]
-    },
-    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "Claude Code Subagents: Setup, Config, and When to Use Them",
@@ -1412,6 +1499,19 @@
         "新能源/电动车"
       ],
       "topic": true
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "华为余承东：内存高昂涨价，手机之后可能都要大规模涨价",
+      "description": "8月5日下午，华为常务董事、产品投资评审委员会主任、终端BG董事长余承东在华为新品发布会上表示，内存高昂涨价，所有的手机之后可能都要大规模涨价，否则在原来的价格都是亏损销售。（界面新闻） 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3778743",
+      "time": "2026-08-05T09:04:47.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "大公司"
+      ]
     },
     {
       "source": "IT之家",
@@ -4740,7 +4840,7 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "台积电扩大AI芯片CoW封装外包，产能瓶颈有望缓解",
-      "description": "台积电正将旗下AI芯片核心封装工序向外包厂商大幅开放，此举被视为应对持续供应瓶颈的关键举措，并有望带动半导体后道工序设备投资浪潮。 据韩国《电子新闻》报道，台积电已决定将CoWoS封装技术中的CoW（Chip on Wafer）工序额外委托给日月光集团等OSAT（半导体外包封装测试）企业生产。此前，台积电在CoW环节的外包规模相当有限，此次扩大外包标志着策略性转变。相关OSAT企业正积极推进新生产线的设备采购，据悉已与韩国本土材料、零部件及设备企业展开采购订单（PO）磋商。 此次外包扩大预计将直接拉动后道工序设备需求，尤其是晶圆及中介层切割、键合（Bonding）等工序的设备投资有望集中放量，韩国本土设备厂商或从中受益。 CoWoS技术架构：CoW是核心瓶颈所在 CoWoS是台积电的2.5D封装技术，专用于AI芯片制造。其工艺流程是以GPU等AI处理器（SoC）为核心，在其周围配置高带宽内存（HBM），并通过中介层（Interposer）将两者互联。 台积电将芯片与中介层的贴合工序称为CoW，将中介层与主基板接合的工序称为WoS（Wafer on Substrate）。此前，台积电主要将WoS工序委托外包，ASE、Amkor、SPIL等企业已获得台积电技术授权并承接相关生产。CoW工序虽有部分外包，但规模极为有限。 此次台积电大幅扩大CoW外包，根本驱动力在于AI芯片需求的持续爆发。以英伟达为首的全球AI芯片设计公司（Fabless）需求旺盛，与此同时，AI数据中心运营商也纷纷自主研发并部署定制芯片，令整体需求急剧攀升。 台积电目前估计占据全球AI芯片制造市场约90%的份额。然而，即便台积电持续加大封装产能投资，封装环节的瓶颈问题仍未得到根本解决。一位业内人士表示，\"此次扩大外包，是台积电在市场需求持续扩大背景下，联合主要合作OSAT共同提升产能的积极尝试。\" 韩国设备厂商迎来订单机会 随着承接CoW工序的OSAT企业加快设备投资，韩国后道工序设备产业链有望获得直接受益。据多位韩国设备业界人士透露，目前激光加工与键合领域的CoW专用设备供应谈判正在推进中，投资重点预计集中于晶圆及中介层切割和键合工序。 具体投资规模目前尚未对外披露，但业界预期相关OSAT企业将大幅扩充现有产能，由此带来的设备采购需求规模可观。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "台积电正将旗下AI芯片核心封装工序向外包厂商大幅开放，此举被视为应对持续供应瓶颈的关键举措，并有望带动半导体后道工序设备投资浪潮。 据韩国《电子新闻》报道，台积电已决定将CoWoS封装技术中的CoW（Chip on Wafer）工序额外委托给日月光集团等OSAT（半导体外包封装测试）企业生产。此前，台积电在CoW环节的外包规模相当有限，此次扩大外包标志着策略性转变。相关OSAT企业正积极推进新生产线的设备采购，据悉已与韩国本土材料、零部件及设备企业展开采购订单（PO）磋商。 此次外包扩大预计将直接拉动后道工序设备需求，尤其是晶圆及中介层切割、键合（Bonding）等工序的设备投资有望集中放量，韩国本土设备厂商或从中受益。 CoWoS技术架构：CoW是核心瓶颈所在 CoWoS是台积电的2.5D封装技术，专用于AI芯片制造。其工艺流程是以GPU等AI处理器（SoC）为核心，在其周围配置高带宽内存（HBM），并通过中介层（Interposer）将两者互联。 台积电将芯片与中介层的贴合工序称为CoW，将中介层与主基板接合的工序称为WoS（Wafer on Substrate）。此前，台积电主要将WoS工序委托外包，日月光、Amkor、矽品等企业已获得台积电技术授权并承接相关生产。CoW工序虽有部分外包，但规模极为有限。 此次台积电大幅扩大CoW外包，根本驱动力在于AI芯片需求的持续爆发。以英伟达为首的全球AI芯片设计公司（Fabless）需求旺盛，与此同时，AI数据中心运营商也纷纷自主研发并部署定制芯片，令整体需求急剧攀升。 台积电目前估计占据全球AI芯片制造市场约90%的份额。然而，即便台积电持续加大封装产能投资，封装环节的瓶颈问题仍未得到根本解决。一位业内人士表示，\"此次扩大外包，是台积电在市场需求持续扩大背景下，联合主要合作OSAT共同提升产能的积极尝试。\" 韩国设备厂商迎来订单机会 随着承接CoW工序的OSAT企业加快设备投资，韩国后道工序设备产业链有望获得直接受益。据多位韩国设备业界人士透露，目前激光加工与键合领域的CoW专用设备供应谈判正在推进中，投资重点预计集中于晶圆及中介层切割和键合工序。 具体投资规模目前尚未对外披露，但业界预期相关OSAT企业将大幅扩充现有产能，由此带来的设备采购需求规模可观。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3778729",
       "time": "2026-08-05T07:05:17.000Z",
       "tags": [
@@ -5164,7 +5264,7 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "中信证券：AI驱动光模块升级，测试设备高速成长",
-      "description": "2023年以来AI人工智能高速发展驱动光模块技术更新迭代，光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级，叠加AI算力基础设施快速扩张，驱动光模块测试设备“量价齐升”。目前国际厂商仍然在1.6T高端市场相对领先，但国内企业正加速追赶，差距不断缩小。我们看好国产光模块行业长期发展以及高端光模块测试设备国产替代趋势。 全球高速数通光模块需求受AI驱动快速增长。 AI人工智能高速发展驱动光模块技术更新迭代，数据中心对光模块大带宽、低延时等性能提出了更高要求，2023年以来在AI影响下光模块更新迭代周期由过去的3-4年缩短至1~2年左右。Light Counting测算，目前数据中心已成为光模块主要应用场景，占整个光模块市场比例超60%，2023年全球数通光模块市场规模达62.5亿美元，预计2029年有望达258亿美元，对应2024~29年CAGR达27%。 光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级。 从400G到3.2T，光模块每一次速率翻倍，调制方式、信号带宽、通道密度和测试复杂度均呈非线性增长，直接推升测试设备的速率门槛、通道数和单机价值量。另外，随着硅光方案、CPO架构等新技术迭代，测试界面从“封装后”前移到“晶圆级”，催生全新的硅光晶圆测试、CoC（芯片上载板）测试、KGD（已知良品芯片）分选等需求。 AI算力基础设施快速扩张叠加光模块测试设备迭代升级共同推动光模块测试设备“量价齐升”。 我们预测2027~28年，全球数通光模块出货量分别达1.3亿/1.68亿只，其中1.6T光模块有望接力800G成为主流，2027~28年速率在800G及以上的光模块需求占比分别达96.2%/98.2%。受益于数据中心加速建设以及光通信技术快速迭代，光模块测试设备“量价齐升”，我们预测2026~28年全球数通光模块测试设备市场空间分别达98.9亿、185.8亿、229.0亿元，分别同比增长196.1%、87.9%、23.3%。 光模块测试设备领域呈现出国际厂商高端市场相对领先，国内企业加速突破的竞争格局。 海外厂商方面，Keysight、Tektronix、Anritsu、EXFO、VIAVI等企业凭借长期技术积累，在高速示波器、误码率分析仪、网络测试仪、光通信协议测试等领域保持领先。同时，Advantest、Teradyne、FormFactor等半导体测试设备厂商正在向硅光晶圆和CPO测试领域延伸。 国内企业方面，近年来国产光通信测试设备产业链持续完善，联讯仪器、菲莱科技（日联科技收购）、普赛斯（华兴源创收购）、伽蓝特、广立微等企业围绕高速通信测试、光模块测试系统、晶圆级测试和可靠性测试展开布局，加速实现国产替代。 2023年以来AI人工智能高速发展驱动光模块技术更新迭代，光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级，叠加AI算力基础设施快速扩张，驱动光模块测试设备“量价齐升”，高端领域国产替代加速。我们看好国产光模块行业长期发展以及高端光模块测试设备国产替代趋势。 来源：中信证券研究 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "2023年以来AI人工智能高速发展驱动光模块技术更新迭代，光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级，叠加AI算力基础设施快速扩张，驱动光模块测试设备“量价齐升”。目前国际厂商仍然在1.6T高端市场相对领先，但国内企业正加速追赶，差距不断缩小。我们看好国产光模块行业长期发展以及高端光模块测试设备国产替代趋势。 全球高速数通光模块需求受AI驱动快速增长 AI人工智能高速发展驱动光模块技术更新迭代，数据中心对光模块大带宽、低延时等性能提出了更高要求，2023年以来在AI影响下光模块更新迭代周期由过去的3-4年缩短至1~2年左右。Light Counting测算，目前数据中心已成为光模块主要应用场景，占整个光模块市场比例超60%，2023年全球数通光模块市场规模达62.5亿美元，预计2029年有望达258亿美元，对应2024~29年CAGR达27%。 光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级 从400G到3.2T，光模块每一次速率翻倍，调制方式、信号带宽、通道密度和测试复杂度均呈非线性增长，直接推升测试设备的速率门槛、通道数和单机价值量。另外，随着硅光方案、CPO架构等新技术迭代，测试界面从“封装后”前移到“晶圆级”，催生全新的硅光晶圆测试、CoC（芯片上载板）测试、KGD（已知良品芯片）分选等需求。 AI算力基础设施快速扩张叠加光模块测试设备迭代升级共同推动光模块测试设备“量价齐升” 我们预测2027~28年，全球数通光模块出货量分别达1.3亿/1.68亿只，其中1.6T光模块有望接力800G成为主流，2027~28年速率在800G及以上的光模块需求占比分别达96.2%/98.2%。受益于数据中心加速建设以及光通信技术快速迭代，光模块测试设备“量价齐升”，我们预测2026~28年全球数通光模块测试设备市场空间分别达98.9亿、185.8亿、229.0亿元，分别同比增长196.1%、87.9%、23.3%。 光模块测试设备领域呈现出国际厂商高端市场相对领先，国内企业加速突破的竞争格局 海外厂商方面，Keysight、Tektronix、Anritsu、EXFO、VIAVI等企业凭借长期技术积累，在高速示波器、误码率分析仪、网络测试仪、光通信协议测试等领域保持领先。同时，Advantest、Teradyne、FormFactor等半导体测试设备厂商正在向硅光晶圆和CPO测试领域延伸。 国内企业方面，近年来国产光通信测试设备产业链持续完善，联讯仪器、菲莱科技（日联科技收购）、普赛斯（华兴源创收购）、伽蓝特、广立微等企业围绕高速通信测试、光模块测试系统、晶圆级测试和可靠性测试展开布局，加速实现国产替代。 2023年以来AI人工智能高速发展驱动光模块技术更新迭代，光芯片速率升级、硅光集成与CPO架构等新技术共同驱动光模块测试设备迭代升级，叠加AI算力基础设施快速扩张，驱动光模块测试设备“量价齐升”，高端领域国产替代加速。我们看好国产光模块行业长期发展以及高端光模块测试设备国产替代趋势。 来源：中信证券研究 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3778730",
       "time": "2026-08-05T06:51:42.000Z",
       "tags": [
@@ -7390,6 +7490,17 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "NordVPN Coupons: 75% Off, Plus 3 Months Free in August 2026",
+      "description": "Save up to 77% on 2-year plans and get 3 free months with our NordVPN discount codes.",
+      "url": "https://www.wired.com/story/nordvpn-coupon/",
+      "time": "2026-08-05T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Meta Quest Promo Codes and Coupons for August 2026",
       "description": "Experience cutting-edge VR and save up to 20% with coupons for the latest games, Meta Quest 3, Ray-Ban AI glasses, and more deals.",
       "url": "https://www.wired.com/story/meta-quest-promo-code/",
@@ -7409,17 +7520,6 @@
       "time": "2026-08-05T05:00:00.000Z",
       "tags": [
         "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "NordVPN Coupons: 75% Off, Plus 3 Months Free in August 2026",
-      "description": "Save up to 77% on 2-year plans and get 3 free months with our NordVPN discount codes.",
-      "url": "https://www.wired.com/story/nordvpn-coupon/",
-      "time": "2026-08-05T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
       ]
     },
     {
@@ -7472,18 +7572,18 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
-      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
-      "url": "https://www.wired.com/story/vitamix-promo-code/",
+      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
+      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
+      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
-      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
-      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
+      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
+      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
+      "url": "https://www.wired.com/story/vitamix-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
@@ -14213,6 +14313,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "色彩丰富！尼康D700单反非官方样张欣赏",
+      "description": "",
+      "url": "https://info.fengniao.com/100/pic_1004025_5.html",
+      "time": "2026-08-04T22:59:41.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "色彩丰富！尼康D700单反非官方样张欣赏 - fengniao.com",
       "description": "",
       "url": "https://info.fengniao.com/100/pic_1004025_5.html",
@@ -17494,6 +17603,15 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "弘卓资本新一期科技基金完成首关",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimhiec5151349.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "新浪科技",
@@ -22116,6 +22234,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "松下Lumix DMC-TZ3GK精美样片欣赏",
+      "description": "",
+      "url": "https://info.fengniao.com/53/pic_531543_5.html",
+      "time": "2026-08-04T12:05:19.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "松下Lumix DMC-TZ3GK精美样片欣赏 - fengniao.com",
       "description": "",
       "url": "https://info.fengniao.com/53/pic_531543_5.html",
@@ -23103,6 +23230,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "全景摄影拍摄心得大片是怎样炼成的？",
+      "description": "",
+      "url": "https://image.fengniao.com/535/pic_5356980_1.html",
+      "time": "2026-08-04T10:40:03.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "全景摄影拍摄心得大片是怎样炼成的？ - fengniao.com",
       "description": "",
       "url": "https://image.fengniao.com/535/pic_5356980_1.html",
@@ -24028,6 +24164,15 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
+      "title": "理光 GR DIGITAL 光学取景器",
+      "description": "",
+      "url": "https://product.fengniao.com/1069_151930/image.html",
+      "time": "2026-08-04T09:38:48.000Z",
+      "tags": []
     },
     {
       "source": "蜂鸟网",
@@ -26425,17 +26570,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Instacart Promo Code: $15 Off | August 2026",
-      "description": "Find the best Instacart promo code for massive savings in August 2026.",
-      "url": "https://www.wired.com/story/instacart-promo/code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Lowe’s Promo Codes and Deals: Up to $300 Off Appliances",
       "description": "Find the latest Lowe’s promo codes and offers, including up to $300 off select major appliances and $5 off $50 with sign-up, here at WIRED.",
       "url": "https://www.wired.com/story/lowes-promo-code/",
@@ -26447,12 +26581,34 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Instacart Promo Code: $15 Off | August 2026",
+      "description": "Find the best Instacart promo code for massive savings in August 2026.",
+      "url": "https://www.wired.com/story/instacart-promo/code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Expedia Coupons: 40% Off",
       "description": "Book your next getaway with Expedia and get up to 75% off your stay, with or without a promo code.",
       "url": "https://www.wired.com/story/expedia-coupon/",
       "time": "2026-08-04T05:00:00.000Z",
       "tags": [
         "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "20% Off Sephora Promo Code | August 2026",
+      "description": "Earn more points on skincare purchases when you use our Sephora coupon.",
+      "url": "https://www.wired.com/story/sephora-promo-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -26480,17 +26636,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Best Buy Discount Codes: Up to 60% Off",
-      "description": "Find the latest Best Buy promo codes and offers, including 10% back in rewards for new cardmembers and free 2-day shipping with My Best Buy Plus, here at WIRED.",
-      "url": "https://www.wired.com/story/best-buy-discount-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Wayfair Coupons: Up to 80% Off August 2026",
       "description": "Get 10% off with Wayfair promo code, up to 80% off furniture, and more top coupons.",
       "url": "https://www.wired.com/story/wayfair-promo-code/",
@@ -26502,18 +26647,21 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Nomad Goods Promo Codes: Get 25% Off in August 2026",
-      "description": "Save up to 25% on Nomad Goods accessories such as Nomad phone cases, Nomad wallets, and more in August 2026.",
-      "url": "https://www.wired.com/story/nomad-discount-code/",
+      "title": "We-Vibe Discount Codes and Deals: Up to 60% Off",
+      "description": "Save on We-Vibe, including app-controlled bestsellers and popular gift sets designed for couples, connection, and shared pleasure.",
+      "url": "https://www.wired.com/story/we-vibe-discount-code/",
       "time": "2026-08-04T05:00:00.000Z",
-      "tags": []
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "20% Off Sephora Promo Code | August 2026",
-      "description": "Earn more points on skincare purchases when you use our Sephora coupon.",
-      "url": "https://www.wired.com/story/sephora-promo-code/",
+      "title": "Best Buy Discount Codes: Up to 60% Off",
+      "description": "Find the latest Best Buy promo codes and offers, including 10% back in rewards for new cardmembers and free 2-day shipping with My Best Buy Plus, here at WIRED.",
+      "url": "https://www.wired.com/story/best-buy-discount-code/",
       "time": "2026-08-04T05:00:00.000Z",
       "tags": [
         "智能硬件"
@@ -26534,14 +26682,11 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "We-Vibe Discount Codes and Deals: Up to 60% Off",
-      "description": "Save on We-Vibe, including app-controlled bestsellers and popular gift sets designed for couples, connection, and shared pleasure.",
-      "url": "https://www.wired.com/story/we-vibe-discount-code/",
+      "title": "Nomad Goods Promo Codes: Get 25% Off in August 2026",
+      "description": "Save up to 25% on Nomad Goods accessories such as Nomad phone cases, Nomad wallets, and more in August 2026.",
+      "url": "https://www.wired.com/story/nomad-discount-code/",
       "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "智能硬件"
-      ]
+      "tags": []
     },
     {
       "source": "Wired",
@@ -26569,28 +26714,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Target Promo Code: $50 Off | August 2026",
-      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
-      "url": "https://www.wired.com/story/target-promo-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Uplift Promo Codes: $570 Off",
-      "description": "Upgrade your home office with the best Uplift Desk discount codes. Save on standing desks, ergonomic chairs, and accessories during the Spring Setup Sale.",
-      "url": "https://www.wired.com/story/uplift-desk-coupon-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Bartesian Discount Codes: 35% Off",
       "description": "Upgrade your home bar with the latest Bartesian coupon codes and discounts. Save on the Professional Cocktail Maker, enjoy subscription discounts, and get free shipping on your favorite capsules.",
       "url": "https://www.wired.com/story/bartesian-discount-code/",
@@ -26603,11 +26726,33 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Target Promo Code: $50 Off | August 2026",
+      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
+      "url": "https://www.wired.com/story/target-promo-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Litter-Robot Promo Codes: Up to $150 Off",
       "description": "Get the latest Litter-Robot Discounts on Litter-Robot self-cleaning litter boxes, accessories, and more.",
       "url": "https://www.wired.com/story/litter-robot-promo-code/",
       "time": "2026-08-04T05:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Uplift Promo Codes: $570 Off",
+      "description": "Upgrade your home office with the best Uplift Desk discount codes. Save on standing desks, ergonomic chairs, and accessories during the Spring Setup Sale.",
+      "url": "https://www.wired.com/story/uplift-desk-coupon-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
     },
     {
       "source": "AI大模型",
@@ -28586,6 +28731,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "【人物评论】亚当-弗斯：回归原点的影像",
+      "description": "",
+      "url": "https://image.fengniao.com/299/pic_2990769_3.html",
+      "time": "2026-08-03T20:07:01.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "【人物评论】亚当-弗斯：回归原点的影像 - fengniao.com",
       "description": "",
       "url": "https://image.fengniao.com/299/pic_2990769_3.html",
@@ -29023,6 +29177,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "谈黄金分割与摄影构图",
+      "description": "",
+      "url": "https://image.fengniao.com/91/pic_914702_1.html",
+      "time": "2026-08-03T18:00:15.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "谈黄金分割与摄影构图 - fengniao.com",
       "description": "",
       "url": "https://image.fengniao.com/91/pic_914702_1.html",
@@ -29231,6 +29394,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "已选择： 数码后背 松下(Panasonic) 1/1.7英寸 720p高清视频 电子取景器 Wi-Fi连接 清空",
+      "description": "",
+      "url": "https://product.fengniao.com/1053/84_0_4_0_3_2_0_1.html",
+      "time": "2026-08-03T16:37:32.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "已选择： 数码后背 松下(Panasonic) 1/1.7英寸 720p高清视频 电子取景器 Wi-Fi连接 清空 - fengniao.com",
       "description": "",
       "url": "https://product.fengniao.com/1053/84_0_4_0_3_2_0_1.html",
@@ -29397,31 +29569,6 @@
       "url": "https://www.androidauthority.com/sony-wh-1000xm6-new-color-variant-3693875/",
       "time": "2026-08-03T16:00:40.000Z",
       "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "四十年游戏与AI同行，\"可以玩的游戏史\"互动展在沪举行",
-      "description": "中国音数协游戏博物馆举办“可以玩的游戏史：游戏赋能AI”展，回顾游戏与AI四十年共生历程，通过互动体验展现AI技术演进。",
-      "url": "https://www.donews.com/news/detail/3/6657872.html",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "\"可以玩的游戏史：游戏赋能AI\"互动展落地上海，两天吸引超400名观众上手体验",
-      "description": "“可以玩的游戏史：游戏赋能AI”互动展在上海举办，两天吸引400余人体验，通过试玩经典游戏展现AI与游戏四十年互促发展。",
-      "url": "https://www.donews.com/news/detail/3/6657870.html",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏",
-        "测评/新品"
-      ]
     },
     {
       "source": "新浪科技",
@@ -29658,6 +29805,31 @@
       "tags": [
         "手机",
         "大公司"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "四十年游戏与AI同行，\"可以玩的游戏史\"互动展在沪举行",
+      "description": "中国音数协游戏博物馆举办“可以玩的游戏史：游戏赋能AI”展，回顾游戏与AI四十年共生历程，通过互动体验展现AI技术演进。",
+      "url": "https://www.donews.com/news/detail/3/6657872.html",
+      "time": "2026-08-03T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "\"可以玩的游戏史：游戏赋能AI\"互动展落地上海，两天吸引超400名观众上手体验",
+      "description": "“可以玩的游戏史：游戏赋能AI”互动展在上海举办，两天吸引400余人体验，通过试玩经典游戏展现AI与游戏四十年互促发展。",
+      "url": "https://www.donews.com/news/detail/3/6657870.html",
+      "time": "2026-08-03T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "测评/新品"
       ]
     },
     {
@@ -30651,6 +30823,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "已选择： 数码后背 爱普生(EPSON) 1000~3000元 1/1.7英寸 2400万像素以上 清空",
+      "description": "",
+      "url": "https://product.fengniao.com/1053/94_2_4_1_0_0_0_0.html",
+      "time": "2026-08-03T12:40:30.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "已选择： 数码后背 爱普生(EPSON) 1000~3000元 1/1.7英寸 2400万像素以上 清空 - fengniao.com",
       "description": "",
       "url": "https://product.fengniao.com/1053/94_2_4_1_0_0_0_0.html",
@@ -31119,6 +31300,18 @@
         "软件应用"
       ],
       "topic": true
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
+      "title": "荣耀将阿莱电影工作流融入机器人手机",
+      "description": "",
+      "url": "https://qsy.fengniao.com/538/pic_5382903_3.html",
+      "time": "2026-08-03T10:36:30.000Z",
+      "tags": [
+        "手机",
+        "智能硬件"
+      ]
     },
     {
       "source": "蜂鸟网",
@@ -33931,18 +34124,6 @@
       "topic": true
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "两大存储芯片巨头，盘初大跌 - 东方财富",
-      "description": "",
-      "url": "http://stock.eastmoney.com/a/202608033829248052.html",
-      "time": "2026-08-03T00:42:33.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "爱范儿",
       "sourceColor": "#d4233a",
       "title": "早报｜MacBook Air严重缺货/OpenAI新模型突破10项菲尔兹奖级难题/微信地震预警能力迎来更新",
@@ -34312,7 +34493,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "两大存储芯片巨头，盘初大跌 - stock.eastmoney.com",
+      "title": "两大存储芯片巨头，盘初大跌 - 东方财富",
       "description": "",
       "url": "http://stock.eastmoney.com/a/202608033829248052.html",
       "time": "2026-08-02T16:02:33.000Z",
@@ -34322,15 +34503,16 @@
       "topic": true
     },
     {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "消息称网易《剑心雕龙》项目组解散",
-      "description": "网易《剑心雕龙》项目组在上海徐汇滨江正式解散，内部未公开，项目编号已无法检索到相关员工。",
-      "url": "https://www.donews.com/news/detail/3/6656873.html",
-      "time": "2026-08-02T16:00:00.000Z",
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "两大存储芯片巨头，盘初大跌 - stock.eastmoney.com",
+      "description": "",
+      "url": "http://stock.eastmoney.com/a/202608033829248052.html",
+      "time": "2026-08-02T16:02:33.000Z",
       "tags": [
-        "大公司"
-      ]
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "DoNews",
@@ -34401,6 +34583,17 @@
       "url": "https://finance.sina.com.cn/tech/it/2026-08-03/doc-inikzuym5970524.shtml",
       "time": "2026-08-02T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "消息称网易《剑心雕龙》项目组解散",
+      "description": "网易《剑心雕龙》项目组在上海徐汇滨江正式解散，内部未公开，项目编号已无法检索到相关员工。",
+      "url": "https://www.donews.com/news/detail/3/6656873.html",
+      "time": "2026-08-02T16:00:00.000Z",
+      "tags": [
+        "大公司"
+      ]
     },
     {
       "source": "新浪科技",
@@ -34477,6 +34670,15 @@
         "大公司"
       ],
       "topic": true
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
+      "title": "连日高温难挡似火热情P&I上海国际影像器材展圆满落幕",
+      "description": "",
+      "url": "https://info.fengniao.com/534/pic_5345816_13.html",
+      "time": "2026-08-02T15:46:44.000Z",
+      "tags": []
     },
     {
       "source": "蜂鸟网",
@@ -34613,6 +34815,15 @@
     {
       "source": "蜂鸟网",
       "sourceColor": "#ff8c00",
+      "title": "美国大兵镜头里的影像找寻1945年福州记忆",
+      "description": "",
+      "url": "https://travel.fengniao.com/263/pic_2634325_3.html",
+      "time": "2026-08-02T12:29:45.000Z",
+      "tags": []
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
       "title": "美国大兵镜头里的影像找寻1945年福州记忆 - fengniao.com",
       "description": "",
       "url": "https://travel.fengniao.com/263/pic_2634325_3.html",
@@ -34663,6 +34874,17 @@
       "tags": [
         "人工智能",
         "大公司"
+      ]
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
+      "title": "手机遥控相机品色BG100蓝牙遥控器试用",
+      "description": "",
+      "url": "https://jjb.fengniao.com/423/pic_4237753_2.html",
+      "time": "2026-08-02T11:57:57.000Z",
+      "tags": [
+        "手机"
       ]
     },
     {
@@ -35946,19 +36168,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "Marvelous 与腾讯解除资本业务合作，《牧场物语》移动端新作被砍",
-      "description": "腾讯子公司解除与Marvelous资本合作，持股将从20.01%降至0.99%；《牧场物语》手游开发终止，IP授权等业务合作仍存。",
-      "url": "https://www.donews.com/news/detail/3/6655105.html",
-      "time": "2026-07-31T16:00:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "零跑7月交付达101267台，同比增长翻倍，成首个月销十万新势力",
       "description": "零跑汽车2026年7月交付101267台，同比增长102%，成首家单月破10万的造车新势力；依托全域自研与四大产品矩阵，持续领跑新能源市场。",
       "url": "https://www.donews.com/news/detail/7/6654979.html",
@@ -35977,6 +36186,19 @@
       "time": "2026-07-31T16:00:00.000Z",
       "tags": [
         "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "Marvelous 与腾讯解除资本业务合作，《牧场物语》移动端新作被砍",
+      "description": "腾讯子公司解除与Marvelous资本合作，持股将从20.01%降至0.99%；《牧场物语》手游开发终止，IP授权等业务合作仍存。",
+      "url": "https://www.donews.com/news/detail/3/6655105.html",
+      "time": "2026-07-31T16:00:00.000Z",
+      "tags": [
+        "互联网",
+        "大公司",
+        "智能硬件"
       ]
     },
     {
@@ -37355,6 +37577,15 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "埃安发布全新车系Ray，打造年轻人的超级纯电轿车Ray 7",
+      "description": "埃安发布全新车系Ray，打造年轻人的超级纯电轿车Ray 7",
+      "url": "https://www.donews.com/news/detail/7/6650625.html",
+      "time": "2026-07-28T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "卡普空 2026 财年 Q1 数字版销量占比超 93%，营业利润同比增长 66.9% 至 410 亿日元",
       "description": "卡普空2026财年Q1数字版销量占比93.3%，PC平台占60.4%；营收704.1亿日元，同比增长54.7%；《生化危机》系列及《鬼泣5》销量强劲。",
       "url": "https://www.donews.com/news/detail/3/6650564.html",
@@ -37362,28 +37593,6 @@
       "tags": [
         "科技创投"
       ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "荣耀将阿莱电影工作流融入机器人手机",
-      "description": "荣耀影像技术发布会在浙江横店国际马戏城举办。",
-      "url": "https://www.donews.com/news/detail/5/6651106.html",
-      "time": "2026-07-28T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "测评/新品",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "埃安发布全新车系Ray，打造年轻人的超级纯电轿车Ray 7",
-      "description": "埃安发布全新车系Ray，打造年轻人的超级纯电轿车Ray 7",
-      "url": "https://www.donews.com/news/detail/7/6650625.html",
-      "time": "2026-07-28T16:00:00.000Z",
-      "tags": []
     },
     {
       "source": "新品发布",
@@ -37394,6 +37603,18 @@
       "time": "2026-07-28T15:44:50.000Z",
       "tags": [
         "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "重大突破：中国开始批量生产自主研发的DUV光刻机 - dw.com",
+      "description": "",
+      "url": "https://www.dw.com/zh/%E9%87%8D%E5%A4%A7%E7%AA%81%E7%A0%B4%E4%B8%AD%E5%9B%BD%E5%BC%80%E5%A7%8B%E6%89%B9%E9%87%8F%E7%94%9F%E4%BA%A7%E8%87%AA%E4%B8%BB%E7%A0%94%E5%8F%91%E7%9A%84duv%E5%85%89%E5%88%BB%E6%9C%BA/a-78147083",
+      "time": "2026-07-28T13:35:24.000Z",
+      "tags": [
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -37533,18 +37754,6 @@
       "topic": true
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "重大突破：中国开始批量生产自主研发的DUV光刻机 - dw.com",
-      "description": "",
-      "url": "https://www.dw.com/zh/%E9%87%8D%E5%A4%A7%E7%AA%81%E7%A0%B4%E4%B8%AD%E5%9B%BD%E5%BC%80%E5%A7%8B%E6%89%B9%E9%87%8F%E7%94%9F%E4%BA%A7%E8%87%AA%E4%B8%BB%E7%A0%94%E5%8F%91%E7%9A%84duv%E5%85%89%E5%88%BB%E6%9C%BA/a-78147083",
-      "time": "2026-07-28T07:00:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "“新能源车只能开1.8年”？乌龙背后的耐久焦虑 - 新华网客户端",
@@ -37669,31 +37878,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "团结引擎2.0发布，Unity中国以AI智能体重构游戏开发工作流",
-      "description": "Unity中国发布团结引擎2.0，重构底层架构，新增三大主机支持，集成AI Agent Codely，打造AI原生游戏生产基础设施。",
-      "url": "https://www.donews.com/news/detail/3/6649420.html",
-      "time": "2026-07-27T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "Arm与Unity中国达成战略合作，以Arm神经技术加速中国手游创新",
-      "description": "Arm与Unity中国签署战略合作，将Arm神经技术原生集成至团结引擎，提升手游画质与帧率，降低AI图形开发门槛，并拓展至汽车、工业等领域。",
-      "url": "https://www.donews.com/news/detail/3/6649265.html",
-      "time": "2026-07-27T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "汽车"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "重溯千年丝路文脉 比亚迪大唐以东方智驾续写东西文明对话",
       "description": "重溯千年丝路文脉 比亚迪大唐以东方智驾续写东西文明对话",
       "url": "https://www.donews.com/news/detail/7/6649801.html",
@@ -37722,6 +37906,31 @@
       "url": "https://www.donews.com/news/detail/7/6648847.html",
       "time": "2026-07-27T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "团结引擎2.0发布，Unity中国以AI智能体重构游戏开发工作流",
+      "description": "Unity中国发布团结引擎2.0，重构底层架构，新增三大主机支持，集成AI Agent Codely，打造AI原生游戏生产基础设施。",
+      "url": "https://www.donews.com/news/detail/3/6649420.html",
+      "time": "2026-07-27T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "Arm与Unity中国达成战略合作，以Arm神经技术加速中国手游创新",
+      "description": "Arm与Unity中国签署战略合作，将Arm神经技术原生集成至团结引擎，提升手游画质与帧率，降低AI图形开发门槛，并拓展至汽车、工业等领域。",
+      "url": "https://www.donews.com/news/detail/3/6649265.html",
+      "time": "2026-07-27T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "汽车"
+      ]
     },
     {
       "source": "索尼",
@@ -38064,20 +38273,6 @@
       "topic": true
     },
     {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
       "source": "三星",
       "sourceColor": "#0d47a1",
       "title": "首发硬件防窥屏 三星发布Galaxy S26系列、Buds4系列_手机新闻 - 新浪财经",
@@ -38087,6 +38282,20 @@
       "tags": [
         "手机",
         "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
         "测评/新品"
       ],
       "topic": true
@@ -56372,18 +56581,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "国风志怪，五行割草：Steam动作肉鸽爽游《地府有点忙》正式发售",
-      "description": "《地府有点忙》7月22日Steam正式发售，中式神话动作肉鸽游戏，五行法术割草、鬼差打工、萌宠助战，首发39.2元。",
-      "url": "https://www.donews.com/news/detail/3/6642242.html",
-      "time": "2026-07-21T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "重新定义豪华越野，北京越野泰钽700预售开启，29.98万元起",
       "description": "重新定义豪华越野，北京越野泰钽700预售开启，29.98万元起",
       "url": "https://www.donews.com/news/detail/7/6642534.html",
@@ -56423,6 +56620,18 @@
       "time": "2026-07-21T16:00:00.000Z",
       "tags": [
         "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "国风志怪，五行割草：Steam动作肉鸽爽游《地府有点忙》正式发售",
+      "description": "《地府有点忙》7月22日Steam正式发售，中式神话动作肉鸽游戏，五行法术割草、鬼差打工、萌宠助战，首发39.2元。",
+      "url": "https://www.donews.com/news/detail/3/6642242.html",
+      "time": "2026-07-21T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "测评/新品"
       ]
     },
     {
@@ -56512,6 +56721,20 @@
       "time": "2026-07-21T10:41:23.000Z",
       "tags": [
         "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
+      "title": "对话胡润U30 | 思昇科技创始人兼CEO闫一默：要走就走一条难走的路 - 手机网易网",
+      "description": "",
+      "url": "https://www.163.com/dy/article/L2CO734F05568W0A.html",
+      "time": "2026-07-21T10:34:01.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "专访"
       ],
       "topic": true
     },
@@ -56694,20 +56917,6 @@
       "time": "2026-07-21T07:00:00.000Z",
       "tags": [
         "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "对话胡润U30 | 思昇科技创始人兼CEO闫一默：要走就走一条难走的路 - 手机网易网",
-      "description": "",
-      "url": "https://www.163.com/dy/article/L2CUJ0KV0519D5IA.html",
-      "time": "2026-07-21T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "专访"
       ],
       "topic": true
     },
@@ -57068,6 +57277,20 @@
     {
       "source": "科技专访",
       "sourceColor": "#37474f",
+      "title": "燧原腾讯深度对话：芯模协同共筑产业新生态 - shobserver.com",
+      "description": "",
+      "url": "https://www.shobserver.com/news/detail?id=1147907",
+      "time": "2026-07-20T07:00:00.000Z",
+      "tags": [
+        "互联网",
+        "大公司",
+        "专访"
+      ],
+      "topic": true
+    },
+    {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
       "title": "对话一目科技CEO李智强：触觉成了具身智能新战场 - 华尔街见闻",
       "description": "",
       "url": "https://wallstreetcn.com/articles/3777432",
@@ -57099,20 +57322,6 @@
       "tags": [
         "人工智能",
         "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "燧原腾讯深度对话：芯模协同共筑产业新生态 - shobserver.com",
-      "description": "",
-      "url": "https://www.shobserver.com/news/detail?id=1147907",
-      "time": "2026-07-20T07:00:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司",
-        "专访"
       ],
       "topic": true
     },
@@ -57233,26 +57442,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
-      "description": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
-      "url": "https://www.donews.com/news/detail/3/6639097.html",
-      "time": "2026-07-19T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
-      "description": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
-      "url": "https://www.donews.com/news/detail/3/6639080.html",
-      "time": "2026-07-19T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "16.99万拿下赛道轿跑！2027款星途ES正式上市",
       "description": "16.99万拿下赛道轿跑！2027款星途ES正式上市",
       "url": "https://www.donews.com/news/detail/7/6639963.html",
@@ -57295,6 +57484,26 @@
       "tags": [
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
+      "description": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
+      "url": "https://www.donews.com/news/detail/3/6639097.html",
+      "time": "2026-07-19T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
+      "description": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
+      "url": "https://www.donews.com/news/detail/3/6639080.html",
+      "time": "2026-07-19T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "佳能",
@@ -57629,7 +57838,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "全球首发！AI“开箱”，未来已来 - 京报网",
+      "title": "全球首发！AI“开箱”，未来已来 - xinwen.bjd.com.cn",
       "description": "",
       "url": "https://xinwen.bjd.com.cn/content/s6a59e854e4b0e45f3fd4ca2c.html",
       "time": "2026-07-17T07:00:00.000Z",
@@ -57668,7 +57877,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "全球首发！AI“开箱”，未来已来 - xinwen.bjd.com.cn",
+      "title": "全球首发！AI“开箱”，未来已来 - 京报网",
       "description": "",
       "url": "https://xinwen.bjd.com.cn/content/s6a59e854e4b0e45f3fd4ca2c.html",
       "time": "2026-07-17T07:00:00.000Z",
@@ -57695,6 +57904,19 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "售价12.38万元起，小鹏MONA L03全球上市，打造原生全球车型新标杆",
+      "description": "小鹏MONA L03全球上市，面向65国年轻用户，提供纯电/增程双动力，搭载XOS 6座舱、图灵AI智驾及全球安全标准。",
+      "url": "https://www.donews.com/news/detail/7/6636249.html",
+      "time": "2026-07-16T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "锁定席位！2026 CDEC系列大会日程发布，购票通道开启",
       "description": "锁定席位！2026 CDEC系列大会日程发布，购票通道开启",
       "url": "https://www.donews.com/news/detail/3/6637032.html",
@@ -57709,19 +57931,6 @@
       "url": "https://www.donews.com/news/detail/3/6636861.html",
       "time": "2026-07-16T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "售价12.38万元起，小鹏MONA L03全球上市，打造原生全球车型新标杆",
-      "description": "小鹏MONA L03全球上市，面向65国年轻用户，提供纯电/增程双动力，搭载XOS 6座舱、图灵AI智驾及全球安全标准。",
-      "url": "https://www.donews.com/news/detail/7/6636249.html",
-      "time": "2026-07-16T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "新能源/电动车",
-        "汽车"
-      ]
     },
     {
       "source": "芯片半导体",
@@ -57814,28 +58023,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "国风志怪动作肉鸽游戏《地府有点忙》发售倒计时7天",
-      "description": "国风志怪动作肉鸽游戏《地府有点忙》7月22日发售，主打无双割草、百鬼夜宴、流派自构与阴阳调解，融合爆笑剧情与暴力美学。",
-      "url": "https://www.donews.com/news/detail/3/6634798.html",
-      "time": "2026-07-15T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "魔塔策略RPG《列乌尼斯的挽歌》正式上线Steam",
-      "description": "《列乌尼斯的挽歌》上线Steam，融合魔塔、区域规划、炼金与研究系统，主打全局策略与自由试错，支持多语言，含300装备80技能。",
-      "url": "https://www.donews.com/news/detail/3/6634794.html",
-      "time": "2026-07-15T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "哈苏正式推出 Phocus Mobile Android 版",
       "description": "哈苏发布Phocus Mobile Android版，支持X2D/CFV系列相机，集成HNCS色彩、HNNR降噪及专业编辑功能。",
       "url": "https://www.donews.com/news/detail/5/6636065.html",
@@ -57867,6 +58054,28 @@
       "tags": [
         "汽车",
         "测评/新品"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "国风志怪动作肉鸽游戏《地府有点忙》发售倒计时7天",
+      "description": "国风志怪动作肉鸽游戏《地府有点忙》7月22日发售，主打无双割草、百鬼夜宴、流派自构与阴阳调解，融合爆笑剧情与暴力美学。",
+      "url": "https://www.donews.com/news/detail/3/6634798.html",
+      "time": "2026-07-15T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "魔塔策略RPG《列乌尼斯的挽歌》正式上线Steam",
+      "description": "《列乌尼斯的挽歌》上线Steam，融合魔塔、区域规划、炼金与研究系统，主打全局策略与自由试错，支持多语言，含300装备80技能。",
+      "url": "https://www.donews.com/news/detail/3/6634794.html",
+      "time": "2026-07-15T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -58057,15 +58266,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "《FGO》十周年限定从者强度前瞻：奥尔加玛丽是否值得满宝？",
-      "description": "FGO十周年限定U-奥尔加玛丽为五星UnBeast职阶，首创双形态机制：输出态高爆发+封印，辅助态全能增益；一宝即满配，推荐平民保底一宝。",
-      "url": "https://www.donews.com/news/detail/3/6634130.html",
-      "time": "2026-07-14T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "消息称Soul将推出首款AI智能硬件，有望于WAIC2026亮相",
       "description": "Soul将于7月17-20日WAIC发布首款AI情绪陪伴硬件，搭载SoulX大模型，支持自定义角色、表情动作及记忆交互。",
       "url": "https://www.donews.com/news/detail/5/6634372.html",
@@ -58087,6 +58287,15 @@
         "新能源/电动车",
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "《FGO》十周年限定从者强度前瞻：奥尔加玛丽是否值得满宝？",
+      "description": "FGO十周年限定U-奥尔加玛丽为五星UnBeast职阶，首创双形态机制：输出态高爆发+封印，辅助态全能增益；一宝即满配，推荐平民保底一宝。",
+      "url": "https://www.donews.com/news/detail/3/6634130.html",
+      "time": "2026-07-14T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "佳能",
@@ -58231,18 +58440,6 @@
       "topic": true
     },
     {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "关于“新能源车平均车龄”相关数据和报道的澄清声明 - caam.org.cn",
-      "description": "",
-      "url": "http://www.caam.org.cn/chn/5/cate_69/con_5237238.html",
-      "time": "2026-07-14T07:00:00.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
       "source": "佳能",
       "sourceColor": "#c0392b",
       "title": "佳能EOS R8 Mark II将会9月现身？ “复古” 设计？ - 手机网易网",
@@ -58253,6 +58450,18 @@
         "手机",
         "大公司",
         "智能硬件"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "关于“新能源车平均车龄”相关数据和报道的澄清声明 - caam.org.cn",
+      "description": "",
+      "url": "http://www.caam.org.cn/chn/5/cate_69/con_5237238.html",
+      "time": "2026-07-14T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -59281,15 +59490,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "2026 ChinaJoy BTOC 展馆图正式公布",
-      "description": "2026 ChinaJoy BTOC 展馆图正式公布",
-      "url": "https://www.donews.com/news/detail/3/6626979.html",
-      "time": "2026-07-08T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "以全面，独当一面 全新梅赛德斯-奔驰纯电GLC SUV正式上市",
       "description": "以全面，独当一面 全新梅赛德斯-奔驰纯电GLC SUV正式上市",
       "url": "https://www.donews.com/news/detail/7/6626721.html",
@@ -59309,6 +59509,15 @@
       "tags": [
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "2026 ChinaJoy BTOC 展馆图正式公布",
+      "description": "2026 ChinaJoy BTOC 展馆图正式公布",
+      "url": "https://www.donews.com/news/detail/3/6626979.html",
+      "time": "2026-07-08T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "三星",
@@ -59636,6 +59845,28 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "MARSHALL 推出新一代家用音箱 ACTON IV 与 STANMORE IV",
+      "description": "Marshall发布Acton IV与Stanmore IV音箱，主打‘把舞台带回家’，升级声场、低音、动态响度及Auracast™多音箱同步，售价2499/3",
+      "url": "https://www.donews.com/news/detail/5/6624940.html",
+      "time": "2026-07-07T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
+      "description": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
+      "url": "https://www.donews.com/news/detail/7/6624728.html",
+      "time": "2026-07-07T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "《恋与深空》宣布退出 BW2026 展会，全额承担退票损失",
       "description": "《恋与深空》宣布退出BilibiliWorld 2026展会，并全额承担玩家因此产生的门票、交通及住宿退订损失，致歉并承诺整改。",
       "url": "https://www.donews.com/news/detail/3/6624840.html",
@@ -59687,28 +59918,6 @@
       "tags": [
         "游戏",
         "大公司"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "MARSHALL 推出新一代家用音箱 ACTON IV 与 STANMORE IV",
-      "description": "Marshall发布Acton IV与Stanmore IV音箱，主打‘把舞台带回家’，升级声场、低音、动态响度及Auracast™多音箱同步，售价2499/3",
-      "url": "https://www.donews.com/news/detail/5/6624940.html",
-      "time": "2026-07-07T16:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
-      "description": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
-      "url": "https://www.donews.com/news/detail/7/6624728.html",
-      "time": "2026-07-07T16:00:00.000Z",
-      "tags": [
-        "汽车"
       ]
     },
     {
