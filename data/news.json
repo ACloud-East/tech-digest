@@ -1,7 +1,20 @@
 {
-  "updateTime": "2026-08-05T06:14:59.009Z",
-  "total": 4099,
+  "updateTime": "2026-08-05T06:17:07.070Z",
+  "total": 4101,
   "articles": [
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "AI功能好的千元手机有吗？3个维度说清+FAQ - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l9ok.html?from=digit",
+      "time": "2026-08-05T06:14:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机"
+      ],
+      "topic": true
+    },
     {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
@@ -299,19 +312,6 @@
       ]
     },
     {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "Liquid AI 发布 LFM2.5-2.6B 端侧小模型，支持智能手机本地运行",
-      "description": "IT之家 8 月 5 日消息，人工智能初创企业 Liquid AI 当地时间昨日发布 LFM2.5-2.6B 开源智能体模型。仅 26 亿的参数使得 LFM2.5-2.6B 非常适合在设备端本地部署，即使是智能手机也能运行；同时又足以支持规划、调用、多步骤处理的智能体工作流。 IT之家了解到，LFM2.5-2.6B 在 34T Token（词元）的数据集上进行预训练，并通过扩展现有分词器增强了对非拉丁字母语言的支持。Liquid AI 在 Hugging Face 平台上同时提供基础和后训练版本的该模型。 根据 Liquid AI 提供的数据，在与 gemma-4-E2B-it、gemma-4-E4B-it、Qwen3.5-4B、Qwen3.5-9B 等更大尺寸模型一道进行基准测试时，LFM2.5-2.6B 在所有指令执行项目和几乎所有工具使用项目中均领先，仅在 BFCLv4 测试中落后于 Qwen3.5-9B。 LFM2.5-2.6B 在智能体任务中全面优于两款 Gemma 模型，并与 Qwen 模型表现相近。在 STEM 领域，它在 AA Omniscience 测试中领先，仅在数学测试中落后于 Qwen3.5-9B。编程是唯一一个更大模型仍保持优势的领域。",
-      "url": "https://www.ithome.com/0/985/909.htm",
-      "time": "2026-08-05T05:54:26.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "AI之问：智能的另几种可能 - 手机新浪网",
@@ -335,19 +335,6 @@
         "芯片/半导体"
       ],
       "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "曝大众拟裁掉数百个管理层：求助猎头安排下家被拒“没这么多岗位”",
-      "description": "IT之家 8 月 5 日消息，据英国金融时报上周报道，大众汽车正在裁减数百个管理职位，这是其精简白领员工计划的一部分，此举将导致大量人员涌入就业市场。 高管猎头公司 IFP 的汽车行业合伙人 Magnus Tessner 表示，梅赛德斯-奔驰和大众汽车等制造商“正在疯狂地裁员”。他说，虽然许多经理的离职都得到了丰厚的离职补偿，但他们仍在寻找新的工作。 一位外部猎头表示，大众汽车曾联系他们，希望他们为 400 到 500 名经理人寻找新的职位。“我告诉他们我们做不到…… 我们没有 400 个高管职位需要填补，”这位猎头说道。 报道称大众汽车已经开始减少德国工厂的工人数量，但该公司还制定了计划，将在行政、产品开发和销售等“间接”业务领域再裁减 5 万个工作岗位。其跑车品牌保时捷也公布了裁员 5,000 人的计划，主要涉及后台岗位。 大众汽车最初计划到 2030 年在德国裁员 5 万人，受影响的员工涵盖大众汽车品牌、奥迪和软件部门 Cariad 的制造和后台岗位。报道称这些计划还不够完善，内部分析发现，管理成本比其他制造商高出 30%。 大众汽车集团首席财务官阿诺 · 安特利茨在集团第二季度财报发布会上表示，这种差异“主要是由于集团各层级结构的复杂性造成的”。 据IT之家此前报道，大众集团已经宣布计划大幅削减产品阵容，未来可能砍掉多达一半车型。更令人担忧的是，大众集团还计划将可选配置数量减少高达 75%。在针对投资者发布的半年业绩说明文件中，这家德国汽车巨头进一步披露了其计划如何大幅简化零部件种类。",
-      "url": "https://www.ithome.com/0/985/907.htm",
-      "time": "2026-08-05T05:52:21.000Z",
-      "tags": [
-        "汽车",
-        "软件应用",
-        "测评/新品"
-      ]
     },
     {
       "source": "Dev.to",
@@ -507,18 +494,6 @@
     {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
-      "title": "微软介绍 Win11 系统 MSIX 格式应用机制：用户感知的卸载，底层是移除",
-      "description": "IT之家 8 月 5 日消息，微软昨日（8 月 4 日）发布博文，指出在 Windows 11 系统中通过 MSIX 格式安装的应用程序，在用户感知中的“卸载”（Uninstall）操作，在系统层面的底层逻辑是“移除”（Remove）。 IT之家查询公开资料，附上 Windows 系统下 MSI 和 MSIX 两种安装格式的区别 MSI：全称 Microsoft Installer，本质上是一个包含安装指令和文件数据的数据库，由 Windows Installer 服务直接读取并解压覆盖文件。 MSIX：微软推出的现代应用包格式，整合了 MSI、AppX、App-V 等格式的优点，采用容器化虚拟技术运行应用。 MSI 格式安装的应用程序在卸载操作后，会清理安装文件、安装目录、注册表和 Runtime 相关组件等；而 MSIX 格式安装的应用程序，软件包生命周期由四个基本操作组成： 部署（Stage）：获取有效载荷并将其安全地放置在磁盘上 注册（Register）：将软件包与用户关联 注销（Deregister）：移除用户的软件包关联 卸载（Destage）：从磁盘中移除软件包有效载荷 在用户操作逻辑中，点击“卸载”按钮来删除某款应用，Windows 11 系统会调用名为 RemovePackageAsync 的 API 方法，来注销（Deregister）应用和用户的关联。只有当系统确定没有其他程序需要这些文件时，才会执行卸载（Destage）操作，也就是真正删除应用的部分。 例如用户卸载了应用程序 A，但同一账户上的应用程序 B 仍然引用同一个共享框架包，即使用户是计算机上的唯一用户，Windows 也不会卸载该框架。",
-      "url": "https://www.ithome.com/0/985/906.htm",
-      "time": "2026-08-05T05:40:44.000Z",
-      "tags": [
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
       "title": "微信鸿蒙版 App 安装量正式突破 7000 万",
       "description": "IT之家 8 月 5 日消息，微信鸿蒙版 App 今日再迎里程碑时刻 —— 安装量正式突破 7000 万（最新数据显示安装量为 7010 万次）。 目前，微信已开启 8.0.20 系列版本的邀测升级，新增了如下新特性： 聊天中的笔记查看时右上角三点新增收藏； 视频号点击分享新增设为铃声，更换来电铃声时点进视频新增设为铃声浮窗； 视频号评论支持搜索表情和动画表情，支持查看评论中的动画表情； 发现-游戏-右上角人头-记录-微信小游戏动态支持分享图片给好友； 收藏中的网址链接支持点击； 帮助与反馈-微信修复工具新增修复联系人、群聊、聊天记录搜索故障； 使用微信登录第三方应用或小程序的时候支持左滑删除创建的昵称，支持新建昵称头像； 视频号发表视频界面，已有的元素对齐其他端； 聊天 + 工具中点击收藏内容发送至聊天支持给朋友留言； 收藏的聊天记录支持长按文字复制； 发现-游戏-我-记录中的游戏动态分享为图片到聊天中支持显示来源（点击后会提示暂不支持访问）； 使用内置文件查看器查看文件时点击右上角新增收藏； 灰度公众号文章、贴图、第三方网址等网页内容支持浮窗（需灰度到小程序浮窗）； 灰度小程序 / 公众号文章 / 贴图 / 网页内容支持点击右上角设置星标； 灰度朋友圈主图文和评论区支持显示和点击话题、网址、小程序链接、手机号等蓝色超链接文字； 灰度长按朋友圈主图文文字弹窗对齐其他端，新增部分选中，新增全选、翻译、收藏、搜一搜； 灰度发表视频号时支持选择位置信息。 据IT之家此前报道，微信鸿蒙版 App 于去年 1 月正式登陆华为鸿蒙应用市场 App Gallery，已支持基础通讯、社交、微信支付、公众号、小程序、视频号、直播等主要功能。 大家在IT之家微信号回复“微信”两字，即可获取当前最新官方内部版微信下载。",
       "url": "https://www.ithome.com/0/985/905.htm",
@@ -544,31 +519,6 @@
       "topic": true
     },
     {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "Neocloud 企业 CoreWeave 首度落子亚太，将在印尼建设合计 360MW 数据中心",
-      "description": "IT之家 8 月 5 日消息，代表性 Neocloud（新兴人工智能云服务企业）公司 CoreWeave 当地时间 4 日宣布将在印度尼西亚建设 3 座数据中心。这三个项目合计容量达 360MW，预计 2028 年投入使用。 本次宣布的计划是 CoreWeave 在亚太地区的首个数据中心布局。该企业表示，亚洲的企业、AI 原生公司、政府机构越来越需要靠近其数据和用户的人工智能计算资源，这既是受延迟敏感型工作负载的影响，也是受数据本地化要求的驱动。CoreWeave 进军印尼市场正体现了这一趋势。 CoreWeave 首席运营官 Sachin Jain 表示： CoreWeave 致力于为人工智能先驱者提供他们所需的计算能力、性能和可靠性，帮助他们构建和扩展其创意。 印尼正在大力投资人工智能教育和数字化能力建设，并且取得了丰硕成果 —— 该国正成为东南亚增长最快的全球科技投资目的地之一。 如今，此次扩张将为企业、人工智能原生公司和政府提供本地和全球范围内的更多计算资源，无论他们身在何处，都能将其转化为竞争优势。",
-      "url": "https://www.ithome.com/0/985/904.htm",
-      "time": "2026-08-05T05:35:34.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "小米 REDMI K100 Pro 手机预热：搭载 8580mAh 超大电池，后置三摄五焦段旗舰相机",
-      "description": "IT之家 8 月 5 日消息，小米 REDMI 红米手机官方今日继续预热 K100 Pro 系列手机。据介绍，REDMI K100 Pro 搭载了 8580mAh 超大电池，拥有 26% 超高硅碳含量和 945Wh/L 超高能量密度，主打“满分续航”。 REDMI K100 Pro 手机支持 100W 有线快充 + 50W 无线充电，同时还能提供 27W 有线反充 + 22.5W 无线反充，号称“满分充电组合”。 此外，小米 REDMI K100 Pro 手机还后置三摄五焦段旗舰相机，拥有 2 亿像素主摄。新机的相机主打 10cm 长焦微距 + OIS 光学防抖 + 旗舰同款大师实况功能。 据IT之家昨日候报道，REDMI K100 Pro 手机还搭载了第五代骁龙 8 至尊版 V Series (SM8850-1-AB) 全新骁龙旗舰平台，实验室综合跑分超 409 万分。新机还同时配有 AI 独显芯片、3D 循环冷泵散热系统。",
-      "url": "https://www.ithome.com/0/985/903.htm",
-      "time": "2026-08-05T05:35:09.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "芯片/半导体"
-      ]
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "特斯拉起诉加拿大地方政府：EV补贴被踢出局 让车主损失56万加元 - 手机新浪网",
@@ -581,19 +531,6 @@
         "大公司"
       ],
       "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "马斯克最新回应：SpaceX 将完全使用英伟达架构平台",
-      "description": "8 月 5 日上午消息，在 SpaceX 公布二季度财报的电话会上，SpaceX 创始人马斯克在回答提问时表示，将完全使用英伟达架构平台，“我们预计今年年底计算能力将超过 2 吉瓦，到明年年底，我们的累计在线计算能力可能会是现在的数倍。比如说，接近 10 吉瓦，而不是 5 吉瓦。展望未来，我们决定完全采用英伟达的架构，因为我们认为 Vera Bubin 设计的架构是最好的架构。” 电话会上，谈及算力瓶颈时，马斯克直言最大的痛点在内存，需求将远超供给。 “目前的限制因素是内存。内存产量每年增长约 20%。通常来说，这对任何大型成熟行业来说都是惊人的速度。但请扪心自问，需求真的每年增长 20% 吗？不，需求每年增长 200%，甚至更高。因此，如果需求增长速度远超供应，那么经济学原理告诉我们，价格应该上涨，而不是下降。”",
-      "url": "https://www.ithome.com/0/985/902.htm",
-      "time": "2026-08-05T05:31:31.000Z",
-      "tags": [
-        "芯片/半导体",
-        "电脑硬件",
-        "AI芯片"
-      ]
     },
     {
       "source": "GSMArena",
@@ -745,18 +682,6 @@
         "测评/新品"
       ],
       "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "消息称宇树科技 IPO 发行价约 104 元，市值将达 400 亿元以上",
-      "description": "IT之家 8 月 5 日消息，据央视财经报道，8 月 5 日为宇树科技科创板 IPO 初步询价日，询价完成后将于 8 月 10 日开启申购，网上、网下申购日均为 8 月 10 日，缴款截止日为 8 月 12 日。 8 月 5 日初步询价期间为 9:30-15:00，保荐人（主承销商）开展网下投资者核查，参与战略配售的投资者缴纳认购资金。8 月 6 日将确定发行价格、确定有效报价投资者及其可申购股数，参与战略配售的投资者确定最终获配数量和比例。 报道称，本次宇树科技 IPO 拟募资 42.02 亿元，公开发行新股 4,044.64 万股，占发行后总股本的 10%，发行后总股本为 4.04 亿股。市场预估宇树科技 IPO 市值将达到 400 亿元以上，根据科创板新股申购单位 500 股和发行预估市值测算，宇树科技 IPO 发行价格约为 104 元 / 股，一签新股约缴款 5.2 万元，但具体 IPO 询价偏离情况仍有待市场参与者确定。 据IT之家此前报道，招股书数据显示，2023 年至 2025 年，宇树科技营业收入分别为 1.59 亿元、3.93 亿元和 16.99 亿元，净利润分别为-1114.51 万元、9547.47 万元和 2.78 亿元，是全球少数实现盈利的高性能通用机器人公司。 2026 年第一季度，宇树科技实现营业收入约 4.23 亿元，同比增长 68.49%。不过，由于研发费用、销售费用等期间费用大幅增加，公司 2026 年第一季度的扣非后净利润同比有所下降。据公司预计，2026 年上半年营业收入约为 10.52 亿元至 11.28 亿元，同比增幅在 35.62% 至 45.41% 之间。",
-      "url": "https://www.ithome.com/0/985/901.htm",
-      "time": "2026-08-05T05:09:35.000Z",
-      "tags": [
-        "科技创投",
-        "智能硬件"
-      ]
     },
     {
       "source": "芯片半导体",
@@ -1181,31 +1106,6 @@
         "AI芯片"
       ],
       "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "SpaceX 上市后首次财报会：马斯克抛宏大目标，高管谨慎修正",
-      "description": "IT之家 8 月 5 日消息，在 SpaceX 上市后的首次财报电话会议上，埃隆 · 马斯克描绘了大量宏大愿景，而公司的其他高管则不断尝试让这些说法更加务实、贴近现实。这场会议也预示着，这家火箭发射、算力租赁和卫星通信公司上市后，投资者可能会经常看到类似的场景。 这场于当地时间周二举行的电话会议，延续了马斯克多年来的一贯风格：他负责抛出大胆甚至夸张的目标，而其他高管则负责将这些愿景包装成投资者更容易接受的表述。这一点与特斯拉颇为相似。TechCrunch 此前的一项分析显示，全球首富马斯克近年来越来越专注于人工智能、机器人等未来概念，而其他高管则更多谈论汽车销售等实际业务。 会议中，马斯克最引人关注的言论之一，是他预测 SpaceX 的 Starlink（星链）卫星互联网服务将在“不到 10 年内”为全球大部分互联网流量提供服务。他是在介绍即将发射的新一代 Starlink V3 卫星时作出这一预测的。相比此前的版本，V3 卫星拥有更高的网络带宽。 马斯克表示：“这可能有些难以想象，但未来某个时候，Starlink 完全有可能承载全球大部分互联网服务，至少是在我们获准运营的国家，而这已经涵盖了绝大多数国家。这一点非常重要，而且不是遥远未来的事情，我认为会发生在不到 10 年内。” 不过，仅仅几分钟后，SpaceX 首席运营官格温 · 肖特韦尔（Gwynne Shotwell）就对这一说法进行了更为谨慎的表述。她表示，V3 卫星带来的巨大容量提升，将使 Starlink 在保持现有高质量服务的同时，为全球越来越多用户提供网络连接。“未来几年，我们预计 Starlink 将占据全球互联网流量中的相当大一部分，这一点埃隆刚才也提到了。” 相比马斯克直接宣称“承载全球大部分互联网”，肖特韦尔的措辞显然更加保守，也更符合上市公司面对投资者时的法律风险控制要求，尽管这一目标本身依然十分激进。 类似的情况并非只出现一次。 会议中，SpaceX 首席财务官布雷特 · 约翰森（Bret Johnsen）向投资者介绍了公司少数几个新的财务目标之一。他重点谈到了 SpaceX 近年来快速发展的算力租赁业务，该业务向其他 AI 企业出租计算资源，已为公司带来数十亿美元的新收入。 约翰森表示，公司三大业务板块的需求依然强劲，其中云计算服务增长尤为突出。随着新合同不断签订，业务经济效益持续改善，而正如马斯克此前所说，计算资源市场供需失衡预计仍将持续。 他透露，算力基础设施投资目前的回本周期已缩短至不到一年。仅第三季度开始后的几周内，公司就签下了一份价值 67 亿美元（IT之家注：现汇率约合 453.12 亿元人民币）的云服务合同，服务周期为六个月，并将于今年 10 月开始逐步执行。 约翰森表示，结合 AI 编程工具 Cursor 的收入贡献，公司有望在今年年底实现 1,000 亿美元（现汇率约合 6,762.93 亿元人民币）的 ARR（年度经常性收入运行率）。 值得注意的是，约翰森在介绍这一目标时使用了大量谨慎措辞，例如“我们认为”“有望”“基于 12 月份预期收入”等，为未来目标未能实现预留空间。 然而，约 20 分钟后，马斯克直接推翻了这种谨慎表达。 他说：“我要明确一点，12 月实现 1,000 亿美元（现汇率约合 6,762.93 亿元人民币） ARR 根本不存在什么疑问。如果我们什么都不做，也能达到这个数字。所以，我认为最终数字很可能还会更高，大概率会超过 1,000 亿美元（现汇率约合 6,762.93 亿元人民币）。” 马斯克随后还进一步提高了公司整体收入目标。他表示，SpaceX 在两个月前提交 IPO 文件时，内部预计将在 2031 年实现 1 万亿美元（现汇率约合 6.76 万亿元人民币）营业收入，而现在这一目标已经提前至 2030 年。 “甚至不能排除 2029 年就实现这一目标的可能性。”他说。 会议期间，这种模式不断重复。 有股东询问 SpaceX 为 NASA“阿耳忒弥斯”（Artemis）登月计划开发的人类着陆系统进展时，马斯克几乎表示，使用“星舰”（Starship）的原型飞船将在明年年底前具备载人飞行能力。 随后，他又表示，到明年这个时候，SpaceX 将实现每天发射一枚星舰火箭，“甚至可能一天发射多枚”。 对此，肖特韦尔再次出面进行补充说明。她表示，目前公司仍然专注于完成 NASA 规定的各项技术里程碑，并提出了一个相对模糊但依然具有挑战性的目标 ——“希望能在 2028 年实现人类踏上月球。” 事实上，要实现这些目标，SpaceX 首先必须证明 Starship 能够稳定完成飞行任务，并最终实现完全可重复使用。其中最关键的技术之一，是能够保证 Starship 上级在重返地球大气层时不会烧毁的隔热防护系统。 在上个月的最新一次 Starship 试飞中，改进后的隔热系统取得了目前最好的测试效果。飞船最终溅落印度洋，并保持了整体结构完整。 然而，在火箭残骸尚未完成回收前，马斯克就在此次电话会议上表示：“我认为隔热系统的问题现在已经解决了。” 事实上，马斯克过去曾多次为 SpaceX 描绘宏伟蓝图，但不少最终都未兑现。例如，他曾在 2016 年表示，SpaceX 将在六年内把人类送上火星。 如今最大的不同在于，SpaceX 已成为一家上市公司。如果公司及高管作出明知无法兑现的承诺，理论上可能面临监管机构调查甚至罚款。 不过，报道称，美国证券交易委员会（SEC）近年来已明显减少了对上市公司的执法力度，美国司法部也采取了类似做法。 此外，即便未来 SpaceX 未能兑现马斯克提出的这些大胆目标，投资者通过民事诉讼维权的空间也相当有限，因为公司已经将注册地迁至得克萨斯州，在法律层面为此类诉讼建立了较强的保护机制。",
-      "url": "https://www.ithome.com/0/985/897.htm",
-      "time": "2026-08-05T04:35:24.000Z",
-      "tags": [
-        "人工智能",
-        "新能源/电动车",
-        "汽车"
-      ]
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "上汽与通用汽车完成续约，合资协议延长 20 年至 2047 年",
-      "description": "IT之家 8 月 5 日消息，上汽集团与通用汽车今日（8 月 5 日）在上海签署合资续约协议，将上汽通用汽车合资期限延长 20 年至 2047 年。 双方表示，此次合作续约是基于近 30 年成功合作的基础，在全球汽车产业深刻变革背景下，对中国汽车市场长期价值以及对上汽通用汽车转型能力和发展前景投下的一张信任票。 IT之家查询公开资料获悉，上汽通用汽车有限公司成立于 1997 年 6 月 12 日，由上海汽车集团股份有限公司、通用汽车公司共同出资组建而成，旗下品牌包括别克、雪佛兰、凯迪拉克等，推出顶级豪华车到经济型轿车，以及高性能豪华轿车、MPV、SUV 等车款。 这次续约将开启上汽通用汽车全球化发展新空间。别克至境 E7 将于今年 10 月率先出口海外，成为企业首款出海的高端新能源车型。未来，上汽通用汽车将持续开拓中东、非洲、南美、墨西哥和亚太地区。",
-      "url": "https://www.ithome.com/0/985/896.htm",
-      "time": "2026-08-05T04:35:08.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车"
-      ]
     },
     {
       "source": "索尼",
@@ -2015,19 +1915,6 @@
       "topic": true
     },
     {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "上诉法院推翻原裁决，Perplexity 智能体重获亚马逊电商访问法律许可",
-      "description": "IT之家 8 月 5 日消息，参考路透社报道，美国联邦第九巡回上诉法院当地时间 4 日裁决 Perplexity 二审胜诉，推翻了一审法官对 Perplexity AI 智能体访问 Amazon（亚马逊）电商平台并代理购物行为的临时禁令。 上诉法院表示，法律上是 Perplexity AI Comet 浏览器的用户利用人工智能辅助工具访问了亚马逊平台，访问行为并非由 Perplexity AI 本身作出，亚马逊不太可能成功主张 Perplexity AI 的智能体违反了美国计算机黑客法。 图源：Pixabay 亚马逊方面对周二的裁决表示异议，其对本案仍充满信心，目前正在评估下一步行动。Perplexity AI 则称企业将继续为互联网用户选择任意人工智能的权利而奋斗。 相关阅读： 《亚马逊获初步胜利：法院就 Perplexity 浏览器 AI 代理购物发布临时禁令》 《亚马逊对 Perplexity 下“逐客令”：要么修改 Comet 标识，要么带着你的 AI 智能体离开我的地盘》",
-      "url": "https://www.ithome.com/0/985/871.htm",
-      "time": "2026-08-05T03:33:27.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "互联网"
-      ]
-    },
-    {
       "source": "新品发布",
       "sourceColor": "#ad1457",
       "title": "小鹏G9L首发AI主动贴合零重力座椅 科技豪华座舱亮相 - 中华网",
@@ -2040,6 +1927,19 @@
         "测评/新品"
       ],
       "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "上诉法院推翻原裁决，Perplexity 智能体重获亚马逊电商访问法律许可",
+      "description": "IT之家 8 月 5 日消息，参考路透社报道，美国联邦第九巡回上诉法院当地时间 4 日裁决 Perplexity 二审胜诉，推翻了一审法官对 Perplexity AI 智能体访问 Amazon（亚马逊）电商平台并代理购物行为的临时禁令。 上诉法院表示，法律上是 Perplexity AI Comet 浏览器的用户利用人工智能辅助工具访问了亚马逊平台，访问行为并非由 Perplexity AI 本身作出，亚马逊不太可能成功主张 Perplexity AI 的智能体违反了美国计算机黑客法。 图源：Pixabay 亚马逊方面对周二的裁决表示异议，其对本案仍充满信心，目前正在评估下一步行动。Perplexity AI 则称企业将继续为互联网用户选择任意人工智能的权利而奋斗。 相关阅读： 《亚马逊获初步胜利：法院就 Perplexity 浏览器 AI 代理购物发布临时禁令》 《亚马逊对 Perplexity 下“逐客令”：要么修改 Comet 标识，要么带着你的 AI 智能体离开我的地盘》",
+      "url": "https://www.ithome.com/0/985/871.htm",
+      "time": "2026-08-05T03:33:27.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "互联网"
+      ]
     },
     {
       "source": "IT之家",
@@ -4610,13 +4510,12 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "报道：DeepSeek重启融资，投前估值5000亿元",
-      "description": "多名交易人士向《财经》透露，大模型公司DeepSeek重启了第二轮融资，本轮计划募资500亿元，投前估值约5000亿元，并计划将在8月下旬完成签约。 DeepSeek在今年4月开启了首轮融资，并在6月完成交割，该轮融资金额500亿元，估值超过3500亿元，成为中国AI大模型史上首轮融资规模最大的公司。 多位投资人提到，DeepSeek第二轮融资至少在7月中旬就已开启，但在7月底突然暂停，当时一些谈判候补名单上的投资人被告知签署融资协议的计划暂缓。 据媒体7月26日报道，DeepSeek暂停第二轮融资，其中一个原因是DeepSeek创始人梁文锋对网上广泛流传的言论感到不满，这些消息主要围绕疑似泄露的“面向投资者的会议实录”。 《财经》就上述市场信息向DeepSeek求证，截至发稿前未得到回应。 前述交易人士告诉《财经》，DeepSeek和正在谈判桌上的投资人们希望这次融资在重启后能低调进行。目前，一些此前积极接触的投资机构表示，他们还没有接到DeepSeek重启融资的消息，通道仍处在暂缓状态。 据多名交易人士了解，在第二轮融资的谈判名单上，既有在首轮融资中“落选”的候补机构，也有首轮就入局的VC（风险投资）和产业资本在考虑增资。DeepSeek首轮融资的投资方分别是：国家人工智能产业投资基金、腾讯、宁德时代和溥泉资本、网易、京东、砺思资本、IDG资本、正心谷投资、拾象资本。 自开放融资，DeepSeek的份额供不应求。一名参与交易的投资人士向《财经》称，首轮围绕DeepSeek表达投资意向的资金规模超过1000亿元，最后融了500亿元，意味着至少还有500亿元资金持有入局意向。这些资金方在第二轮开放后继续抢占新的份额。 第二轮融资投前估值5000亿元，较首轮提升约43%。若本轮融资顺利，DeepSeek将在两轮融资中募到超1000亿元的资金。 DeepSeek的融资规模远超其竞争对手，包括最近融资热度高涨的月之暗面，这些AI大模型明星公司在今年融资步伐明显加快。 月之暗面在7月底完成了估值约315亿美元（折合人民币约2100亿元）的F轮融资，并在该轮结束后以500亿美元的估值立刻开启新一轮Pre-IPO轮融资。另据知情人士称，月之暗面本轮Pre-IPO轮融资将在8月完成，预计于今年内递表上市。 和融资动态同样牵动市场情绪的，是这些明星公司的模型发布。模型能力和模型效率直接关系着一级市场对模型公司的定价。在模型迭代速度以月计算、榜单座次以周更迭的当下，投资人都希望能在不确定中锚定最先抵达AGI（通用人工智能）的那艘船，并寻求船票。一名交易人士认为，“对大模型的定价本质上是一种期权，而非基于现金流的财务模型。” 据《财经》此前报道，月之暗面6月开启的F轮融资最初热度平平，很多拿到额度的渠道“兜售好几天都没人要”，当时市场上甚至流出不少180亿美元估值的老股交易。但在新一代旗舰模型Kimi K3发布并获得全球声量后，其份额突然变得抢手，一些出售老股的卖家甚至坐地起价。 一名接近DeepSeek的投资人在7月下旬告诉《财经》，近期DeepSeek训练新模型的压力并不小。原定在7月中旬发布的DeepSeek-V4正式版，直到7月31日才在官方API文档最新日志上线公测，不过亮相的仅有V4-Flash，V4-Pro正式版仍未发布，具体公测时间尚未公布。 据官方文档，DeepSeek-V4-Flash没有在模型架构和参数大小上做出调整，而是在原有基础上强化了后训练，使其Agent（智能体）能力大幅增强，多项基准测试远超4月发布的V4-Flash预览版。 据独立第三方AI模型评测平台Artificial Analysis最新发布的Intelligence Index（智能指数），DeepSeek-V4-Flash正式版的智能水平达到50分，在国内仅次于智谱GLM-5.2的51分，高于同类模型的平均水平。DeepSeek延续了模型“低成本高性价比”的路线，V4-Flash输出每百万Token（词元）的价格为0.28美元，低于智谱GLM-5.2输出每百万Token 4.29美元的定价。 在推理算力需求上涨、成本不断推高的情况下，不少大模型公司都在追求极致的推理效率，在国内走高性价比路线的还包括腾讯混元。近期，美国AI模型公司OpenAI也宣布下调GPT-5.6系列模型的API调用价格，其中入门级模型Luna降价80%。在DeepSeek-V4-Flash正式版发布前，追求相同模型能力下，GPT-5.6的性价比甚至高于DeepSeek。不过这个性价比优势很快被抹平。 在面向全球开发者的AI模型聚合平台OpenRouter最新榜单上，DeepSeek-V4-Flash正式版本周Token消耗量以7.1万亿排名榜单首位。 本文来源：《财经》 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "多名交易人士透露，大模型公司DeepSeek重启了第二轮融资，本轮计划募资500亿元，投前估值约5000亿元，并计划将在8月下旬完成签约。DeepSeek在今年4月开启了首轮融资，并在6月完成交割，该轮融资金额500亿元，估值超过3500亿元，成为中国AI大模型史上首轮融资规模最大的公司。多位投资人提到，DeepSeek第二轮融资至少在7月中旬就已开启，但在7月底突然暂停，当时一些谈判候补名单上的投资人被告知签署融资协议的计划暂缓。（《财经》） 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3778712",
       "time": "2026-08-05T01:32:21.000Z",
       "tags": [
         "人工智能",
-        "手机",
-        "互联网"
+        "科技创投"
       ]
     },
     {
@@ -4810,6 +4709,18 @@
         "人工智能",
         "芯片/半导体",
         "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "利好来袭！国家大基金行动曝光！涉及A股半导体大牛股 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608043831396792.html",
+      "time": "2026-08-05T01:18:46.000Z",
+      "tags": [
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -6795,6 +6706,17 @@
     {
       "source": "Hacker News",
       "sourceColor": "#ff6600",
+      "title": "We finally learned to center a div, then browsers added sidebars",
+      "description": "Article URL: https://seg6.space/posts/center-div/ Comments URL: https://news.ycombinator.com/item?id=49176055 Points: 98 # Comments: 85",
+      "url": "https://seg6.space/posts/center-div/",
+      "time": "2026-08-04T22:24:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
       "title": "Pi's Minimalism Is Its Advantage",
       "description": "Article URL: https://earendil.com/posts/pi-autoresearch-and-databricks/ Comments URL: https://news.ycombinator.com/item?id=49176038 Points: 232 # Comments: 89",
       "url": "https://earendil.com/posts/pi-autoresearch-and-databricks/",
@@ -6815,17 +6737,6 @@
         "科技创投"
       ],
       "topic": true
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "we finally learned to center a div, then browsers added sidebars",
-      "description": "Comments",
-      "url": "https://seg6.space/posts/center-div/",
-      "time": "2026-08-04T22:21:07.000Z",
-      "tags": [
-        "智能硬件"
-      ]
     },
     {
       "source": "TechCrunch",
@@ -8173,6 +8084,18 @@
       "description": "",
       "url": "https://news.10jqka.com.cn/20260804/c678670919.shtml",
       "time": "2026-08-04T19:00:28.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "重要条例修订发布 芯片IP保护再升级 杠杆资金逆势布局多股(名单) - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608043830663370.html",
+      "time": "2026-08-04T18:55:52.000Z",
       "tags": [
         "芯片/半导体"
       ],
@@ -9542,12 +9465,35 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "Liquid AI 发布 LFM2.5-2.6B 端侧小模型，支持智能手机本地运行",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5229155.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "号称30万级科技标杆！小鹏G9L增程版：能加92号汽油 2年2万公里保养一次",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3620734.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": [
         "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "曝大众拟裁掉数百个管理层：求助猎头安排下家被拒“没这么多岗位”",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqf3625504.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
         "汽车"
       ]
     },
@@ -9572,12 +9518,59 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "微软介绍 Win11 系统 MSIX 格式应用机制：用户感知的卸载，底层是移除",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5220272.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "被汽车圈验证的GMSL技术如何帮助内窥镜系统升级迭代",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3606721.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": [
         "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Neocloud 企业 CoreWeave 首度落子亚太，将在印尼建设合计 360MW 数据中心",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqp4675443.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小米 REDMI K100 Pro 手机预热：搭载 8580mAh 超大电池，后置三摄五焦段旗舰相机",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqp4675424.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "马斯克最新回应：SpaceX 将完全使用英伟达架构平台",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5210856.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
       ]
     },
     {
@@ -9685,6 +9678,17 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5193180.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "消息称宇树科技 IPO 发行价约 104 元，市值将达 400 亿元以上",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqf3597138.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
     },
     {
       "source": "新浪科技",
@@ -9855,11 +9859,33 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "SpaceX 上市后首次财报会：马斯克抛宏大目标，高管谨慎修正",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5180942.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "仅42天尿酸直降112，尿酸高的人建议照抄！",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5190206.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "上汽与通用汽车完成续约，合资协议延长 20 年至 2047 年",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqr1420861.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
     },
     {
       "source": "新浪科技",
@@ -11254,19 +11280,6 @@
       "topic": true
     },
     {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=bvlgari%E9%AB%98%E4%BB%BF%E6%89%8B%E8%A1%A8%E3%80%94%E5%BE%AE%E4%BF%A1198099199%E3%80%95f5TA&vt=4",
-      "time": "2026-08-04T15:01:20.000Z",
-      "tags": [
-        "人工智能",
-        "专访"
-      ],
-      "topic": true
-    },
-    {
       "source": "GSMArena",
       "sourceColor": "#d32f2f",
       "title": "iPhone 20 series rumored to get improved cooling, Air-inspired frame",
@@ -12599,18 +12612,6 @@
       "url": "https://nomeatproxy.com/",
       "time": "2026-08-04T12:55:43.000Z",
       "tags": []
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "利好来袭！国家大基金行动曝光！涉及A股半导体大牛股 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608043831396792.html",
-      "time": "2026-08-04T12:55:23.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -14199,7 +14200,7 @@
     {
       "source": "新品发布",
       "sourceColor": "#ad1457",
-      "title": "【新闻发布会】市政府新闻办举行“开局起步‘十五五’”系列主题新闻发布会 介绍“十五五”时期天津市推进综合交通运输建设有关情况 - tj.chinadaily.com.cn",
+      "title": "【新闻发布会】市政府新闻办举行“开局起步‘十五五’”系列主题新闻发布会 介绍“十五五”时期天津市推进综合交通运输建设有关情况 - China Daily",
       "description": "",
       "url": "https://tj.chinadaily.com.cn/a/202608/04/WS6a71bfdfa310d709c2fc1884.html",
       "time": "2026-08-04T10:29:11.000Z",
@@ -14212,7 +14213,7 @@
     {
       "source": "新品发布",
       "sourceColor": "#ad1457",
-      "title": "【新闻发布会】市政府新闻办举行“开局起步‘十五五’”系列主题新闻发布会 介绍“十五五”时期天津市推进综合交通运输建设有关情况 - China Daily",
+      "title": "【新闻发布会】市政府新闻办举行“开局起步‘十五五’”系列主题新闻发布会 介绍“十五五”时期天津市推进综合交通运输建设有关情况 - tj.chinadaily.com.cn",
       "description": "",
       "url": "https://tj.chinadaily.com.cn/a/202608/04/WS6a71bfdfa310d709c2fc1884.html",
       "time": "2026-08-04T10:29:11.000Z",
@@ -18240,18 +18241,6 @@
       "tags": []
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "重要条例修订发布 芯片IP保护再升级 杠杆资金逆势布局多股(名单) - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608043830663370.html",
-      "time": "2026-08-04T01:45:42.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "9to5Mac",
       "sourceColor": "#0a84ff",
       "title": "Apple plans to open iPhone clipboard access to Windows PCs",
@@ -19128,6 +19117,19 @@
     {
       "source": "科技专访",
       "sourceColor": "#37474f",
+      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=%E5%B8%82%E5%9C%BA%E6%B8%97%E9%80%8F%E6%96%B9%E6%B3%95%E2%96%8B%E9%9C%80%E8%A6%81%E8%81%94%E7%B3%BBTG:@HHCH8%E6%92%9E%E5%BA%93%E6%95%B0%E6%8D%AE%E6%B8%97%E9%80%8F%E6%95%B0%E6%8D%AE%E6%B5%B7%E5%A4%96%E6%94%AF%E4%BB%98%E9%80%9A%E9%81%93%E2%96%8BuAE8&vt=4&cid=76478&node_id=76478",
+      "time": "2026-08-03T19:43:42.000Z",
+      "tags": [
+        "人工智能",
+        "专访"
+      ],
+      "topic": true
+    },
+    {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
       "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=%E5%B8%82%E5%9C%BA%E6%B8%97%E9%80%8F%E6%96%B9%E6%B3%95%E2%96%8B%E9%9C%80%E8%A6%81%E8%81%94%E7%B3%BBTG:@HHCH8%E6%92%9E%E5%BA%93%E6%95%B0%E6%8D%AE%E6%B8%97%E9%80%8F%E6%95%B0%E6%8D%AE%E6%B5%B7%E5%A4%96%E6%94%AF%E4%BB%98%E9%80%9A%E9%81%93%E2%96%8BuAE8&vt=4&cid=76478&node_id=76478",
@@ -19346,6 +19348,20 @@
       "tags": [
         "手机"
       ]
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E4%B9%89%E4%B9%8C%E5%A4%96%E5%9B%B4%E5%85%BC%E8%81%8C%E5%85%A8%E5%A5%97%EF%BC%88%E9%AA%8C%E8%AF%81%E4%BF%9D%E7%9C%9F%EF%BC%89%EF%BC%88%E8%81%94%E7%BB%9CV%E5%8A%A0%EF%BC%9A%E2%91%A0%E2%91%A0778593%EF%BC%89%E8%A7%81%E9%9D%A2%E4%BB%98%E6%AC%BE%E7%9C%9F%E4%BA%BA%E9%AA%8C%E8%AF%81%E5%AF%B9%E6%AF%94%E6%97%A0%E5%A5%97%E8%B7%AFB5zfWreu7GAJMvHaD0214&vt=4",
+      "time": "2026-08-03T18:27:02.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "电脑硬件"
+      ],
+      "topic": true
     },
     {
       "source": "三星",
@@ -21726,20 +21742,6 @@
         "网络安全",
         "智能硬件"
       ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E6%9D%AD%E5%B7%9E%E6%8B%B1%E5%A2%85%E5%8C%BA%E7%BE%8E%E5%A5%B3%E6%A8%A1%E7%89%B9%E4%B8%8A%E9%97%A8%EF%BC%88%E5%AE%9A%E5%88%B6%E9%80%89%E5%A6%83%EF%BC%89%E5%B7%8D%E8%8A%AF%20%EF%BC%8811%E2%91%A6%E2%91%A80911%EF%BC%89%E5%BD%93%E9%9D%A2%E5%8F%AF%E9%AA%8C%E8%AF%81%E6%BB%A1%E6%84%8F%E4%BB%98%E6%AC%BENztC4F1xe7BuvyXJkYciA0ROD0219&vt=4&cid=76993&node_id=76993",
-      "time": "2026-08-03T09:40:40.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ],
-      "topic": true
     },
     {
       "source": "数码测评",
@@ -25223,7 +25225,7 @@
       "sourceColor": "#1a1a2e",
       "title": "索尼确认2028年后还有盒装版，游戏光碟改成下载兑换码 - 游民圈子",
       "description": "",
-      "url": "https://club.gamersky.com/activity/1588414?club=1468",
+      "url": "https://club.gamersky.com/activity/1588414",
       "time": "2026-08-01T06:18:00.000Z",
       "tags": [
         "游戏"
@@ -26834,7 +26836,7 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
-      "title": "《北京新闻》系列报道之《大模型创新领跑全国 北京人工智能产业蓄力腾飞》 - kw.beijing.gov.cn",
+      "title": "《北京新闻》系列报道之《大模型创新领跑全国 北京人工智能产业蓄力腾飞》 - 北京市科学技术委员会",
       "description": "",
       "url": "https://kw.beijing.gov.cn/ztzl/rdzt/kjrmt/202607/t20260728_4794551.html",
       "time": "2026-07-28T11:27:14.000Z",
@@ -26846,7 +26848,7 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
-      "title": "《北京新闻》系列报道之《大模型创新领跑全国 北京人工智能产业蓄力腾飞》 - 北京市科学技术委员会",
+      "title": "《北京新闻》系列报道之《大模型创新领跑全国 北京人工智能产业蓄力腾飞》 - kw.beijing.gov.cn",
       "description": "",
       "url": "https://kw.beijing.gov.cn/ztzl/rdzt/kjrmt/202607/t20260728_4794551.html",
       "time": "2026-07-28T11:27:14.000Z",
@@ -26876,6 +26878,18 @@
       "time": "2026-07-28T09:22:00.000Z",
       "tags": [
         "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
+      "description": "",
+      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
+      "time": "2026-07-28T08:59:53.000Z",
+      "tags": [
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -27147,18 +27161,6 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
-      "description": "",
-      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
-      "time": "2026-07-27T07:00:00.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
       "title": "人工智能：汽车与汽车工业游戏规则的改变者 - Valeo",
       "description": "",
       "url": "https://www.valeo.com/cn/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%B1%BD%E8%BD%A6%E4%B8%8E%E6%B1%BD%E8%BD%A6%E5%B7%A5%E4%B8%9A%E6%B8%B8%E6%88%8F%E8%A7%84%E5%88%99%E7%9A%84%E6%94%B9%E5%8F%98%E8%80%85/",
@@ -27180,6 +27182,19 @@
       "tags": [
         "汽车",
         "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?oid=%E5%9B%BD%E9%99%85%E7%9B%98%E4%B8%8D%E6%8A%A5%E6%AF%92%E6%90%AD%E5%BB%BA(%E9%A3%9E%E6%9C%BA%EF%BC%9A@kxkjww%20@kxkjrj%EF%BC%89&vt=4&cid=76993&node_id=76993",
+      "time": "2026-07-26T20:50:17.000Z",
+      "tags": [
+        "手机",
+        "大公司"
       ],
       "topic": true
     },
@@ -27266,19 +27281,6 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?vt=4",
-      "time": "2026-07-26T10:02:31.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
       "title": "消息称下一代三星Galaxy Z TriFold三折叠手机将于明年推出|折叠屏|内屏|机型|三星电子|备货量_手机新浪网 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.cn/stock/jdts/2026-07-26/detail-inikcpwi0987788.d.html?vt=4",
@@ -27305,6 +27307,19 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
+      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
+      "time": "2026-07-26T09:30:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
       "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
@@ -27322,19 +27337,6 @@
       "description": "",
       "url": "https://www.sohu.com/a/1054993080_114760",
       "time": "2026-07-26T09:21:47.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260726A08HBJ00",
-      "time": "2026-07-26T07:00:00.000Z",
       "tags": [
         "手机",
         "大公司"
@@ -41825,6 +41827,19 @@
       "topic": true
     },
     {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Z Fold8系列发布 大阔折12999元起 - 中华网科技频道",
+      "description": "",
+      "url": "https://m.tech.china.com/digi/digi/20260723/202607231924208.html",
+      "time": "2026-07-23T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼 FX 系列凭借 FX5 相机进入新时代 - Panorama Audiovisual",
@@ -41870,19 +41885,6 @@
       "tags": [
         "人工智能",
         "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8系列发布 大阔折12999元起 - 中华网科技频道",
-      "description": "",
-      "url": "https://m.tech.china.com/digi/digi/20260723/202607231924208.html",
-      "time": "2026-07-23T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
       ],
       "topic": true
     },
@@ -45065,19 +45067,6 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8 Ultra、Z Fold8及Z Flip8正式发布：折叠屏形态新体验 - tech.sina.cn",
-      "description": "",
-      "url": "https://tech.sina.cn/mobile/xp/2026-07-22/detail-iniisxzu8643319.d.html?oid=%E7%B2%BE%E4%BB%BF%E9%A1%B6%E7%BA%A7%E6%99%AE%E6%8B%89%E8%BE%BE%E5%A5%B3%E5%8C%85%E2%96%8B%E5%BE%AE%E4%BF%A1198099199%E2%96%8BPBtW&vt=4",
-      "time": "2026-07-22T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
       "title": "蜘蛛侠惊喜现身三星Unpacked 2026发布会|雅各·巴塔伦|蜘蛛侠：崭新之日|折叠屏|三星Galaxy Z Fold|威索尼可_手机新浪网 - finance.sina.com.cn",
       "description": "",
       "url": "https://finance.sina.cn/stock/jdts/2026-07-22/detail-iniisxzt1864700.d.html?oid=%E9%83%91%E5%B7%9E%E4%BC%B4%E6%B8%B8%E4%BB%B7%E6%A0%BC%EF%BC%88%E9%AA%8C%E8%AF%81%E4%BF%9D%E7%9C%9F%EF%BC%89%EF%BC%88%E8%81%94%E7%BB%9CV%E5%8A%A0%EF%BC%9A%E2%91%A0%E2%91%A0778593%EF%BC%89%E8%A7%81%E9%9D%A2%E4%BB%98%E6%AC%BE%E7%9C%9F%E4%BA%BA%E9%AA%8C%E8%AF%81%E5%AF%B9%E6%AF%94%E6%97%A0%E5%A5%97%E8%B7%AFpM0GIlVP1y4mwzdbNhxWt8F0219&vt=4",
@@ -45145,6 +45134,19 @@
       "title": "尼康邀您相聚2026 P&I，探秘“光影漫境”沉浸式影像之旅 - 手机网易网",
       "description": "",
       "url": "https://www.163.com/dy/article/L2FRV1DF05128A8R.html",
+      "time": "2026-07-22T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Z Fold8 Ultra、Z Fold8及Z Flip8正式发布：折叠屏形态新体验 - tech.sina.cn",
+      "description": "",
+      "url": "https://tech.sina.cn/mobile/xp/2026-07-22/detail-iniisxzu8643319.d.html?oid=%E7%B2%BE%E4%BB%BF%E9%A1%B6%E7%BA%A7%E6%99%AE%E6%8B%89%E8%BE%BE%E5%A5%B3%E5%8C%85%E2%96%8B%E5%BE%AE%E4%BF%A1198099199%E2%96%8BPBtW&vt=4",
       "time": "2026-07-22T07:00:00.000Z",
       "tags": [
         "手机",
@@ -47541,7 +47543,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "智能汽车市场规模、份额|行业报告[2026-2034] - fortunebusinessinsights.com",
+      "title": "智能汽车市场规模、份额|行业报告[2026-2034] - Fortune Business Insights",
       "description": "",
       "url": "https://www.fortunebusinessinsights.com/zh/smart-cars-market-115766",
       "time": "2026-07-13T07:00:00.000Z",
@@ -47553,7 +47555,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "智能汽车市场规模、份额|行业报告[2026-2034] - Fortune Business Insights",
+      "title": "智能汽车市场规模、份额|行业报告[2026-2034] - fortunebusinessinsights.com",
       "description": "",
       "url": "https://www.fortunebusinessinsights.com/zh/smart-cars-market-115766",
       "time": "2026-07-13T07:00:00.000Z",
@@ -48138,18 +48140,6 @@
       "topic": true
     },
     {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
-      "description": "",
-      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
-      "time": "2026-07-09T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "小米汽车第二产品系列定名澎程，雷军称其是大空间SUV - 东方财富",
@@ -48160,6 +48150,32 @@
         "手机",
         "汽车",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "雷军谈小米汽车“澎程”系列定位 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202607093799091661.html",
+      "time": "2026-07-09T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
+      "time": "2026-07-09T07:00:00.000Z",
+      "tags": [
+        "测评/新品"
       ],
       "topic": true
     },
