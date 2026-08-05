@@ -1150,9 +1150,9 @@ const app = createApp({
             techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
             // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
-            // 必须晚于 api.js 中最长的单项预算（BASE_MS=45s），否则会在归档还在传输时
-            // 提前把转圈关掉，让用户误以为"只有实时那几百条"。故设为 55s。
-            const watchdog = setTimeout(() => { techLoading.value = false; }, 55000);
+            // 必须晚于 api.js 中最长的单项预算（BASE_MS=60s），否则会在归档还在传输时
+            // 提前把转圈关掉，让用户误以为"只有实时那几百条"。故设为 70s。
+            const watchdog = setTimeout(() => { techLoading.value = false; }, 70000);
             try {
                 const res = await API.fetchAllTechNews((p) => { techLoadProgress.value = p; });
                 techNews.value = res.articles || [];
