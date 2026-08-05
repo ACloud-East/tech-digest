@@ -269,20 +269,29 @@ const API = {
 
         // 2) 先取极小的元数据文件（data/news-meta.json），拿到归档原始字节数，
         //    这样即使 Cloudflare 对 gzip 分块传输不返回 Content-Length，进度条仍能显示真实百分比。
+        //    meta 下载与归档下载并行：meta 很可能很快返回，届时进度条立即变为确定模式；
+        //    若 meta 极慢，也不阻塞归档开始（最多等 500ms），避免增加首屏延迟。
         let expectedSize = 0;
-        try {
-            const r = await this.fetchWithTimeout('data/news-meta.json', 5000);
-            if (r && r.ok) {
-                const meta = await r.json();
-                if (meta && typeof meta.size === 'number') expectedSize = meta.size;
-            }
-        } catch (e) { console.warn('读取归档元数据失败，进度条退回动画模式:', e.message); }
+        const metaTask = (async () => {
+            try {
+                const r = await this.fetchWithTimeout('data/news-meta.json', 10000);
+                if (r && r.ok) {
+                    const meta = await r.json();
+                    if (meta && typeof meta.size === 'number') { expectedSize = meta.size; return; }
+                }
+            } catch (e) { console.warn('读取归档元数据失败:', e.message); }
+        })();
 
         // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。流式下载，逐字节回报进度
         const archiveTask = (async () => {
+            // 优先等 meta 就绪（通常 <100ms），最多等 500ms 避免阻塞
+            await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
             try {
                 const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
-                    prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = total; prog.archKnown = !!total; emit();
+                    // streamFetchJSON 的 total 来自 Content-Length；生产上分块 gzip 时它为 0，
+                    // 此时用 meta 提供的 expectedSize，让进度条保持真实百分比。
+                    const effectiveTotal = total || expectedSize;
+                    prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
                 }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
             } catch (e) { console.warn('读取历史语料失败/超时:', e.message); }
