@@ -241,10 +241,10 @@ const API = {
                 if (prog.archKnown && prog.archTotal) {
                     const frac = Math.min(1, prog.archLoaded / prog.archTotal);
                     percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
-                    label = `正在下载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                    label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
                 } else {
                     percent = -1; indeterminate = true; // 服务端分块压缩传输、拿不到总大小 → 走不确定动画 + 已下载量
-                    label = `正在下载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知）`;
+                    label = `正在加载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知）`;
                 }
             } else {
                 percent = prog.liveDone ? 12 : 4;
