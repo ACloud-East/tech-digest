@@ -943,8 +943,10 @@ const googleNewsSources = [
     // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
     { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
     // 蜂鸟网(fengniao.com) 为摄影/影像社区，无标准 RSS（官网 WAF 反爬、RSS 路径 404），
-    // 故用 Google News 的 site:fengniao.com 兜底，稳定拉取近 30 天影像/数码类文章（链接经 Google 代理可打开）。
-    { name: '蜂鸟网', site: 'fengniao.com', color: '#ff8c00' },
+    // 故用 Google News 的 site:fengniao.com 兜底；社区里杂内容多，再用 keep 白名单只保留
+    // 影像/光学/数码/科技相关条目（相机/镜头/微单/手机/评测/器材等），过滤无关灌水。
+    { name: '蜂鸟网', site: 'fengniao.com', color: '#ff8c00',
+      keep: ['相机','镜头','影像','数码','摄影','手机','评测','科技','器材','微单','单反','CMOS','传感器','光学','无人机','平板','笔记本','显示器','耳机','智能','屏幕','芯片','画质','像素','存储','显卡','主板','路由器','快门','变焦'] },
     // ZDNet 官网 RSS(news/rss.xml) 已退化（仅 ~1 条），改为 Google News site:zdnet.com 兜底；
     // ZDNet 为英文源，故用 en-US 语言参数拉取真实英文文章（链接已修为 articles/ 格式可正常打开）。
     { name: 'ZDNet', site: 'zdnet.com', color: '#0066cc', hl: 'en-US', gl: 'US', ceid: 'US:en' },
@@ -984,6 +986,8 @@ async function fetchGoogleNews(src, existingTitles) {
             // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园/FreeBuf/36氪等）
             const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao|IT之家)\s*$/i, '').trim();
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
+            // keep 白名单：仅站点兜底源配置时用（如蜂鸟网社区杂内容多），标题须命中任一关键词才保留，否则跳过
+            if (src.keep && !src.keep.some(k => title.includes(k))) continue;
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;
             // Google News 的 RSS 链接为 news.google.com/rss/articles/...，该格式在浏览器中会白屏；
