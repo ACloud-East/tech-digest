@@ -1,7 +1,541 @@
 {
-  "updateTime": "2026-08-05T06:17:07.070Z",
-  "total": 4101,
+  "updateTime": "2026-08-05T06:47:50.949Z",
+  "total": 4190,
   "articles": [
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Google could soon fix this annoying audio playback issue in Chrome for Android",
+      "description": "Google is finally fixing a bug that exclusively annoyed Android tablet users.",
+      "url": "https://www.androidauthority.com/chrome-pip-window-audio-playback-bug-3694627/",
+      "time": "2026-08-05T06:44:26.000Z",
+      "tags": [
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "开源模型越便宜，GPU需求越大",
+      "description": "知名科技投资人 Gavin Baker 认为，很多人把”AI越来越便宜”误解成了”AI需求变弱”， 但真正发生的事情恰恰相反。 企业花的钱可能变少了，但不是因为不用AI了，而是因为开始用更便宜、更合适的模型。 成本下降以后，AI会被用到更多场景，生成更多Token，最终消耗的GPU算力反而还会继续增长。 所以，在他看来，AI正在进入一个”多模型协同”的时代： 不同任务调用不同模型，把成本降下来，同时把AI的使用规模进一步做大。",
+      "url": "https://wallstreetcn.com/charts/41959519",
+      "time": "2026-08-05T06:43:52.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "央视曝午夜直播色情引流乱象，直播间被多平台推送至首页",
+      "description": "IT之家 8 月 5 日消息，央视新闻今日曝光了午夜直播色情引流乱象。直播画面仅有一张图片，主播只用声音和观看者交流，评论区充斥着大量谐音字暗语…… 记者调查发现，在多个网络平台，都有类似直播间被推送至平台首页，即使没关注此类账号，也会刷到。观看者一旦发言，主播立刻就会发来私信，引导用户刷礼物，要求添加好友，并不断通过“打视频”“玩荤的”“发福利”等词汇，暗示可付费裸聊。 刷礼物 → 加好友 → 引入私域，至此，一条完整的从网络直播平台引流至站外进行非法交易的链条暴露出来…… 报道称，记者针对多个此类网络直播间的引流行为，向所在平台进行举报，部分直播间已经被平台重点关注或直接封禁，而有些直播间在举报后依然存在。",
+      "url": "https://www.ithome.com/0/985/927.htm",
+      "time": "2026-08-05T06:42:54.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "本田 2027 财年第一财季归母净利润 4509.15 亿日元，同比增长 129.3%",
+      "description": "IT之家 8 月 5 日消息，本田今日发布 2027 财年（2026 年 4 月 1 日～2027 年 3 月 31 日）第一财季（2026 年 4 月 1 日～2026 年 6 月 30 日）业绩快报报告： 营业总收入：6.06 万亿日元（IT之家注：现汇率约合 2,597.72 亿元人民币），同比增长 13.5% 归母净利润：4,509.15 亿日元（现汇率约合 193.24 亿元人民币），同比增长 129.3% 经营现金流：2,925.16 亿日元（现汇率约合 125.36 亿元人民币），同比增长 241.49% 基本每股收益：115.84 日元（现汇率约合 4.96 元人民币），同比增长 147.52% 稀释每股收益：115.84 日元（现汇率约合 4.96 元人民币），同比增长 147.52% 资产负债率：63.33%，同比下降 0.42 个百分点 AI 解读 本次财报营业收入和归母净利润均超市场一致预期，营业收入高于预期的 5.765 万亿日元（现汇率约合 2,470.65 亿元人民币），归母净利润显著高于市场预期。 财报核心亮点 营收大幅增长：6.06 万亿日元（现汇率约合 2,597.72 亿元人民币），同比增长 13.5%，主要受金融服务业务、二轮业务增长及汇兑调整推动。 盈利高增：营业利润达到 5,307.67 亿日元（现汇率约合 227.47 亿元人民币），同比增长 117.4%，受益于去年同期电动车相关损失基数效应；税前利润 6,050.27 亿日元（现汇率约合 259.29 亿元人民币），同比增长 107%；归母净利润 4,509.15 亿日元（现汇率约合 193.24 亿元人民币），同比大增 129.3%；基本每股收益 115.84 日元（现汇率约合 4.96 元人民币） 日元。 全年业绩展望 本田上调了 2027 财年全年业绩预期，具体预计： 全年营业收入 24.15 万亿日元（现汇率约合 1.03 万亿元人民币），同比增长 10.8% 全年营业利润 6,500 亿日元（现汇率约合 278.56 亿元人民币） 全年归母净利润 4,000 亿日元（现汇率约合 171.42 亿元人民币） 全年基本每股收益 102.75 日元（现汇率约合 4.40 元人民币） 日元 相关阅读： 《本田 2027 财年年报归母净利润 4000 亿日元，同比预增 53.8%》 《Lucid 2026 财年半年报归母亏损 23.94 亿美元，同比亏损扩大 62.79%》 《丰田汽车 2027 财年第一财季归母净利润 1.48 万亿日元，同比增长 75.56%》 《日产 2027 财年第一财季扭亏为盈：归母净利润 37.61 亿日元超出市场预期》 风险提示：本文内容由 AI 自动分析生成，仅供参考，不代表IT之家观点。如有出入请以证监会指定上市公司信息披露平台为准。本文内容不构成投资建议，如有投资者据此操作，风险自担，IT之家对此不承担任何责任。",
+      "url": "https://www.ithome.com/0/985/923.htm",
+      "time": "2026-08-05T06:41:57.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Linear Regression Explained: Estimating Car Values by Mileage",
+      "description": "Originally published at Programming Tech Lab. Step away from the kitchen counter and step into a bustling auto garage. Imagine you are an experienced mechanic evaluating used cars brought in for trade-ins. A customer drives in a sedan with 50,000 miles on the odometer and asks: \"How much is my car worth?\" Without needing a complex computer program, your brain instantly draws a connection: as the mileage on a car goes up, its resale price goes down. If a car has 0 miles (brand new), it commands peak market price. If it has 200,000 miles, it drops significantly toward scrap value. This straight-line relationship between two factors—where changes in one variable cause a predictable increase or decrease in another—is the core concept behind Linear Regression. In high school math, you probably saw the classic line equation: y = mx + b In machine learning, Linear Regression uses this exact same formula to make predictions: Predicted Value (y) = (Slope m × Input Feature x) + Starting Point b Let's map this directly to our mechanic's garage evaluation: Target (y): The estimated resale price of the car ($). Input Feature (x): The total miles on the odometer. Starting Point / Intercept (b): The price of the car when mileage is 0 (Brand New MSRP). Slope / Weight (m): The rate of depreciation (e.g., losing $0.10 in value for every 1 mile driven). If a car starts at a baseline price of $30,000 and depreciates by $0.10 per mile, a car with 50,000 miles is predicted to be worth: Predicted Price = $30,000 - ($0.10 × 50,000) = $25,000 If you plot 100 used cars on a graph where the horizontal axis (X) is Mileage and the vertical axis (Y) is Price, the dots won't form a perfectly straight laser line. Some owners took great care of their vehicles; others had minor scratches. So how does a Linear Regression algorithm draw the single best line through that scattered cloud of dots? The algorithm starts by drawing a random line across the graph. Then, it measures the vertical distance between every actual car dot and the line. This distance is called the Residual (or Error). To ensure negative errors don't cancel out positive errors, the algorithm squares every distance and adds them up (producing the Mean Squared Error). It then shifts the line repeatedly until it finds the exact position where this total error is as small as humanly possible. This method is called Ordinary Least Squares (OLS). In real life, a car's price isn't determined by mileage alone. A mechanic considers multiple factors simultaneously: Simple Linear Regression: Uses 1 input factor (Mileage) to predict output (Price). Multiple Linear Regression: Uses multiple input factors (Mileage + Age of Car + Engine Size + Number of Accidents) to predict output (Price). Multiple Linear Regression simply adds more slope terms to our equation: Price = (m1 × Mileage) + (m2 × Age) + (m3 × Engine Size) + Baseline Here is how you can train a Linear Regression model in Python: import numpy as np from sklearn.linear_model import LinearRegression # Feature matrix: [Mileage (miles)] X = np.array([[10000], [25000], [50000], [80000], [120000]]) # Target vector: Car Price ($) y = np.array([28000, 25500, 22000, 17500, 12000]) # Initialize and fit the model model = LinearRegression() model.fit(X, y) # Predict price for a car with 65,000 miles sample_mileage = np.array([[65000]]) predicted_price = model.predict(sample_mileage) print(f\"Estimated Car Value: ${predicted_price[0]:,.2f}\") Real Estate Valuation: Zillow and property appraisal platforms use Multiple Linear Regression to estimate house prices based on square footage, number of bedrooms, neighborhood crime rates, and age of construction. Sales & Inventory Forecasting: E-commerce retailers use linear regression to predict monthly sales volume based on ad spend, seasonal trends, and store traffic metrics. From an MLOps operational perspective, Linear Regression is one of the most lightweight, blazingly fast models you can deploy. It requires minimal CPU power and virtually zero memory footprint compared to Deep Learning networks. However, MLOps engineers must constantly monitor Linear Regression models for Concept Drift. If inflation rises sharply or supply chain shortages hit the automotive market, the original baseline intercept and slope become invalid. Automated pipeline monitors trigger retrain jobs to update the model weights when live data diverges from historic baselines. Q1: What happens if the relationship between factors isn't a straight line? Answer: Standard Linear Regression assumes a straight-line relationship. If your data curves (e.g., a car loses value very fast in year 1, then flattens out), forcing a straight line results in poor predictions. In those cases, engineers use Polynomial Regression or non-linear algorithms like Decision Trees. Q2: Why is Linear Regression still widely used if Deep Learning exists? Answer: Linear Regression is highly interpretable. You can look directly at the equation weights and explain to stakeholders exactly why a prediction was made. In heavily regulated industries (like banking, lending, and healthcare), explainability is often mandatory by law. Q3: What is \"Outlier Sensitivity\" in Linear Regression? Answer: Because Linear Regression minimizes squared errors, a single extreme data point (e.g., a rare vintage car sold for $2,000,000 with high mileage) can aggressively pull the entire trendline out of alignment. Outliers must be cleaned or removed during data preprocessing. This article was originally published on Programming Tech Lab.",
+      "url": "https://dev.to/sachinpatel2026/linear-regression-explained-estimating-car-values-by-mileage-29jc",
+      "time": "2026-08-05T06:41:12.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "Android 17 QPR 2 Beta 2 is now available",
+      "description": "Technically, Google only releases one major Android version per year – this year it was Android 17. However, the company also works on Quarterly Platform Releases (also known as QPRs), which it serves up to Pixel devices as well as in the form of AOSP images. Yesterday, Google rolled out Android 17 QPR 1 Beta 8 to Pixels and now Android QPR 2 Beta 2. Strangely, the release notes make no mention of what has changed since QPR 2 Beta 1. Below you can find the changelog for QPR 2 Beta 1. If you want to try out Beta 2 on your phone, you can join the Android Beta Program. OTA updates are...",
+      "url": "https://www.gsmarena.com/android_17_qpr_2_beta_2_is_now_available-news-74009.php",
+      "time": "2026-08-05T06:41:02.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "余承东重申鸿蒙智行定义：依托华为全链路赋能打造“五界”产品矩阵，居新势力交付速度第一",
+      "description": "IT之家 8 月 5 日消息，在今天的尊界时代旗舰 MPV 及华为全场景新品发布会上，华为常务董事、产品投资评审委员会主任、终端 BG 董事长余承东再次谈及了鸿蒙智行的定义。 据介绍，鸿蒙智行依托华为全链路赋能，打造“五界”产品矩阵，全系累计交付 148 万辆 +，居新势力交付速度第一。同时，全系主动安全系统避免可能碰撞超 475.2 万次。 尊界时代旗舰 MPV 及华为全场景新品发布会正在进行中，IT之家将持续关注，并在第一时间带来最新报道。",
+      "url": "https://www.ithome.com/0/985/925.htm",
+      "time": "2026-08-05T06:40:55.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ]
+    },
+    {
+      "source": "开源中国",
+      "sourceColor": "#43a047",
+      "title": "TimescaleDB 2.29.1 发布，基于 PostgreSQL 的时序数据库",
+      "description": "TimescaleDB 2.29.0 现已发布，此版本包含自 2.29.0 版本以来的性能改进和错误修复，以及安全漏洞修复（#10360、#10379、#10386）。可以查看安全公告，了解有关漏洞和受影响平台的更多信息。官方建议用户尽快升级。 错误修复 #10327 当 hypertable 参数为NULL时，add_dimension()中的断言失败 #10339 修复从压缩的连续聚...",
+      "url": "https://www.oschina.net/news/488001/timescaledb-2-29-1-released",
+      "time": "2026-08-05T06:40:36.000Z",
+      "tags": [
+        "网络安全",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "开源中国",
+      "sourceColor": "#43a047",
+      "title": "Cloudflare 分享推理优化实践：KV cache 量化 + 权重压缩，吞吐量提升 41%，成本降 30%",
+      "description": "Kimi 和 GLM 是当前最强的大模型系列之一，但它们有一个共同的问题：太吃显存了。月之暗面的 Kimi K 系列和智谱的 GLM 都是长上下文、MoE 架构的大模型，好用到让人上瘾，但 GPU 显存永远不够用。 Cloudflare 的 Workers AI 团队一直在跑这些模型的推理。他们在官方博客上发了一篇技术文章，详细拆解了三种让大模型在 GP...",
+      "url": "https://www.oschina.net/news/487999",
+      "time": "2026-08-05T06:39:06.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "钛媒体",
+      "sourceColor": "#ff9800",
+      "title": "上会前夕撤回30亿可转债申请，子公司立案风波打断申通快递融资计划",
+      "description": "两笔融资悉数落空，扩产升级现实压力进一步凸显。",
+      "url": "https://www.tmtpost.com/8092255.html",
+      "time": "2026-08-05T06:38:53.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "售价 200 美元的 Steam 恶搞游戏卖出 6717 份，玩家退款后开发者仅收入 2045 美元",
+      "description": "IT之家 8 月 5 日消息，一名青少年开发者制作的一款名为《This Game Costs 200 Dollars》（《这款游戏售价 200 美元（IT之家注：现汇率约合 1,353 元人民币）》）的玩笑游戏，在被数千名玩家退款之前，差点为他带来近 100 万美元（现汇率约合 676.3 万元人民币）的收入。 18 岁的迈克尔 · 梅杰（Michael Major）正是这款爆红游戏的开发者，而这实际上是他此前作品《This Game Costs 10 Dollars》（《这款游戏售价 10 美元（现汇率约合 67.6 元人民币）》）的续作。梅杰表示，他制作这款游戏只是为了开个玩笑，因为他认为没人会真的购买它，毕竟 200 美元（现汇率约合 1,353 元人民币）已经是 Steam 平台允许开发者设定的最高售价。 事实上，游戏 Steam 页面中的“关于这款游戏”一栏甚至将其描述为“终极诈骗之作”。梅杰写道：“我知道有些人会出于纯粹的好奇心购买这款游戏，我也强烈建议你这么做。” 但他完全没想到，真的会有数千名玩家接受他的“邀请”。据新罕布什尔州当地媒体 WMUR-TV 报道，这款简单的俯视角游戏理论上的销售额一度达到 134.565 万美元（现汇率约合 910.1 万元人民币）…… 不过实际情况并非如此。 根据梅杰提供的 Steamworks 销售与激活报告显示，这款游戏总共售出了 6,717 份，其中 6,705 份购买来自中国大陆。美国玩家购买了 4 份，中国香港玩家购买了 3 份，西班牙玩家购买了 2 份，此外沙特阿拉伯、中国台湾和新加坡各有 1 名玩家购买。 但大多数买家甚至没有真正玩这款游戏，而是在购买后直接申请退款。对于那些实际体验过游戏的玩家来说，平均游戏时间约为 10 分钟。最终，这笔看似高达 130 万美元（现汇率约合 879.2 万元人民币）的收入，在退款之后缩水到了区区 2,045 美元（现汇率约合 13,830 元人民币）。 “他们可能是为了获得最高金额购买所能带来的某种积分，然后立即退款，这样就不用真的支付 200 美元（现汇率约合 1,353 元人民币）。”梅杰猜测道。他指的是 Steam 积分系统 —— 玩家每次购买游戏都会获得积分，可用于兑换个人资料装饰、头像框等个性化内容。 Steam 允许用户在购买游戏后的 14 天内退款，只要累计游玩时间不超过两小时即可，而这些玩家显然利用了这一机制。 梅杰还猜测，这款恶搞游戏可能被用于资金洗白。他表示：“我不是在开玩笑，我听说 Steam 上一些高价游戏曾被用于洗钱。我完全不知道情况如何。我现在甚至可能已经出现在某些‘黑名单’上了。” 在接受 WMUR-TV 采访时，梅杰开玩笑说，当他在 Steam 报告中看到 134 万美元（现汇率约合 906.2 万元人民币）这个数字时，“差点吓死”。他说，如果自己真的赚到这么多钱，他可能会“辞掉工作”。",
+      "url": "https://www.ithome.com/0/985/924.htm",
+      "time": "2026-08-05T06:38:27.000Z",
+      "tags": [
+        "游戏",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Audit Your AI Dev Tool's Data Boundary Before You Paste Real Code Into It",
+      "description": "Last month I watched a teammate paste a stack trace into a hosted AI assistant. The trace contained an internal hostname, a database connection string, and a customer email. None of it was secret enough to trip a DLP rule, but all of it left our network through an endpoint nobody had audited. The failure wasn't the tool — it was that we had never written down which data classes are allowed to reach which inference endpoint, and we had no test that would fail when the boundary was crossed. This article builds that boundary as a reproducible fixture: a data-classification decision matrix, a canary-leak test you can run against any hosted or self-hosted model endpoint, and a prevent/detect/recover table. The fixture works whether your endpoint is a cloud API, a free hosted tier, or a GPU box under your desk. I1: A prompt containing data of classification level L may only egress to an endpoint whose trust level is explicitly approved for L. Everything below exists to make I1 testable in CI rather than aspirational in a wiki. Data class Examples Free hosted model tier Self-hosted / VPC endpoint C0 – Public OSS code, docs, public CVEs ✅ Allowed ✅ Allowed C1 – Internal-generic Boilerplate, config shapes, anonymized traces ✅ Allowed with review ✅ Allowed C2 – Internal-sensitive Real hostnames, schemas, ticket content ❌ Not without a signed DPA + retention terms you've actually read ✅ Preferred C3 – Regulated/secrets Credentials, PII, customer data, keys ❌ Never ⚠️ Only with controls (see below) Two rules make this matrix enforceable: Default deny. If a data class isn't in the matrix, it's C3 until someone argues it down in writing. The matrix is code. Keep it as a YAML file in the repo so the fixture in Step 2 can assert against it. Free hosted tiers are genuinely useful for C0/C1 work — evaluating a framework, writing throwaway scripts, reproducing a public bug. That is where something like MonkeyCode's free model access and free server option fits honestly: a zero-cost endpoint for data classes that don't require a contractual boundary. Disclosure: This article was prepared as part of MonkeyCode's product outreach. What I am explicitly not claiming is that any free tier — theirs or anyone's — is appropriate for C2/C3. That determination depends on retention terms, region, and your threat model, and you should verify those against the provider's current documentation rather than my article. The test: plant a unique canary string in a prompt, send it to the endpoint under audit, then assert the canary only ever touched approved hosts — and never appears in places it shouldn't (logs shipped to third parties, telemetry endpoints, other DNS resolutions). Fixture setup (template — run it yourself; I executed this against a local mitmproxy 10.4.x and curl 8.x on Linux, outputs below are from that run): # 1. Generate a canary unique to this test run export CANARY=\"cnry-$(date +%s)-$(head -c4 /dev/urandom | xxd -p)\" echo \"canary: $CANARY\" # 2. Route all tool traffic through an intercepting proxy export HTTPS_PROXY=http://127.0.0.1:8080 mitmproxy --mode regular --set flow_detail=3 \\ --save-stream-file +audit-flows.mitm & # 3. Capture DNS in parallel sudo tcpdump -i any -nn port 53 -w audit-dns.pcap & Positive fixture (should pass): a C0 prompt containing the canary, sent to the approved endpoint: curl -sS \"$APPROVED_ENDPOINT/v1/chat/completions\" \\ -H \"Authorization: Bearer $KEY\" \\ -H \"Content-Type: application/json\" \\ -d \"{\\\"model\\\": \\\"$MODEL\\\", \\\"messages\\\": [{\\\"role\\\":\\\"user\\\",\\\"content\\\":\\\"Refactor this public-domain function. Marker: $CANARY\\\"}]}\" Negative fixture (must fail the audit): the same canary embedded in a C3-shaped prompt — a fake-but-realistic credential: FAKE_LEAK=\"postgres://app:${CANARY}@db.internal.acme.example:5432/prod\" curl -sS \"$APPROVED_ENDPOINT/v1/chat/completions\" \\ -H \"Authorization: Bearer $KEY\" \\ -d \"{\\\"model\\\": \\\"$MODEL\\\", \\\"messages\\\": [{\\\"role\\\":\\\"user\\\",\\\"content\\\":\\\"Why does this connection string time out? $FAKE_LEAK\\\"}]}\" Assertions: # A1: canary appears in flows ONLY to the approved host mitmdump -nr audit-flows.mitm --set hardump=- 2>/dev/null \\ | grep -c \"$CANARY\" # expect: >= 1 (it was sent) # A2: every flow containing the canary targets the approved host # (in my run: 2 flows, both to the expected host:443 — anything else fails) # A3: canary never appears in DNS (it would indicate host-based exfil/telemetry) sudo tcpdump -nn -r audit-dns.pcap 2>/dev/null | grep -c \"$CANARY\" # expect: 0 # A4: negative fixture is blocked or flagged by YOUR client-side gate # (if nothing in your pipeline distinguishes the two fixtures, I1 is unenforced) A4 is the one most teams fail. The endpoint cannot know your data classification — only your side can. If your editor integration, CLI, or agent harness sends both fixtures identically, your boundary is a policy document, not an invariant. Label: proposal/pseudocode-adjacent — adapt before production. # boundary_gate.py — runs before any prompt leaves the machine import re, sys, yaml MATRIX = yaml.safe_load(open(\"data_boundary.yaml\")) C3_PATTERNS = [ r\"postgres://[^\\s]+\", r\"-----BEGIN [A-Z ]*PRIVATE KEY-----\", r\"(?i)(api[_-]?key|secret|password)\\s*[:=]\\s*\\S+\", r\"\\b[\\w.+-]+@[\\w-]+\\.[\\w.]+\\b\", # email → at least C2 r\"\\b\\d{1,3}(\\.\\d{1,3}){3}\\b\", # internal IPs → review ] def classify(prompt: str) -> str: for p in C3_PATTERNS: if re.search(p, prompt): return \"C3\" return \"C0\" # conservative default for the demo; real gates are richer def allowed(level: str, endpoint: str) -> bool: return endpoint in MATRIX[\"classes\"][level][\"approved_endpoints\"] prompt = sys.stdin.read() level = classify(prompt) endpoint = sys.argv[1] if not allowed(level, endpoint): print(f\"BLOCKED: {level} data may not egress to {endpoint}\", file=sys.stderr) sys.exit(1) Wire it as a pre-send hook in your agent harness or editor integration. The regexes are deliberately crude — the point is that something runs, in CI and on the client, that can fail. Phase Control Fixture that proves it Prevent Classification gate blocks C2/C3 to unapproved endpoints Negative fixture exits 1 Detect Proxy + DNS capture; canary assertions A1–A3 in CI A3 finds a canary in DNS → fail Recover Rotation runbook: any canary-class leak triggers credential rotation + endpoint re-review Tabletop: rotate the fake cred, re-run fixture, confirm block Regex classification has false negatives. Treat the gate as a tripwire, not a guarantee; pair it with reviewer judgment for anything near the C1/C2 line. The canary test proves what your client sends; it cannot prove what a provider retains. Retention is a contractual question — read the current terms for any endpoint, free or paid, before approving it for C2. A free hosted tier is the wrong target for regulated workloads, customer data, or anything with a residency requirement, full stop. If your org cannot route tool traffic through an auditable proxy (locked-down laptops, opaque editor plugins), you cannot run the detect phase — fix that before trusting any endpoint. If you want a zero-cost endpoint to aim this fixture at while you build the harness, MonkeyCode's free models and free server option are a reasonable C0/C1 target to practice against — but run the audit, don't take my matrix's word for it. One boundary question to leave with: which assertion belongs in CI on every run (I'd argue A4, the classification gate), and which belongs to the network layer — and who in your org owns the YAML file that decides? I'd like to hear how other teams draw that line.",
+      "url": "https://dev.to/jaryn_123/audit-your-ai-dev-tools-data-boundary-before-you-paste-real-code-into-it-9o",
+      "time": "2026-08-05T06:37:21.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "字节跳动推出全双工多模态大模型SeedRealtime - DoNews",
+      "description": "",
+      "url": "https://www.donews.com/news/detail/8/6659490.html",
+      "time": "2026-08-05T06:37:03.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "GPT-6 Killed Prompt Engineering: Here’s What Running Infrastructure Looks Like in the Age of Agent Swarms",
+      "description": "The GPT-6 news is doing the rounds and the framing is everywhere: prompt engineering is dead, the future is hierarchical memory and autonomous agent swarms. I mostly agree with the framing, but almost every take I've seen treats it as an AI story. It's not. For anyone who actually runs infrastructure, it's an operations story, and it's a slightly alarming one. Let me explain what changes on the ground, because the interesting part isn't the model, it's what a swarm of these things does to your cloud account. Prompt engineering was never a discipline. It was a coping mechanism for models that forgot everything between turns and couldn't reliably use tools. We wrote elaborate prompts because we had to hand-carry all the context in, every single time. Calling it \"engineering\" flattered it. So \"the era of prompt engineering is over\" is true, but for an unglamorous reason: the crutch is being removed. Hierarchical memory means the model retains structured state across sessions, it remembers your environment instead of being re-briefed on it hourly. When the model holds the context, the prompt shrinks to intent. That shift is real and it's been coming all year; every major cloud shipped managed agent memory in 2026. GPT-6 is a milestone on that curve, not a lightning bolt. The skill that replaces prompt engineering isn't a better prompt. It's context engineering, deciding what goes into that hierarchical memory, what's authoritative, what's stale, who's allowed to write to it. That's a data-governance problem wearing an AI hat, and infra teams are better positioned for it than prompt tinkerers ever were. Here's where the ops reality diverges hard from the AI hype. \"Autonomous agent swarms\" sounds like a productivity feature. From an infrastructure-safety standpoint, it's a blast-radius multiplier, and I don't think that's priced into anyone's excitement yet. One agent with cloud credentials is a manageable risk, you can reason about what it might do. A swarm is a different animal: Concurrency, not sequence. A swarm acts in parallel. Ten agents each doing something individually reasonable can combine into something catastrophic, and no single agent saw the whole picture. Your safety model has to reason about emergent behavior, not per-agent behavior. Attribution gets hard. When a single agent misbehaves, you trace it. When agent #7 acted on state that agent #3 wrote to shared memory based on a poisoned log line agent #1 read, good luck with that postmortem. Shared memory is shared attack surface, and it's now the coordination substrate. Cost goes non-linear. A swarm is a token furnace and an API-call furnace. Ten agents in a plan/execute/verify loop can generate thousands of cloud API calls and burn compute in bursts that make capacity planning a guess. The FinOps question stops being \"what did the agent cost\" and becomes \"what did the colony cost, and why did it spike at 3am.\" None of this means don't use swarms. It means the thing you build around them matters more than ever, and it's not a prompt. If prompt engineering is dead and models keep getting better underneath you, what's worth investing in? The same answer I keep landing on, now more true, not less: Policy, not plumbing. The durable questions are unchanged by GPT-6: What is any agent, or the swarm collectively, allowed to do? Action-level policy (verb + resource class + condition + window), not just IAM. IAM authorizes one identity's one call; it has no concept of \"the swarm collectively touched 300 resources in four minutes.\" What's the blast-radius budget for the whole colony? Per-run caps that apply to the swarm in aggregate, so emergent behavior trips a limit even when no individual agent did anything wrong. How do you verify state independently of the actors? A watcher that compares real infrastructure state to expected baselines on a tight loop, sharing no code or credentials with any agent in the swarm, because you cannot let the colony grade its own homework. What's the undo? Every action a swarm can take needs a designed reversal, or the conditions on that action have to be strict enough that you never need one. This is exactly the bet we made building remediation and scheduling into ZopNight: treat the model as swappable (because it will be swapped, GPT-6 is proof the ground moves every few months) and put the durable value in the policy and verification layer that doesn't care which model is underneath. Prompt-engineering skill evaporates with the next release. \"What's the safe action and what's its undo\" is worth exactly as much after GPT-6 as before it. GPT-6 makes the models more capable and more autonomous at the same time, which is the most operationally dangerous direction to move on both axes at once. The prompt-engineering era ending is fine; that skill was always temporary scaffolding. The agent-swarm era beginning is the part to take seriously, and not because the AI is scary. Because a colony of capable, autonomous, credentialed agents acting in parallel against your cloud account is a governance problem your current tooling was not designed for. Run the swarms. But build the policy layer first, size the blast-radius budget for the colony rather than the individual, and keep something independent watching the actual state. The model got smarter. Your guardrails need to get smarter faster. If you're already orchestrating multiple agents against real infrastructure: what's your aggregate safety model, do you cap the swarm, or just each agent? Because those are very different numbers, and I suspect most setups only do the second.",
+      "url": "https://dev.to/muskan_bandta/gpt-6-killed-prompt-engineering-heres-what-running-infrastructure-looks-like-in-the-age-of-agent-42hp",
+      "time": "2026-08-05T06:34:21.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "卡帕西提出测试 AI 能力新思路：100 万 Tokens 额度构建《指环王》3D 交互场景",
+      "description": "IT之家 8 月 5 日消息，OpenAI 联合创始人安德烈 · 卡帕西（Andrej Karpathy）于 8 月 2 日在 X 平台发布推文，提出一项 AI 基准测试思路：向模型提供《指环王》开篇首段文字，再要求模型创建对应的 3D 世界。 在测试 AI 模型时，此前业内习惯使用生成“鹈鹕骑车图”的 SVG 图片方式，用来评估大语言模型在空间推理、几何逻辑和复杂代码生成方面的真实水平。 不过卡帕西指出目前模型能力不断提升，等简单任务已不在话下，因此提出新的 AI 基准测试思路：让模型根据文学文本构建可交互的 3D 场景，从而观察模型在代码生成、场景设计与多媒体制作方面的综合表现。 Karpathy 要求 Claude Opus 5 使用 three.js 创建 3D 世界，输入内容为《指环王》的首段文字。测试的最高资源额度为 100 万 tokens，成本约为 10 美元。在这一配置下，Claude Opus 5 耗时约 2 小时，输出约 5500 行代码。 生成作品以 3D 动画形式呈现《指环王》开场相关场景，其中包括人们参加比尔博告别宴会，以及充满财宝的洞穴。报道指出，该作品无法与人工耗费数小时制作的内容相比，但考虑到 AI 在约 2 小时内完成生成，其完成度仍较高。",
+      "url": "https://www.ithome.com/0/985/921.htm",
+      "time": "2026-08-05T06:32:06.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I built a short-code marketplace with zero npm dependencies (Node.js 22, no framework)",
+      "description": "I've been going back and forth on whether to share this — it's a pretty niche idea, and I wasn't sure if it's clever or just weird. But here's the technical side of it, which I figure this crowd might actually appreciate regardless. What I built: claimo.me — you claim a short code (2-4 letters, or a custom name) for a one-time fee, no subscription, permanently yours. Each code is configurable as a redirect link, a QR code, or a small profile card. There's also a \"Claimo Map\" — every possible code is a clickable pixel you can browse, inspired by the old Million Dollar Homepage. The part I actually want to talk about here: it's zero-dependency. No Express, no ORM, no build step — just Node.js 22+'s built-in http module and the new built-in node:sqlite. I wanted to see how far \"just the standard library\" actually gets you for something real — payments (Stripe), admin moderation, rate limiting, a live interactive map UI, the works. Some things that surprised me building it this way: node:sqlite's DatabaseSync is genuinely pleasant to use, but it's missing conveniences like better-sqlite3's .transaction() helper — I ended up writing a small manual BEGIN/COMMIT/ROLLBACK wrapper. Business side, since half of you will ask: it's a real registered business, payments go through Stripe only (I never touch card data), no crypto, nothing weird. The paid tiers fund keeping a free short-link tier alive too. Honestly — is the zero-dependency thing a genuinely good call for a real production app, or am I just going to regret it in a year? And separately: does \"own a short code\" as a product idea make any sense to you, or does it feel like a solution looking for a problem? Happy to go deep on any part of the stack. claimo.me — and if you want to actually poke at it, PROMO50 at checkout gives free Countryside-tier codes (normally €2), just for honest feedback.",
+      "url": "https://dev.to/claimo_me/i-built-a-short-code-marketplace-with-zero-npm-dependencies-nodejs-22-no-framework-2ag9",
+      "time": "2026-08-05T06:30:54.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "15-20万适合全家出行的轿车横评，舒适空间配置对比 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7506477254_1bf6bc0c600101i3oo.html",
+      "time": "2026-08-05T06:30:13.000Z",
+      "tags": [
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "李肖爽晒小米澎程 N90 Max 高速爆胎测试视频：非 AI 非 CG，一镜到底全实拍",
+      "description": "IT之家 8 月 5 日消息，小米汽车副总裁李肖爽今日晒出了小米澎程 N90 Max 高速爆胎测试视频。 据李肖爽介绍，本次测试由小米汽车 CTO 胡峥楠参与实测。测试过程中，小米澎程 N90 Max 汽车在时速 160km/h、7 人满载（561kg）的状态下进行了双轮爆胎。 李肖爽强调，此次测试视频非 AI 非 CG，采用一镜到底全实拍。 因为此次测试的内容是“双轮爆胎”，于是有网友询问单轮爆胎会发生什么情况。李肖爽回应称：“两轮爆胎更难，单轮简单一些，就直接做双轮。” 据IT之家此前报道，在 7 月 30 日晚的小米澎程技术发布会上，小米 SKYNOMAD 澎程系列新车终于迎来首秀。在本场发布会中，澎程系列两款全新车型 —— 大七座旗舰增程 SUV N90 Max 与大五座四驱增程 SUV N70 Max 同步亮相，并公布了预售价格。",
+      "url": "https://www.ithome.com/0/985/920.htm",
+      "time": "2026-08-05T06:27:09.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "汽车"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "亚太半导体芯片股狂飙，A股有研硅、中巨芯20CM涨停，韩股SK海力士涨超6% - 21财经",
+      "description": "",
+      "url": "https://m.21jingji.com/article/20260805/herald/83f4fde32f50e7386e2464fa116fd613.html",
+      "time": "2026-08-05T06:27:00.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "存储持续吃紧，半导体产业链十余股涨停！机构：行业景气度或延续修复趋势 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059068494_121157270?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:27:00.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "存储技术迭代叠加设备行业景气预期，半导体材料、设备ETF午后集体冲高 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059069251_121157270?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:27:00.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "8GB 内存也能跑 Kimi K3？2026 本地部署大模型配置全指南",
+      "description": "",
+      "url": "https://www.ifanr.com/1673990",
+      "time": "2026-08-05T06:26:24.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件"
+      ],
+      "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "《生化危机》30 周年展筹备中，卡普空将打造里昂等身雕像",
+      "description": "IT之家 8 月 5 日消息，《生化危机》里的里昂 · 肯尼迪即将来到现实世界…… 当然，只是某种意义上的。 卡普空正在为《生化危机》30 周年纪念展做准备。为了庆祝这一重要节点，公司将打造一座与真人等比例的雕像，主角正是这款恐怖游戏系列的代表人物之一 —— 里昂 ·S· 肯尼迪。 里昂将加入卡普空公司办公室和实体门店中展示的大量真人比例角色雕像阵容，与《街头霸王》中正在蓄力释放波动拳的隆、《怪物猎人：荒野》中的可爱艾露猫等经典角色雕像并肩而立。 可以想象，《生化危机》粉丝已经因为有机会“亲眼见到”里昂而兴奋不已，而卡普空公布这一消息后，玩家们的反应也可以说是…… 相当有趣。 “我要准备一次世纪大盗行动，他们未来几十年都会把这件事写进教科书。”一名玩家在 X 平台上开玩笑说道。（不过看起来，他似乎并不是真的在开玩笑。） “那座里昂雕像绝对不会安全。”另一名玩家评论道。 还有人警告：“你们可能需要准备一大堆‘禁止触摸’的提示牌。” 据IT之家了解，《生化危机》30 周年纪念展将于 2026 年 10 月 30 日至 12 月 24 日在东京涩谷 BEAM Gallery 举办，不过门票已经从 8 月 3 日起开始销售。展览地图也已经公布，但其中不少展区目前仍标注为“即将开放”。 目前已经公布的展区包括“恐怖证据”（Evidence of Horror）、“生化危机剧场”（The World of Resident Evil Theater）、“那些与他们抗争之人的记忆”（Memories of Those Who Stood Against Them），以及限定周边商品销售区域。 “恐怖证据”被描述为一个展示《生化危机》系列经典物品和怪物的展馆。据 SaigaNAK 报道，该区域将展出“以极高细节打造的真人大小反派模型”。 与之相对，“那些与他们抗争之人的记忆”则聚焦于《生化危机》系列中的英雄和主角，展示他们从首次登场到最新作品中的经历。这也是里昂真人比例雕像将会展示的区域。 最后，“生化危机剧场”将在观众正式进入展览前进行预热，通过大屏幕播放系列作品中的经典场景，“增强观众对故事世界的沉浸感和期待感”。 最近，《生化危机》系列可谓迎来了高光时刻。《生化危机：安魂曲》的巨大成功，以及《生化危机：代号维罗妮卡重制版》在 Steam 平台获得超过 200 万愿望单，都证明了该系列依然拥有极高人气。此外，由扎克 · 克雷格执导的《生化危机》电影改编作品（更准确地说是重新构想版本）也将在今年 9 月登陆影院。",
+      "url": "https://www.ithome.com/0/985/918.htm",
+      "time": "2026-08-05T06:25:46.000Z",
+      "tags": [
+        "人工智能",
+        "游戏"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "HWiNFO 即将支持监控 NVIDIA、AMD 显卡单个显存颗粒温度",
+      "description": "IT之家 8 月 5 日消息，根据硬件诊断监控软件 HWiNFO 官网公告，该软件即将在下个正式版本 (v8.51) 在 NVIDIA 采用 GDDR6X / GDDR7 显存的显卡、AMD \"Navi\" 家族 \"RDNA\" 系列架构显卡上支持单个显存颗粒的温度监控。 由于主板 PCB 与散热设计的差异和具体制造工艺的影响，单一的整体温度并不能很好反馈显卡上每个显存颗粒的温度情况，更详细的温度统计可助力用户提早发现显存散热劣化的迹象。 此外，HWiNFO v8.51 还将修复英特尔 \"Arrow Lake\" 处理器 NGU 频率报告问题，新增 NVIDIA \"Blackwell\"GPU 热点温度报告功能、增强技嘉下一代英特尔主板传感器监控功能、支持 AMD Radeon RX 9060 XT LP 与 9050 显卡，改进对海光 C86 处理器的支持。",
+      "url": "https://www.ithome.com/0/985/917.htm",
+      "time": "2026-08-05T06:25:37.000Z",
+      "tags": [
+        "芯片/半导体",
+        "电脑硬件",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "My Algorithmic Trading Bot Silently Failed to Notify: The Curious Case of Missing `.env` Loads Across Scripts",
+      "description": "Hey everyone, it's your friendly neighborhood senior dev here. I'm 38, working as a full-time engineer during the week, and tinkering with AI-powered algorithmic trading bots on the weekends. Today, I want to share a story about a subtle but potentially catastrophic bug I found in my bot. Seriously, thank goodness I caught this before deploying with real capital. The TL;DR: My Discord notifications for order confirmations weren't firing, and the culprit was a forgotten .env load across multiple Python scripts. I think this is a pretty common pitfall when you're working on personal projects with several interconnected Python scripts. Over the weekend, I was running my usual DRY_RUN tests for my forex bot. My bot's architecture splits responsibilities: planner.py handles strategy logic, and executor.py executes actual trades on the exchange. Looking at the console logs, executor.py seemed to be working perfectly. I saw logs like [DRY_RUN] Order placed: .... But the Discord notifications, which are supposed to arrive after an order, simply weren't showing up. Initially, I thought it might be a Discord issue or just a delay. But after 30 minutes, still nothing. This felt wrong. The thought of this happening with real money sent shivers down my spine: \"I thought I placed the order, but it never went through.\" \"I was sure I closed that position, but it's still open.\" Bugs in notification systems are notorious for creating these kinds of silent failures, and they're genuinely scary. My first step was to isolate the problem. I directly invoked notify.py, the script responsible for sending notifications. It worked perfectly, sending a test message to Discord. This strongly suggested the issue was upstream, likely within executor.py, which calls notify.py. I took a closer look at executor.py's logs. And there it was: the webhook URL, which should have been passed to the notification function, was None. Bingo. But why None? I store my webhook URL in a .env file, and other scripts, like planner.py, were successfully reading it. So I compared the code for planner.py and executor.py. And I immediately spotted the difference. At the beginning of planner.py, there was a clear load_dotenv() call: # ... from dotenv import load_dotenv load_dotenv() # Load environment variables # ... planner logic ... However, executor.py, the script in question, was missing this load_dotenv() call. This meant that when I ran the entire flow starting from planner.py, planner.py would load the .env variables, making them available to executor.py. But if I ran executor.py directly for testing, or if it was called from a different entry point, no one was loading the .env file. Consequently, the webhook URL was never set, and notifications failed silently. My code had an implicit dependency, and that's a dangerous path. If this were a team project, it would definitely be caught in code review. But when you're working solo, these kinds of things can easily slip through. Once the cause was clear, the fix was straightforward. I added load_dotenv() to executor.py before calling the notification logic. Before (simplified): // Before: Calling notification function without loading .env from .notify import hub hub.notify_investment('Execution result...') # Fails because webhook is not set In this setup, when the hub module initializes, os.environ.get('DISCORD_WEBHOOK_INVESTMENT') returns None, leading to a silent notification failure. After (simplified): // After: Loading .env before notification import os from dotenv import load_dotenv, find_dotenv from .notify import hub # Find .env file and load environment variables. # This ensures the webhook URL is set in os.environ. if 'DISCORD_WEBHOOK_INVESTMENT' not in os.environ: # Only load if not already set load_dotenv(find_dotenv()) hub.notify_investment('Execution result...') # Notification sent successfully I used find_dotenv() to ensure that the .env file is located correctly, regardless of the current working directory during execution. This guarantees that executor.py can always find and load the webhook URL, no matter how it's invoked. It's a fundamental principle, but it's always good to be reminded: code that depends on certain features (like environment variables) should take responsibility for resolving those dependencies (loading them) where they are used. This incident taught me three important lessons: DRY_RUN Tests Are God-Tier look like they're working are the most dangerous. Never skip DRY_RUN tests before production deployment. Eliminate \"Implicit Assumptions\" Between Scripts .env, it's better design to explicitly load them at each entry point or at the beginning of the modules that rely on them. Consider Assertions for Critical Operations assert os.environ.get('DISCORD_WEBHOOK_INVESTMENT') is not None right before critical operations like placing an order or sending a notification. This can catch misconfigurations immediately. Operating a personal bot is a continuous battle against these subtle bugs. But each one I squash makes the system stronger. It was another weekend where my bot got a little smarter. Oji / AI Algo Trading Engineer X: @oji_ai_dev",
+      "url": "https://dev.to/masaoshimadaopen/my-algorithmic-trading-bot-silently-failed-to-notify-the-curious-case-of-missing-env-loads-55p1",
+      "time": "2026-08-05T06:25:35.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "My Trading Bot's Silent Killer: How Forgetting to Load `.env` Across Scripts Silenced Discord Notifications",
+      "description": "Hey everyone, it's your friendly neighborhood dev-dad here. Mid-thirties, full-time engineer by day, battling AI trading bots by night (weekends, really). Today, I want to share a subtle but potentially catastrophic bug I found in my bot. Seriously glad I caught this before deploying with real money. The symptom: Discord notifications for order fills just weren't arriving. The culprit: I forgot to load my .env variables consistently across multiple Python scripts. This is a super common pitfall when you're linking several Python scripts in a personal project, and it can be a real headache. Last weekend, I was running my usual DRY_RUN tests for my FX bot. My bot's logic is split into two main parts: planner.py, which strategizes trades, and executor.py, which actually sends orders to the exchange. The console logs looked perfectly normal. executor.py seemed to be doing its job: I saw messages like \"[DRY_RUN] Order placed: ...\". But the Discord notifications, which should have been firing, never appeared. At first, I thought it was a Discord outage or just a delay. But after 30 minutes, nothing. Something was definitely wrong. Thinking about what would have happened if this were real money sent shivers down my spine. \"I thought I placed an order, but it never went through.\" \"I thought I closed a position, but I was still holding it.\" Bugs in notification systems are terrifying because they create these silent failures. You think everything is okay, but it's not. This is precisely how real money gets lost. To narrow things down, I first tried calling notify.py (which handles all notifications) directly. It worked flawlessly; the Discord notification came through. This pointed to an issue within executor.py, which calls notify.py. I re-examined executor.py's logs more carefully and immediately saw it: the webhook URL being passed to the notification function was None. Ah, there it is. But why None? I have the webhook URL stored in my .env file, and it's loaded correctly when planner.py executes. Comparing planner.py and executor.py's code, the reason became painfully obvious. planner.py correctly includes load_dotenv() at the top: # ... from dotenv import load_dotenv load_dotenv() # Load environment variables # ... planner's logic ... However, executor.py, the problem child, was missing load_dotenv(). This meant that when I ran the full flow (where planner.py calls executor.py), planner.py would load the .env variables first, so executor.py appeared to work. But if I ran executor.py directly for testing, or if it was called from a different entry point, no one was loading .env. Consequently, the webhook URL was never set, and notifications silently failed. My code was relying on an \"implicit assumption\" about its execution context. This is the kind of thing that would get flagged in a code review with a team, but in solo dev, it's easy to miss. The fix was straightforward once the cause was clear. I added load_dotenv() to executor.py before any notification calls. Before: # Before: Calling notification function without loading .env from .notify import hub hub.notify_investment('Execution result...') # Fails because webhook is not set In this scenario, hub would initialize, and os.environ.get('DISCORD_WEBHOOK_INVESTMENT') would return None, leading to a silent failure. After: # After: Loading .env before notification import os from dotenv import load_dotenv, find_dotenv from .notify import hub # Find the .env file and load environment variables # This ensures the webhook URL is set in os.environ if 'DISCORD_WEBHOOK_INVESTMENT' not in os.environ: # Only load if not already set load_dotenv(find_dotenv()) hub.notify_investment('Execution result...') # Notification sent successfully I used find_dotenv() to ensure that no matter the current working directory, it will always locate the .env file in the project root. Now, executor.py will always correctly load the webhook URL, regardless of how it's executed. It's a fundamental principle, really: if your code depends on a certain feature (like environment variables), the code using that feature is responsible for resolving that dependency. A simple truth, but easily overlooked. I took away three key lessons from this experience: DRY_RUN Tests are Gold Eliminate \"Implicit Assumptions\" Between Scripts .env, explicitly loading them at each entry point, or at the top of any module that uses them, is a much more robust design. Consider Assertions for Critical Operations assert os.environ.get('DISCORD_WEBHOOK_INVESTMENT') is not None would immediately flag misconfigurations. Operating a personal bot means constantly battling these subtle bugs. But each one you squash makes the system stronger. Another weekend, another step towards a smarter bot.",
+      "url": "https://dev.to/masaoshimadaopen/my-trading-bots-silent-killer-how-forgetting-to-load-env-across-scripts-silenced-discord-2pli",
+      "time": "2026-08-05T06:25:35.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "快讯：科创50指数涨超6%，半导体材料板块震荡走高_市场测评_市场 - 中金在线",
+      "description": "",
+      "url": "http://sc.stock.cnfol.com/shichangceping/20260805/32326576.shtml",
+      "time": "2026-08-05T06:25:02.000Z",
+      "tags": [
+        "芯片/半导体",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "香港中文大学（深圳）王本友：AI智能体正从“模型竞赛”转向“闭环工程”，AGI将在特定领域先实现 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_1700648435_655dd5f302001kv6q.html?from=tech",
+      "time": "2026-08-05T06:25:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "AMD史上最好财报，换来9%暴跌：市场要的不是好，是加速",
+      "description": "8月4日盘后，AMD交出了一份几乎没有瑕疵的财报：营收115.36亿美元，同比增长 50%，创历史新高；非GAAP每股收益1.66美元，超过市场预期的1.62美元；数据中心营收67.18亿美元，同比翻倍，占公司总营收的58%。股价在盘后却一度暴跌10%，收跌8.8%。 超预期为什么成了利空？市场定价的不是业绩，是加速。AMD年内股价涨超130%，52周区间从149美元到584美元，涨幅里装的是\"追赶英伟达\"的预期。Q3指引约130亿美元，高于共识的125亿美元，但环比只增 13%——维持斜率，不是跳档。市场要的加速，财报没有给。 投资的代价在财报上也有所显现：56%的毛利率创了新高，但 AI 数据中心的毛利率低于公司平均，占比58%的成长业务反而在稀释利润率；为了 Helios 机柜系统抢产能，资本开支花了8.08亿美元，是分析师预期的近3倍，自由现金流从25.7亿美元腰斩到15.6亿美元。增长的代价，第一次在资产负债表上显形。 市场要的加速，Q3 指引没有给 Q3指引130亿美元上下，同比增41%，环比增13%，中值高于共识的125.2亿美元。这份指引谈不上差，问题在形态：环比只增13%，只是延续当前的斜率。 Dolphin Research算了笔账：按指引推算，Q3 数据中心环比增量约12亿到18亿美元，而 MI455X 才刚刚开始出货，这个台阶算不上特别强。市场此前押注的是 AI 需求让 AMD 再上一个档，指引没有给出这个信号。 AMD 年内涨超130%，市场买的是一个故事：英伟达产能受限、客户需要第二供应商，AMD 从 AI 芯片的备选项变成必选项。财报要做的，是证明这个故事在加速。 7月 Anthropic 宣布在 Helios上部署2吉瓦MI450 GPU，消息当天股价涨约10%；6月初博通财报一度引发半导体板块回调，AMD 随后在 Helios 订单预期下重新修复至518美元上方。每一次上涨，都在抬高下一次财报的门槛。 当AMD交出的只是\"符合预期的好\"，年内130%的涨幅就没了继续向上的理由。盘后的卖盘，是预期兑现的落点。 107%的翻倍，一半是低基数 数据中心同比107%的增速最抓眼球，但成色要打个问号。 2025年二季度，美国出口管制让 AMD 计提了8亿美元的 MI308 库存及相关费用，把当时的基数砸出了一个坑。今年的翻倍，有一部分是填坑填回来的。 Dolphin Research拆了一个数：本季度 Instinct AI GPU营收约27亿美元，上年同期约11亿美元，同样带着基数的阴影。相比之下 EPYC 更干净：云和企业销售同比增长都超过70%，服务器 CPU 营收连续第五个季度创纪录，第六代 EPYC Venice 已投产。没有低基数滤镜的加速，才是这份财报最扎实的一块。 苏姿丰在电话会上给了锚：2027年数据中心营收\"翻倍有余\"，2026下半年服务器营收同比增长超过80%，2027年在更高基数上仍增长超过70%。 毛利率的暗线：AI 越大，毛利越薄 56%的非GAAP毛利率创了新高，但数字里有水分。同比13个百分点的跃升，一大半来自去年同期那笔8亿美元的出口管制计提。 管理层在电话会上确认：AI 数据中心的毛利率略低于公司平均水平。而数据中心恰恰是增长最快、占比最高的业务，从一年前的42%升到现在的58%。营收中最具成长性的部分，是结构性的毛利稀释器。 对比英伟达75%的非 GAAP 毛利率，差距近20个百分点。英伟达靠垄断定价赚超额利润，AMD 的份额靠价格换——苏姿丰说得很直白，AMD 卖的是整合 CPU、GPU、网络芯片的整套基础设施，用更低的单价和更高的开放度撬动客户。这个模式的代价，是每一块钱收入里装进利润的比例天然低于对手。 Helios 从卖芯片转向卖整机柜系统，单价上去了，但机架里的芯片、网络、存储都是成本。规模越大，稀释效应越明显。市场对这份财报的失望，一部分就藏在毛利率的暗线里。 资本开支三倍于预期，增长开始烧钱 资产负债表比利润表更能说明问题：资本开支8.08亿美元，是分析师预期（约2.99亿美元，据 Dolphin Research 测算）的近3倍；自由现金流（据测算）从25.7亿美元降到15.6亿美元；存货增至84.68亿美元，应收账款环比增长21%，达到72.81亿美元。 这不是财务恶化，是主动选择的增长模式：先把钱砸进产能和备货，再等订单兑现。 苏姿丰说 Helios 的需求\"非常强劲，超出我们最初的预测\"，为了接住订单，AMD 必须提前锁产能、提前备库存。现金、存货、应收三个科目同步走高，就是这份抢跑的痕迹。 问题在于，这种模式把业绩的确定性推迟到了未来。一旦 AI 资本开支增速放缓，或某个大客户交付节奏延后，这些数字会从进攻的弹药变成库存的负担。 真正的瓶颈在产能，不在需求 Helios 是这份财报里最关键的信号。 这是 AMD 首款整机柜级 AI 系统，把 CPU、GPU、网络芯片打包成完整机柜交付，本季度已向 Meta、OpenAI、Oracle 交付首批；7月宣布的 Anthropic 2吉瓦合作，首批1吉瓦部署在2027年上半年开始；微软也将在 Azure 上大规模部署。客户名单还在扩：Anthropic、Cirrascale、HUMAIN、Meta、微软、OpenAI、Oracle、Tensorwave、Vultr。 需求端的故事无可挑剔。AMD 的天花板不在这里，在台积电的先进封装产能。 汇丰5月把 AMD 下调至持有，理由就是台积电产能限制——这份财报某种程度上证实了担忧，否则 AMD 没必要把资本开支打到预期三倍去抢产能。AI 芯片的竞争，已经从谁的芯片更好，变成谁先拿到台积电的产能。英伟达的优先权，依然是 AMD 绕不开的约束。 Helios 还藏着一层更深的含义：AMD 的商业模式在从卖芯片转向卖系统。过去它卖一颗颗 GPU、CPU，客户买回去自己拼集群；现在整机柜交付，单价和交付复杂度都上了一个台阶。这既是进攻也是防御——英伟达早用机架级产品证明，系统层的利润和客户黏性比单芯片高得多。但转身也意味着资本更重、交付风险更大，机柜出问题，责任从芯片厂变成系统集成商。 追赶者的估值，已经把成功预付了 英伟达在 AI 加速器市场占约80%份额，AMD 大约10%到15%；英伟达数据中心单季营收752亿美元，是 AMD 全部数据中心业务的11倍。但年内大涨130%之后，AMD 的动态市盈率反而明显高于英伟达，分析师的估值分歧也摆上台面：摩根士丹利质疑估值，Benchmark 给出685美元目标价。 这个价差只有一种解释：市场把\"追赶成功\"提前付了钱。AMD 的上涨建立在份额从12%走向25%的假设上，一旦路径被证实比想象中慢，估值就要向现实回归；反过来，Helios 机架化转型和2027年翻倍指引若兑现，当前估值又显得没那么贵。分歧的双方，赌的是同一个变量的两端。 英伟达将是下一关 盘后跌8.8%到约473美元，只是这场定价的第一回合。接下来几天，市场按顺序重读这份财报。 先看 AMD 正股能否守住470美元一线：跌破450美元，年内获利盘开始踩踏，技术面转空；守住470，说明长线资金在借机吸筹，毕竟2027年翻倍指引还在桌上。盘后一个半小时的跌幅，交易的是 Q3 指引不够加速，不代表2027年的故事被推翻。 再看英伟达。它8月26日发财报，此前一个财季数据中心营收752亿美元、同比增92%。AMD 全面超预期都换不来上涨，市场对英伟达的预期门槛被抬到了多高？当超预期成为基准、大幅超预期才能推动股价时，AI 芯片板块的每一次财报，都会变成一场越来越难的考试。 产业链层面，TSMC 和先进封装链是隐性受益方：AMD 的资本开支三倍于预期，最终流向台积电的 CoWoS 产能；Helios 机柜化之后，封装和网络环节的价值量被放大。但这也意味着 AMD 的交付上限握在别人手里，每一份超预期指引，都要先过台积电产能分配这一关。 故事需要新证据了 AMD 全面超预期却跌9%，本季美股 AI 股的定价逻辑已经很明白：股价先在预期里透支，再在财报里兑现，指引超预期只是及格线，真正决定股价的，是市场预设的加速曲线有没有被刷新。 这份财报没有否定 AMD 的成长故事，它否定的是\"故事不需要新证据\"的定价。 当市场为2027年数据中心翻倍预付了130%的涨幅，接下来的每一个季度，AMD 都要用超出预期的执行，为这个溢价续命。 接下来一个月，市场盯着三件事：AMD 股价能否守住470美元、英伟达8月26日的财报能否扛住抬高的门槛、台积电产能分配的天平会不会向 AMD 倾斜。再往后，2027年上半年的 Anthropic 首批1吉瓦部署、MI455X 的季度出货斜率、AI 数据中心毛利率能否随规模改善，是验证\"翻倍指引\"成色的三个硬指标。AI 芯片的军备竞赛没有结束，只是从讲故事进入了兑现的阶段。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3778726",
+      "time": "2026-08-05T06:24:26.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "How to start building your own rtos",
+      "description": "Why Build a Custom RTOS in 2026? Why build a custom RTOS when there are already tons of battle-tested ones like FreeRTOS or Zephyr available? It’s a fair question, but there's much more to it than just reinventing the wheel. Building a kernel from scratch forces you to understand low-level hardware interactions, assembly context switching, and memory layout. It fundamentally transforms you into a better embedded firmware engineer, sharpens your low-level debugging skills (hello, hard fault handlers!), and gives you complete freedom to architect a system tailored to your exact specifications. If you've decided to embark on building your own RTOS, here are the three critical decisions you need to make first: You need to choose a target architecture—common choices include ARM Cortex-M, RISC-V, MIPS, or x86. I chose the ARM Cortex-M4 architecture. It provides dedicated features tailored for OS design—such as the NVIC (Nested Vectored Interrupt Controller), SysTick Timer, and the PendSV interrupt for safe context switching—along with an incredible community and ecosystem for developers. Select a development board featuring your target architecture (e.g., STM32). Alternatively, you can use QEMU to simulate the hardware environment before flashing physical silicon. In fact, many professional RTOS teams rely heavily on QEMU for automated testing and rapid prototyping. If you aren't using a Hardware Abstraction Layer (HAL) and want to write bare-metal code, you'll need a cross-compiler toolchain. Because I'm writing it in C and assembly for ARM, I am using the arm-none-eabi-gcc toolchain alongside GNU Make/CMake. In the next post, we’ll dive into startup scripts, linker scripts, and setting up the vector table. (Note: Throughout this series, I’ll be moving forward with the ARM Cortex-M4 setup, but the core operating system concepts will apply across most architectures.)",
+      "url": "https://dev.to/sohshri/how-to-start-building-your-own-rtos-2b5l",
+      "time": "2026-08-05T06:24:19.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "字节跳动Seed团队推出原生音视频全双工大模型SeedRealtime",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316201",
+      "time": "2026-08-05T06:24:01.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "高通，联发科也被三星、美光们坑惨了？芯片出货量，大跌25% - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059059680_121097259?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:21:53.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Using HSB sliders to make a playful color-memory game",
+      "description": "I built Toon Tone, a free cartoon color guessing game for practicing color memory in a lightweight browser experience. The game uses HSB sliders so hue, saturation, and brightness are easy to reason about while matching a character color. The project is intentionally small and shareable: it includes daily prompts, instant feedback, and shareable scores without requiring an account. Play Toon Tone I would love feedback on the interaction design and on whether HSB controls feel more intuitive than RGB inputs for this kind of warm-up game.",
+      "url": "https://dev.to/by_l_99c0b1b4256760ed5596/using-hsb-sliders-to-make-a-playful-color-memory-game-1mla",
+      "time": "2026-08-05T06:21:18.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "英飞凌 2026 财年第三财季归母净利润 4.23 亿欧元，同比增长 38.69%",
+      "description": "IT之家 8 月 5 日消息，英飞凌今日发布 2026 财年（2025 年 10 月 1 日～2026 年 9 月 30 日）第三财季（2026 年 4 月 1 日～2026 年 6 月 30 日）报告： 营业总收入：41.72 亿欧元（现汇率约合 324.89 亿元人民币），同比增长 12.63% 毛利润：17.03 亿欧元（现汇率约合 132.62 亿元人民币），同比增长 12.41% 毛利率：40.8%，同比下降 0.1 个百分点 归母净利润：4.23 亿欧元（现汇率约合 32.94 亿元人民币），同比增长 38.69% 经营现金流：11.14 亿欧元（现汇率约合 86.75 亿元人民币），同比增长 73.52% 自由现金流：5.99 亿欧元（现汇率约合 46.65 亿元人民币），同比增长 107.99% 基本每股收益：0.32 欧元（现汇率约合 2.49 元人民币），同比增长 39.13% 稀释每股收益：0.32 欧元（现汇率约合 2.49 元人民币），同比增长 39.13% AI 解读 本次 2026 财年第三财季英飞凌营收达 41.72 亿欧元（现汇率约合 324.89 亿元人民币） ，同比增长 13% ，创英飞凌历史季度营收新高，超市场预期，AI 业务驱动增长显著。 财报核心亮点 营收利润创下历史新高：第三财季实现营收 41.72 亿欧元（现汇率约合 324.89 亿元人民币） ，同比增长 13% ；毛利润 17.03 亿欧元（现汇率约合 132.62 亿元人民币） ，毛利率 40.8% ，调整后毛利率提升至 42.8% ；分部业绩达到 7.97 亿欧元（现汇率约合 62.07 亿元人民币） ，分部利润率为 19.1% ；归母净利润 4.23 亿欧元（现汇率约合 32.94 亿元人民币） ；基本每股收益和稀释每股收益均为 0.32 欧元（现汇率约合 2.49 元人民币） ，调整后稀释每股收益达到 0.44 欧元（现汇率约合 3.43 元人民币） ；自由现金流大幅改善至 5.99 亿欧元（现汇率约合 46.65 亿元人民币） 。 AI 业务成为核心增长引擎：电源与传感系统事业部营收达到 14.42 亿欧元（现汇率约合 112.29 亿元人民币） ，同比增长 34%，该增长主要来自人工智能数据中心服务器和电源产品需求持续攀升；公司已和多家头部 AI 客户签订多年产能储备协议，累计营收规模达数十亿欧元，且包含预付款，锁定未来增长。 各业务板块均实现增长：汽车板块营收达到 19.32 亿欧元（现汇率约合 150.45 亿元人民币） ，同比增长 3%，软件定义汽车领域需求保持增长；绿色工业板块、连接安全系统板块营收均实现同比增长，毛利率均有改善。 未来展望 第四财季展望：预计在 1 欧元兑 1.15 美元的汇率假设下，营收将达到 47 亿欧元（现汇率约合 366.01 亿元人民币） ，同比继续增长，分部利润率预计达到 23% 。 2026 全年展望：预计全年营收约 163 亿欧元（现汇率约合 1,269.34 亿元人民币） ，同比增长约 11%；调整后自由现金流预期上调至 18.5 亿欧元（现汇率约合 144.07 亿元人民币） ，包含收购后自由现金流预计为 9 亿欧元（现汇率约合 70.09 亿元人民币） ；全年投资计划维持在 27 亿欧元（现汇率约合 210.26 亿元人民币），重点投向 AI 数据中心电源解决方案产能扩张。 完成对 ams OSRAM 传感器业务收购，2026 年第四财季将贡献数千万欧元营收，从收购首日起将对调整后每股收益产生增益。 相关阅读： 《AMD 2026 财年第二财季归母净利润 22.97 亿美元，同比增长 163%》 《安森美 2026 财年第二财季归母净利润 2.27 亿美元，同比增长 33.18%》 《中微公司 2026 年半年度归母净利润 27 亿元 ~29 亿元，同比预增 282.48%~310.81%》 《瑞萨电子 FY2026H1 归母净利润 2173.33 亿日元，同比扭亏为盈》 风险提示：本文内容由 AI 自动分析生成，仅供参考，不代表IT之家观点。如有出入请以证监会指定上市公司信息披露平台为准。本文内容不构成投资建议，如有投资者据此操作，风险自担，IT之家对此不承担任何责任。",
+      "url": "https://www.ithome.com/0/985/916.htm",
+      "time": "2026-08-05T06:18:14.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "汽车"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "SpaceX业绩炸裂、股价却暴跌！高盛力挺：AI业务颠覆估值逻辑，花旗长期看到900美元",
+      "description": "SpaceX交出上市后首份成绩单，三大业务全线超预期，令华尔街分析师集体上调估值预测，这家太空科技巨头的投资逻辑正在获得资本市场的系统性重估。 SpaceX 2026年第二季度总营收达78.14亿美元，较高盛预测高出约17%，较市场一致预期高出约15%；GAAP经营利润亦分别超出高盛及市场预期约92%和91%。 据追风交易台消息，高盛随即将SpaceX的12个月目标价从205美元上调至220美元，维持买入评级，相对当前股价125.33美元隐含约76%的上行空间，认为SpaceX股价较IPO后收盘峰值已下跌约42%，当前风险回报比具有吸引力；花旗维持买入评级及200美元目标价，并重申其此前发布的长期看至900美元以上的判断。截至发稿，SpaceX盘后股价下跌7.46%。 管理层在财报电话会议上透露，公司现已看到在12月实现年化收入（ARR）1000亿美元的路径，并将此前设定的1万亿美元年收入目标从2031年大幅提前至2030年，甚至\"可能早至2029年\"，远超市场当前预期。 AI业务成最大惊喜，颠覆原有估值框架 AI板块是本季度最大的超预期来源。据花旗报告，该业务第二季度收入26亿美元，超出花旗预期约24%，超出市场一致预期约27%；调整后EBITDA达11.46亿美元，较花旗预期的约1000万美元高出逾百倍，较市场一致预期的负3亿美元更实现了方向性逆转。 高盛分析师Eric Sheridan、Alex Vegliante及Julia Fein-Ashley在报告中指出，AI业务的超预期主要由云服务协议收入推动。管理层表示，AI算力供需缺口导致每笔新签的云服务协议经济模型均优于前一笔，AI资本开支的回收周期目前已低于一年，这一指标令市场重新审视SpaceX的资本配置逻辑。 在规模规划方面，管理层将2027年底地面算力目标从花旗此前预期的4.2GW大幅上调至5至10GW，并表示已就约20GW的算力布局项目落地了相应规划，供应链制约是当前主要瓶颈而非需求不足。高盛据此将2026年至2028年的AI业务收入预测大幅上调，其中2027年AI收入预测从344.67亿美元提升至703.36亿美元，涨幅逾104%。 花旗在报告中援引此前发布的启动覆盖报告指出，今日AI业务的超预期很可能成为未来每个季度超预期的持续驱动力，当前进展进一步夯实了其长期900美元以上目标价的基础。 Starlink持续扩张，地面网络布局浮出水面 连接业务（Connectivity）延续强劲势头。据高盛数据，第二季度连接板块营收42.91亿美元，超出高盛预测8.6%；调整后EBITDA为25.97亿美元，超出高盛预测12.3%。消费者Starlink宽带用户数达1200万，略超高盛预测的1180万。 管理层对企业及政府客户积压订单持乐观态度，并指出航空业Starlink渗透率目前仍低于10%，增长空间显著。高盛预计，连接业务中期产生的现金流将成为深空探索及AI业务资本需求的重要资金来源。 花旗研究则披露了一项新的战略动向：SpaceX透露，其从EchoStar购入的频谱将包含地面网络组件，Starlink计划建设地面网络，通过小型基站和毫微微蜂窝（femto cell）为移动频段提供连接，目标是提供优于现有运营商的带宽。花旗认为，这一规划将SpaceX定位为美国移动市场潜在的第四大竞争者，但同时指出，在缺乏全国性MVNO合作协议的情况下，大规模落地难度较高。 值得注意的是，Starlink ARPU低于高盛预测，但环比保持稳定。管理层表示，随着公司推进本地化市场策略，混合ARPU可能随时间有所下降，这与高盛此前预期一致。 星舰进展提速，发射里程碑临近 太空（Space）板块第二季度营收9.62亿美元，超出高盛预测17.2%；调整后EBITDA为-2.05亿美元，亏损幅度大幅收窄，超出高盛预测57.1%。 管理层就Starship进展提供了增量信息。据花旗研究，Starship第14次飞行测试预计将把V3版Starlink卫星送入运营轨道，同时存在首次实现\"筷子臂\"捕获飞船第二级的可能性——花旗认为，若该里程碑成功实现，将是推动其长期900美元目标价的重要价值释放节点。管理层亦确认，即便第14次飞行未能实现，年底前完成一、二级同步捕获已是既定目标。此外，管理层表示已解决Starship隔热罩问题，并认为一旦得到验证，将不存在实现完全快速重用性的其他技术障碍。 高盛指出，SpaceX已在商业航天发射领域建立主导地位，通过垂直整合持续压低每公斤入轨成本，竞争对手难以复制。高盛预计，到2027年底公司将建成5个发射台，这可能推动未来12至18个月内发射频次假设的上调。 大幅上调预测，高资本开支是主要隐忧 本次财报推动高盛对SpaceX进行了大幅度的盈利预测修订。2026年全年收入预测从此前的382.44亿美元上调至476.35亿美元，GAAP EBIT预测从10.15亿美元跳升至100.63亿美元，全年摊薄每股收益预测从亏损0.09美元修正至盈利1.00美元。展望2027年，高盛预计收入将进一步扩张至1074.32亿美元，较修订前提升约55%。 高盛采用分部加总估值法（SOTP），基于2029年各分部业绩预测折现，测算出220美元基准目标价，对应上行空间约90%；乐观情景目标价为285美元。花旗则基于三种估值方法的平均值得出200美元目标价，其长期900美元以上的愿景目标则建立在Starship全复用及轨道AI计算的规模化落地之上。 值得注意的是，高盛预计资本开支将持续高企。管理层表示，2026年下半年每季度资本开支水平将与第二季度相当，高盛由此将2026年全年资本开支预测上调至645.89亿美元；2027年资本开支预测进一步上行至1891.15亿美元，自由现金流在未来数年将持续为负。两家机构均指出，鉴于AI资本开支的高回报属性，持续烧钱并不必然构成重大风险，但治理集中、创始人相关方交易，以及大规模股权摊薄预期，仍是需要投资者持续关注的潜在风险因素。 ~~~~~~~~~~~~~~~~~~~~~~~~ 以上精彩内容来自追风交易台。 更详细的解读，包括实时解读、一线研究等内容，请加入【追风交易台▪年度会员】 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3778725",
+      "time": "2026-08-05T06:18:08.000Z",
+      "tags": [
+        "人工智能",
+        "网络安全",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "OpenClaw vs n8n vs Zapier: Which AI Automation Tool Should You Use in 2026?",
+      "description": "The Problem: Too Many Automation Tools If you've searched for \"how to automate something with AI,\" you've seen the same three names over and over: Zapier, n8n, and OpenClaw. Each one has passionate fans, and each one will happily tell you it's the only tool you need. The truth is boring: they're different tools for different people, and picking the wrong one wastes weeks. This guide compares all three on the things that actually matter — price, skill level, AI capability, and what each is genuinely best at — then gives you a decision framework so you can pick in five minutes instead of five weeks. Tool Best For Cost Skill Level AI Built In Zapier Non-coders who want things working today Paid tiers from ~$20/mo Very low Yes (AI steps, paid add-ons) n8n Visual workflows with serious logic, self-hosted Free self-hosted / cloud from ~$24/mo Low–moderate Yes (AI nodes) OpenClaw Developers who want full control and $0 cost Free (open source) Moderate+ Yes (agents, any model) That's the whole thing in one table. Now let's explain why. Zapier has been around since 2011 and connects 7,000+ apps. You build a \"Zap\": when this happens in app A, do that in app B. Speed to first automation: a working Zap in 15 minutes, zero setup Huge app catalog: if it has an API, Zapier probably connects to it Zero maintenance: it's all hosted, nothing to update or monitor Cost: real workflows hit paid tiers fast. Multi-step Zaps, filters, and AI features are all paid add-ons. A serious automation can cost $50+/month Black box: you can't see the underlying code or fix things when they break AI limits: AI steps cost extra per task, and complex agent-style logic is not what Zapier is for Verdict: choose Zapier if you don't code, need it done today, and the monthly bill is fine. n8n is a workflow automation platform — think \"Zapier, but self-hostable and far more powerful.\" Workflows are built visually with nodes, and it supports conditions, loops, error handling, and AI nodes. Complex logic without code: branches, loops, and error paths are visual, so you can build real systems Self-hosted = free: run it on your own machine or a $5 VPS and you pay nothing Developer-friendly: you can drop in JavaScript or Python anywhere AI nodes: connect OpenAI, Anthropic, and other models natively Setup effort: self-hosting means installing, securing, and updating it yourself Learning curve: the node editor is powerful but intimidating at first You still pay for AI: connecting models costs whatever the model costs Verdict: choose n8n if you want visual workflows with real logic, don't mind hosting it, and want one tool that scales with you. OpenClaw is a free, open-source, code-first AI agent engine. Instead of a visual canvas, you write agents as code — and those agents can use tools, run on schedules, post to Discord, build websites, and do real work. Full disclosure: we built Apex Nexus with OpenClaw. Our entire pipeline — fetch news from 7 RSS feeds, filter, categorize, post to Discord, rebuild the blog, deploy to Vercel — runs on OpenClaw for $0/month. Real autonomy: agents that take multi-step actions, not just \"if this then that\" Total control: you see and own every line. No black boxes, no per-task fees $0 cost: open source, runs locally, uses whatever model you want (including free/local ones) Deep integrations: Discord, Telegram, cron scheduling, files, web — all first-class You need to code: not much, but some. It's a developer tool You own the maintenance: no hosted dashboard doing it for you No visual canvas: everything is configuration files and scripts Verdict: choose OpenClaw if you're comfortable with code (or want to learn), want autonomous agents, and want your automations to cost nothing. Answer these three questions in order: 1. Do you write code, or want to learn? No, and no → Zapier (or n8n cloud) A little, or willing to learn → keep going 2. Do you need complex logic (branches, loops, error handling)? Simple single-step triggers → Zapier Real logic and workflows → n8n 3. Do you want autonomous agents that take real actions and cost $0? Yes, and you can handle config files → OpenClaw No, visual-only → n8n Still torn? Start with n8n (visual, powerful, free self-hosted). If you outgrow it and start wishing for more control, OpenClaw is the natural graduation path — that's exactly the journey we took. We run the Apex Nexus news pipeline on OpenClaw. Here's what the same workflow would cost elsewhere: Component OpenClaw n8n Cloud Zapier News fetch (7 RSS feeds, 6x/day) $0 ~$24/mo tier ~$30+/mo tier Filtering + categorization $0 (deterministic) included paid AI step Discord posting $0 included included Blog rebuild + deploy $0 (script) would need extra not really possible Monthly total $0 $24+ $40+ The automation uses zero AI tokens for most of the work — categorization is deterministic keyword matching, deduplication is Python sets. The only time we call an AI model is when we choose to generate polished summaries. \"You should use one tool for everything.\" No. Most people end up with two: a visual tool for quick workflows and a code-based one for the heavy stuff. That's normal and fine. \"AI automation requires a model subscription.\" Only if you want it to. Deterministic logic (keyword matching, rules, deduplication) handles a huge amount of real automation for free. \"Self-hosting is scary.\" Running n8n or OpenClaw on a $5 VPS or even your own laptop is a weekend project, and it's the difference between $0/month and $50/month forever. Want to try the exact system we run? Read AI Automation for Beginners Want to run your first OpenClaw agent? Start with the OpenClaw Beginner Guide Want 10 projects to build today? See 10 AI Automation Ideas You Can Build Today We share our builds, answer questions, and run weekly automation challenges in the AI Nexus Academy Discord — free to join: https://discord.gg/E5vuXxRtu9E5vuXxRtu9 ☕ Enjoying this guide? Support the free AI Nexus learning hub — buy us a coffee ☕ 💬 Join the AI Nexus Academy Discord — free community for AI automation learners: https://discord.gg/E5vuXxRtu9",
+      "url": "https://dev.to/apex_/openclaw-vs-n8n-vs-zapier-which-ai-automation-tool-should-you-use-in-2026-358l",
+      "time": "2026-08-05T06:17:44.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Building Private Smart Contracts on Midnight: A Practical Guide to Sealed-Bid Auctions with Zero-Knowledge Proofs",
+      "description": "1. Introduction Public blockchains are renowned for their transparency, which is great for auditability but challenging for privacy-sensitive applications. Commercial secrets, medical records, or sealed bidding processes require data confidentiality. Midnight addresses this challenge by enabling developers to build smart contracts using its domain-specific language, Compact. Midnight allows you to manage private states and verify transactions seamlessly using Zero-Knowledge Proofs (ZKPs). In this tutorial, we will explore how to build a Sealed-Bid Auction smart contract on Midnight. We will look at how bidders can submit secret bids without revealing their bid amounts, while the contract securely verifies and updates the highest bidder. The core architecture of Midnight revolves around separating public and private states: Public State: Data visible to everyone on the blockchain (e.g., auction status, winning address). Private State: Sensitive data held privately by the user (e.g., exact bid amounts). In our Sealed-Bid Auction scenario, bidders keep their bid amounts strictly in the Private State. The contract logic executes inside a Zero-Knowledge circuit, verifying that a new bid exceeds the current highest bid without ever exposing the actual numerical value to the public ledger. Let's break down the logic using Midnight's Compact smart contract syntax. First, we define what information is public and how private bids are structured. // Auction.compact // Private data structure - known only to the individual bidder struct Bid { bidder: Address; amount: u64; // Secret bid amount } contract SealedBidAuction { // PUBLIC STATE (Visible to everyone) state { auction_ended: bool; highest_bid: u64; // Verified current highest bid indicator winner: Optional ; // Address of the leading bidder } // PRIVATE STATE // Managed locally by the user's wallet and evaluated inside ZK circuits. } Code Explanation: highest_bid: Represents the verified benchmark for bids. The public ledger tracks state updates without leaking the historical sequence of lower private bids. Step 2: Submitting a Private Bid // Bid Submission Transition // `amount` is provided as a PRIVATE input inside the ZK circuit. transition submit_bid(amount: u64) { // 1. Check: Is the auction still active? assert !prev.auction_ended; // 2. Check: Is the private bid greater than the current highest bid? // This comparison happens entirely inside the ZK circuit. assert amount > prev.highest_bid; // 3. Action: Update the public state // The winning address updates publicly, while the logic guarantees validity. next.highest_bid = amount; next.winner = Some(caller); } Code Explanation: transition submit_bid(amount: u64): The amount parameter remains off-chain in terms of raw visibility. The user's wallet constructs a Zero-Knowledge proof demonstrating that amount > prev.highest_bid. assert amount > prev.highest_bid: If this condition fails locally, the wallet cannot construct a valid ZK proof, preventing invalid transactions from ever reaching the network. Midnight strikes a balance between public auditability and data privacy. Through this Sealed-Bid Auction example, we can observe three key mechanics: Data Confidentiality: Sensitive values (amount) remain private to the user. On-Chain Verification: State transitions are verified cryptographically via ZK proofs. Public Consistency: Shared state (winner, auction_ended) updates reliably without compromising underlying secrets. This model opens doors for private voting, selective KYC disclosures (e.g., proving age over 18 without revealing date of birth), and confidential DeFi protocols. By abstracting ZK math into the readable Compact language, Midnight makes building privacy-first dApps accessible to every developer.",
+      "url": "https://dev.to/efek/building-private-smart-contracts-on-midnight-a-practical-guide-to-sealed-bid-auctions-with-427a",
+      "time": "2026-08-05T06:17:12.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "汉王预热 N6 Pro 黑白墨水屏阅读器 8 月 11 日上市，搭 6 英寸面板支持手写",
+      "description": "IT之家 8 月 5 日消息，汉王现已在京东上架一款 N6 Pro 墨水屏阅读器，该机搭载一块 6 英寸黑白墨水屏面板，将于 8 月 11 日 20:00 发售。 京东汉王 N6Pro 黑白墨水屏电子书待发布直达链接 根据官方预热，该产品采用 CNC 金属中框，使用三面窄边框设计。正面搭载一块 6 英寸 300PPI 黑白墨水屏面板（支持 8,192 级手写），内置“8 核处理器”，内置四麦克风阵列，支持办公 AI 功能。 目前，官方尚未公布该产品更多细节，IT之家将保持关注。",
+      "url": "https://www.ithome.com/0/985/915.htm",
+      "time": "2026-08-05T06:17:09.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Snap a Dish, Get a Recipe: Building GraceSoft DishLens Solo",
+      "description": "This week the recording of GraceSoft CMS's \"vibe coding\" series is on pause. Something more exciting pulled my attention: my first venture into mobile apps, via React Native. The pitch is simple. Snap a photo of a dish, and get back a recipe you could actually cook at home, plus its nutritional breakdown. Building it has been anything but simple — but that's the part worth writing about. I'm building both the API and the mobile app myself. This is a new domain for me, still a one-woman show, and I leaned on Claude Code to move fast. But moving fast isn't the hard part of a project like this — knowing which edge cases matter, what to log, and how to structure a pipeline so it doesn't quietly drift is. That's domain knowledge and dev instinct, and no tool hands that to you. Right now everything lives in one monorepo (pnpm + Turborepo), with two apps and a handful of shared packages (shared-db for Prisma/Postgres, shared-config for env validation, shared-logger for structured logging). DriveSync is the backend service that keeps a Pinecone vector database in sync with recipes stored as Google Docs in a Drive folder. DishLens is the API that takes a single-dish photo and returns a \"homable\" recipe and its nutrition info. It's paired with a React Native (Expo) app that's the actual user-facing product. DriveSync is done. DishLens is still in bug-fixing mode. The job sounds simple — watch a Drive folder, sync new or changed docs into Pinecone. The details are where it got interesting: Change detection against Google Drive, so I'm not re-processing documents that haven't changed. Extraction pipeline that pulls text out of Docs, Sheets, Slides, and PDFs — each with different structure and failure modes. Token-budgeted chunking with overlap, so embeddings stay within model limits without cutting a recipe's context in half. Batched embedding generation via OpenAI, with retries, because batch jobs against a third-party API will fail partway through eventually — plan for it up front. Dedup and stale-vector deletion, so a recipe that's edited or removed from Drive doesn't leave orphaned, outdated vectors haunting search results. Postgres-backed sync state, plus job locking, so overlapping sync runs don't stomp on each other. Observability: sync logs, failure alerts, and status/audit endpoints — because a background sync job that fails silently is worse than one that doesn't exist. This is where most of the genuinely hard problems live, because the input is a photo taken by a real person on a real phone — not a clean API payload. The image pipeline, before anything else happens: File-type and size validation, and pixel-dimension limits, to reject junk before it costs an API call. EXIF-safe re-encoding that strips GPS data and normalizes orientation — a privacy requirement as much as a correctness one. Laplacian-variance blur detection to reject blurry photos before they hit the vision model. This one mattered more than I expected: a blurry photo doesn't just produce a bad recipe, it produces a confidently wrong one, and rejecting it early is both cheaper and a better user experience than letting the model guess. Dish detection and generation: Google Vision handles dish classification, with edge-case handling for things like multi-dish photos (a full table spread instead of one dish) and moderation to filter inappropriate content. Recipe generation runs through Anthropic Claude. Nutrition data comes from Edamam, matched back to the generated recipe — so the numbers aren't just a model's guess, they're grounded in a real nutrition database. Photos themselves are normalized, uploaded, and served from GCS with signed URLs. Everything else an API needs to not fall over: JWT-based auth shared across services, with per-user rate limiting on the upload endpoint. A Redis-backed session store, scoped per user with TTLs. Chat that can draw on a user's own synced recipes, not just what Claude generates fresh — and chat sessions that work even when no dish has been scanned, for general recipe/nutrition Q&A. The usual account plumbing: password change, account deletion, GET /auth/me. Built in Expo, developed in structured milestones (M1 through M7, across five \"rounds\") — brand foundations and auth screens first, then the scan flow, then chat and meal planning, then a full dark mode pass with semantic theme tokens and accessibility work. A few things that ate more time than expected: \"Unsupported FormDataPart implementation\" — a fun way to discover that multipart uploads behave differently across platforms and Expo versions. Compressing and resizing photos client-side before upload, both for speed and to keep the backend's size limits happy. Proactively refreshing access tokens instead of waiting for a request to fail and refreshing reactively — small change, noticeably better UX. Wiring auth state through SecureStore so sessions survive app restarts without storing tokens somewhere they shouldn't be. If the commit history is honest about anything, it's that deployment ate real hours: Railway build errors, Prisma's engine binaries needing OpenSSL inside Docker, and Turbo v2's strict envMode silently stripping environment variables it didn't recognize. None of this is interesting to write about, and all of it is the kind of thing that quietly determines whether a project ships. Claude Code was genuinely useful for moving quickly through boilerplate and unfamiliar territory — this is my first time in React Native and Expo. But the bottleneck on a project like this was never typing speed. It was deciding that a blurry photo needs its own rejection path before the vision model ever sees it, that stale vectors need active deletion instead of just letting Pinecone grow, that a background sync job needs an audit endpoint because \"it probably worked\" isn't good enough. Those are judgment calls that come from domain knowledge and experience, not from a tool. DriveSync and DishLens currently share a monorepo. That's changing: GraceSoft DriveSync and GraceSoft DishLens API are moving into separate repos. DriveSync is headed toward open source, once I clean it up a bit more. DishLens API stays proprietary — it'll power the GraceSoft DishLens app going forward. DishLens (the API) is still in bug-fixing mode, and the app is catching up to it feature by feature. More to come as both stabilize. Still a one-woman show at GraceSoft. If you've built something similar — recipe generation, vector sync pipelines, or your first React Native app — I'd love to hear how you tackled it.",
+      "url": "https://dev.to/gracesoftdev/snap-a-dish-get-a-recipe-building-gracesoft-dishlens-solo-5d36",
+      "time": "2026-08-05T06:15:56.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "AI 监考效果不佳，导致约 5.8 万名墨西哥国立自治大学考生需重考",
+      "description": "IT之家 8 月 5 日消息，科技媒体 Ars Technica 昨日（8 月 4 日）发布博文，墨西哥国立自治大学（UNAM）首次采用远程考试与人工智能监考系统后，发现最终运行效果是“灾难级”，并导致约 5.8 万名考生重新考试。 墨西哥国立自治大学是墨西哥规模最大的大学，始建于 1551 年，在校学生超过 30 万人，是世界上规模最大和著名的高等学府之一。 墨西哥国立自治大学于 2026 年 5 月下旬至 6 月上旬期间，尝试推广远程考试系统，让接近 16 万名考生首次完全通过远程方式参加入学考试。 考试要求考生安装 LockDown Browser，该软件被用于近 2000 所高等教育机构的在线考试。考试期间，浏览器会锁定电脑并保持全屏，考生不能最小化窗口，也不能使用菜单、工具栏、其他应用、复制粘贴功能或截屏功能。 考试期间，系统会多次重复验证，且禁止同一考生从多个设备接入。平台还会封锁已安装的应用，仅允许操作系统和网页浏览器运行，同时阻止“Control+C”和“Control+V”等快捷键、屏幕录制、屏幕传输及多显示器使用。 在本次考试之前，墨西哥国立自治大学还表示为了防范作弊，还配备了 AI 监考系统，持续分析考生行为，识别考试空间内是否出现第三人、是否使用电子设备、是否存在手机、智能手机或耳机等禁用物品，以及考生是否无正当理由离开。 平台还会持续收集环境证据，包括按校方设定的频率，通过设备麦克风录制考试地点的环境声音，以便发现可能对应违规行为的声音。考生每次保存答案时，系统都会截取屏幕，并记录其在平台内的操作日志。 人工监考同样参与监督。合同规定，每 150 名考生配备 1 名监考员。AI 发出警报后，监考员须实时接收信息，并将情况报告给墨西哥国立自治大学的决策小组。 新系统看起来设置了妥善的防作弊系统，但最终结果却非常糟糕。入学考试共有 120 道题目，在 2021~2025 年期间，获得 100 分以上的考生比例仅为 3.5%，而在推行新政策后，2026 年比例上升到 16.3%。 在高分考生中，在 2021~2025 年期间达到 110 分或以上的比例仅为 0.9%，而 2026 年比例上升到 5.5%。 墨西哥国立自治大学任命了一个专家委员会来调查此事，在事后复查要求约 5.8 万名考生重新考试。委员会认为，在存在多项疑虑的情况下，最稳妥的处理方式是组织一场“控制考试”，即让申请者再次参加考试，而且必须在考场内完成。",
+      "url": "https://www.ithome.com/0/985/914.htm",
+      "time": "2026-08-05T06:14:46.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "独家｜影石AI硬件接入千问大模型，模型厂商商战激烈 - 中华网财经",
+      "description": "",
+      "url": "https://finance.china.com/TMT/13004688/20260805/49656052.html",
+      "time": "2026-08-05T06:14:44.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "AI功能好的千元手机有吗？3个维度说清+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l9ok.html?from=digit",
+      "time": "2026-08-05T06:14:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机"
+      ],
+      "topic": true
+    },
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
@@ -14,6 +548,17 @@
         "手机"
       ],
       "topic": true
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "Mistral开源Shieldstral安全模型",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316200",
+      "time": "2026-08-05T06:13:54.000Z",
+      "tags": [
+        "软件应用"
+      ]
     },
     {
       "source": "Dev.to",
@@ -68,6 +613,20 @@
       "topic": true
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "还没把英伟达送上天，SpaceX股价先跌入地了 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059054210_211762?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T06:07:14.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "Android Authority",
       "sourceColor": "#a4c639",
       "title": "WhatsApp just solved some of the most annoying group chat problems",
@@ -108,6 +667,18 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "自动驾驶，底线是不输人类驾驶水平 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7451676903_1bc2790e700101aof0.html",
+      "time": "2026-08-05T06:04:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "自动驾驶，底线是不输人类驾驶水平 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7451676903_1bc2790e700101aof0.html",
@@ -130,6 +701,19 @@
         "游戏",
         "软件应用"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "快讯：创业板指拉升翻红，科创50指数涨近4%，半导体芯片股领涨市场 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/dpps/2026-08-05/detail-inimfmym3672344.d.html",
+      "time": "2026-08-05T06:03:29.000Z",
+      "tags": [
+        "芯片/半导体",
+        "科技创投"
+      ],
+      "topic": true
     },
     {
       "source": "Dev.to",
@@ -169,6 +753,20 @@
         "手机",
         "游戏"
       ]
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "AI功能好的千元手机有吗？5款横评：594元起就能用上智能体+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879849861_1d5acf78506801j0wq.html?from=digit",
+      "time": "2026-08-05T06:01:33.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "测评/新品"
+      ],
+      "topic": true
     },
     {
       "source": "数码测评",
@@ -233,6 +831,19 @@
       "tags": [
         "人工智能",
         "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "超能网",
+      "sourceColor": "#00a0e9",
+      "title": "AMD公布2026Q2财报：数据中心业务收入同比翻倍，推动整体业绩持续攀升",
+      "description": "今天AMD公布了2026年第二季度业绩，全面超出市场预期，交出了一份出色的成绩单。 在2026年第二季度里，AMD的营收为115.36亿美元，相比去年同期的76.85亿美元同比增长了50%，对比上个季度的102.53亿美元环比增长了13%；净利润为22.97亿美元，相比去年同期的8.72亿美元同比增长了163%，对比上个季度的13.83亿美元环比增长了66%；毛利率为54%，高于去年同期的40%，也略高于上一个季度的53%；每股摊薄收益为1.38美元，而上一年同期每股摊薄收益0.54美元同比增长了156%，对比上个季度每股摊薄收益0.84美元环比增长了64%。 从业务分类来看，数据中心部门营收为67亿美元，同比增长107%，环比增长16%，连续创下历史新高，主要得益于Instinct系列计算卡和EPYC服务器处理器持续强劲的出货；客户端和游戏部门营收为38亿美元，同比增长6%，环比增长7%，主要由AMD Ryzen处理器需求推动，半定制业务收入下降；嵌入式部门营收为9.77亿美元，同比增长19%，环比增长12%，体现在多个终端市场的需求增强。 AMD预计2026年第二季度的营收约为130亿美元，上下浮动3亿美元，高于市场预期的125亿美元，另外非GAAP的毛利率为56%左右。AMD表示，收入区间中点代表着将迎来约41%的同比增长，环比增长则在13%左右。数据中心业务将在2026年下半年加速增长，从而推动AMD整体收入增长变得更加强劲，盈利也将持续增长。 尽管这次AMD给出了一份很好的财务报告，但是仍未完全满足投资者的期待，股价在盘后交易下跌超过8%。",
+      "url": "http://www.expreview.com/107409.html",
+      "time": "2026-08-05T05:59:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "游戏",
         "科技创投"
       ]
     },
@@ -312,6 +923,31 @@
       ]
     },
     {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "Liquid AI 发布 LFM2.5-2.6B 端侧小模型，支持智能手机本地运行",
+      "description": "IT之家 8 月 5 日消息，人工智能初创企业 Liquid AI 当地时间昨日发布 LFM2.5-2.6B 开源智能体模型。仅 26 亿的参数使得 LFM2.5-2.6B 非常适合在设备端本地部署，即使是智能手机也能运行；同时又足以支持规划、调用、多步骤处理的智能体工作流。 IT之家了解到，LFM2.5-2.6B 在 34T Token（词元）的数据集上进行预训练，并通过扩展现有分词器增强了对非拉丁字母语言的支持。Liquid AI 在 Hugging Face 平台上同时提供基础和后训练版本的该模型。 根据 Liquid AI 提供的数据，在与 gemma-4-E2B-it、gemma-4-E4B-it、Qwen3.5-4B、Qwen3.5-9B 等更大尺寸模型一道进行基准测试时，LFM2.5-2.6B 在所有指令执行项目和几乎所有工具使用项目中均领先，仅在 BFCLv4 测试中落后于 Qwen3.5-9B。 LFM2.5-2.6B 在智能体任务中全面优于两款 Gemma 模型，并与 Qwen 模型表现相近。在 STEM 领域，它在 AA Omniscience 测试中领先，仅在数学测试中落后于 Qwen3.5-9B。编程是唯一一个更大模型仍保持优势的领域。",
+      "url": "https://www.ithome.com/0/985/909.htm",
+      "time": "2026-08-05T05:54:26.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "AI之问：智能的另几种可能 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5952915720_162d2490806704mfti.html?from=tech",
+      "time": "2026-08-05T05:54:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "AI之问：智能的另几种可能 - 手机新浪网",
@@ -335,6 +971,19 @@
         "芯片/半导体"
       ],
       "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "曝大众拟裁掉数百个管理层：求助猎头安排下家被拒“没这么多岗位”",
+      "description": "IT之家 8 月 5 日消息，据英国金融时报上周报道，大众汽车正在裁减数百个管理职位，这是其精简白领员工计划的一部分，此举将导致大量人员涌入就业市场。 高管猎头公司 IFP 的汽车行业合伙人 Magnus Tessner 表示，梅赛德斯-奔驰和大众汽车等制造商“正在疯狂地裁员”。他说，虽然许多经理的离职都得到了丰厚的离职补偿，但他们仍在寻找新的工作。 一位外部猎头表示，大众汽车曾联系他们，希望他们为 400 到 500 名经理人寻找新的职位。“我告诉他们我们做不到…… 我们没有 400 个高管职位需要填补，”这位猎头说道。 报道称大众汽车已经开始减少德国工厂的工人数量，但该公司还制定了计划，将在行政、产品开发和销售等“间接”业务领域再裁减 5 万个工作岗位。其跑车品牌保时捷也公布了裁员 5,000 人的计划，主要涉及后台岗位。 大众汽车最初计划到 2030 年在德国裁员 5 万人，受影响的员工涵盖大众汽车品牌、奥迪和软件部门 Cariad 的制造和后台岗位。报道称这些计划还不够完善，内部分析发现，管理成本比其他制造商高出 30%。 大众汽车集团首席财务官阿诺 · 安特利茨在集团第二季度财报发布会上表示，这种差异“主要是由于集团各层级结构的复杂性造成的”。 据IT之家此前报道，大众集团已经宣布计划大幅削减产品阵容，未来可能砍掉多达一半车型。更令人担忧的是，大众集团还计划将可选配置数量减少高达 75%。在针对投资者发布的半年业绩说明文件中，这家德国汽车巨头进一步披露了其计划如何大幅简化零部件种类。",
+      "url": "https://www.ithome.com/0/985/907.htm",
+      "time": "2026-08-05T05:52:21.000Z",
+      "tags": [
+        "汽车",
+        "软件应用",
+        "测评/新品"
+      ]
     },
     {
       "source": "Dev.to",
@@ -428,6 +1077,20 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "SpaceX× 英伟达放大招：把AI数据中心搬上近地轨道 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_1899684203_713ae16b001017zsi.html?from=tech&subch=telecom",
+      "time": "2026-08-05T05:46:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "SpaceX× 英伟达放大招：把AI数据中心搬上近地轨道 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_1899684203_713ae16b001017zsi.html?from=tech&subch=telecom",
@@ -478,6 +1141,31 @@
       ]
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "国产半导体设备出海潜力提升，替代加速 - DoNews",
+      "description": "",
+      "url": "https://www.donews.com/news/detail/8/6659402.html",
+      "time": "2026-08-05T05:45:03.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "6.4万打水漂！特斯拉HW3更新FSD，车机直接高温损坏 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879924057_m1d5ae195903301h77o.html?from=auto",
+      "time": "2026-08-05T05:42:54.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "6.4万打水漂！特斯拉HW3更新FSD，车机直接高温损坏 - 手机新浪网",
@@ -490,6 +1178,18 @@
         "大公司"
       ],
       "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "微软介绍 Win11 系统 MSIX 格式应用机制：用户感知的卸载，底层是移除",
+      "description": "IT之家 8 月 5 日消息，微软昨日（8 月 4 日）发布博文，指出在 Windows 11 系统中通过 MSIX 格式安装的应用程序，在用户感知中的“卸载”（Uninstall）操作，在系统层面的底层逻辑是“移除”（Remove）。 IT之家查询公开资料，附上 Windows 系统下 MSI 和 MSIX 两种安装格式的区别 MSI：全称 Microsoft Installer，本质上是一个包含安装指令和文件数据的数据库，由 Windows Installer 服务直接读取并解压覆盖文件。 MSIX：微软推出的现代应用包格式，整合了 MSI、AppX、App-V 等格式的优点，采用容器化虚拟技术运行应用。 MSI 格式安装的应用程序在卸载操作后，会清理安装文件、安装目录、注册表和 Runtime 相关组件等；而 MSIX 格式安装的应用程序，软件包生命周期由四个基本操作组成： 部署（Stage）：获取有效载荷并将其安全地放置在磁盘上 注册（Register）：将软件包与用户关联 注销（Deregister）：移除用户的软件包关联 卸载（Destage）：从磁盘中移除软件包有效载荷 在用户操作逻辑中，点击“卸载”按钮来删除某款应用，Windows 11 系统会调用名为 RemovePackageAsync 的 API 方法，来注销（Deregister）应用和用户的关联。只有当系统确定没有其他程序需要这些文件时，才会执行卸载（Destage）操作，也就是真正删除应用的部分。 例如用户卸载了应用程序 A，但同一账户上的应用程序 B 仍然引用同一个共享框架包，即使用户是计算机上的唯一用户，Windows 也不会卸载该框架。",
+      "url": "https://www.ithome.com/0/985/906.htm",
+      "time": "2026-08-05T05:40:44.000Z",
+      "tags": [
+        "软件应用",
+        "大公司"
+      ]
     },
     {
       "source": "IT之家",
@@ -519,6 +1219,44 @@
       "topic": true
     },
     {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "Neocloud 企业 CoreWeave 首度落子亚太，将在印尼建设合计 360MW 数据中心",
+      "description": "IT之家 8 月 5 日消息，代表性 Neocloud（新兴人工智能云服务企业）公司 CoreWeave 当地时间 4 日宣布将在印度尼西亚建设 3 座数据中心。这三个项目合计容量达 360MW，预计 2028 年投入使用。 本次宣布的计划是 CoreWeave 在亚太地区的首个数据中心布局。该企业表示，亚洲的企业、AI 原生公司、政府机构越来越需要靠近其数据和用户的人工智能计算资源，这既是受延迟敏感型工作负载的影响，也是受数据本地化要求的驱动。CoreWeave 进军印尼市场正体现了这一趋势。 CoreWeave 首席运营官 Sachin Jain 表示： CoreWeave 致力于为人工智能先驱者提供他们所需的计算能力、性能和可靠性，帮助他们构建和扩展其创意。 印尼正在大力投资人工智能教育和数字化能力建设，并且取得了丰硕成果 —— 该国正成为东南亚增长最快的全球科技投资目的地之一。 如今，此次扩张将为企业、人工智能原生公司和政府提供本地和全球范围内的更多计算资源，无论他们身在何处，都能将其转化为竞争优势。",
+      "url": "https://www.ithome.com/0/985/904.htm",
+      "time": "2026-08-05T05:35:34.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "小米 REDMI K100 Pro 手机预热：搭载 8580mAh 超大电池，后置三摄五焦段旗舰相机",
+      "description": "IT之家 8 月 5 日消息，小米 REDMI 红米手机官方今日继续预热 K100 Pro 系列手机。据介绍，REDMI K100 Pro 搭载了 8580mAh 超大电池，拥有 26% 超高硅碳含量和 945Wh/L 超高能量密度，主打“满分续航”。 REDMI K100 Pro 手机支持 100W 有线快充 + 50W 无线充电，同时还能提供 27W 有线反充 + 22.5W 无线反充，号称“满分充电组合”。 此外，小米 REDMI K100 Pro 手机还后置三摄五焦段旗舰相机，拥有 2 亿像素主摄。新机的相机主打 10cm 长焦微距 + OIS 光学防抖 + 旗舰同款大师实况功能。 据IT之家昨日候报道，REDMI K100 Pro 手机还搭载了第五代骁龙 8 至尊版 V Series (SM8850-1-AB) 全新骁龙旗舰平台，实验室综合跑分超 409 万分。新机还同时配有 AI 独显芯片、3D 循环冷泵散热系统。",
+      "url": "https://www.ithome.com/0/985/903.htm",
+      "time": "2026-08-05T05:35:09.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "特斯拉起诉加拿大地方政府：EV补贴被踢出局 让车主损失56万加元 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5953740931_162dee08306703t4x8.html?cre=tianyi&mod=pcauto&loc=20&r=0&rfunc=94&tj=cxvertical_pc_auto&tr=12&from=auto",
+      "time": "2026-08-05T05:34:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "特斯拉起诉加拿大地方政府：EV补贴被踢出局 让车主损失56万加元 - 手机新浪网",
@@ -531,6 +1269,19 @@
         "大公司"
       ],
       "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "马斯克最新回应：SpaceX 将完全使用英伟达架构平台",
+      "description": "8 月 5 日上午消息，在 SpaceX 公布二季度财报的电话会上，SpaceX 创始人马斯克在回答提问时表示，将完全使用英伟达架构平台，“我们预计今年年底计算能力将超过 2 吉瓦，到明年年底，我们的累计在线计算能力可能会是现在的数倍。比如说，接近 10 吉瓦，而不是 5 吉瓦。展望未来，我们决定完全采用英伟达的架构，因为我们认为 Vera Bubin 设计的架构是最好的架构。” 电话会上，谈及算力瓶颈时，马斯克直言最大的痛点在内存，需求将远超供给。 “目前的限制因素是内存。内存产量每年增长约 20%。通常来说，这对任何大型成熟行业来说都是惊人的速度。但请扪心自问，需求真的每年增长 20% 吗？不，需求每年增长 200%，甚至更高。因此，如果需求增长速度远超供应，那么经济学原理告诉我们，价格应该上涨，而不是下降。”",
+      "url": "https://www.ithome.com/0/985/902.htm",
+      "time": "2026-08-05T05:31:31.000Z",
+      "tags": [
+        "芯片/半导体",
+        "电脑硬件",
+        "AI芯片"
+      ]
     },
     {
       "source": "GSMArena",
@@ -682,6 +1433,18 @@
         "测评/新品"
       ],
       "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "消息称宇树科技 IPO 发行价约 104 元，市值将达 400 亿元以上",
+      "description": "IT之家 8 月 5 日消息，据央视财经报道，8 月 5 日为宇树科技科创板 IPO 初步询价日，询价完成后将于 8 月 10 日开启申购，网上、网下申购日均为 8 月 10 日，缴款截止日为 8 月 12 日。 8 月 5 日初步询价期间为 9:30-15:00，保荐人（主承销商）开展网下投资者核查，参与战略配售的投资者缴纳认购资金。8 月 6 日将确定发行价格、确定有效报价投资者及其可申购股数，参与战略配售的投资者确定最终获配数量和比例。 报道称，本次宇树科技 IPO 拟募资 42.02 亿元，公开发行新股 4,044.64 万股，占发行后总股本的 10%，发行后总股本为 4.04 亿股。市场预估宇树科技 IPO 市值将达到 400 亿元以上，根据科创板新股申购单位 500 股和发行预估市值测算，宇树科技 IPO 发行价格约为 104 元 / 股，一签新股约缴款 5.2 万元，但具体 IPO 询价偏离情况仍有待市场参与者确定。 据IT之家此前报道，招股书数据显示，2023 年至 2025 年，宇树科技营业收入分别为 1.59 亿元、3.93 亿元和 16.99 亿元，净利润分别为-1114.51 万元、9547.47 万元和 2.78 亿元，是全球少数实现盈利的高性能通用机器人公司。 2026 年第一季度，宇树科技实现营业收入约 4.23 亿元，同比增长 68.49%。不过，由于研发费用、销售费用等期间费用大幅增加，公司 2026 年第一季度的扣非后净利润同比有所下降。据公司预计，2026 年上半年营业收入约为 10.52 亿元至 11.28 亿元，同比增幅在 35.62% 至 45.41% 之间。",
+      "url": "https://www.ithome.com/0/985/901.htm",
+      "time": "2026-08-05T05:09:35.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
     },
     {
       "source": "芯片半导体",
@@ -880,18 +1643,18 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
-      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
-      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
+      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
+      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
+      "url": "https://www.wired.com/story/vitamix-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
-      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
-      "url": "https://www.wired.com/story/vitamix-promo-code/",
+      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
+      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
+      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
@@ -936,6 +1699,18 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
+      "title": "中国大模型八周五连发，硅谷企业悄悄换底座 - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608053832392415.html",
+      "time": "2026-08-05T04:53:20.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
       "title": "中国大模型八周五连发 硅谷企业悄悄换底座 - 东方财富",
       "description": "",
       "url": "https://finance.eastmoney.com/a/202608053832392415.html",
@@ -973,7 +1748,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The sale of Electronic Arts has been finalized",
-      "description": "Article URL: https://www.bbc.com/news/articles/cjejyl34345o Comments URL: https://news.ycombinator.com/item?id=49178702 Points: 44 # Comments: 8",
+      "description": "Article URL: https://www.bbc.com/news/articles/cjejyl34345o Comments URL: https://news.ycombinator.com/item?id=49178702 Points: 53 # Comments: 27",
       "url": "https://www.bbc.com/news/articles/cjejyl34345o",
       "time": "2026-08-05T04:51:43.000Z",
       "tags": [
@@ -1071,7 +1846,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Zero-Mem: Zero-Token Memory Operations for LLM Agents",
-      "description": "Article URL: https://arxiv.org/abs/2607.29377 Comments URL: https://news.ycombinator.com/item?id=49178608 Points: 5 # Comments: 1",
+      "description": "Article URL: https://arxiv.org/abs/2607.29377 Comments URL: https://news.ycombinator.com/item?id=49178608 Points: 6 # Comments: 1",
       "url": "https://arxiv.org/abs/2607.29377",
       "time": "2026-08-05T04:36:44.000Z",
       "tags": [
@@ -1108,12 +1883,49 @@
       "topic": true
     },
     {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "SpaceX 上市后首次财报会：马斯克抛宏大目标，高管谨慎修正",
+      "description": "IT之家 8 月 5 日消息，在 SpaceX 上市后的首次财报电话会议上，埃隆 · 马斯克描绘了大量宏大愿景，而公司的其他高管则不断尝试让这些说法更加务实、贴近现实。这场会议也预示着，这家火箭发射、算力租赁和卫星通信公司上市后，投资者可能会经常看到类似的场景。 这场于当地时间周二举行的电话会议，延续了马斯克多年来的一贯风格：他负责抛出大胆甚至夸张的目标，而其他高管则负责将这些愿景包装成投资者更容易接受的表述。这一点与特斯拉颇为相似。TechCrunch 此前的一项分析显示，全球首富马斯克近年来越来越专注于人工智能、机器人等未来概念，而其他高管则更多谈论汽车销售等实际业务。 会议中，马斯克最引人关注的言论之一，是他预测 SpaceX 的 Starlink（星链）卫星互联网服务将在“不到 10 年内”为全球大部分互联网流量提供服务。他是在介绍即将发射的新一代 Starlink V3 卫星时作出这一预测的。相比此前的版本，V3 卫星拥有更高的网络带宽。 马斯克表示：“这可能有些难以想象，但未来某个时候，Starlink 完全有可能承载全球大部分互联网服务，至少是在我们获准运营的国家，而这已经涵盖了绝大多数国家。这一点非常重要，而且不是遥远未来的事情，我认为会发生在不到 10 年内。” 不过，仅仅几分钟后，SpaceX 首席运营官格温 · 肖特韦尔（Gwynne Shotwell）就对这一说法进行了更为谨慎的表述。她表示，V3 卫星带来的巨大容量提升，将使 Starlink 在保持现有高质量服务的同时，为全球越来越多用户提供网络连接。“未来几年，我们预计 Starlink 将占据全球互联网流量中的相当大一部分，这一点埃隆刚才也提到了。” 相比马斯克直接宣称“承载全球大部分互联网”，肖特韦尔的措辞显然更加保守，也更符合上市公司面对投资者时的法律风险控制要求，尽管这一目标本身依然十分激进。 类似的情况并非只出现一次。 会议中，SpaceX 首席财务官布雷特 · 约翰森（Bret Johnsen）向投资者介绍了公司少数几个新的财务目标之一。他重点谈到了 SpaceX 近年来快速发展的算力租赁业务，该业务向其他 AI 企业出租计算资源，已为公司带来数十亿美元的新收入。 约翰森表示，公司三大业务板块的需求依然强劲，其中云计算服务增长尤为突出。随着新合同不断签订，业务经济效益持续改善，而正如马斯克此前所说，计算资源市场供需失衡预计仍将持续。 他透露，算力基础设施投资目前的回本周期已缩短至不到一年。仅第三季度开始后的几周内，公司就签下了一份价值 67 亿美元（IT之家注：现汇率约合 453.12 亿元人民币）的云服务合同，服务周期为六个月，并将于今年 10 月开始逐步执行。 约翰森表示，结合 AI 编程工具 Cursor 的收入贡献，公司有望在今年年底实现 1,000 亿美元（现汇率约合 6,762.93 亿元人民币）的 ARR（年度经常性收入运行率）。 值得注意的是，约翰森在介绍这一目标时使用了大量谨慎措辞，例如“我们认为”“有望”“基于 12 月份预期收入”等，为未来目标未能实现预留空间。 然而，约 20 分钟后，马斯克直接推翻了这种谨慎表达。 他说：“我要明确一点，12 月实现 1,000 亿美元（现汇率约合 6,762.93 亿元人民币） ARR 根本不存在什么疑问。如果我们什么都不做，也能达到这个数字。所以，我认为最终数字很可能还会更高，大概率会超过 1,000 亿美元（现汇率约合 6,762.93 亿元人民币）。” 马斯克随后还进一步提高了公司整体收入目标。他表示，SpaceX 在两个月前提交 IPO 文件时，内部预计将在 2031 年实现 1 万亿美元（现汇率约合 6.76 万亿元人民币）营业收入，而现在这一目标已经提前至 2030 年。 “甚至不能排除 2029 年就实现这一目标的可能性。”他说。 会议期间，这种模式不断重复。 有股东询问 SpaceX 为 NASA“阿耳忒弥斯”（Artemis）登月计划开发的人类着陆系统进展时，马斯克几乎表示，使用“星舰”（Starship）的原型飞船将在明年年底前具备载人飞行能力。 随后，他又表示，到明年这个时候，SpaceX 将实现每天发射一枚星舰火箭，“甚至可能一天发射多枚”。 对此，肖特韦尔再次出面进行补充说明。她表示，目前公司仍然专注于完成 NASA 规定的各项技术里程碑，并提出了一个相对模糊但依然具有挑战性的目标 ——“希望能在 2028 年实现人类踏上月球。” 事实上，要实现这些目标，SpaceX 首先必须证明 Starship 能够稳定完成飞行任务，并最终实现完全可重复使用。其中最关键的技术之一，是能够保证 Starship 上级在重返地球大气层时不会烧毁的隔热防护系统。 在上个月的最新一次 Starship 试飞中，改进后的隔热系统取得了目前最好的测试效果。飞船最终溅落印度洋，并保持了整体结构完整。 然而，在火箭残骸尚未完成回收前，马斯克就在此次电话会议上表示：“我认为隔热系统的问题现在已经解决了。” 事实上，马斯克过去曾多次为 SpaceX 描绘宏伟蓝图，但不少最终都未兑现。例如，他曾在 2016 年表示，SpaceX 将在六年内把人类送上火星。 如今最大的不同在于，SpaceX 已成为一家上市公司。如果公司及高管作出明知无法兑现的承诺，理论上可能面临监管机构调查甚至罚款。 不过，报道称，美国证券交易委员会（SEC）近年来已明显减少了对上市公司的执法力度，美国司法部也采取了类似做法。 此外，即便未来 SpaceX 未能兑现马斯克提出的这些大胆目标，投资者通过民事诉讼维权的空间也相当有限，因为公司已经将注册地迁至得克萨斯州，在法律层面为此类诉讼建立了较强的保护机制。",
+      "url": "https://www.ithome.com/0/985/897.htm",
+      "time": "2026-08-05T04:35:24.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "上汽与通用汽车完成续约，合资协议延长 20 年至 2047 年",
+      "description": "IT之家 8 月 5 日消息，上汽集团与通用汽车今日（8 月 5 日）在上海签署合资续约协议，将上汽通用汽车合资期限延长 20 年至 2047 年。 双方表示，此次合作续约是基于近 30 年成功合作的基础，在全球汽车产业深刻变革背景下，对中国汽车市场长期价值以及对上汽通用汽车转型能力和发展前景投下的一张信任票。 IT之家查询公开资料获悉，上汽通用汽车有限公司成立于 1997 年 6 月 12 日，由上海汽车集团股份有限公司、通用汽车公司共同出资组建而成，旗下品牌包括别克、雪佛兰、凯迪拉克等，推出顶级豪华车到经济型轿车，以及高性能豪华轿车、MPV、SUV 等车款。 这次续约将开启上汽通用汽车全球化发展新空间。别克至境 E7 将于今年 10 月率先出口海外，成为企业首款出海的高端新能源车型。未来，上汽通用汽车将持续开拓中东、非洲、南美、墨西哥和亚太地区。",
+      "url": "https://www.ithome.com/0/985/896.htm",
+      "time": "2026-08-05T04:35:08.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "取消实体光碟惹怒玩家 索尼：主机仍比高端PC划算 - 国际 - 国际拼盘 - Sin Chew Daily",
       "description": "",
       "url": "https://www.sinchew.com.my/news/20260805/international/7731477",
       "time": "2026-08-05T04:33:40.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "毒圈缩圈：AI大模型的“斩杀线”还在上移- 潮起网 - 潮起网",
+      "description": "",
+      "url": "https://www.ichaoqi.com/guandian/2026/0805/84750.html",
+      "time": "2026-08-05T04:30:45.000Z",
       "tags": [
         "人工智能"
       ],
@@ -1182,6 +1994,18 @@
         "手机",
         "芯片/半导体",
         "游戏"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "享界G9首先亮出L3按键，自动驾驶的未来真来了？ - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1059012964_120106607?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T04:23:20.000Z",
+      "tags": [
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -1382,7 +2206,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "An SLM trained on $8 ESP32-S3",
-      "description": "Article URL: https://github.com/Carloscodix/qapla Comments URL: https://news.ycombinator.com/item?id=49178464 Points: 12 # Comments: 3",
+      "description": "Article URL: https://github.com/Carloscodix/qapla Comments URL: https://news.ycombinator.com/item?id=49178464 Points: 13 # Comments: 5",
       "url": "https://github.com/Carloscodix/qapla",
       "time": "2026-08-05T04:07:27.000Z",
       "tags": [
@@ -1915,6 +2739,19 @@
       "topic": true
     },
     {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "上诉法院推翻原裁决，Perplexity 智能体重获亚马逊电商访问法律许可",
+      "description": "IT之家 8 月 5 日消息，参考路透社报道，美国联邦第九巡回上诉法院当地时间 4 日裁决 Perplexity 二审胜诉，推翻了一审法官对 Perplexity AI 智能体访问 Amazon（亚马逊）电商平台并代理购物行为的临时禁令。 上诉法院表示，法律上是 Perplexity AI Comet 浏览器的用户利用人工智能辅助工具访问了亚马逊平台，访问行为并非由 Perplexity AI 本身作出，亚马逊不太可能成功主张 Perplexity AI 的智能体违反了美国计算机黑客法。 图源：Pixabay 亚马逊方面对周二的裁决表示异议，其对本案仍充满信心，目前正在评估下一步行动。Perplexity AI 则称企业将继续为互联网用户选择任意人工智能的权利而奋斗。 相关阅读： 《亚马逊获初步胜利：法院就 Perplexity 浏览器 AI 代理购物发布临时禁令》 《亚马逊对 Perplexity 下“逐客令”：要么修改 Comet 标识，要么带着你的 AI 智能体离开我的地盘》",
+      "url": "https://www.ithome.com/0/985/871.htm",
+      "time": "2026-08-05T03:33:27.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "互联网"
+      ]
+    },
+    {
       "source": "新品发布",
       "sourceColor": "#ad1457",
       "title": "小鹏G9L首发AI主动贴合零重力座椅 科技豪华座舱亮相 - 中华网",
@@ -1927,19 +2764,6 @@
         "测评/新品"
       ],
       "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "上诉法院推翻原裁决，Perplexity 智能体重获亚马逊电商访问法律许可",
-      "description": "IT之家 8 月 5 日消息，参考路透社报道，美国联邦第九巡回上诉法院当地时间 4 日裁决 Perplexity 二审胜诉，推翻了一审法官对 Perplexity AI 智能体访问 Amazon（亚马逊）电商平台并代理购物行为的临时禁令。 上诉法院表示，法律上是 Perplexity AI Comet 浏览器的用户利用人工智能辅助工具访问了亚马逊平台，访问行为并非由 Perplexity AI 本身作出，亚马逊不太可能成功主张 Perplexity AI 的智能体违反了美国计算机黑客法。 图源：Pixabay 亚马逊方面对周二的裁决表示异议，其对本案仍充满信心，目前正在评估下一步行动。Perplexity AI 则称企业将继续为互联网用户选择任意人工智能的权利而奋斗。 相关阅读： 《亚马逊获初步胜利：法院就 Perplexity 浏览器 AI 代理购物发布临时禁令》 《亚马逊对 Perplexity 下“逐客令”：要么修改 Comet 标识，要么带着你的 AI 智能体离开我的地盘》",
-      "url": "https://www.ithome.com/0/985/871.htm",
-      "time": "2026-08-05T03:33:27.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "互联网"
-      ]
     },
     {
       "source": "IT之家",
@@ -2113,20 +2937,6 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "刚刚，SpaceX、英伟达宣布：AI数据中心要上天了 - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_5953190046_162d6789e06703o15c.html?from=tech",
-      "time": "2026-08-05T03:27:00.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
       "title": "刚刚，SpaceX、英伟达宣布：AI数据中心要上天了 - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_5953190046_162d6789e06703o15c.html?from=tech",
@@ -2135,6 +2945,20 @@
         "人工智能",
         "芯片/半导体",
         "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "刚刚，SpaceX、英伟达宣布：AI数据中心要上天了 - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5953190046_162d6789e06703o15c.html?from=tech",
+      "time": "2026-08-05T03:27:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -2244,12 +3068,11 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "“速成车”正在被叫停，新能源车标准必须对齐燃油车 - 手机新浪网",
+      "title": "“速成车”正在被叫停，新能源车标准必须对齐燃油车 - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_1966089522_7530253200101k5k6.html?from=auto",
       "time": "2026-08-05T03:21:00.000Z",
       "tags": [
-        "手机",
         "新能源/电动车"
       ],
       "topic": true
@@ -2257,11 +3080,12 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "“速成车”正在被叫停，新能源车标准必须对齐燃油车 - 新浪网",
+      "title": "“速成车”正在被叫停，新能源车标准必须对齐燃油车 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_1966089522_7530253200101k5k6.html?from=auto",
       "time": "2026-08-05T03:21:00.000Z",
       "tags": [
+        "手机",
         "新能源/电动车"
       ],
       "topic": true
@@ -2499,12 +3323,11 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "享界G9 L3自动驾驶按键曝光，彭磊配文未来已来 - 手机新浪网",
+      "title": "享界G9 L3自动驾驶按键曝光，彭磊配文未来已来 - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_1642634100_61e89b7404001q4vw.html?from=auto",
       "time": "2026-08-05T03:11:00.000Z",
       "tags": [
-        "手机",
         "新能源/电动车"
       ],
       "topic": true
@@ -2512,11 +3335,12 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "享界G9 L3自动驾驶按键曝光，彭磊配文未来已来 - 新浪网",
+      "title": "享界G9 L3自动驾驶按键曝光，彭磊配文未来已来 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_1642634100_61e89b7404001q4vw.html?from=auto",
       "time": "2026-08-05T03:11:00.000Z",
       "tags": [
+        "手机",
         "新能源/电动车"
       ],
       "topic": true
@@ -3081,6 +3905,18 @@
         "互联网",
         "网络安全"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "半导体设备国产化进程有望持续加速，半导体设备ETF易方达（159558）近一月获超65亿元净流入 - 证券之星",
+      "description": "",
+      "url": "https://fund.stockstar.com/SS2026080500015326.shtml",
+      "time": "2026-08-05T02:50:34.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "华尔街见闻",
@@ -3814,6 +4650,18 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "享界G9进店，带L3自动驾驶功能按键 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_2194868354_82d308820400222w8.html?from=auto",
+      "time": "2026-08-05T02:10:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "享界G9进店，带L3自动驾驶功能按键 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_2194868354_82d308820400222w8.html?from=auto",
@@ -4028,19 +4876,6 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "快讯：创业板指拉升翻红，科创50指数涨近4%，半导体芯片股领涨市场 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/dpps/2026-08-05/detail-inimfmym3672344.d.html",
-      "time": "2026-08-05T01:58:27.000Z",
-      "tags": [
-        "芯片/半导体",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
       "title": "快讯：创业板指拉升翻红，科创50指数涨近4%，半导体芯片股领涨市场 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.cn/stock/dpps/2026-08-05/detail-inimfmym3672344.d.html",
@@ -4102,6 +4937,20 @@
         "电脑硬件",
         "互联网"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达为何为AI基建押上信用 推动项目融资与GPU订单落地 - military.china.com",
+      "description": "",
+      "url": "https://military.china.com/news/13004177/20260805/49655050.html",
+      "time": "2026-08-05T01:55:49.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -4713,18 +5562,6 @@
       "topic": true
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "利好来袭！国家大基金行动曝光！涉及A股半导体大牛股 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608043831396792.html",
-      "time": "2026-08-05T01:18:46.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "36氪",
       "sourceColor": "#0066ff",
       "title": "人民币对美元中间价调升28个基点",
@@ -4951,8 +5788,8 @@
       "sourceColor": "#004d40",
       "title": "8月5日国际晨讯｜SpaceX与英伟达合作开发卫星计算载荷 国际油价4日下跌超5% - 搜狐网",
       "description": "",
-      "url": "https://m.sohu.com/a/1058907193_121443915?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-05T01:04:35.000Z",
+      "url": "https://m.sohu.com/a/1058907175_120988576?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T01:03:28.000Z",
       "tags": [
         "芯片/半导体",
         "AI芯片",
@@ -5341,6 +6178,18 @@
       ]
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "3连板牛股澄清：无半导体业务！MLCC景气度高企，业绩预喜比例100% - 同花顺财经",
+      "description": "",
+      "url": "http://stock.10jqka.com.cn/20260805/c678675016.shtml",
+      "time": "2026-08-05T00:33:09.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "少数派",
       "sourceColor": "#d93b3b",
       "title": "派早报：OPPO A7 Pro Max 发布、CMF 推出开放式耳机 Clip Pro 等",
@@ -5350,18 +6199,6 @@
       "tags": [
         "手机"
       ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "3连板牛股澄清：无半导体业务！MLCC景气度高企，业绩预喜比例100% - 同花顺财经",
-      "description": "",
-      "url": "http://stock.10jqka.com.cn/20260805/c678675016.shtml",
-      "time": "2026-08-05T00:28:11.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     },
     {
       "source": "IT之家",
@@ -5581,7 +6418,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Zigbee vs. Matter over Thread:Understanding IoT Protocol Performance in Practice",
-      "description": "Article URL: https://arxiv.org/abs/2603.04221 Comments URL: https://news.ycombinator.com/item?id=49176983 Points: 59 # Comments: 36",
+      "description": "Article URL: https://arxiv.org/abs/2603.04221 Comments URL: https://news.ycombinator.com/item?id=49176983 Points: 66 # Comments: 45",
       "url": "https://arxiv.org/abs/2603.04221",
       "time": "2026-08-05T00:10:37.000Z",
       "tags": [
@@ -5721,7 +6558,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Bugtraq is back",
-      "description": "Article URL: https://lists.securityfocus.com/hyperkitty/list/bugtraq@securityfocus.com/thread/CHKLXLA7SJEWLDFHWXB3QU57ADOXGL2E/ Comments URL: https://news.ycombinator.com/item?id=49176947 Points: 36 # Comments: 7",
+      "description": "Article URL: https://lists.securityfocus.com/hyperkitty/list/bugtraq@securityfocus.com/thread/CHKLXLA7SJEWLDFHWXB3QU57ADOXGL2E/ Comments URL: https://news.ycombinator.com/item?id=49176947 Points: 37 # Comments: 7",
       "url": "https://lists.securityfocus.com/hyperkitty/list/bugtraq@securityfocus.com/thread/CHKLXLA7SJEWLDFHWXB3QU57ADOXGL2E/",
       "time": "2026-08-05T00:05:49.000Z",
       "tags": [
@@ -5771,7 +6608,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Flowise is shutting down",
-      "description": "Article URL: https://flowiseai.com/sunset Comments URL: https://news.ycombinator.com/item?id=49176920 Points: 37 # Comments: 17",
+      "description": "Article URL: https://flowiseai.com/sunset Comments URL: https://news.ycombinator.com/item?id=49176920 Points: 39 # Comments: 18",
       "url": "https://flowiseai.com/sunset",
       "time": "2026-08-05T00:02:40.000Z",
       "tags": [
@@ -5827,6 +6664,20 @@
         "科技创投",
         "智能硬件"
       ]
+    },
+    {
+      "source": "新品发布",
+      "sourceColor": "#ad1457",
+      "title": "【首发】哲源科技获近2亿元A2轮融资，推进生命世界模型驱动的AI4S平台建设 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1058889195_133140?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-05T00:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "测评/新品",
+        "科技创投"
+      ],
+      "topic": true
     },
     {
       "source": "搜狐科技",
@@ -5982,7 +6833,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Eight Myths on Software Engineering and GenAI",
-      "description": "Article URL: https://queue.acm.org/detail.cfm?id=3807963 Comments URL: https://news.ycombinator.com/item?id=49176830 Points: 159 # Comments: 102",
+      "description": "Article URL: https://queue.acm.org/detail.cfm?id=3807963 Comments URL: https://news.ycombinator.com/item?id=49176830 Points: 167 # Comments: 116",
       "url": "https://queue.acm.org/detail.cfm?id=3807963",
       "time": "2026-08-04T23:50:52.000Z",
       "tags": [
@@ -6160,7 +7011,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "IP and DNS Leaks in WebKit Affecting Proxy Browsers and iCloud Private Relay",
-      "description": "Article URL: https://mysk.blog/2026/08/04/webkit-proxy-icloud-private-relay-ip-leak/ Comments URL: https://news.ycombinator.com/item?id=49176697 Points: 79 # Comments: 9",
+      "description": "Article URL: https://mysk.blog/2026/08/04/webkit-proxy-icloud-private-relay-ip-leak/ Comments URL: https://news.ycombinator.com/item?id=49176697 Points: 83 # Comments: 11",
       "url": "https://mysk.blog/2026/08/04/webkit-proxy-icloud-private-relay-ip-leak/",
       "time": "2026-08-04T23:31:46.000Z",
       "tags": [
@@ -6323,7 +7174,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "libexpat now funded by the City of Munich for up to 6 months",
-      "description": "Article URL: https://blog.hartwork.org/posts/libexpat-city-of-munich-open-source-sabbatical/ Comments URL: https://news.ycombinator.com/item?id=49176606 Points: 234 # Comments: 29",
+      "description": "Article URL: https://blog.hartwork.org/posts/libexpat-city-of-munich-open-source-sabbatical/ Comments URL: https://news.ycombinator.com/item?id=49176606 Points: 239 # Comments: 31",
       "url": "https://blog.hartwork.org/posts/libexpat-city-of-munich-open-source-sabbatical/",
       "time": "2026-08-04T23:18:12.000Z",
       "tags": [
@@ -6392,18 +7243,6 @@
       "tags": [
         "人工智能"
       ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "“降温”措施见效？韩国半导体杠杆ETF的交易量明显萎缩 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608043831150285.html",
-      "time": "2026-08-04T23:06:37.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     },
     {
       "source": "智能汽车",
@@ -6566,7 +7405,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: SIMD Viterbi Decoder in Rust",
-      "description": "I wrote libcorrect in C in 2016 and wanted to revisit it in Rust. Instead of doing just a direct conversion, I went down the rabbit hole of making Rust's std::simd work for me. I ended up with a templated, generic Viterbi decoder for convolutional codes that dispatches the decode at runtime depending on which instruction sets are available. For small rates and orders, the entire decode lives in registers. Larger codes work through memory but take advantage of some acceleration structures. I also spent some time building a tool to find optimal (max d_free) conv codes for a given rate and order. Of course, there are better mechanisms available today, but I'm happy to talk through anything I learned in the process. Comments URL: https://news.ycombinator.com/item?id=49176212 Points: 37 # Comments: 3",
+      "description": "I wrote libcorrect in C in 2016 and wanted to revisit it in Rust. Instead of doing just a direct conversion, I went down the rabbit hole of making Rust's std::simd work for me. I ended up with a templated, generic Viterbi decoder for convolutional codes that dispatches the decode at runtime depending on which instruction sets are available. For small rates and orders, the entire decode lives in registers. Larger codes work through memory but take advantage of some acceleration structures. I also spent some time building a tool to find optimal (max d_free) conv codes for a given rate and order. Of course, there are better mechanisms available today, but I'm happy to talk through anything I learned in the process. Comments URL: https://news.ycombinator.com/item?id=49176212 Points: 38 # Comments: 3",
       "url": "https://github.com/brian-armstrong/fec",
       "time": "2026-08-04T22:37:05.000Z",
       "tags": [
@@ -6707,7 +7546,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "We finally learned to center a div, then browsers added sidebars",
-      "description": "Article URL: https://seg6.space/posts/center-div/ Comments URL: https://news.ycombinator.com/item?id=49176055 Points: 98 # Comments: 85",
+      "description": "Article URL: https://seg6.space/posts/center-div/ Comments URL: https://news.ycombinator.com/item?id=49176055 Points: 104 # Comments: 89",
       "url": "https://seg6.space/posts/center-div/",
       "time": "2026-08-04T22:24:00.000Z",
       "tags": [
@@ -6718,7 +7557,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Pi's Minimalism Is Its Advantage",
-      "description": "Article URL: https://earendil.com/posts/pi-autoresearch-and-databricks/ Comments URL: https://news.ycombinator.com/item?id=49176038 Points: 232 # Comments: 89",
+      "description": "Article URL: https://earendil.com/posts/pi-autoresearch-and-databricks/ Comments URL: https://news.ycombinator.com/item?id=49176038 Points: 249 # Comments: 96",
       "url": "https://earendil.com/posts/pi-autoresearch-and-databricks/",
       "time": "2026-08-04T22:22:12.000Z",
       "tags": [
@@ -6767,7 +7606,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "DuckDB – Data power tools for your laptop, now in Clojure (2023)",
-      "description": "Article URL: https://techascent.com/blog/just-ducking-around.html Comments URL: https://news.ycombinator.com/item?id=49175924 Points: 76 # Comments: 10",
+      "description": "Article URL: https://techascent.com/blog/just-ducking-around.html Comments URL: https://news.ycombinator.com/item?id=49175924 Points: 78 # Comments: 11",
       "url": "https://techascent.com/blog/just-ducking-around.html",
       "time": "2026-08-04T22:09:43.000Z",
       "tags": [
@@ -6805,7 +7644,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "AI fuels more than half of cybercrime in Africa as scams surge – Interpol",
-      "description": "https://www.interpol.int/Media/Documents/Publications/Cyberc... Comments URL: https://news.ycombinator.com/item?id=49175826 Points: 187 # Comments: 140",
+      "description": "https://www.interpol.int/Media/Documents/Publications/Cyberc... Comments URL: https://news.ycombinator.com/item?id=49175826 Points: 190 # Comments: 150",
       "url": "https://www.africanews.com/2026/08/04/ai-fuels-more-than-half-of-cybercrime-in-africa-as-digital-scams-surge-interpol/",
       "time": "2026-08-04T22:01:41.000Z",
       "tags": [
@@ -7098,7 +7937,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "I am retiring from fulltime writing (& pseudonymity) to launch Guardian Angel",
-      "description": "https://twitter.com/willdepue/status/2084750925013434768, https://xcancel.com/willdepue/status/2084750925013434768 https://gwern.net/guardian-angel Comments URL: https://news.ycombinator.com/item?id=49174900 Points: 241 # Comments: 151",
+      "description": "https://twitter.com/willdepue/status/2084750925013434768, https://xcancel.com/willdepue/status/2084750925013434768 https://gwern.net/guardian-angel Comments URL: https://news.ycombinator.com/item?id=49174900 Points: 248 # Comments: 152",
       "url": "https://twitter.com/gwern/status/2084739205071343837",
       "time": "2026-08-04T20:48:17.000Z",
       "tags": [
@@ -7556,7 +8395,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "办公好用的手机推荐：2026年AI办公旗舰横评，重度用户首选vivo X Fold6+FAQ - 手机新浪网",
+      "title": "办公好用的手机推荐：2026年AI办公旗舰横评，重度用户首选vivo X Fold6+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879848952_1d5acf3f806801axu0.html?from=digit",
       "time": "2026-08-04T20:09:18.000Z",
@@ -7570,7 +8409,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "办公好用的手机推荐：2026年AI办公旗舰横评，重度用户首选vivo X Fold6+FAQ - 新浪网",
+      "title": "办公好用的手机推荐：2026年AI办公旗舰横评，重度用户首选vivo X Fold6+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879848952_1d5acf3f806801axu0.html?from=digit",
       "time": "2026-08-04T20:09:18.000Z",
@@ -7783,7 +8622,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Maple-Preview – Ternary 20B MoE running at 120 tok/s on a iPhone",
-      "description": "Article URL: https://deepgrove.ai/maple-preview Comments URL: https://news.ycombinator.com/item?id=49173984 Points: 86 # Comments: 25",
+      "description": "Article URL: https://deepgrove.ai/maple-preview Comments URL: https://news.ycombinator.com/item?id=49173984 Points: 89 # Comments: 25",
       "url": "https://deepgrove.ai/maple-preview",
       "time": "2026-08-04T19:44:55.000Z",
       "tags": [
@@ -8090,18 +8929,6 @@
       "topic": true
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "重要条例修订发布 芯片IP保护再升级 杠杆资金逆势布局多股(名单) - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608043830663370.html",
-      "time": "2026-08-04T18:55:52.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
       "source": "网易科技",
       "sourceColor": "#e60012",
       "title": "7月“AI魔改”视频治理成果公布",
@@ -8116,7 +8943,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "In Memory of My Wife, Elise Cawley, with Thanks for 36 Wonderful Years",
-      "description": "Article URL: https://writings.stephenwolfram.com/2026/08/in-memory-of-my-wife-elise-cawley-1961-2026-with-thanks-for-36-wonderful-years/ Comments URL: https://news.ycombinator.com/item?id=49173165 Points: 1188 # Comments: 68",
+      "description": "Article URL: https://writings.stephenwolfram.com/2026/08/in-memory-of-my-wife-elise-cawley-1961-2026-with-thanks-for-36-wonderful-years/ Comments URL: https://news.ycombinator.com/item?id=49173165 Points: 1211 # Comments: 67",
       "url": "https://writings.stephenwolfram.com/2026/08/in-memory-of-my-wife-elise-cawley-1961-2026-with-thanks-for-36-wonderful-years/",
       "time": "2026-08-04T18:51:38.000Z",
       "tags": [
@@ -8273,7 +9100,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Waymo in Dallas",
-      "description": "Article URL: https://waymo.com/blog/shorts/dallas-open-to-all/ Comments URL: https://news.ycombinator.com/item?id=49172836 Points: 280 # Comments: 464",
+      "description": "Article URL: https://waymo.com/blog/shorts/dallas-open-to-all/ Comments URL: https://news.ycombinator.com/item?id=49172836 Points: 280 # Comments: 470",
       "url": "https://waymo.com/blog/shorts/dallas-open-to-all/",
       "time": "2026-08-04T18:29:41.000Z",
       "tags": [
@@ -8346,7 +9173,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The Golden Age of British Ice Cream",
-      "description": "Article URL: https://www.vittlesmagazine.com/p/the-golden-age-of-british-ice-cream Comments URL: https://news.ycombinator.com/item?id=49172784 Points: 12 # Comments: 2",
+      "description": "Article URL: https://www.vittlesmagazine.com/p/the-golden-age-of-british-ice-cream Comments URL: https://news.ycombinator.com/item?id=49172784 Points: 20 # Comments: 5",
       "url": "https://www.vittlesmagazine.com/p/the-golden-age-of-british-ice-cream",
       "time": "2026-08-04T18:25:16.000Z",
       "tags": [
@@ -8549,19 +9376,6 @@
         "手机",
         "软件应用",
         "智能硬件"
-      ]
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "AI 浏览器已死，享年约 1 岁",
-      "description": "Anthropic 的 Claude Computer Use、OpenAI 的电脑操作能力，都在尝试让 AI 直接控制用户的电脑：打开软件、填写表单、处理文件，而不是局限在某一个浏览器窗口里。 但讽刺的是，…",
-      "url": "https://www.sohu.com/a/1058714958_413981?scm=10001.340_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-04 17:56",
-      "tags": [
-        "人工智能",
-        "电脑硬件",
-        "软件应用"
       ]
     },
     {
@@ -9230,7 +10044,7 @@
     {
       "source": "澎湃新闻",
       "sourceColor": "#1e88e5",
-      "title": "推荐灵初智能陈源培：以人类数据为基，构建具身智能灵巧操作通用模型",
+      "title": "灵初智能陈源培：以人类数据为基，构建具身智能灵巧操作通用模型",
       "description": "在具身智能赛道中，如何获取高质量、大规模的交互数据是全球性难题。在日前有澎湃新闻和上海未来产业基金共同举办的逐浪·未来科技演讲中，灵初智能联合创始人陈源培介绍了",
       "url": "https://www.thepaper.cn/newsDetail_forward_33713351",
       "time": "2026-08-04 16:16",
@@ -9239,7 +10053,7 @@
     {
       "source": "澎湃新闻",
       "sourceColor": "#1e88e5",
-      "title": "灵初智能陈源培：以人类数据为基，构建具身智能灵巧操作通用模型",
+      "title": "推荐灵初智能陈源培：以人类数据为基，构建具身智能灵巧操作通用模型",
       "description": "在具身智能赛道中，如何获取高质量、大规模的交互数据是全球性难题。在日前有澎湃新闻和上海未来产业基金共同举办的逐浪·未来科技演讲中，灵初智能联合创始人陈源培介绍了",
       "url": "https://www.thepaper.cn/newsDetail_forward_33713351",
       "time": "2026-08-04 16:16",
@@ -9353,6 +10167,17 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "余承东：鸿蒙智行全系累计交付超过148万辆",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-05/doc-inimfwqf3647204.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "西贝推出全新子品牌“天边羊多” 首店即将在北京开业",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/shenji/2026-08-05/doc-inimfwqp4668786.shtml",
@@ -9427,6 +10252,246 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "欢迎投票：2026全球十大工程成就评选丨Engineering",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-05/doc-inimfwqf3648582.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "浪潮数据张东：AI时代需要AI数据操作系统",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3645950.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "上汽乘用车总经理王骏卸任 常务副总经理俞经民却没接班",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4696263.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Marvell发布三级AI内存基础设施，把\"内存墙\"扩至整机柜",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5247127.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "三星FMS 2026发布zHBM：带宽较HBM5提升约8倍",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3643466.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "美造车新势力CEO直言：美国躲不掉中国电动汽车竞争",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3645906.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "泛鼎国际与OnTrac达成战略合作：深化美国尾程派送能力",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqr1463883.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小红书新增电影票 健身卡券等类目 本地生活商品体系再扩充",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4691448.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小米澎程系列预售订单或超10万辆 多地设专营店待9月上市",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5249511.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "我与樱花的故事 | 如约而至的“安检季”服务，万千家庭的温暖记忆",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5242057.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "科陆电子连续10季位列BNEF Tier 1",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4690324.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "冠捷科技与TCL华星双冠合璧，共筑电竞新生态",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4695315.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "国产神剧女主\"脚踩\"爱因斯坦！荒唐设定完全无视逻辑",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4690652.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "宇树科技开启科创板IPO初步询价 市值或超400亿元",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4694501.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Sandisk闪迪亮相FMS 2026，展示面向AI推理时代的NAND创新技术",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5237237.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "测评/新品"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "国信证券内部再提拔闵志锋任副总裁 目前分管公司金融市场部",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3633879.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "脑机接口技术借AI实现脑活动转文字",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-05/doc-inimfwqr1460864.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "男子进山干活回来后变了个人，妻子：反着抽烟，焦急地找东西，骂也不回嘴……检查结果让人后怕",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5247643.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "福建通服被移动记严重负面行为 跟两大运营商之间的竞争没啥关系",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3631154.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小螺号|鸿蒙回应竹知了，解释了法理却失掉了情理",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3633624.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "机器人产业技术创新联盟系统聚合多方资源",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5241016.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "甘肃解锁文旅发展新范式：将“科技能量”转化为“消费留量”",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4689691.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "SK电讯Q2净利润增长超四倍，AIDC业务收入翻番",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3632409.shtml",
+      "time": "2026-08-04T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "【ST精选文章】高分辨率直接飞行时间激光雷达赋予边缘 AI 空间感知能力",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqp4680981.shtml",
@@ -9465,35 +10530,12 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "Liquid AI 发布 LFM2.5-2.6B 端侧小模型，支持智能手机本地运行",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5229155.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "手机"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "号称30万级科技标杆！小鹏G9L增程版：能加92号汽油 2年2万公里保养一次",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3620734.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": [
         "新能源/电动车",
-        "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "曝大众拟裁掉数百个管理层：求助猎头安排下家被拒“没这么多岗位”",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqf3625504.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
         "汽车"
       ]
     },
@@ -9518,59 +10560,12 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "微软介绍 Win11 系统 MSIX 格式应用机制：用户感知的卸载，底层是移除",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5220272.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "被汽车圈验证的GMSL技术如何帮助内窥镜系统升级迭代",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqf3606721.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": [
         "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "Neocloud 企业 CoreWeave 首度落子亚太，将在印尼建设合计 360MW 数据中心",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqp4675443.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "小米 REDMI K100 Pro 手机预热：搭载 8580mAh 超大电池，后置三摄五焦段旗舰相机",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqp4675424.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "马斯克最新回应：SpaceX 将完全使用英伟达架构平台",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5210856.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
       ]
     },
     {
@@ -9678,17 +10673,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5193180.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "消息称宇树科技 IPO 发行价约 104 元，市值将达 400 亿元以上",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqf3597138.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
     },
     {
       "source": "新浪科技",
@@ -9859,33 +10843,11 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "SpaceX 上市后首次财报会：马斯克抛宏大目标，高管谨慎修正",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqi5180942.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "仅42天尿酸直降112，尿酸高的人建议照抄！",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-05/doc-inimfwqi5190206.shtml",
       "time": "2026-08-04T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "上汽与通用汽车完成续约，合资协议延长 20 年至 2047 年",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-05/doc-inimfwqr1420861.shtml",
-      "time": "2026-08-04T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
     },
     {
       "source": "新浪科技",
@@ -11280,6 +12242,19 @@
       "topic": true
     },
     {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
+      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=bvlgari%E9%AB%98%E4%BB%BF%E6%89%8B%E8%A1%A8%E3%80%94%E5%BE%AE%E4%BF%A1198099199%E3%80%95f5TA&vt=4",
+      "time": "2026-08-04T15:01:20.000Z",
+      "tags": [
+        "人工智能",
+        "专访"
+      ],
+      "topic": true
+    },
+    {
       "source": "GSMArena",
       "sourceColor": "#d32f2f",
       "title": "iPhone 20 series rumored to get improved cooling, Air-inspired frame",
@@ -12616,6 +13591,18 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "利好来袭！国家大基金行动曝光！涉及A股半导体大牛股 - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608043831396792.html",
+      "time": "2026-08-04T12:55:23.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "纳指涨幅扩大至2% 费城半导体指数涨6.2% - emwap.eastmoney.com",
       "description": "",
       "url": "https://emwap.eastmoney.com/a/202608043831550486.html",
@@ -13622,6 +14609,18 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
+      "title": "独家｜影石AI硬件接入千问大模型，模型厂商商战激烈 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5953466437_162dab0450670b6xz6.html?from=tech",
+      "time": "2026-08-04T11:25:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
       "title": "独家｜影石AI硬件接入千问大模型，模型厂商商战激烈 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_5953466437_162dab0450670b6xz6.html?from=tech",
@@ -13629,18 +14628,6 @@
       "tags": [
         "人工智能",
         "手机"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "独家｜影石AI硬件接入千问大模型，模型厂商商战激烈 - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_5953466437_162dab0450670b6xz6.html?from=tech",
-      "time": "2026-08-04T11:25:00.000Z",
-      "tags": [
-        "人工智能"
       ],
       "topic": true
     },
@@ -14719,6 +15706,18 @@
       "time": "2026-08-04T09:56:37.000Z",
       "tags": [
         "人工智能"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "AI 浏览器已死，享年约 1 岁",
+      "description": "它出现得很快，退潮得也很快。 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1673940?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-04T09:56:35.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
       ]
     },
     {
@@ -16116,6 +17115,18 @@
       "tags": []
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "“降温”措施见效？韩国半导体杠杆ETF的交易量明显萎缩 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608043831150285.html",
+      "time": "2026-08-04T07:29:43.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "尼康",
       "sourceColor": "#34495e",
       "title": "荣耀时刻，尼康揽获海内外多项年度评选 - tech.sina.cn",
@@ -16775,7 +17786,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - 手机新浪网",
+      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_5952915705_162d248f906703jgnq.html?from=pcsearch",
       "time": "2026-08-04T06:09:00.000Z",
@@ -16789,7 +17800,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - 新浪网",
+      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_5952915705_162d248f906703jgnq.html?from=pcsearch",
       "time": "2026-08-04T06:09:00.000Z",
@@ -17195,11 +18206,13 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Litter-Robot Promo Codes: Up to $150 Off",
-      "description": "Get the latest Litter-Robot Discounts on Litter-Robot self-cleaning litter boxes, accessories, and more.",
-      "url": "https://www.wired.com/story/litter-robot-promo-code/",
+      "title": "Target Promo Code: $50 Off | August 2026",
+      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
+      "url": "https://www.wired.com/story/target-promo-code/",
       "time": "2026-08-04T05:00:00.000Z",
-      "tags": []
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "Wired",
@@ -17227,13 +18240,11 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Target Promo Code: $50 Off | August 2026",
-      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
-      "url": "https://www.wired.com/story/target-promo-code/",
+      "title": "Litter-Robot Promo Codes: Up to $150 Off",
+      "description": "Get the latest Litter-Robot Discounts on Litter-Robot self-cleaning litter boxes, accessories, and more.",
+      "url": "https://www.wired.com/story/litter-robot-promo-code/",
       "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
+      "tags": []
     },
     {
       "source": "AI大模型",
@@ -17533,6 +18544,18 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
+      "title": "使用DeepSeek消耗Token真的比ChatGPT便宜吗？ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996050_1d5af329206801no44.html?from=tech",
+      "time": "2026-08-04T03:22:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
       "title": "使用DeepSeek消耗Token真的比ChatGPT便宜吗？ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879996050_1d5af329206801no44.html?from=tech",
@@ -17540,18 +18563,6 @@
       "tags": [
         "人工智能",
         "手机"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "使用DeepSeek消耗Token真的比ChatGPT便宜吗？ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996050_1d5af329206801no44.html?from=tech",
-      "time": "2026-08-04T03:22:00.000Z",
-      "tags": [
-        "人工智能"
       ],
       "topic": true
     },
@@ -18239,6 +19250,18 @@
       "url": "https://www.oschina.net/news/486772/zs-admin-1-1-0-released",
       "time": "2026-08-04T01:45:55.000Z",
       "tags": []
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "重要条例修订发布 芯片IP保护再升级 杠杆资金逆势布局多股(名单) - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608043830663370.html",
+      "time": "2026-08-04T01:45:42.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "9to5Mac",
@@ -19113,19 +20136,6 @@
         "科技创投",
         "智能硬件"
       ]
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "对话滴普科技创始人赵杰辉：企业大模型不是“养龙虾”，是给AI员工划数据围栏 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/chanjing/gsxw/2026-03-17/detail-inhrhxzs3901901.d.html?oid=%E5%B8%82%E5%9C%BA%E6%B8%97%E9%80%8F%E6%96%B9%E6%B3%95%E2%96%8B%E9%9C%80%E8%A6%81%E8%81%94%E7%B3%BBTG:@HHCH8%E6%92%9E%E5%BA%93%E6%95%B0%E6%8D%AE%E6%B8%97%E9%80%8F%E6%95%B0%E6%8D%AE%E6%B5%B7%E5%A4%96%E6%94%AF%E4%BB%98%E9%80%9A%E9%81%93%E2%96%8BuAE8&vt=4&cid=76478&node_id=76478",
-      "time": "2026-08-03T19:43:42.000Z",
-      "tags": [
-        "人工智能",
-        "专访"
-      ],
-      "topic": true
     },
     {
       "source": "科技专访",
@@ -20070,9 +21080,9 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "iPhone 18 Pro首次搭载可变光圈镜头：光圈参数与华为Pura 80 Pro保持一致",
+      "title": "全行业第一款！华为阔直板手机9-10月登场：不能折叠的Pura X",
       "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatr5810418.shtml",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatx2266225.shtml",
       "time": "2026-08-03T16:00:00.000Z",
       "tags": [
         "手机",
@@ -20082,9 +21092,9 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "全行业第一款！华为阔直板手机9-10月登场：不能折叠的Pura X",
+      "title": "iPhone 18 Pro首次搭载可变光圈镜头：光圈参数与华为Pura 80 Pro保持一致",
       "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatx2266225.shtml",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatr5810418.shtml",
       "time": "2026-08-03T16:00:00.000Z",
       "tags": [
         "手机",
@@ -21460,7 +22470,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026自拍好的手机推荐：3款旗舰横评，谁才是人像天花板？+FAQ - 手机新浪网",
+      "title": "2026自拍好的手机推荐：3款旗舰横评，谁才是人像天花板？+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801l9c2.html",
       "time": "2026-08-03T10:25:45.000Z",
@@ -21473,7 +22483,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026自拍好的手机推荐：3款旗舰横评，谁才是人像天花板？+FAQ - 新浪网",
+      "title": "2026自拍好的手机推荐：3款旗舰横评，谁才是人像天花板？+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801l9c2.html",
       "time": "2026-08-03T10:25:45.000Z",
@@ -22388,6 +23398,18 @@
         "人工智能",
         "汽车"
       ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "DeepSeek又发重磅更新 中国AI大模型的优势在哪里？ - cztv.com",
+      "description": "",
+      "url": "https://www.cztv.com/newsDetail/892301",
+      "time": "2026-08-03T07:50:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
     },
     {
       "source": "AI大模型",
@@ -24568,7 +25590,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "折叠屏手机哪个品牌好？2026年五大旗舰横评：这三点决定谁才是性价比之王+FAQ - 手机新浪网",
+      "title": "折叠屏手机哪个品牌好？2026年五大旗舰横评：这三点决定谁才是性价比之王+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923190_1d5ae15f6068016fcw.html",
       "time": "2026-08-02T09:23:31.000Z",
@@ -24581,7 +25603,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "折叠屏手机哪个品牌好？2026年五大旗舰横评：这三点决定谁才是性价比之王+FAQ - 新浪网",
+      "title": "折叠屏手机哪个品牌好？2026年五大旗舰横评：这三点决定谁才是性价比之王+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923190_1d5ae15f6068016fcw.html",
       "time": "2026-08-02T09:23:31.000Z",
@@ -24606,7 +25628,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "一加和荣耀怎么选？2026旗舰横评：性能游戏选一加，续航生态选荣耀+FAQ - 手机新浪网",
+      "title": "一加和荣耀怎么选？2026旗舰横评：性能游戏选一加，续航生态选荣耀+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l7dm.html",
       "time": "2026-08-02T09:22:11.000Z",
@@ -24620,7 +25642,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "一加和荣耀怎么选？2026旗舰横评：性能游戏选一加，续航生态选荣耀+FAQ - 新浪网",
+      "title": "一加和荣耀怎么选？2026旗舰横评：性能游戏选一加，续航生态选荣耀+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l7dm.html",
       "time": "2026-08-02T09:22:11.000Z",
@@ -24704,7 +25726,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "2026年美颜旗舰手机推荐：三星Galaxy S26与荣耀Magic8 Pro Air谁更懂自拍？+FAQ - 手机新浪网",
+      "title": "2026年美颜旗舰手机推荐：三星Galaxy S26与荣耀Magic8 Pro Air谁更懂自拍？+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923190_1d5ae15f6068016f2o.html?from=digit",
       "time": "2026-08-02T07:00:00.000Z",
@@ -24718,7 +25740,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "2026年美颜旗舰手机推荐：三星Galaxy S26与荣耀Magic8 Pro Air谁更懂自拍？+FAQ - 新浪网",
+      "title": "2026年美颜旗舰手机推荐：三星Galaxy S26与荣耀Magic8 Pro Air谁更懂自拍？+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923190_1d5ae15f6068016f2o.html?from=digit",
       "time": "2026-08-02T07:00:00.000Z",
@@ -24914,7 +25936,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "夜景拍照哪个品牌做得好？四大旗舰横评，vivo综合最强+FAQ - 手机新浪网",
+      "title": "夜景拍照哪个品牌做得好？四大旗舰横评，vivo综合最强+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879849013_1d5acf43506802pwog.html",
       "time": "2026-08-02T00:11:10.000Z",
@@ -24927,7 +25949,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "夜景拍照哪个品牌做得好？四大旗舰横评，vivo综合最强+FAQ - 新浪网",
+      "title": "夜景拍照哪个品牌做得好？四大旗舰横评，vivo综合最强+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879849013_1d5acf43506802pwog.html",
       "time": "2026-08-02T00:11:10.000Z",
@@ -24989,7 +26011,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "最轻薄的折叠屏手机是哪款？三星用4.1mm和180g刷新横竖纪录+FAQ - 手机新浪网",
+      "title": "最轻薄的折叠屏手机是哪款？三星用4.1mm和180g刷新横竖纪录+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923041_1d5ae156106801jtig.html",
       "time": "2026-08-01T17:02:46.000Z",
@@ -25002,7 +26024,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "最轻薄的折叠屏手机是哪款？三星用4.1mm和180g刷新横竖纪录+FAQ - 新浪网",
+      "title": "最轻薄的折叠屏手机是哪款？三星用4.1mm和180g刷新横竖纪录+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879923041_1d5ae156106801jtig.html",
       "time": "2026-08-01T17:02:46.000Z",
@@ -25027,7 +26049,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "安卓手机哪个品牌好？2026销量+口碑+旗舰横评，3类人群这样选+FAQ - 手机新浪网",
+      "title": "安卓手机哪个品牌好？2026销量+口碑+旗舰横评，3类人群这样选+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l6x6.html",
       "time": "2026-08-01T15:12:35.000Z",
@@ -25040,7 +26062,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "安卓手机哪个品牌好？2026销量+口碑+旗舰横评，3类人群这样选+FAQ - 新浪网",
+      "title": "安卓手机哪个品牌好？2026销量+口碑+旗舰横评，3类人群这样选+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879776467_1d5abd8d306801l6x6.html",
       "time": "2026-08-01T15:12:35.000Z",
@@ -25118,6 +26140,19 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
+      "title": "​25万级中大型新能源轿车横评：别克至境L7为何是家庭首选？ - chejiahao.m.autohome.com.cn",
+      "description": "",
+      "url": "https://chejiahao.m.autohome.com.cn/info/26097671",
+      "time": "2026-08-01T09:05:06.000Z",
+      "tags": [
+        "新能源/电动车",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
       "title": "​25万级中大型新能源轿车横评：别克至境L7为何是家庭首选？ - 汽车之家",
       "description": "",
       "url": "https://chejiahao.m.autohome.com.cn/info/26097671",
@@ -25126,6 +26161,20 @@
         "新能源/电动车",
         "汽车",
         "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "科技专访",
+      "sourceColor": "#37474f",
+      "title": "对话潞晨科技创始人：国产芯片真正站稳脚跟，离不开软件生态协同建设 - news.ifeng.com",
+      "description": "",
+      "url": "https://news.ifeng.com/c/8vCs6bzPMF1",
+      "time": "2026-08-01T07:34:59.000Z",
+      "tags": [
+        "芯片/半导体",
+        "软件应用",
+        "专访"
       ],
       "topic": true
     },
@@ -25171,7 +26220,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026高端冰箱推荐哪款？万元级旗舰横评：卡萨帝、西门子、方太谁最强+FAQ - 手机新浪网",
+      "title": "2026高端冰箱推荐哪款？万元级旗舰横评：卡萨帝、西门子、方太谁最强+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7880068962_1d5b04f6206801flh2.html?from=home",
       "time": "2026-08-01T06:37:32.000Z",
@@ -25184,7 +26233,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026高端冰箱推荐哪款？万元级旗舰横评：卡萨帝、西门子、方太谁最强+FAQ - 新浪网",
+      "title": "2026高端冰箱推荐哪款？万元级旗舰横评：卡萨帝、西门子、方太谁最强+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7880068962_1d5b04f6206801flh2.html?from=home",
       "time": "2026-08-01T06:37:32.000Z",
@@ -25225,7 +26274,7 @@
       "sourceColor": "#1a1a2e",
       "title": "索尼确认2028年后还有盒装版，游戏光碟改成下载兑换码 - 游民圈子",
       "description": "",
-      "url": "https://club.gamersky.com/activity/1588414",
+      "url": "https://club.gamersky.com/activity/1588414?club=1468",
       "time": "2026-08-01T06:18:00.000Z",
       "tags": [
         "游戏"
@@ -25865,11 +26914,72 @@
     {
       "source": "佳能",
       "sourceColor": "#c0392b",
+      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - qq.com",
+      "description": "",
+      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
+      "time": "2026-07-31T07:05:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
+      "source": "佳能",
+      "sourceColor": "#c0392b",
       "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - xw.qq.com",
       "description": "",
       "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
       "time": "2026-07-31T07:05:00.000Z",
       "tags": [],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "高端手机推荐哪款？2026年旗舰横评：华为/iPhone/OPPO怎么选+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996097_1d5af32c106804suby.html",
+      "time": "2026-07-31T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "哪款冰箱保鲜时间长？2026横评：双系统只是底线，真空/磁控才是真王牌+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879923161_1d5ae15d906801n40y.html",
+      "time": "2026-07-31T07:00:00.000Z",
+      "tags": [
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼首度回应 2028 年停产 PS5 实体光盘：我们理解大家的不满但不会因为玩家反对而改变计划，将谨慎推进数字化转型 - finance.sina.com.cn",
+      "description": "",
+      "url": "http://finance.sina.cn/tech/2026-07-31/detail-iniksxpf4469510.d.html",
+      "time": "2026-07-31T07:00:00.000Z",
+      "tags": [
+        "游戏"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "特斯拉正考虑剥离中国业务？特斯拉中国官方回应：不实消息 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/info/detail/202607313828119557",
+      "time": "2026-07-31T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ],
       "topic": true
     },
     {
@@ -25895,57 +27005,6 @@
       "time": "2026-07-31T07:00:00.000Z",
       "tags": [
         "手机",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉正考虑剥离中国业务？特斯拉中国官方回应：不实消息 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/info/detail/202607313828119557",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼首度回应 2028 年停产 PS5 实体光盘：我们理解大家的不满但不会因为玩家反对而改变计划，将谨慎推进数字化转型 - finance.sina.com.cn",
-      "description": "",
-      "url": "http://finance.sina.cn/tech/2026-07-31/detail-iniksxpf4469510.d.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "高端手机推荐哪款？2026年旗舰横评：华为/iPhone/OPPO怎么选+FAQ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996097_1d5af32c106804suby.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "哪款冰箱保鲜时间长？2026横评：双系统只是底线，真空/磁控才是真王牌+FAQ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879923161_1d5ae15d906801n40y.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
         "测评/新品"
       ],
       "topic": true
@@ -26507,7 +27566,7 @@
       "sourceColor": "#1a1a2e",
       "title": "索尼集团提出收购相机镜头制造商Tamron的要约 - finance.sina.com.cn",
       "description": "",
-      "url": "https://cj.sina.cn/articles/view/5952915705/162d248f906703inh2?froms=ggmp&vt=4",
+      "url": "https://cj.sina.cn/articles/view/5953466437/162dab0450670b5xn2?froms=ggmp&vt=4",
       "time": "2026-07-30T04:11:52.000Z",
       "tags": [],
       "topic": true
@@ -26638,7 +27697,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026高端商务手机怎么选？3款旗舰横评告诉你答案+FAQ - 手机新浪网",
+      "title": "2026高端商务手机怎么选？3款旗舰横评告诉你答案+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879849862_1d5acf78606801ofcs.html",
       "time": "2026-07-29T07:00:00.000Z",
@@ -26665,7 +27724,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "2026高端商务手机怎么选？3款旗舰横评告诉你答案+FAQ - 新浪网",
+      "title": "2026高端商务手机怎么选？3款旗舰横评告诉你答案+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879849862_1d5acf78606801ofcs.html",
       "time": "2026-07-29T07:00:00.000Z",
@@ -26884,24 +27943,26 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
-      "description": "",
-      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
-      "time": "2026-07-28T08:59:53.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
       "title": "“新能源车只能开1.8年”？乌龙背后的耐久焦虑 - 新华网客户端",
       "description": "",
       "url": "https://app.xinhuanet.com/news/article.html?articleId=20260728164c909d5db248c985382e9f5e638c39",
       "time": "2026-07-28T08:46:42.000Z",
       "tags": [
         "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "Anthropic回应开源争议 英伟达进一步牵头成立AI联盟 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/info/detail/202607283823516730",
+      "time": "2026-07-28T08:46:09.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
       ],
       "topic": true
     },
@@ -27161,6 +28222,18 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "自动驾驶技术铺就阿联酋智慧出行路 - 中国一带一路网",
+      "description": "",
+      "url": "https://www.yidaiyilu.gov.cn/p/0L163EHS.html",
+      "time": "2026-07-27T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "人工智能：汽车与汽车工业游戏规则的改变者 - Valeo",
       "description": "",
       "url": "https://www.valeo.com/cn/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%E6%B1%BD%E8%BD%A6%E4%B8%8E%E6%B1%BD%E8%BD%A6%E5%B7%A5%E4%B8%9A%E6%B8%B8%E6%88%8F%E8%A7%84%E5%88%99%E7%9A%84%E6%94%B9%E5%8F%98%E8%80%85/",
@@ -27307,7 +28380,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
+      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
       "time": "2026-07-26T09:30:00.000Z",
@@ -27320,7 +28393,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - QQ News",
+      "title": "消息称下一代三星 Galaxy Z TriFold 三折叠手机将于明年推出 - news.qq.com",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260726A08HBJ00?adChannelId=tech",
       "time": "2026-07-26T09:30:00.000Z",
@@ -27384,6 +28457,60 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
+      "title": "2026手机平板联动哪家强？实测五大生态横评+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996823_1d5af359706801r7ks.html",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "编辑实测：三款运动表横评，休闲运动都能戴的一周使用心得 - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996108_1d5af32cc06801sc5i.html?from=digit",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "首发硬件防窥屏 三星发布Galaxy S26系列、Buds4系列_手机新闻 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://t.cj.sina.cn/articles/view/7879849871/1d5acf78f01901pida?from=digit",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
       "title": "2026手机平板联动哪家强？实测五大生态横评+FAQ - 手机新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879996823_1d5af359706801r7ks.html",
@@ -27412,60 +28539,6 @@
       "source": "数码测评",
       "sourceColor": "#e65100",
       "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "首发硬件防窥屏 三星发布Galaxy S26系列、Buds4系列_手机新闻 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/7879849871/1d5acf78f01901pida?from=digit",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026手机平板联动哪家强？实测五大生态横评+FAQ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996823_1d5af359706801r7ks.html",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "电脑硬件",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "编辑实测：三款运动表横评，休闲运动都能戴的一周使用心得 - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996108_1d5af32cc06801sc5i.html?from=digit",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 新浪网",
       "description": "",
       "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
       "time": "2026-07-25T07:00:00.000Z",
@@ -44185,19 +45258,6 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8手机发布：全新机身形态，起售价12999元 - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260722A0EQKU00",
-      "time": "2026-07-22T13:15:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
       "title": "三星Galaxy Z Fold8手机发布：全新机身形态，起售价12999元 - 腾讯新闻",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260722A0EQKU00",
@@ -45081,7 +46141,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8手机发布：全新机身形态，起售价12999元 - news.qq.com",
+      "title": "三星Galaxy Z Fold8手机发布：全新机身形态，起售价12999元 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260722A0EQKU00",
       "time": "2026-07-22T07:00:00.000Z",
@@ -45094,7 +46154,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy Z Flip8 折叠屏手机发布，8999 元起 - news.qq.com",
+      "title": "三星 Galaxy Z Flip8 折叠屏手机发布，8999 元起 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260722A0EV9C00",
       "time": "2026-07-22T07:00:00.000Z",
@@ -45134,6 +46194,46 @@
       "title": "尼康邀您相聚2026 P&I，探秘“光影漫境”沉浸式影像之旅 - 手机网易网",
       "description": "",
       "url": "https://www.163.com/dy/article/L2FRV1DF05128A8R.html",
+      "time": "2026-07-22T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达发布Vera CPU新细节 AI服务器市场再开新战场 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/info/detail/202607223816082260",
+      "time": "2026-07-22T07:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Z Fold8手机发布：全新机身形态，起售价12999元 - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260722A0EQKU00",
+      "time": "2026-07-22T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星 Galaxy Z Flip8 折叠屏手机发布，8999 元起 - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260722A0EV9C00",
       "time": "2026-07-22T07:00:00.000Z",
       "tags": [
         "手机",
@@ -45217,19 +46317,6 @@
       "time": "2026-07-22T07:00:00.000Z",
       "tags": [
         "人工智能",
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy Z Flip8 折叠屏手机发布，8999 元起 - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260722A0EV9C00",
-      "time": "2026-07-22T07:00:00.000Z",
-      "tags": [
         "手机",
         "大公司"
       ],
@@ -45474,20 +46561,6 @@
       "description": "",
       "url": "https://www.stcn.com/article/detail/4033477.html",
       "time": "2026-07-21T23:36:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "AI芯片"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "英伟达发布Vera CPU新细节 AI服务器市场再开新战场 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202607223816082260.html",
-      "time": "2026-07-21T22:42:54.000Z",
       "tags": [
         "人工智能",
         "芯片/半导体",
@@ -45852,7 +46925,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Unpacked 2026发布会观看指南：三款折叠屏领衔 - news.qq.com",
+      "title": "三星Galaxy Unpacked 2026发布会观看指南：三款折叠屏领衔 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260721A06X3G00",
       "time": "2026-07-21T07:00:00.000Z",
@@ -45941,6 +47014,20 @@
       "topic": true
     },
     {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy Unpacked 2026发布会观看指南：三款折叠屏领衔 - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260721A06X3G00",
+      "time": "2026-07-21T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
       "title": "索尼宣布停止生产PlayStation实体光盘，同日关闭部分数字商店-AI应用 - zhiding.cn",
@@ -45962,20 +47049,6 @@
       "time": "2026-07-21T07:00:00.000Z",
       "tags": [
         "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Unpacked 2026发布会观看指南：三款折叠屏领衔 - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260721A06X3G00",
-      "time": "2026-07-21T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
       ],
       "topic": true
     },
@@ -46557,7 +47630,7 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼PSN商店将推行全新区域定价机制！ - news.qq.com",
+      "title": "索尼PSN商店将推行全新区域定价机制！ - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260719A03E0B00",
       "time": "2026-07-19T07:00:00.000Z",
@@ -46578,6 +47651,16 @@
       "topic": true
     },
     {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼PSN商店将推行全新区域定价机制！ - news.qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260719A03E0B00",
+      "time": "2026-07-19T07:00:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
       "source": "三星",
       "sourceColor": "#0d47a1",
       "title": "三星Galaxy S26系列发布 四大革新定义移动体验新标杆 — 新京报 - 新浪财经",
@@ -46588,16 +47671,6 @@
         "手机",
         "大公司"
       ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼PSN商店将推行全新区域定价机制！ - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260719A03E0B00",
-      "time": "2026-07-19T07:00:00.000Z",
-      "tags": [],
       "topic": true
     },
     {
@@ -46808,7 +47881,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Unpacked前瞻：三款折叠屏齐发，智能眼镜或将亮相 - news.qq.com",
+      "title": "三星Galaxy Unpacked前瞻：三款折叠屏齐发，智能眼镜或将亮相 - QQ News",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260717A08ZSF00",
       "time": "2026-07-17T07:00:00.000Z",
@@ -46834,7 +47907,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Unpacked前瞻：三款折叠屏齐发，智能眼镜或将亮相 - QQ News",
+      "title": "三星Galaxy Unpacked前瞻：三款折叠屏齐发，智能眼镜或将亮相 - news.qq.com",
       "description": "",
       "url": "https://news.qq.com/rain/a/20260717A08ZSF00",
       "time": "2026-07-17T07:00:00.000Z",
@@ -47336,20 +48409,6 @@
       "topic": true
     },
     {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R8 Mark II将会9月现身？ “复古” 设计？ - 手机网易网",
-      "description": "",
-      "url": "https://www.163.com/dy/article/L1R4Q9090550DRNH.html",
-      "time": "2026-07-14T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "智能硬件"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "关于“新能源车平均车龄”相关数据和报道的澄清声明 - caam.org.cn",
@@ -47370,6 +48429,20 @@
       "time": "2026-07-14T07:00:00.000Z",
       "tags": [
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "佳能",
+      "sourceColor": "#c0392b",
+      "title": "佳能EOS R8 Mark II将会9月现身？ “复古” 设计？ - 手机网易网",
+      "description": "",
+      "url": "https://www.163.com/dy/article/L1R4Q9090550DRNH.html",
+      "time": "2026-07-14T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "智能硬件"
       ],
       "topic": true
     },
@@ -48127,6 +49200,18 @@
       "topic": true
     },
     {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
+      "time": "2026-07-09T07:00:00.000Z",
+      "tags": [
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "ChatGPT 现已成为你攻坚克难的得力伙伴 - OpenAI",
@@ -48164,18 +49249,6 @@
         "手机",
         "汽车",
         "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼RX10 V数码相机发布；B&H Photo Video YouTube首发预览视频 - Moomoo",
-      "description": "",
-      "url": "https://www.moomoo.com/hans/news/post/72725161/sony-rx10-v-digital-camera-unveiled-youtube-first-look-video",
-      "time": "2026-07-09T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
       ],
       "topic": true
     },
@@ -48354,6 +49427,18 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
+      "title": "PlayStation实体游戏光盘请愿活动获得 16.5 万个签名，索尼却依然保持沉默 - finance.sina.com.cn",
+      "description": "",
+      "url": "https://t.cj.sina.cn/articles/view/1654203637/629924f502001605w",
+      "time": "2026-07-08T07:00:00.000Z",
+      "tags": [
+        "游戏"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
       "title": "索尼 PlayStation 沉寂六天后更新社交动态，评论区集体要求保留实体光盘 - 新浪财经",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/digi/2026-07-08/doc-inihatty7990957.shtml",
@@ -48404,6 +49489,20 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "年销55万辆目标下，小米汽车“SkyNomad”浮出水面：聚焦大型SUV，首款车型或下半年发布 - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202607083798418235.html",
+      "time": "2026-07-08T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "特斯拉发布2025年影响力报告 展现改变人类生活方式的想象空间 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202607083798567759.html",
@@ -48411,18 +49510,6 @@
       "tags": [
         "新能源/电动车",
         "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "PlayStation实体游戏光盘请愿活动获得 16.5 万个签名，索尼却依然保持沉默 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1654203637/629924f502001605w",
-      "time": "2026-07-08T07:00:00.000Z",
-      "tags": [
-        "游戏"
       ],
       "topic": true
     },
