@@ -1203,8 +1203,18 @@ async function main() {
     if (freshCount === 0 && prevArticles.length > 0) {
         console.log('\n⚠️ 本次抓取 0 篇（疑似全源失效/限流），保留原归档不覆盖。');
     } else {
-        fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
+        const jsonRaw = JSON.stringify(output, null, 2);
+        const rawBytes = Buffer.byteLength(jsonRaw, 'utf8');
+        fs.writeFileSync(outPath, jsonRaw);
+        // 同步生成一份极小的元数据文件，让前端能显示真实下载进度条（Cloudflare 对 gzip 分块传输不返回 Content-Length）
+        const metaPath = path.join(__dirname, '..', 'data', 'news-meta.json');
+        fs.writeFileSync(metaPath, JSON.stringify({
+            size: rawBytes,
+            count: archive.length,
+            updateTime: output.updateTime
+        }, null, 2));
         console.log('\n已保存:', outPath);
+        console.log('已保存元数据:', metaPath, `(${rawBytes} bytes, ${archive.length} 篇)`);
     }
     unique = archive; // 下方统计以最终归档为准
 

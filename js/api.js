@@ -64,14 +64,16 @@ const API = {
 
     // 带超时的「流式」fetch + 解析 JSON：通过 response.body.getReader() 边下边回报字节进度，
     // 让大体积的历史归档（data/news.json，当前 3MB+）也能显示真实下载进度，而不是干等转圈。
-    // onProgress(loadedBytes, totalBytes) —— totalBytes 为 0 表示服务端用分块压缩传输、拿不到总大小（此时只能显示已下载量）。
-    async streamFetchJSON(url, timeoutMs, onProgress) {
+    // onProgress(loadedBytes, totalBytes) —— totalBytes 优先来自 HTTP Content-Length；
+    // 若服务端 gzip 分块传输不返回总大小，则用 expectedSize（由 data/news-meta.json 提供）作为总大小，
+    // 这样即使 Cloudflare 压缩分块，前端仍能显示真实百分比。
+    async streamFetchJSON(url, timeoutMs, onProgress, expectedSize = 0) {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), timeoutMs);
         try {
             const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const total = Number(resp.headers.get('content-length')) || 0;
+            const total = Number(resp.headers.get('content-length')) || expectedSize || 0;
             const reader = resp.body.getReader();
             const chunks = [];
             let loaded = 0;
@@ -265,12 +267,23 @@ const API = {
             return null;
         })();
 
-        // 2) 历史语料库（用户长期搜集的 news.json，必须完整保留）。流式下载，逐字节回报进度
+        // 2) 先取极小的元数据文件（data/news-meta.json），拿到归档原始字节数，
+        //    这样即使 Cloudflare 对 gzip 分块传输不返回 Content-Length，进度条仍能显示真实百分比。
+        let expectedSize = 0;
+        try {
+            const r = await this.fetchWithTimeout('data/news-meta.json', 5000);
+            if (r && r.ok) {
+                const meta = await r.json();
+                if (meta && typeof meta.size === 'number') expectedSize = meta.size;
+            }
+        } catch (e) { console.warn('读取归档元数据失败，进度条退回动画模式:', e.message); }
+
+        // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。流式下载，逐字节回报进度
         const archiveTask = (async () => {
             try {
                 const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
                     prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = total; prog.archKnown = !!total; emit();
-                });
+                }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
             } catch (e) { console.warn('读取历史语料失败/超时:', e.message); }
             return null;
