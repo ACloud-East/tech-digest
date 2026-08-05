@@ -1144,8 +1144,10 @@ const app = createApp({
             techLoading.value = true; techError.value = '';
             techDisplayCount.value = techPageSize;
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
-            // 也保证 30s 后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
-            const watchdog = setTimeout(() => { techLoading.value = false; }, 30000);
+            // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
+            // 必须晚于 api.js 中最长的单项预算（BASE_MS=30s），否则会在归档还在传输时
+            // 提前把转圈关掉，让用户误以为"只有实时那几百条"。故设为 40s。
+            const watchdog = setTimeout(() => { techLoading.value = false; }, 40000);
             try {
                 const res = await API.fetchAllTechNews();
                 techNews.value = res.articles || [];

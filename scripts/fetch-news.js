@@ -1159,20 +1159,54 @@ async function main() {
 
     unique.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
 
-    const output = { updateTime: new Date().toISOString(), total: unique.length, articles: unique };
     const outPath = path.join(__dirname, '..', 'data', 'news.json');
     // 持久化解码缓存（始终保存，供下次抓取命中，仅对新文章解码）
     fs.writeFileSync(path.join(__dirname, '..', 'data', 'decode-cache.json'), JSON.stringify(decodeCache, null, 2));
-    // 安全护栏：若本次总量远低于上一次（如 Google 限流导致解码源大面积失效），
-    // 不覆盖已有数据，避免把正常的 1300+ 文章误写成残缺数据。解码缓存在上方已保存。
-    const prevTotal = (() => { try { return JSON.parse(fs.readFileSync(outPath, 'utf8')).total || 0; } catch (_) { return 0; } })();
-    const floor = Math.max(1000, Math.floor(prevTotal * 0.85));
-    if (prevTotal && unique.length < floor) {
-        console.log(`\n⚠️ 抓取总量 ${unique.length} 远低于上次 ${prevTotal}（疑似 Google 限流致解码源失效），保留旧数据不覆盖。`);
+
+    // ── 累加归档（关键改动）─────────────────────────────────────────────
+    // 旧行为：每次抓取直接覆盖 news.json，配合上方 3天/7天/30天 新鲜度过滤，
+    //         等于一个「滚动窗口」——旧文被淘汰，总量长期锁死在 ~1600，
+    //         用户端看到的文章数因此永远是同一个常数，刷新也不涨。
+    // 新行为：把本次抓到的新鲜文章【并入】已有归档库，历史文章不再被淘汰，
+    //         总量随每小时抓取持续增长，直到 ARCHIVE_MAX 上限。
+    // 注意：新鲜度过滤依旧只作用于「本次新抓」，用来挡掉源里翻出来的陈年旧文；
+    //       已进档的历史文章不再复检（它们当初就是通过过滤才进来的）。
+    const ARCHIVE_MAX = 8000;
+    const prevArticles = (() => {
+        try {
+            const p = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+            return Array.isArray(p.articles) ? p.articles : [];
+        } catch (_) { return []; }
+    })();
+
+    const freshCount = unique.length;
+    const archSeen = new Set();
+    let archive = [];
+    // 本次新抓在前（同标题以最新一次抓到的数据为准），历史归档随后
+    for (const a of unique.concat(prevArticles)) {
+        const k = (a.title || '').trim().toLowerCase();
+        if (!k || archSeen.has(k)) continue;
+        archSeen.add(k);
+        archive.push(a);
+    }
+    archive.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
+    const addedNew = archive.length - prevArticles.length;
+    if (archive.length > ARCHIVE_MAX) {
+        console.log(`\n📦 归档超出上限，裁剪 ${archive.length} → ${ARCHIVE_MAX}（保留最新）`);
+        archive = archive.slice(0, ARCHIVE_MAX);
+    }
+    console.log(`\n📚 累加归档: 历史 ${prevArticles.length} + 本次新抓 ${freshCount} → 去重后 ${archive.length} 篇（净新增 ${addedNew}）`);
+
+    const output = { updateTime: new Date().toISOString(), total: archive.length, articles: archive };
+    // 安全护栏：本次抓取彻底失败（0 篇）时不落盘，避免异常运行破坏归档。
+    // 改为累加合并后，历史文章不会再因单次抓取量偏低而丢失，故不再需要 85% 下限判断。
+    if (freshCount === 0 && prevArticles.length > 0) {
+        console.log('\n⚠️ 本次抓取 0 篇（疑似全源失效/限流），保留原归档不覆盖。');
     } else {
         fs.writeFileSync(outPath, JSON.stringify(output, null, 2));
         console.log('\n已保存:', outPath);
     }
+    unique = archive; // 下方统计以最终归档为准
 
     const bySource = {};
     unique.forEach(a => { bySource[a.source] = (bySource[a.source] || 0) + 1; });

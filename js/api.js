@@ -191,7 +191,8 @@ const API = {
         // 1) 实时抓取 与 2) 历史语料 并行拉取，各自带超时（关键修复：
         //    原实现用裸 fetch 且无超时、且串行等待，单个慢源/CDN 挂起就会让界面永久转圈）。
         const LIVE_MS = 25000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 25s 余量（实时数据体较小，先到先渲染）
-        const BASE_MS = 20000;   // data/news.json：1.4MB，用户侧走 CDN+gzip 通常 1~2s；沙箱出口受限时会超时降级（仅失历史语料，不影响实时）
+        const BASE_MS = 30000;   // data/news.json：改累加归档后体积升至 ~2.5MB（gzip ~880KB），用户侧 CDN 通常 1~3s；
+                                 // 弱网/沙箱出口受限时会更久，故从 20s 放宽到 30s。超时只丢历史归档，不影响实时部分。
         const [liveResp, baseResp] = await Promise.allSettled([
             this.fetchWithTimeout('/api/news', LIVE_MS),
             this.fetchWithTimeout('data/news.json', BASE_MS),
@@ -228,9 +229,13 @@ const API = {
             return cached;
         }
 
-        // 3) 合并：历史为底，实时追加。
-        // 为保总量足够大，这里**只去掉同一次实时抓取内的重复**，允许与历史语料重复；
-        // 这样每次刷新都会继续增加数量，直到 8000 上限。
+        // 3) 合并：历史归档为底，实时抓取追加。
+        // 说明（原注释「每次刷新都会继续增加数量，直到 8000 上限」是不成立的）：
+        // merged 每次都从 base 重新构建，本函数**不做跨次累加**，缓存仅在两端都失败时兜底。
+        // 因此单看前端，总数 = 归档量 + 本次实时量，刷新只换内容不涨数量。
+        // 真正让数量增长的是服务端：scripts/fetch-news.js 已改为累加归档（每小时并入新文，
+        // 上限 8000），data/news.json 会持续变大，前端总数随之自然增长。
+        // 这里仍只去掉「同一次实时抓取内」的重复、允许与历史归档重复，以免总量被削。
         let merged = base.slice();
         if (live && live.length) {
             const seenLive = new Set();

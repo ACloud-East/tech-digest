@@ -249,8 +249,11 @@ export async function onRequestGet() {
         }
     }
     articles.sort((x, y) => new Date(y.time) - new Date(x.time));
-    // 限制总量，避免前端渲染压力
-    if (articles.length > 500) articles = articles.slice(0, 500);
+    // 安全上限（不是配额）：原值 500 过低，真实抓取池已稳定超过该值，
+    // 导致每次都被削平到恰好 500，前端总数因此永远是同一个常数、刷新也不变。
+    // 放宽到 3000 后，返回量随各源实际产出浮动，数字才真实反映抓取情况。
+    const LIVE_MAX = 3000;
+    if (articles.length > LIVE_MAX) articles = articles.slice(0, LIVE_MAX);
     return new Response(JSON.stringify({ articles, updateTime: new Date().toISOString(), live: true, partial: results.length < FEEDS.length }), {
         headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' },
     });
