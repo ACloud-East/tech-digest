@@ -942,6 +942,9 @@ const googleNewsSources = [
     // Google News 的 site:huxiu.com 可稳定拉取近 ~100 篇（含前沿科技/3C数码等板块），
     // 链接经 Google 代理可在浏览器打开 —— 作为虎嗅主源（保留 30 天窗口，一个月内的科技文全部保留）。
     { name: '虎嗅', site: 'huxiu.com', color: '#374151' },
+    // 蜂鸟网(fengniao.com) 为摄影/影像社区，无标准 RSS（官网 WAF 反爬、RSS 路径 404），
+    // 故用 Google News 的 site:fengniao.com 兜底，稳定拉取近 30 天影像/数码类文章（链接经 Google 代理可打开）。
+    { name: '蜂鸟网', site: 'fengniao.com', color: '#ff8c00' },
     // ZDNet 官网 RSS(news/rss.xml) 已退化（仅 ~1 条），改为 Google News site:zdnet.com 兜底；
     // ZDNet 为英文源，故用 en-US 语言参数拉取真实英文文章（链接已修为 articles/ 格式可正常打开）。
     { name: 'ZDNet', site: 'zdnet.com', color: '#0066cc', hl: 'en-US', gl: 'US', ceid: 'US:en' },
@@ -979,7 +982,7 @@ async function fetchGoogleNews(src, existingTitles) {
             // 品玩不在 MONTH_WINDOW，最终仍由主流程窗口裁掉陈旧项。
             if (isNaN(t) || (now - t) > 30 * 86400000) continue;
             // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园/FreeBuf/36氪等）
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|IT之家)\s*$/i, '').trim();
+            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao|IT之家)\s*$/i, '').trim();
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // 直连源(RSSHub等)已收录的同名文章优先，避免同一篇既显示直链又显示 Google 重定向链
             if (existingTitles.has(title)) continue;

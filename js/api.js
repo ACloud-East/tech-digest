@@ -195,6 +195,7 @@ const API = {
         { key: 'expreview', name: '超能网', color: '#00a0e9' },
         { key: 'igao7', name: '爱搞机', color: '#ff6a00' },
         { key: 'theverge', name: 'The Verge', color: '#e2127a' },
+        { key: 'fengniao', name: '蜂鸟网', color: '#ff8c00' },
         // ===== 主题源（与上方"数据源"分组展示）=====
         { key: '数码测评', name: '数码测评', color: '#e65100', group: 'theme' },
         { key: '新品发布', name: '新品发布', color: '#ad1457', group: 'theme' },
