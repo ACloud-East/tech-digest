@@ -191,8 +191,10 @@ const API = {
         // 1) 实时抓取 与 2) 历史语料 并行拉取，各自带超时（关键修复：
         //    原实现用裸 fetch 且无超时、且串行等待，单个慢源/CDN 挂起就会让界面永久转圈）。
         const LIVE_MS = 25000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 25s 余量（实时数据体较小，先到先渲染）
-        const BASE_MS = 30000;   // data/news.json：改累加归档后体积升至 ~2.5MB（gzip ~880KB），用户侧 CDN 通常 1~3s；
-                                 // 弱网/沙箱出口受限时会更久，故从 20s 放宽到 30s。超时只丢历史归档，不影响实时部分。
+        const BASE_MS = 45000;   // data/news.json：改累加归档后体积持续增长（当前 ~3MB / gzip ~1.06MB，
+                                 // 上限 8000 篇时约 6MB / gzip ~2MB）。实测 CDN 正常回源仅 2.1s，
+                                 // 但弱网首屏可能十几秒；归档是看板主体，宁可多等也不要丢，故给到 45s。
+                                 // 超时只丢历史归档，实时部分不受影响（两者并行、各自独立超时）。
         const [liveResp, baseResp] = await Promise.allSettled([
             this.fetchWithTimeout('/api/news', LIVE_MS),
             this.fetchWithTimeout('data/news.json', BASE_MS),
