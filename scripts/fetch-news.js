@@ -967,6 +967,28 @@ const googleNewsSources = [
     { name: '智能汽车', query: '智能汽车 OR 自动驾驶 OR 新能源车 OR 小米汽车 OR 特斯拉 OR 飞行汽车', color: '#0d47a1', topic: true },
 ];
 
+// 去掉 Google News 追加的 " - 站点名" 后缀（fengniao.com 后缀旧正则不吃，需单独列出）
+const SOURCE_SUFFIX_RE = /\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao\.com|fengniao|IT之家)\s*$/i;
+
+// 加载已有归档时做一次性清洗：剔除已下线的源（如「上市科技」）、对蜂鸟网重剥后缀并重跑 keep/drop，
+// 避免旧版脚本抓取的脏数据（带后缀/旅游帖）被累加进归档、永远清不掉。
+function cleanLoadedArchive(arts) {
+    const feng = googleNewsSources.find(s => s.name === '蜂鸟网');
+    const out = [];
+    for (const a of (arts || [])) {
+        if (a.source === '上市科技') continue; // 主题源已取消，永久剔除历史条目
+        if (a.source === '蜂鸟网' && feng) {
+            const t = (a.title || '').replace(SOURCE_SUFFIX_RE, '').trim();
+            a.title = t; // 写回清洗后的标题，前端不再显示 " - fengniao.com"
+            if (!t || t.length < 4) continue;
+            if (feng.keep && !feng.keep.some(k => t.includes(k))) continue;
+            if (feng.drop && feng.drop.some(k => t.includes(k))) continue;
+        }
+        out.push(a);
+    }
+    return out;
+}
+
 async function fetchGoogleNews(src, existingTitles) {
     try {
         console.log(`[GNews] ${src.name}`);
@@ -984,7 +1006,7 @@ async function fetchGoogleNews(src, existingTitles) {
             // 品玩不在 MONTH_WINDOW，最终仍由主流程窗口裁掉陈旧项。
             if (isNaN(t) || (now - t) > 30 * 86400000) continue;
             // 去掉 Google News 追加的 " - 站点名" 后缀（品玩/虎嗅/网易/极客公园/FreeBuf/36氪等）
-            const title = (it.title || '').replace(/\s*-\s*(机器之心|品玩|网易|网易科技|163|极客公园|GeekPark|虎嗅网|虎嗅|huxiu|FreeBuf|安全内参|36氪|钛媒体|雷锋网|量子位|腾讯科技|新浪科技|搜狐科技|搜狐|凤凰网|快科技|爱范儿|界面新闻|第一财经|财新|澎湃新闻|观察者网|站长之家|驱动之家|CSDN|中关村在线|ZOL|IT之家|少数派|亿欧|雷科技|太平洋电脑网|什么值得买|蜂鸟网|蜂鸟|fengniao\.com|fengniao|IT之家)\s*$/i, '').trim();
+            const title = (it.title || '').replace(SOURCE_SUFFIX_RE, '').trim();
             if (!title || title === src.name || title.length < 4) continue; // 跳过频道/栏目入口与纯站名垃圾项
             // keep 白名单：仅站点兜底源配置时用（如蜂鸟网社区杂内容多），标题须命中任一关键词才保留，否则跳过
             if (src.keep && !src.keep.some(k => title.includes(k))) continue;
@@ -1187,30 +1209,37 @@ async function main() {
             return Array.isArray(p.articles) ? p.articles : [];
         } catch (_) { return []; }
     })();
+    // 加载旧归档时一次性清洗：剔除已下线的源、对蜂鸟网重剥后缀并重跑 keep/drop，
+    // 让历史脏数据在下次抓取即被剔除（不再被累加进归档）。
+    const prevClean = cleanLoadedArchive(prevArticles);
+    if (prevClean.length !== prevArticles.length) {
+        console.log(`\n🧹 归档清洗: 历史 ${prevArticles.length} → 剔除 ${prevArticles.length - prevClean.length} 篇（上市科技/蜂鸟网脏数据）`);
+    }
 
     const freshCount = unique.length;
     const archSeen = new Set();
     let archive = [];
-    // 本次新抓在前（同标题以最新一次抓到的数据为准），历史归档随后
-    for (const a of unique.concat(prevArticles)) {
+    // 本次新抓在前（同标题以最新一次抓到的数据为准），历史归档（已清洗）随后
+    for (const a of unique.concat(prevClean)) {
         const k = (a.title || '').trim().toLowerCase();
         if (!k || archSeen.has(k)) continue;
         archSeen.add(k);
         archive.push(a);
     }
     archive.sort((a, b) => new Date(b.time || 0) - new Date(a.time || 0));
-    const addedNew = archive.length - prevArticles.length;
+    const addedNew = archive.length - prevClean.length;
     if (archive.length > ARCHIVE_MAX) {
         console.log(`\n📦 归档超出上限，裁剪 ${archive.length} → ${ARCHIVE_MAX}（保留最新）`);
         archive = archive.slice(0, ARCHIVE_MAX);
     }
-    console.log(`\n📚 累加归档: 历史 ${prevArticles.length} + 本次新抓 ${freshCount} → 去重后 ${archive.length} 篇（净新增 ${addedNew}）`);
+    console.log(`\n📚 累加归档: 历史 ${prevClean.length} + 本次新抓 ${freshCount} → 去重后 ${archive.length} 篇（净新增 ${addedNew}）`);
 
     const output = { updateTime: new Date().toISOString(), total: archive.length, articles: archive };
-    // 安全护栏：本次抓取彻底失败（0 篇）时不落盘，避免异常运行破坏归档。
-    // 改为累加合并后，历史文章不会再因单次抓取量偏低而丢失，故不再需要 85% 下限判断。
-    if (freshCount === 0 && prevArticles.length > 0) {
-        console.log('\n⚠️ 本次抓取 0 篇（疑似全源失效/限流），保留原归档不覆盖。');
+    // 安全护栏：仅当归档彻底为空（既无历史也无新抓）时不落盘，避免清空数据。
+    // 注意：即使本次抓取 0 篇，仍写入「已清洗的归档」——确保上市科技/脏蜂鸟网等历史脏数据
+    // 在本次（或后续任意一次）运行时被剔除，而不是因抓取失败而原样保留脏数据。
+    if (archive.length === 0) {
+        console.log('\n⚠️ 归档为空（无历史、本次亦无新抓），不落盘以免清空数据。');
     } else {
         const jsonRaw = JSON.stringify(output, null, 2);
         const rawBytes = Buffer.byteLength(jsonRaw, 'utf8');
