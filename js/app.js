@@ -752,8 +752,10 @@ const app = createApp({
                 if (fetchedText) {
                     aiForm.value.content = existing ? existing + '\n\n' + fetchedText : fetchedText;
                 }
-                // 保存抽到的图（后续统一注入正文）
-                if (imgs.length) aiResultImages.value = imgs.slice(0, 12);
+                // 保存抽到的图（后续统一注入正文）。
+                // 社媒（小红书/微博）要求不带图：仅保留正文文本，跳过从来源抓取的配图。
+                const isSocialPrefetch = aiForm.value.platform === 'xhs' || aiForm.value.platform === 'weibo';
+                if (imgs.length && !isSocialPrefetch) aiResultImages.value = imgs.slice(0, 12);
             } catch (e) {
                 console.warn('[prefetchSourceUrls] 抓取失败:', e.message);
             }
@@ -769,6 +771,8 @@ const app = createApp({
             aiResultTitle.value = '';
             aiResultImages.value = [];
             aiTab.value = 'structured';
+            // 社媒（小红书/微博）要求不带图：生成与注入全程禁用配图
+            const isSocial = aiForm.value.platform === 'xhs' || aiForm.value.platform === 'weibo';
             // 立即展示来源框：只要用户填了来源 URL 或开启联网搜索，框就出现，避免后续某次生成失败时整框丢失
             aiResultSources.value = parseSources(aiForm.value.sources);
             aiResultReferences.value = aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
@@ -784,9 +788,9 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResult.value = partial.content;
                 };
                 const result = await AIGenerator.generate(aiForm.value, onToken);
-                // 优先用云端回传的图；若云端失败，使用预抓取到的图
-                if (result.images && result.images.length) aiResultImages.value = result.images;
-                aiResult.value = injectImagesIntoContent(result.content, aiResultImages.value);
+                // 优先用云端回传的图；若云端失败，使用预抓取到的图。社媒禁用配图，跳过。
+                if (!isSocial && result.images && result.images.length) aiResultImages.value = result.images;
+                aiResult.value = injectImagesIntoContent(result.content, isSocial ? [] : aiResultImages.value);
                 aiResultTitle.value = result.title;
                 aiResultFactChecked.value = !!result.factChecked;
                 // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
@@ -806,7 +810,7 @@ const app = createApp({
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
                 // 保险：若模型仍生成 [1]/[?] 引用编号，在非结构式中强制移除
                 const plainTextNoCite = (plainResult.content || '').replace(/\[(\d+|\?)\]/g, '');
-                aiResultPlain.value = injectImagesIntoContent(plainTextNoCite, aiResultImages.value);
+                aiResultPlain.value = injectImagesIntoContent(plainTextNoCite, isSocial ? [] : aiResultImages.value);
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
