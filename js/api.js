@@ -322,15 +322,18 @@ const API = {
         } catch (err) {
             console.warn('Worker 合并失败，回退主线程:', err.message);
             // 降级方案：主线程同步合并（老旧浏览器或不支持 Worker 时）
-            let merged = (base && base.articles) ? base.articles.slice() : [];
-            if (live && live.length) {
-                const seenLive = new Set();
-                for (const a of live) {
-                    const k = (a.title || '').trim().toLowerCase();
-                    if (k && !seenLive.has(k)) { seenLive.add(k); merged.push(a); }
-                }
+            // 同样做 base+live 全局去重，实时抓取优先，避免"完全重复"的条目。
+            const keyOf = (a) => (a && a.title ? String(a.title) : '').trim().toLowerCase();
+            const map = new Map();
+            for (const a of ((base && base.articles) || [])) {
+                const k = keyOf(a);
+                if (k) map.set(k, a);
             }
-            merged = merged.map(a => this._cleanArticle(a));
+            for (const a of (live || [])) {
+                const k = keyOf(a);
+                if (k) map.set(k, a);
+            }
+            let merged = Array.from(map.values()).map(a => this._cleanArticle(a));
             merged.sort((x, y) => new Date(y.time || 0) - new Date(x.time || 0));
             if (merged.length > 8000) merged = merged.slice(0, 8000);
             const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
@@ -346,7 +349,7 @@ const API = {
         return new Promise((resolve, reject) => {
             let worker;
             try {
-                worker = new Worker('js/merge-worker.js');
+                worker = new Worker('js/merge-worker.js?v=2608060101');
             } catch (e) {
                 reject(e);
                 return;

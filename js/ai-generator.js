@@ -1213,7 +1213,9 @@ const AIGenerator = {
      * 尽量保留完整段落；如果必须截断，保留前面完整的段落，并在最后一段内按句子边界截断，避免丢掉后续章节。
      */
     _fitToCharCount(text, target) {
-        if (!target || target < 50) return text;
+        // 「自动」模式不硬卡字数：由 prompt 里的参考篇幅（如原文 ×60%）引导模型自定长度，
+        // 避免把已经按目标篇幅写好的内容再强行截断。
+        if (!target || target < 50 || target === 'auto') return text;
         // 放宽上限：目标字数是「参考值」，允许 ±50% 自然浮动，严禁为硬卡上限而夹断句子/价格/型号
         const upper = Math.round(target * 1.5);
         const charCount = (s) => ((s || '').match(/[一-龥a-zA-Z0-9]/g) || []).length;
@@ -1269,14 +1271,20 @@ const AIGenerator = {
 
     /**
      * 自适应字数：参考【原文】篇幅决定目标字数，允许模型按内容增减。
-     * 原文 >= 120 字时，目标 ≈ 原文字数 ×1.1（略作展开），限制在合理区间；无原文时给默认中等篇幅。
+     * - 通用「自动」(form.autoRatio 缺省)：目标 ≈ 原文字数 ×1.1（略作展开）。
+     * - 「新品谍报/速递」预设：前端传入 autoRatio=0.6，目标 ≈ 原文字数 ×60%（更短、更快）。
+     * 用户在参数面板手动设置了具体字数时，form.wordCount 为数字，本函数不会被调用。
+     * 原文过短(<120字)/为空时给兜底篇幅（谍报类更短，通用类中等）。
      */
     computeAutoWordCount(form) {
         const contentLen = (form.content || '').replace(/\s/g, '').length;
+        const ratio = (typeof form.autoRatio === 'number' && form.autoRatio > 0) ? form.autoRatio : 1.1;
+        const minW = ratio < 1 ? 200 : 400;   // 谍报类下限更低，保证"短平快"
+        const maxW = ratio < 1 ? 1500 : 2200; // 谍报类上限也压低，整体明显短于发布会新闻稿(1200基准)
         if (contentLen >= 120) {
-            return Math.min(Math.max(Math.round(contentLen * 1.1), 400), 2200);
+            return Math.min(Math.max(Math.round(contentLen * ratio), minW), maxW);
         }
-        return 800;
+        return ratio < 1 ? 450 : 800;
     },
 
     /**

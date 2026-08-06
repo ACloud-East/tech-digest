@@ -38,6 +38,7 @@ const app = createApp({
             type: 'review',
             style: 'professional',
             wordCount: 'auto',
+            autoRatio: null,   // 仅「新品谍报/速递」预设使用（0.6 → 目标字数≈原文×60%）；其它预设为 null
             audience: 'tech_fans',
             language: 'zh_professional',
             extraInstructions: '',
@@ -90,7 +91,7 @@ const app = createApp({
               set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 1200,
                 extraInstructions: '写成一篇标准发布会新闻稿：含导语、核心发布信息、关键规格参数、上市与价格信息、结语，客观正式、信息准确，不臆造。' } },
             { key: 'scoop', label: '新品谍报/速递', icon: 'fa-bolt',
-              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 500,
+              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto', autoRatio: 0.6,
                 extraInstructions: '写成一篇新品谍报/速递风格文章：网感强、节奏快、突出最抓眼球的卖点，可略带悬念感，但数据必须来自原文。' } },
             { key: 'weibo', label: '新品谍报微博', icon: 'fa-weibo',
               set: { type: 'news', style: 'social', audience: 'general', wordCount: 300, plain: true, platform: 'weibo', language: 'zh_casual',
@@ -105,6 +106,9 @@ const app = createApp({
             aiForm.value.plain = false;
             aiForm.value.language = 'zh_professional';
             Object.assign(aiForm.value, JSON.parse(JSON.stringify(p.set)));
+            // autoRatio 仅「新品谍报/速递」预设使用（0.6），其它预设不携带该字段时必须清掉，
+            // 否则会污染后续预设的「自动」字数逻辑（残留 0.6 会让发布会新闻稿也变短）。
+            if (!('autoRatio' in p.set)) delete aiForm.value.autoRatio;
         }
 
         const aiGenerating = ref(false);
@@ -637,6 +641,7 @@ const app = createApp({
             aiForm.value.audience = item.audience || 'tech_fans';
             aiForm.value.language = item.language || 'zh_professional';
             aiForm.value.wordCount = item.wordCount || 800;
+            aiForm.value.autoRatio = item.autoRatio || null;
             aiForm.value.title = item.inputTitle || '';
             aiForm.value.content = item.inputContent || '';
             aiForm.value.sources = item.inputSources || '';
@@ -817,6 +822,7 @@ const app = createApp({
                     audience: aiForm.value.audience,
                     language: aiForm.value.language,
                     wordCount: aiForm.value.wordCount,
+                    autoRatio: aiForm.value.autoRatio,
                     inputTitle: aiForm.value.title,
                     inputContent: aiForm.value.content,
                     inputSources: aiForm.value.sources,
