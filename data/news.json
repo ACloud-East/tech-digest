@@ -1,7 +1,781 @@
 {
-  "updateTime": "2026-08-06T12:57:48.953Z",
-  "total": 7213,
+  "updateTime": "2026-08-06T15:19:58.426Z",
+  "total": 7277,
   "articles": [
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "4v4 团队格斗游戏《漫威斗魂》发售，Steam 国区 298 元起",
+      "description": "IT之家 8 月 6 日消息，集结传奇漫威角色的 4v4 团队格斗游戏《漫威斗魂》今日正式登陆 Steam 平台，本作由知名格斗游戏开发商 ARC SYSTEM WORKS 制作，PlayStation Publishing LLC 发行，国区售价 298 元起。IT之家附游戏商品页（https://store.steampowered.com/app/3787240/_/?l=schinese&cc=cn）。 本作提供三个版本购买，具体定价如下： 标准版：298 元 数字豪华版：418 元 终极版：498 元 集结传奇漫威角色组建战队，激战终极 4v4 团队格斗游戏 —— 由 PlayStation Studios、Arc System Works 与 Marvel Games 倾情奉上。快来打造你的梦之队，在激烈的 4v4 格斗中点燃战魂。首发即可从 20 位经典漫威角色中挑选队员，每位角色均以全新动漫风格精心塑造，并各自隶属于独特的超级英雄或超级反派派系。 《漫威斗魂》核心特色： 尝试不同组合，探索全新连招、协同效应与对战策略，在基于漫威宇宙经典场景的动态场地中激战，部分场地包含可互动的场地切换效果 战斗体验沉直观，海量招式、连招与策略，值得玩家反复钻研 支持传统输入与快捷键自定义，配合简单连招，入门轻松流畅 包含 39 项 Steam 成就，支持跨平台多人、家庭共享、Steam 云存档等功能 语言支持方面，本作对简体中文提供完整支持：界面、字幕、音频均为简体中文。游玩本作需要绑定第三方账号，即 PlayStation Account，同时游戏采用 Easy Anti-Cheat 内核级反作弊保护。 最低配置：需要 64 位处理器和操作系统，Windows 11 系统，Intel Core i5-8400 或 AMD Ryzen 5 1600X 处理器，16 GB 内存，NVIDIA GeForce RTX 2060 6GB 或 AMD Radeon RX 6600 XT 8GB 显卡，需要 27 GB 可用存储空间。 推荐配置：需要 64 位处理器和操作系统，Windows 11 系统，Intel Core i7-8700 或 AMD Ryzen 5 3600X 处理器，16 GB 内存，NVIDIA GeForce RTX 3070 8 GB 或 AMD Radeon RX 7600 XT 16 GB 显卡，需要 27 GB 可用存储空间。 游戏图赏：",
+      "url": "https://www.ithome.com/0/986/767.htm",
+      "time": "2026-08-06T15:14:00.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "特斯拉 Terafab 晶圆厂落地得克萨斯州，马斯克豪言“把尖端制造带回美国”",
+      "description": "IT之家 8 月 6 日消息，当地时间 6 日（今天），SpaceX 宣布将与特斯拉首期投入 168 亿美元（IT之家注：现汇率约合 1,136.05 亿元人民币），在美国得克萨斯州格赖姆斯县建设 Terafab 先进 AI 芯片制造基地。项目由特斯拉 CEO 埃隆 · 马斯克规划，旨在满足两家公司未来快速增长的芯片需求。 SpaceX 和特斯拉预计，未来数年所需的算力将远远超过现有全球芯片供应规模，Terafab 旨在帮助两家公司缩小供需缺口。两家公司的合计算力需求预计将突破 1 太瓦，远超全球当前产能。 马斯克表示，Terafab 将覆盖从设计到制造的全部芯片生产环节。“通往最令人振奋未来的根基，正在得克萨斯州形成。我们已经在得州 Starbase 设立 SpaceX 总部，开发并发射星舰，也在巴斯特罗普建设 Starlink 工厂，为全球数百万用户生产高速互联网终端。接下来，我们将在格赖姆斯县启动一项规模空前的芯片制造计划，把逻辑芯片、存储芯片和先进封装全部集中在同一座厂区。Terafab 将把尖端制造带回美国，为得州创造数千个高薪岗位，并帮助我们大规模生产用于地面和太空的 AI 芯片。” 特斯拉今年 4 月已在得克萨斯超级工厂北园区启动一座研发晶圆厂的建设，为 Terafab 正式落地铺路。",
+      "url": "https://www.ithome.com/0/986/766.htm",
+      "time": "2026-08-06T15:12:05.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "OpenAI says Apple’s own security practices undermine its trade secrets case",
+      "description": "Newly filed court exhibits show OpenAI’s legal strategy in Apple’s trade secrets lawsuit: argue that Apple’s own security and offboarding practices — including allowing an Apple manager to access a former engineer’s iCloud account after he left the company —undermine its claims that the allegedly stolen information was properly protected.",
+      "url": "https://techcrunch.com/2026/08/06/openai-says-apples-own-security-practices-undermine-its-trade-secrets-case/",
+      "time": "2026-08-06T15:10:32.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Using dbt to Transform OpenSky Flight Data",
+      "description": "Building an OpenSky Flight Data Pipeline with dbt Core Recently, I built an OpenSky Flight Data Pipeline that ingests aircraft state vectors into PostgreSQL and transforms them into analytics-ready datasets using dbt Core. Along the way, I discovered that dbt isn't just about writing SQL, it brings software engineering practices like modularity, testing, documentation, and dependency management to analytics. In this article, I'll walk through how I used dbt, the concepts I learned, and how I organized my project. The OpenSky Network provides aircraft state vectors containing information such as: ICAO24 identifier Callsign Origin country Latitude and longitude Speed Altitude Heading Vertical rate Flight status Although the data is rich, it isn't immediately suitable for analytics. It contains inconsistent formatting, duplicate records, missing values, and measurements that need conversion. Rather than writing one large SQL script, I wanted to build a modular transformation pipeline that was easy to maintain, test, and extend. dbt (Data Build Tool) is an open-source transformation framework that transforms data already stored in your data warehouse or database. Unlike ingestion tools, dbt does not move data. Instead, it focuses on the Transform stage of the ELT workflow. With dbt, you write SQL models while it handles the engineering around them, including: Running models in the correct order Managing dependencies Testing data quality Generating documentation Building lineage graphs Integrating with Git Think of it as applying software engineering principles to SQL. You can absolutely build transformation tables manually using SQL. The challenge comes when your project starts growing. Questions quickly arise: Which table should run first? How do you avoid duplicating transformation logic? How do you document your models? How do you validate data quality? How do you understand model dependencies? dbt solves these problems by introducing modular models, dependency management, testing, and documentation. My transformation pipeline follows a layered architecture. bronze.all_state_vectors │ ▼ stg_state_vectors │ ▼ state_vectors ├───────────────┐ │ │ ▼ ▼ performance location │ │ ▼ ▼ status latest │ ▼ snapshot_summary │ ▼ country_statistics Every downstream model builds upon another model using ref(), allowing dbt to automatically determine the execution order. stg_state_vectors The staging model is responsible for cleaning the raw OpenSky data. It performs tasks such as: Trimming text fields Removing duplicate rows Validating latitude and longitude values Standardizing country names Casting columns to appropriate data types This model becomes the foundation for every downstream transformation. state_vectors After cleaning the raw data, I created an enriched model containing derived metrics such as: Speed in km/h Speed in knots Altitude in feet Flight status Aircraft movement classification Compass heading Snapshot date Snapshot hour Rather than recalculating these metrics repeatedly across multiple queries, they're computed once and reused everywhere else. Instead of creating one massive analytics table, I broke the transformations into smaller, focused models. Model Purpose silver_aircraft_performance Speed, altitude, climb rate, heading silver_aircraft_location Latitude, longitude, timestamps silver_aircraft_status Operational state and movement silver_aircraft_latest Latest snapshot for each aircraft silver_snapshot_summary Fleet-level metrics country_statistics Country-level aggregations airborne_flights Aircraft currently airborne airport_surface_activity Aircraft currently on the ground Keeping each model focused makes them easier to understand, test, and maintain. ref() Instead of referencing tables directly like this: SELECT * FROM state_vectors; dbt encourages referencing models using ref(). SELECT * FROM {{ ref('state_vectors') }} Using ref() has several advantages: Automatically creates model dependencies Executes models in the correct order Makes refactoring easier Builds lineage documentation automatically As projects grow, this becomes incredibly valuable. The raw OpenSky table is defined as a source. sources: - name: bronze schema: bronze tables: - name: all_state_vectors Instead of hardcoding table names, models reference the source using: SELECT * FROM {{ source('bronze', 'all_state_vectors') }} Using sources improves documentation, lineage, and maintainability. One of the features I appreciated most was dbt's built-in testing. For example: columns: - name: icao24 tests: - not_null - name: flight_status tests: - accepted_values: values: - Airborne - Ground Running: dbt test automatically validates these rules and reports any failures. Having tests alongside transformation logic makes it much easier to catch issues before downstream models are affected. Generating documentation is incredibly simple. dbt docs generate dbt docs serve dbt creates an interactive documentation website containing: Models Sources Column descriptions Tests Lineage graph One of my favourite moments during this project was watching the lineage graph grow as I added more models. It provides a clear visual representation of how every transformation connects together. Throughout the project, these were the commands I used most frequently. dbt debug dbt compile dbt run dbt test dbt docs generate dbt docs serve Each command serves a different purpose, from validating configuration to building documentation. This project completely changed how I think about SQL transformations. Instead of writing one massive SQL query, I built a collection of small, reusable models that are easier to understand, maintain, and test. My biggest takeaways were: Build small, reusable models. Keep transformations modular. Document everything. Add tests early. Let dbt manage dependencies instead of doing it manually. Treat analytics projects like software engineering projects. The complete project is available on GitHub: https://github.com/jelimo-charity/opensky-flight-data-pipeline/tree/main/dbt Feel free to explore the models, documentation, and project structure. If you're already comfortable writing SQL and want to build more maintainable analytics pipelines, I highly recommend learning dbt. Beyond simplifying transformations, dbt encourages practices that make data projects easier to scale, collaborate on, and maintain over time. It bridges the gap between traditional SQL development and modern data engineering by making transformations modular, testable, and well documented. For me, this project wasn't just about transforming flight data—it was about learning a better way to build analytics pipelines.",
+      "url": "https://dev.to/data_with_jelimo/using-dbt-to-transform-opensky-flight-data-2b51",
+      "time": "2026-08-06T15:09:58.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "英特尔 Diamond Rapids 至强 7 ES 处理器首次现身 SiSoftware：32 核 +240MB 缓存，18A-P 工艺已跑通",
+      "description": "IT之家 8 月 6 日消息，爆料者 @momomo_us 发现，英特尔下一代至强（Xeon）7 系列处理器“Diamond Rapids”的首款工程样品已经出现在了 SiSoftware 数据库中，确认其基于增强版 18A-P 工艺打造。 曝光的这颗工程样品配备了 32 个核心、64MB 二级缓存和 240MB 的三级缓存，运行频率仅为 1.1GHz，表明这是一颗非常早期的工程样品。 该芯片运行在英特尔代号为“Johnson City”的 Oakstream 参考评估平台上。Oakstream 平台是 Diamond Rapids 的配套平台，采用庞大的 LGA 9324 插槽，支持最高 650W 的 CPU 功耗。 Diamond Rapids 是 Granite Rapids（至强 6）的继任者，定位数据中心市场。该系列旗舰型号最高可配置约 192 个性能核（P-core），支持 16 通道内存与 PCIe Gen6；采用模块化设计，将 CBB 计算芯片与 IMH I/O 及内存控制器芯片分离。 此次样品采用的 18A-P 是 18A 工艺的性能增强版本。英特尔此前表示，相较 18A，18A-P 在相同功耗下可实现约 9% 的性能提升，或在相同性能下功耗降低约 18%。该工艺延续了 GAA 晶体管与 PowerVia 背面供电技术，并新增了 Power Boost 技术，设计规则与 18A 完全兼容。 在数据中心 CPU 市场的竞争中，Diamond Rapids 将直接面对 AMD 基于 Zen 6 架构的 EPYC Venice 和 Verano 系列。后者旗舰型号最高可达 256 核心，采用台积电 2nm 工艺，计划于 2026 年第三至第四季度上市。 AMD 预计其今年在数据中心 CPU 市场的收入份额将超过 50%。Diamond Rapids 预计于 2027 年正式发布，面对 AMD 的先发优势压力不小。另据此前报道，英特尔将在 Diamond Rapids 之后的 Coral Rapids 系列中恢复超线程（SMT）支持。 相关阅读： 《英特尔预告至强 \"Diamond Rapids\" 处理器：Intel 18A-P 工艺，2027 年推出》 《英特尔下一代至强 Diamond Rapids 推迟至明年，2028 年 Coral Rapids 处理器将重新引入超线程技术》 《英特尔 Diamond Rapids 至强处理器采用模块化设计：CBB 计算芯片与 IMH I/O 芯片分离，支持 PCIe 6.0 与最高 192 核心》 《面向新一代 Xeon 至强处理器，英特尔积极推进 KVM 虚拟机对 APX 指令集的支持》",
+      "url": "https://www.ithome.com/0/986/765.htm",
+      "time": "2026-08-06T15:08:43.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Add an AI Image Generator to a Node.js SaaS App: Upload and Pricing Guardrails",
+      "description": "Short answer: add AI image generation to a Node.js or Next.js SaaS as an asynchronous, quota-aware job system, with server-owned prompt presets and aspect ratios, rather than calling a model directly from a page action. The evaluation constraint matters more than the model demo. A useful implementation has to bound upload size, concurrent work, retry behavior, and account spend before it creates a job. The simple path — browser request in, generated image out — couples an unpredictable operation to a web request and makes double submission expensive. The better boundary is a small state machine backed by durable records and object storage. This is an engineering note, not a model ranking. Provider quality and pricing move; the job contract, policy checks, and measurements should survive those changes. Start with four boundaries: the browser uploads source material directly to object storage through a short-lived authorization; the application accepts only an object reference, preset identifier, and allowed aspect ratio; a worker performs generation; and the browser polls or subscribes to the resulting job state. Don't let clients submit arbitrary provider parameters. That turns a product feature into an unbounded API proxy. The job record is the center of the design. It should contain the tenant and user, an idempotency key, the normalized request, policy version, estimated charge units, state, attempt count, provider-neutral result references, and timestamps. Keep the original client request separate from the effective request so support can explain why a preset or ratio was changed. Store generated files outside the database and retain only metadata plus object keys in the ledger. Keep the state machine boring. accepted -> running -> succeeded is enough for the happy path. Rejected work should never enter the queue. A worker may move a transiently interrupted attempt back to a retryable state, but it must claim jobs atomically and check whether a result already exists before spending again. The idempotency key should be scoped to the tenant and operation, since two tenants can legitimately send the same key. Consider one ordinary double click in a slow browser. Both requests carry the same key; both reach separate application instances; each checks the tenant's remaining allowance; and each tries to create work. A read followed by an unguarded insert can let both through, so the uniqueness constraint belongs in the database and the losing request must return the already-created job. The winner reserves usage once, commits one accepted record, and emits work through a transactional outbox or another delivery mechanism with equivalent guarantees. The worker can receive that message more than once, which is normal for many queues, but an atomic claim ensures only one attempt proceeds. If the worker finishes and then loses its acknowledgement, the next delivery sees the stored result and exits without generating again. This sequence is longer than a direct model call, yet it isolates the exact failure that matters to a cost-sensitive SaaS: one user action must not become two billable generations merely because the browser, network, or queue retried at an awkward boundary. Duplicates cost money. Uploads deserve their own threat boundary. Validate declared type, decoded type, byte limit, pixel dimensions, and ownership before enqueueing. Process source images away from the request handler, strip metadata if the product doesn't need it, and never place user-controlled filenames into object paths. OWASP's guidance for LLM applications treats untrusted input and excessive agency as security problems; an image pipeline should apply the same principle by narrowing what input can influence and what downstream actions a generation worker can take. A prompt preset should be a versioned server-side object, not a chunk of text copied into React state. Give it an identifier, revision, template, permitted user fields, safety policy, compatible aspect ratios, and a charge weight. The client displays a friendly name. The server resolves the actual template. That distinction prevents stale tabs from silently using an old policy and keeps audit records meaningful. It also lets a team revise a preset without rewriting every saved project. Existing jobs retain the revision they used; new jobs get the current revision. If reproducibility matters, persist the fully rendered prompt in a restricted audit field, with retention rules appropriate to the content. Aspect ratios should work the same way. Expose a small product-level enum such as square, portrait, and landscape, then map it to provider dimensions inside an adapter. Reject unknown ratios before estimating cost. This is less flexible than a free-form width and height, and that's deliberate — arbitrary sizes complicate UI layout, moderation, caching, and spend forecasting at the same time. The route below demonstrates the application boundary. It leaves provider calls in a worker and avoids pretending that enqueueing means generation succeeded. type Ratio = \"square\" | \"portrait\" | \"landscape\"; type CreateImageJob = { sourceObjectKey?: string; presetId: string; ratio: Ratio; promptFields: Record ; }; type Context = { tenantId: string; userId: string; idempotencyKey: string; }; interface ImageJobs { findByKey(tenantId: string, key: string): Promise ; create(input: { tenantId: string; userId: string; idempotencyKey: string; presetId: string; presetRevision: number; ratio: Ratio; renderedPrompt: string; sourceObjectKey?: string; reservedUnits: number; state: \"accepted\"; }): Promise ; } interface Policy { resolvePreset(id: string): Promise ): string; }>; assertOwnedUpload(tenantId: string, objectKey: string): Promise ; reserve(tenantId: string, input: { presetId: string; ratio: Ratio }): Promise ; } export async function acceptImageJob( request: CreateImageJob, context: Context, jobs: ImageJobs, policy: Policy, ): Promise { const existing = await jobs.findByKey(context.tenantId, context.idempotencyKey); if (existing) return { jobId: existing.id, duplicate: true }; const preset = await policy.resolvePreset(request.presetId); if (!preset.allowedRatios.includes(request.ratio)) { throw new Error(\"ASPECT_RATIO_NOT_ALLOWED\"); } if (request.sourceObjectKey) { await policy.assertOwnedUpload(context.tenantId, request.sourceObjectKey); } const reservedUnits = await policy.reserve(context.tenantId, { presetId: preset.id, ratio: request.ratio, }); const job = await jobs.create({ tenantId: context.tenantId, userId: context.userId, idempotencyKey: context.idempotencyKey, presetId: preset.id, presetRevision: preset.revision, ratio: request.ratio, renderedPrompt: preset.render(request.promptFields), sourceObjectKey: request.sourceObjectKey, reservedUnits, state: \"accepted\", }); return { jobId: job.id, duplicate: false }; } The reservation and job insert need one consistency strategy. A database transaction is the cleanest option when both live in the same store. If quota lives elsewhere, use a reservation token with an expiry and make reconciliation explicit. I'm not sure there is one correct lease duration for every app; measure queue delay at the tail, then set expiry above the delay you actually tolerate. The example also hides a critical detail: render must accept only named fields defined by the preset. A generic string replacement function can leak undeclared variables into a prompt or leave placeholders unresolved. Validate field length and character policy before rendering, then record the preset revision so the output remains explainable. Pricing guardrails should operate in internal units rather than hard-coded currency in UI code. Reserve units before acceptance, settle actual usage after completion, and release the difference or the full reservation when no generation occurs. This supports per-user, per-tenant, and platform-wide ceilings without binding the product layer to one vendor's price sheet. It also gives finance one ledger to reconcile when an adapter changes. Use three limits with different purposes: A burst limit protects the queue from rapid clicks. A concurrency limit stops one tenant from occupying every worker. A rolling budget limit bounds accumulated usage. These controls are related, but one cannot replace the others: a user can stay below requests per minute while still submitting a few unusually costly jobs. Fail closed at acceptance. Return a stable application error such as BUDGET_LIMIT_REACHED, along with the time or account action that can change the decision, and don't enqueue a job that the ledger could not reserve. Retries after acceptance reuse the original reservation and idempotency key. Without that rule, an innocent client retry can turn one click into two charges. The catch is added operational machinery. A low-volume internal tool with trusted users and no uploads may be better served by a synchronous server action plus a strict timeout and a single account cap. Stick with that simpler shape while queue delay, duplicate work, and request timeouts are negligible. Move to the ledger-and-worker design when generation becomes customer-facing, uploads cross a trust boundary, or spend needs tenant-level attribution. Track acceptance rate by rejection reason, queue delay, execution duration, end-to-end latency, retry count, duplicate suppression, reserved versus settled units, and generated bytes retained. Segment by preset revision and aspect ratio. A global average will hide the expensive preset or portrait ratio that actually drives the bill. Measure both. Two tests pay for themselves early: submit the same idempotency key concurrently and prove there is one job, then exhaust a tenant budget concurrently and prove reservations never exceed the ceiling. Add contract tests around each provider adapter using recorded, sanitized fixtures; the application should see the same internal success and policy outcomes even when external response shapes differ. Watch the gaps — especially abandoned browser sessions. Generation can finish after a user closes the tab, so cleanup cannot depend on a client callback. Define retention from job state and timestamps, and let a scheduled process delete expired source and result objects after confirming they aren't referenced elsewhere. Don't copy the queue because it sounds production-ready. Copy it when your measurements show a web request is the wrong lifetime, duplicate suppression has monetary value, or tenant attribution is required. Until then, keep the interface stable and the implementation small. OWASP Top 10 for Large Language Model Applications openai/whisper: open-source speech recognition",
+      "url": "https://dev.to/jaxmonroe3187/add-an-ai-image-generator-to-a-nodejs-saas-app-upload-and-pricing-guardrails-195g",
+      "time": "2026-08-06T15:07:03.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Try a free EU VAT API in your next headless commerce project",
+      "description": "I’m building VAT Engine, an API for developers working on headless commerce, SaaS billing, custom checkouts, and other products that need EU VAT calculations. The current API supports: EU VAT calculations Current and historical VAT rates Product tax classes VAT-inclusive and VAT-exclusive prices Source tagging for stores, storefronts, and sales channels You can create a free account, generate an API key, and connect it to a real project or side project. curl -X POST https://vat-engine.app/api/v1/vat/calculate \\ -H \"X-API-Key: YOUR_API_KEY\" \\ -H \"Content-Type: application/json\" \\ -d '{ \"country\": \"DE\", \"currency\": \"EUR\", \"gross_amount_minor\": 11900, \"price_includes_vat\": true, \"tax_class_id\": \"standard\", \"transaction_date\": \"2026-01-28\" }' Example response: { \"country\": \"DE\", \"currency\": \"EUR\", \"vat_rate_bps\": 1900, \"gross_amount_minor\": 11900, \"net_amount_minor\": 10000, \"vat_amount_minor\": 1900 } Amounts are represented in minor currency units, while VAT rates use basis points to avoid floating-point ambiguity. The API can be used in a headless checkout, SaaS billing flow, ecommerce integration, internal tool, or test project. Free access is currently available here: https://vat-engine.app/ Feedback about the API contract, documentation, onboarding, or missing developer functionality is welcome.",
+      "url": "https://dev.to/vasyl_kyryliuk/try-a-free-eu-vat-api-in-your-next-headless-commerce-project-544o",
+      "time": "2026-08-06T15:06:37.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "Epic 喜加二：《Beacon Pines》《We Were Here Together》游戏免费领取",
+      "description": "IT之家 8 月 6 日消息，Epic 本周送出的游戏是《Beacon Pines》《We Were Here Together》，下周送出的游戏是《Caravan SandWitch》。 领取链接：《Beacon Pines》，《We Were Here Together》 IT之家附《Beacon Pines》游戏简介： 《Beacon Pines》是一款设定在神秘书籍中的可爱而又诡异的冒险游戏。你将同时扮演这本书的读者和主角卢卡。 在老仓库发生了一些奇怪的事情，卢卡和他的朋友们似乎是唯一注意到这一切的人。深夜悄悄溜出去，交新朋友，揭开隐藏的真相，以及收集能够改变命运的词语！ 在帮助卢卡调查比肯派恩斯的奇怪事件时，你将收集到特别的金色护符，每个护符上都刻有一个词。这些护符可以在故事的某些关键时刻使用，以填补一个空白词，从而彻底改变接下来的事情。 作为这本书的读者，您将通过《编年史》来探索故事的转折点：一个随着您的选择而分支生长的互动故事树。探索一组事件可以解锁新的魅力，以便在另一条分支上使用，从而让您在完全不同版本的故事之间来回跳跃，以揭开贝肯派恩斯核心的 mysteries。 IT之家附《We Were Here Together》游戏简介： 叫上你的好朋友，启程前往鬼魅游荡的 Castle Rock，依靠沟通和合作两大武器，解决一系列谜题，最终逃出生天！ 一切开始于那发点亮黑夜的信号弹，接着便是无线电的求救信息，让你们从梦中惊醒。你的探险家同僚被困南极大陆，而驻守大本营你的们两个必须合作完成救援行动。不过你们可不知道你们惹上了多大的麻烦... 你们要想办法从大本营赶到求救信号的地点。穿过南极的荒芜的冻土之后，迎接你们的是一座充满谜题、秘密和惊险刺激的中世纪城堡。而且你们要独自迎战！唯独智慧和沟通，才能战胜物资的匮乏。细心观察，合作沟通是逃离这所恶灵 Castle Rock 的唯一方法。 更新 对于 We Were Here 系列的老玩家，这次值得期待的东西一点也不少：更多解密、更长的故事主线、全新游戏机制以及隐藏在 Castle Rock 中的各种小彩蛋... 特色 扣人心悬的情节: 揭开城堡背后的黑暗历史，会一会被邪恶腐化的杰斯特。说真的，这家伙到底是人么？ 事无巨细的沟通: 为了推动故事进展，沟通可少不了。测试你的语言功底，能不能准确描述周遭环境 绞尽脑汁的谜团: 合作解密，逃出生天。 迷雾笼罩的环境: 探索探险队大本营，冰封的南极山谷，还有充满邪恶气息的 Castle Rock。 注意：本游戏仅支持合作模式。需要两位玩家联网并配有话筒。 交流沟通才能找到出路。 你和你的探险小伙伴必须穿越南极的冰原，潜入一座充满不详气息中世纪城堡。游戏开始，玩家只有一部对讲机。你能想办法和队友保持一个沟通频道么？ 为此，你们必须同心协力，合二为一。/i] 浸入式的合作游戏体验，和队友一起绞尽脑汁，挑战紧张刺激的谜题。一同发掘全新的游戏环境和背后不可告人的秘密。 你并非孤身一人... 黑暗吞噬了曾经辉煌一时的 Castle Rock 和周遭的一切。你能找出这所破败的城堡背后的真相，并逃出生天么？还是说，你跑得了一时，却还是逃不过城堡的主人的魔爪呢?",
+      "url": "https://www.ithome.com/0/986/764.htm",
+      "time": "2026-08-06T15:05:38.000Z",
+      "tags": [
+        "游戏",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "A Software Factory Is a Workflow, Not a Product. Build One in 20 Minutes.",
+      "description": "\"Software factory\" is a buzzword, but it doesn't have to be. Building software is a well-understood process: we know every activity involved and every tool required. A software factory just automates it. In this post we'll describe the process and list the capabilities needed to automate it. Then we'll build a software factory and discuss when using one is a good idea. We'll see that a software factory isn't a product but a workflow, and it only succeeds when you think of it this way. And building one is pretty easy. We'll also touch on why software factories fail in real organizations and how to make them work. These are the steps: FIND WORK. You go to an issue tracker (e.g., Linear) to see what needs to be done. GET DEBRIEFED. You read the issue and find related past work. Maybe you talk to other engineers to fill in the gaps. SET UP REPOS. You figure out which repositories are relevant for the change, clone them, install dependencies, etc. IMPLEMENT. You make the change across all the relevant repos. REVIEW. You do a thorough review of the code before opening PRs. OPEN PRs. You open the relevant PRs and make sure CI is green for all of them. RECORD. You write down the decisions made, the design, so others can find it later. COMPLETE. You mark the item as complete in the issue tracker. ## The Capabilities We Need To implement the steps above with an agent we need the following: VCS CI Issue Tracker PR and CI Orchestrator Institutional Memory Ephemeral Workspaces Cross-repo Orchestrator Adversarial Reviews Trigger Note, it's very unlikely all of these will be provided by a single tool. VCS, CI, issue tracking are each deep, complex products, so the chances of your VCS provider also being the best CI and the best issue tracker are low. But they don't need to be. One of the nicer things about agentic development is that agents compose external systems well, as long as each one has a well-defined agentic API. Whether that's MCP or a CLI doesn't matter. FIND WORK. An agent accesses the Issue Tracker through an MCP server to see what needs to be done. GET DEBRIEFED. An agent reads the issue and queries Institutional Memory for everything relevant: related past work, decisions, gotchas. SET UP REPOS. An agent uses Institutional Memory to figure out which repos are relevant and uses Ephemeral Workspaces to provision fresh copies. IMPLEMENT. An agent uses the Cross-repo Orchestrator to implement the change. Without it, the agent can only update one repo at a time. REVIEW. An agent invokes Adversarial Reviews to analyze the source code and address the feedback. OPEN PRs. An agent uses the PR and CI Orchestrator to create PRs and make sure CI is green. RECORD. An agent uses Institutional Memory to record what it has done, both the high-level picture and the details. This is how Institutional Memory stays up to date. COMPLETE. An agent marks the item as complete in the Issue Tracker. The Cross-repo Orchestrator matters more than it may seem. Humans carry cross-repo context in their heads, so even when changing a single repo, we have deep cross-repo awareness. Agents have to actually look at the other repos to get that. Once we have the capabilities, building a factory. It's just a script that wires everything together. It's more of a workflow, not a product. We are going to use Github for VCS (and whatever CI is connected to that repo). We will use Linear as an issue tracker, and Polygraph for \"PR and CI Orchestrator\", \"Institutional Memory\", \"Ephemeral Workspaces\", \"Cross-repo Orchestrator\" and \"Adversarial Reviews\". Polygraph is an agent-agnostic meta-harness. This is the script here. It's about 400 lines. Most of it is our integration with Linear and formatting. This is the high-level view of what the script does: main(): if already ran today: exit # LaunchAgent fires morning + wake; dedupe via stamp file issues = linear.query(\"my Todo issues in $LINEAR_PROJECT_NAME labeled 'factory'\") for issue in issues: processIssue(issue) # errors logged, loop continues processIssue(issue): # CLASSIFY — cheap go/no-go screen verdict = claude -p \"can a coding agent solve this autonomously?\" if verdict != \"yes\": return skipped # DO THE WORK — one step; everything happens inside Polygraph sessionId = polygraph session start -- prompt . # prompt = issue context + \"complete the task; # adversarial-review it if non-trivial; open PRs, CI green; # link this issue to the session\" # the session agent picks its own repos, implements, reviews, opens PRs if no sessionId (timeout / failure): return error # COMPLETE linear.attachToIssue(issue, session url) linear.moveTo(issue, \"In Progress\") All the these steps (GET DEBRIEFED, SET UP REPOS, IMPLEMENT, REVIEW, OPEN PRs, and RECORD) are done with the following prompt: You are working on a Linear issue. All context is below. Linear issue: ${issue.identifier} — ${issue.title} Linear issue id: ${issue.id} Linear issue URL: ${issue.url} Description: ${issue.description} Complete this task. After you are done with the implementation, check whether it is trivial; if it is not, use the adversarial review skill to review the changes and address the feedback it provides. Open pull requests with your changes, mark them ready for review, and make sure CI is green. Link the Linear issue as a reference on this session. Much of the conversation around Software Factories is around PRDs and design documents, basically moving software development from code to high-level markdown files. Design documents have a place in this process. The Issue Tracker can and probably should contain them. But design documents by themselves aren't enough. Software engineers tried this many times, and it has never worked, and for good reasons. First, you cannot plan complex things separately from implementation, because the implementation is what reveals what actually needs to happen. Second, however accurate the plan was at first, it drifts away from the code. Documentation rots and code does not, because code is what actually runs. So instead of plans and PRDs, record what has actually occurred. Capture the design after it has been implemented. Capture agent traces for more detail. That's what the RECORD step does. There is some skepticism about Software Factories. Even the biggest proponents are admitting that \"they failed.\" If you think a Software Factory is a product that will write 100% of your code, it will not work. A lot of work still needs a human developer to be engaged. It is just very hard to plan in advance. If you instead think about it as a workflow, a pattern, then suddenly it can be used effectively for a good number of issues (but not all of them). Using Software Factories in real organizations hits a lot of wall: Most organizations cannot move their issue tracker to a new tool. Most organizations already have some form of company brain. You can easily integrate Slack, Notion, or ClickUp into the script above. Most organizations have complex cross-repo relationships, which software factory products can't handle. Most organizations don't build greenfield projects, which software factory products are optimized for. None of these problems exist with the script above, if you look at it as just one way of automating your software production, not the only way. For instance, the script above only takes issues labeled with \"factory\" and even for those assesses how much input will be required. Also, any item implemented by the script above can be resumed on the same or a different machine if some changes are required. A lot of the times some changes will be required, but having a change that is 90% there still saves a ton of time. You can build other workflows using the exact same building blocks. For instance, I have a workflow that looks at all the PRs and sessions I need to review: It gets the relevant data from Linear It resumes those sessions for review locally using Polygraph It does an adversarial review via Polygraph It creates a summary of the change It creates a dashboard file I can open I then open the dashboard to see what PRs are on my plate. Each of them is already prereviewed. I can quickly scan to see what needs my attention and what doesn't. I can resume complex sessions to ask the agent more questions about the change, about how things work. This drastically cuts down on review time without sacrificing quality. Whether you like it or not, more of software production will be automated: producing code, testing it, reviewing it. To maximize your chance of success, think of these automations as workflows built on top of powerful primitives, not as products. To try it yourself: Create an account on https://trypolygraph.com Take the script above and modify it to fit your workflow.",
+      "url": "https://dev.to/vsavkin/a-software-factory-is-a-workflow-not-a-product-build-one-in-20-minutes-3ka1",
+      "time": "2026-08-06T15:04:11.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "LLD Data Structures in Design Context: Why Some Problems Are About Relationships, Not Individual Objects",
+      "description": "\"Not every software problem is about finding one object. Sometimes the real challenge is understanding how multiple objects are connected.\" So far in this series, we've explored data structures that solve different design problems. A HashMap helps us find exact objects quickly. A Heap helps us decide what should happen next. A Queue helps us process work in order. A Stack helps us preserve and restore recent context. A Trie helps us discover values from partial input. Now let's explore a completely different kind of problem. Imagine you're building an application where the most important question isn't about an individual object. Instead, it's about the relationships between many objects. This is where another fundamental data structure enters the picture—the Graph. Think about a navigation application. Suppose you want to travel from your home to the airport. The application doesn't simply find two places. It must understand how those places are connected. Home ↓ Road A ↓ Road B ↓ Airport Without understanding the relationships, the destination alone is meaningless. Imagine using a social networking platform. You open someone's profile. Immediately you see: mutual friends, suggested connections, people you may know. The application isn't interested in a single user. It's interested in how users are connected. Notice how different this is from previous data structures. A HashMap asks: Where is this exact object? A Heap asks: Which item has the highest priority? A Queue asks: Which task should happen next? A Stack asks: What is the current working context? A Trie asks: What begins with this prefix? A Graph asks something entirely different. How are these objects connected? That's a completely different business requirement. Imagine storing cities. Delhi Mumbai Jaipur Agra Knowing these cities exist doesn't answer questions like: Can I travel from Delhi to Jaipur? Which route connects Delhi to Mumbai? Are Delhi and Agra directly connected? The real value lies in the relationships, not the objects themselves. Imagine a map. Delhi │ ├── Jaipur │ ├── Agra │ └── Chandigarh Every place is meaningful because of the roads connecting it to other places. Remove those connections, and you no longer have a network. You simply have isolated locations. Graphs capture those connections explicitly. Certain business requirements should immediately make you think about relationships. Examples include: Route planning Friend recommendations Package delivery networks Flight connections Dependency management Workflow relationships Knowledge graphs Notice the common pattern. The application isn't asking about one object. It's asking about how objects relate to one another. When designing such systems, don't immediately ask: \"How should I store these objects?\" Instead ask: \"How are these objects connected?\" That shifts the design significantly. Business Objects ↓ Relationship Manager ↓ Graph ↓ Connected Objects Instead of focusing only on entities, the design now gives equal importance to the relationships between them. Many systems are driven more by relationships than by the objects themselves. Ignoring those relationships often leads to poor designs. In graph-based systems, relationships are often just as important as the entities they connect. The key design question isn't: \"Where should I store these objects?\" It's: \"What kinds of relationships does the business care about?\" Simple parent-child structures or one-to-many relationships may not require a Graph. Choose a Graph when relationships themselves become a core part of the problem. Experienced engineers don't hear the words \"network\" or \"users\" and immediately think \"Graph.\" Instead, they recognize requirements like: Find connections. Discover relationships. Navigate between entities. Recommend related objects. Traverse a network. Those are signals that the business revolves around relationships rather than isolated objects. A Graph isn't designed to store objects. It's designed to represent how objects are connected. That's why it powers navigation systems, recommendation engines, dependency management, and countless other applications where relationships matter more than individual entities. Great engineers don't choose a Graph because it connects nodes—they choose it when the business revolves around understanding and traversing relationships.",
+      "url": "https://dev.to/saras_growth_space/lld-data-structures-in-design-context-why-some-problems-are-about-relationships-not-individual-llc",
+      "time": "2026-08-06T15:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Python Asyncio Library",
+      "description": "Asyncio is a built-in Python library available from Python 3.4 onwards, used to write concurrent programmes with the async and await syntax. Unlike multithreading or multiprocessing, asyncio achieves concurrency within a single thread through an architecture known as an event loop. It is particularly well suited to I/O-bound tasks, where execution time is dominated by waiting for external responses, such as fetching data from web APIs, querying databases, or reading network streams. In standard sequential code, if a programme requests data from a website, the entire application blocks until the server responds. Asyncio uses cooperative multitasking. When a task reaches a waiting point, such as an API request, it voluntarily pauses and yields control back to the event loop. The event loop then switches to another task that is ready to run. When the external response arrives, the event loop resumes the original task so that it can complete its work. We rely on three primary components: Coroutines: Functions defined with async def. Calling them does not execute the code immediately; instead, it returns a coroutine object that must be awaited to run. The await keyword: Placed before an operation to pause the coroutine temporarily, allowing the event loop to process other tasks. Event loop: The central coordinator that manages and switches between running asynchronous tasks. It is started with asyncio.run(). The following script can be used to confirm that asyncio is available in the environment. Python 3.4 or newer is required. import sys # Check asyncio version print(f'Your asyncio version is tied to Python {sys.version.split()[0]}') Your asyncio version is tied to Python 3.12.12 We use async def to define a coroutine and await to pause execution without blocking the event loop. Because this article is presented in a Jupyter notebook, where an event loop is already running, we need to use the nest_asyncio library to reuse the existing event loop. Initialise the runtime import asyncio import time import nest_asyncio nest_asyncio.apply() Basic code example async def fetch_data(id, delay): print(f\"Task {id}: Fetching data...\") # Simulate a network delay without blocking the whole program await asyncio.sleep(delay) print(f\"Task {id}: Data received!\") return f\"Result {id}\" async def main(): start_time = time.time() # Schedule and run both tasks at the same time task1 = asyncio.create_task(fetch_data(1, 2)) task2 = asyncio.create_task(fetch_data(2, 3)) # Wait for both to finish await task1 await task2 end_time = time.time() print(f\"Total execution time: {end_time - start_time} seconds\") # Start the Event Loop asyncio.run(main()) Task 1: Fetching data... Task 2: Fetching data... Task 1: Data received! Task 2: Data received! Total execution time: 3.0017387866973877 seconds Awaiting coroutines one by one is sequential, whereas asyncio.gather() runs them concurrently. A standard Python list does not create concurrency, even when the await keyword is used. async def work(name, delay): print(f\"Task {name}: Starting work...\") await asyncio.sleep(delay) print(f\"Task {name}: Work completed!\") async def run_sequentially(): start_time = time.time() result = [ await work(\"A\", 2), await work(\"A\", 2), await work(\"B\", 3) ] print(\"Sequential:\", result) end_time = time.time() print(f\"Total execution time: {end_time - start_time:2f} seconds\") async def run_concurrently(): start_time = time.time() result = await asyncio.gather( work(\"A\", 2), work(\"A\", 2), work(\"B\", 3) ) print(\"Concurrent:\", result) end_time = time.time() print(f\"Total execution time: {end_time - start_time:2f} seconds\") async def main(): print(\"Running tasks sequentially...\") await run_sequentially() print(\"\\nRunning tasks concurrently...\") await run_concurrently() # Start the Event Loop asyncio.run(main()) Running tasks sequentially... Task A: Starting work... Task A: Work completed! Task A: Starting work... Task A: Work completed! Task B: Starting work... Task B: Work completed! Sequential: [None, None, None] Total execution time: 7.006525 seconds Running tasks concurrently... Task A: Starting work... Task A: Starting work... Task B: Starting work... Task A: Work completed! Task A: Work completed! Task B: Work completed! Concurrent: [None, None, None] Total execution time: 3.002129 seconds We use asyncio.create_task() when we want a coroutine to begin executing immediately in the background. async def ticker(name, count): for i in range(count): await asyncio.sleep(1) print(f\"{name}: Tick {i + 1}\") async def main(): task1 = asyncio.create_task(ticker(\"Ticker 1\", 5)) task2 = asyncio.create_task(ticker(\"Ticker 2\", 3)) print(\"Both tickers are running concurrently...\") start_time = time.time() await task1 await task2 end_time = time.time() print(f\"Total execution time: {end_time - start_time:2f} seconds\") asyncio.run(main()) Both tickers are running concurrently... Ticker 1: Tick 1 Ticker 2: Tick 1 Ticker 1: Tick 2 Ticker 2: Tick 2 Ticker 1: Tick 3 Ticker 2: Tick 3 Ticker 1: Tick 4 Ticker 1: Tick 5 Total execution time: 5.004832 seconds We wrap an awaitable with asyncio.wait_for() to raise an error if it takes too long. async def slow_operation(): await asyncio.sleep(2) return \"Slow operation completed\" async def main(): start = time.time() try: result = await asyncio.wait_for(slow_operation(), timeout=1) print(result) except asyncio.TimeoutError: print(\"The operation timed out!\") finally: result = await asyncio.wait_for(slow_operation(), timeout=3) print(result) end = time.time() print(f\"Total execution time: {end - start:2f} seconds\") asyncio.run(main()) The operation timed out! Slow operation completed Total execution time: 3.003181 seconds asyncio.Queue A queue is useful when one part of a programme produces work and another part consumes it. async def producer(queue): for i in range(5): await asyncio.sleep(1) # Simulate a delay in producing item = f\"item-{i}\" await queue.put(item) print(f\"Produced {item}\") async def consumer(queue): while True: item = await queue.get() if item is None: # Check for the sentinel value to exit queue.task_done() break await asyncio.sleep(2) # Simulate a delay in consuming print(f\"Consumed {item}\") queue.task_done() async def main(): start_time = time.time() queue = asyncio.Queue() producer_task = asyncio.create_task(producer(queue)) consumer_task = asyncio.create_task(consumer(queue)) await producer_task await queue.put(None) # Send the sentinel value to the consumer await consumer_task end_time = time.time() print(f\"Total execution time: {end_time - start_time:2f} seconds\") asyncio.run(main()) Produced item-0 Produced item-1 Consumed item-0 Produced item-2 Produced item-3 Consumed item-1 Produced item-4 Consumed item-2 Consumed item-3 Consumed item-4 Total execution time: 11.011405 seconds Based solely on the sleep durations, this task would take around 15 seconds, but using asyncio.Queue reduces this to 11 seconds. A semaphore limits how many coroutines may enter a critical section at the same time. async def fetch(item, semaphore): async with semaphore: print(f\"Fetching {item}...\") await asyncio.sleep(2) # Simulate a network delay print(f\"Fetched {item}!\") return item * 10 async def main(): start_time = time.time() semaphore = asyncio.Semaphore(3) # Limit to 3 concurrent fetches items = [1, 2, 3, 4, 5] tasks = [asyncio.create_task(fetch(item, semaphore)) for item in items] results = await asyncio.gather(*tasks) print(f\"Results: {results}\") end_time = time.time() print(f\"Total execution time: {end_time - start_time:2f} seconds\") asyncio.run(main()) Fetching 1... Fetching 2... Fetching 3... Fetched 1! Fetched 2! Fetched 3! Fetching 4... Fetching 5... Fetched 4! Fetched 5! Results: [10, 20, 30, 40, 50] Total execution time: 4.004785 seconds The process in this example is as follows: fetch the first 3 coroutines process them wait for 2 seconds fetch the final 2 coroutines process them wait for 2 seconds Total time: 4 seconds An async generator is a function defined with async def that uses the yield keyword. It allows execution to pause, emit a value, and await asynchronously before producing the next item. async def async_number_generator(limit): for i in range(limit): await asyncio.sleep(1) # Simulate some delay yield i async def main(): async for number in async_number_generator(5): print(f\"Generated number: {number}\") asyncio.run(main()) Generated number: 0 Generated number: 1 Generated number: 2 Generated number: 3 Generated number: 4 An async iterator is an object, usually a class, that implements two specific magic methods: __aiter__() and __anext__(). You generally need to implement this manually only when creating complex custom data structures or SDKs. __aiter__(): Must return the iterator object itself. __anext__(): An async method that returns the next value, or raises StopAsyncIteration to terminate the loop. An iterator can be implemented in much the same way as the previous generator. class AsyncNumberGenerator: def __init__(self, limit): self.limit = limit self.current = 0 def __aiter__(self): return self async def __anext__(self): if self.current wait_for= > Cancelled: wait_for= > asyncio.wait with the timeout argument You can pass a timeout value, in seconds, to a group of tasks to prevent your application from hanging indefinitely. async def job(name, duration): print(f\"Job {name} started, will take {duration} seconds.\") await asyncio.sleep(duration) print(f\"Job {name} completed.\") return f\"Result of job {name}\" async def main(): tasks = [ asyncio.create_task(job(\"A\", 2)), asyncio.create_task(job(\"B\", 3)), asyncio.create_task(job(\"C\", 1)) ] # Stop waiting after 1.5 seconds done, pending = await asyncio.wait(tasks, timeout=1.5) print(f\"Finished on time: {len(done)}\") print(f\"Still running in background: {len(pending)}\") # Crucial: Clean up or cancel pending tasks if you don't want them leaking! for task in pending: task.cancel() print(f\"Cancelled: {task}\") asyncio.run(main()) Job A started, will take 2 seconds. Job B started, will take 3 seconds. Job C started, will take 1 seconds. Job C completed. Finished on time: 1 Still running in background: 2 Cancelled: wait_for= > Cancelled: wait_for= > You can combine both parameters. However, return_when does not automatically cancel pending tasks, whereas timeout leaves them running unless you cancel them explicitly. For that reason, it is generally better to call task.cancel() on pending tasks. In this article, we explored how asyncio helps you structure efficient, non-blocking Python programmes by coordinating many tasks within a single event loop. We covered the core building blocks, including coroutines, task creation, and orchestration patterns such as asyncio.gather() and asyncio.wait(). The main practical takeaway is that concurrency is not only about speed but also about control: you decide when to wait, when to continue, and how to handle partial completion, failure, and cancellation safely. In particular, when using timeouts, you should clean up unfinished tasks explicitly to avoid background task leakage. With these patterns, you now have a reliable foundation for real-world asynchronous applications such as network clients, API integrations, and data pipelines. The next step is to apply the same principles with proper exception handling, structured cancellation, and observability so that your asynchronous code remains both fast and maintainable at scale. Did this article help you? Let me know in the comments below, and don't forget to drop a like if you enjoyed the read! Thank you.",
+      "url": "https://dev.to/michal_puzanov_1a085094b3/python-asyncio-library-3d02",
+      "time": "2026-08-06T14:57:45.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Survey confirms your Fold 8 preference aligns with Samsung pre-orders",
+      "description": "We need more square phones.",
+      "url": "https://www.androidauthority.com/galaxy-z-fold-8-survey-results-3695311/",
+      "time": "2026-08-06T14:57:13.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Google DeepMind Leadership Shake-Up: What It Means for AI Developers",
+      "description": "Google DeepMind is undergoing major leadership changes. Demis Hassabis is moving from CEO to Chair, with Jeff Dean stepping into a new role. This isn't just corporate reshuffling — it signals a fundamental shift in how one of the world's most important AI labs will operate. According to Google's announcement: Demis Hassabis transitions from CEO to Chair of DeepMind Jeff Dean takes on expanded responsibilities as Chief Scientist The reorganization consolidates Google's AI research under a unified structure This follows the merging of Google Brain and DeepMind in 2023 DeepMind is the lab behind AlphaFold, AlphaGo, Gemini, and countless breakthroughs in reinforcement learning. How it's run directly affects the trajectory of AI development worldwide. When the CEO becomes Chair and the technical leadership reshuffles, it usually means one of two things: Scale-up mode: The lab is transitioning from research-focused to product-focused, and needs different leadership for that phase Strategic pivot: The lab's mission is changing, and the new structure reflects new priorities Given Google's aggressive push to integrate Gemini across its products, option 1 seems more likely. Google needs DeepMind to produce shippable products, not just papers. Jeff Dean is arguably the most influential software engineer in AI. He co-founded Google Brain, led the development of TensorFlow, and has been at the center of every major Google AI initiative for 15 years. Elevating him to Chief Scientist suggests Google wants tighter coupling between research and production. This is significant for the broader AI community because: TensorFlow's future: Dean has been TF's spiritual leader. His new role might mean a renewed push for TensorFlow against PyTorch's dominance Gemini development: Closer integration between Dean's systems expertise and DeepMind's research could accelerate Gemini's capabilities Open source strategy: Dean has historically been an advocate for open research. Whether that continues in his new role remains to be seen If you're building AI applications, here's what to watch: With Dean more involved, expect Gemini model updates to come faster and be more deeply integrated into Google Cloud's AI offerings. If you're on Google Cloud, prepare for new model versions landing more frequently. Google is in a three-way race with OpenAI and Anthropic. Consolidating their AI leadership likely means more aggressive pricing on Gemini API calls to win developer mindshare. Dean's track record suggests we might see more open models from Google. This would be a win for developers who can't afford proprietary API costs — especially those running models locally on consumer hardware. I run AI models on a Raspberry Pi 5 using Ollama, and every new open-weight release from a major lab matters. If Google releases an open model that's efficient enough to run on edge devices, it could change the calculus for small developers and hobbyists. The Brain-DeepMind merger already reduced the number of independent AI research labs. Further consolidation means fewer diverse approaches to AI safety and capability. This is a double-edged sword: better coordination, but less diversity of ideas. The AI industry is maturing. We're moving from an era where research labs operated like academic departments to one where they operate like product divisions. The DeepMind leadership change is a symptom of this transition. For developers and entrepreneurs, this means: API access will get cheaper and more capable as labs compete for developers Open models will continue to improve as labs use them for mindshare The gap between cutting-edge and accessible AI will narrow — what is proprietary today may be open-source in 6 months Google DeepMind's leadership reshuffle is more than org-chart trivia. It is a signal that the world's AI labs are entering a new phase — one focused on shipping products, not just publishing papers. For those of us building with AI, that means more tools, lower costs, and faster innovation. The next 12 months should be interesting. Follow me on Dev.to @trismegistus for more analysis on AI, autonomous agents, and edge computing.",
+      "url": "https://dev.to/trismegistus/google-deepmind-leadership-shake-up-what-it-means-for-ai-developers-2b6e",
+      "time": "2026-08-06T14:55:17.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "布加迪推出定制超跑 Destrier：赛道机器 Bolide 变身优雅艺术品，全球仅此一台",
+      "description": "IT之家 8 月 6 日消息，布加迪把为赛道而生的 Bolide 改造成了一款截然相反的作品 ——Destrier，新车不再执着于圈速，而是把设计、情感和手工工艺放在首位。 Destrier 全球仅此一辆，不过这并不影响各位IT之家家友将其设为壁纸。其沿用了 Bolide 的极端机械基础，却走上了完全不同的道路。布加迪拆除了大量强调性能的空气动力学部件，把一台凶悍的赛道机器重新塑造成优雅的孤品超跑。 新车是 Programme Solitaire 孤品定制项目继 Brouillard 和 FKP Hommage 之后推出的第三款作品。Destrier 得名于中世纪骑士所骑乘的名贵战马，保留 Bolide 的碳纤维单体壳，车身高度却只有 1001mm，刷新了布加迪量产及定制车型的最低车身纪录。 新车完全舍弃了 Bolide 夸张的尾翼和附加空气动力学套件，整车轮廓因而显得更纯粹、更舒展。此外，布加迪还重新处理了品牌标志性的 C 形线条。腰线沿车侧延伸，在前轮拱后方短暂消失，再与更加宽阔的马蹄形格栅衔接。车头褪去了 Bolide 咄咄逼人的赛道气息，车尾则融入一道低调的整体式尾翼，灵感来自 Chiron Profilée。 布加迪设计总监弗兰克 · 海尔表示：“Destrier 不是一款需要用头脑理解的汽车，而是一款需要用心感受的汽车。” 其设计思路可以追溯到传奇的 Type 57。同一套基础既孕育了赢得勒芒冠军的 Type 57G Tank 赛车，也造就了汽车设计史上的经典 ——Type 57SC Atlantic。 Destrier 采用名为 Sapphire Celeste 的专属深蓝色车漆。漆面加入类似钻石的细微颗粒，光线变化时会呈现独特闪烁效果，再配合抛光铝饰件和带蓝色色泽的碳纤维部件，整车显得克制而华丽。 座舱则彻底摆脱 Bolide 的纯赛车风格，大幅减少了裸露碳纤维和强调竞技感的材料，并以近似高级裁缝工作室的精致氛围取而代之。 暖棕色皮革、磨砂皮革和专属 3D 针织面料构成内饰主体。针织材料中织入铜线，并排列成连续的环形图案，借鉴高级定制时装，吸收高性能运动服饰的设计语言，让整个座舱保持浑然一体的手工质感。 方向盘中心、车门把手、空调出风口和迎宾踏板均采用锤纹铝制工艺，纹理酷似中世纪骑士手工锻造的铠甲，也再次呼应 Destrier 的战马寓意。 优雅外表之下，Destrier 依然搭载 Bolide 的 8.0 升四涡轮增压 W16 发动机，最大功率达到 1177kW。",
+      "url": "https://www.ithome.com/0/986/762.htm",
+      "time": "2026-08-06T14:55:15.000Z",
+      "tags": [
+        "人工智能",
+        "汽车",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Built the Product. Made It Open Source. Deployed It Cheaply. Then... 7 Users Signed Up.",
+      "description": "Not 7,000. Not 700. Just 7. And somehow, that hurts more than failing to build the project itself. Everyone talks about building. \"Ship fast.\" \"Deploy early.\" \"Build in public.\" So I did. I built a real project, spent hours improving the UI, added features that users actually need, kept optimizing the experience, and even made the source code public because I wanted people to trust what I was building. Repository: https://github.com/DeveloperPuneet/Rizzzler-Stable Live project: https://www.rizzzler.work.gd/ I wasn't backed by investors. I don't have a huge audience. I'm just another developer trying to build something useful with almost no budget, deploying in the cheapest way possible and learning everything along the way. The hardest part wasn't coding. It was realizing that building something good doesn't mean people will come. After all that work... Only 7 people created an account. That's the part nobody prepares you for. Not the bugs. Not deployment. Not debugging at 2 AM. The silence after you launch. I'm not writing this because I want sympathy. I'm writing this because I know there are hundreds of developers here who have experienced the exact same thing. You build. You polish. You improve. You compare your product with others and keep adding features. Then you refresh your analytics... Nothing. If you've ever been in that position, I'd genuinely love your feedback. Tell me what's wrong. What would stop you from using it? What feels missing? I'd rather hear honest criticism than watch another day go by with zero users. Maybe this post reaches nobody. Or maybe someone reading this becomes user number 8. Either way, I'll keep building.",
+      "url": "https://dev.to/puneetkumar2010/i-built-the-product-made-it-open-source-deployed-it-cheaply-then-7-users-signed-up-51h8",
+      "time": "2026-08-06T14:50:42.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "This LG OLED TV is one of the most impressive I've tested - and it's $700 off",
+      "description": "The LG C6 is a powerful refresh of the brand's flagship OLED TV, and right now at Best Buy, you can get the 65-inch version for 26% off.",
+      "url": "https://www.zdnet.com/article/lg-c6-oled-tv-deal/",
+      "time": "2026-08-06T14:45:36.000Z",
+      "tags": [
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Porting natsort to Rust taught me that \"it compiles\" is the easy 5%",
+      "description": "TL;DR: I ported Python's natsort library to Rust for Port Mortem 2026. Writing the sorting algorithm turned out to be the easy part. The difficult part was proving the Rust implementation behaved identically to the original Python library across thousands of edge cases without quietly changing behavior. That meant treating verification as the real project. Why I chose natsort Most demo ports are calculators, parsers, or utilities with a handful of tests. I wanted something that would actually stress the verification process. natsort sorts strings the way humans expect: file2 file10 file20 instead of lexicographic order. That sounds simple until you discover it supports: seven algorithm variants signed and floating-point numbers scientific notation full Unicode numeric characters locale-aware behavior Roman numerals fractions a real upstream test suite covering years of edge cases A port that looks correct on five examples proves almost nothing. A port that survives the library's own test suite, differential fuzzing, CLI comparisons, property testing, and mutation testing starts becoming evidence. The verification pipeline ended up looking like this: Python Test Suite │ ▼ Thin Python Adapter │ ▼ Compiled Rust Binary │ ▼ Rust natsort Implementation │ ▼ Compare: • stdout • stderr • exit codes • ordering • fuzz results • properties The adapter intentionally contains almost no logic. Its only job is forwarding Python test inputs to the Rust implementation. That design choice turned out to matter more than I expected. Differential fuzzing generates thousands of random inputs and compares both implementations. Most mismatches were my mistakes. One wasn't. >>> natsorted([\"1e400\", \"1e500\"], alg=ns.REAL) ['1e400', '1e500'] >>> natsorted([\"1e500\", \"1e400\"], alg=ns.REAL) ['1e500', '1e400'] Both calls succeed. Both disagree. The reason is surprisingly simple. Both values overflow to floating-point infinity. Since both become inf, the comparison reports them equal, and Python's stable sort simply preserves whichever order the inputs arrived in. Rust's f64 behaves the same way. That means the correct port is not one that \"fixes\" the behavior. The correct port reproduces it. I reported the issue upstream: natsort#192 Finding a real bug in a mature library simply by holding another implementation beside it was one of the most satisfying moments of the project. I assumed the adapter was a thin wrapper. It wasn't. One function calculated the correct Rust-backed answer... ...and then ignored it. Instead it silently fell back to a handwritten Python implementation that didn't understand signed numbers or Unicode. index_natsorted([\"-5\", \"-1\", \"3\"], alg=ns.REAL) returned: [2, 1, 0] correct: [0, 1, 2] Differential testing doesn't automatically catch bugs in the adapter. You have to verify the adapter itself. That lesson probably saved me more time than any optimization. Everything looked perfect. Until I ran it on Windows. Five bugs immediately appeared. executable needed .exe python3 didn't exist (py does) subprocess output defaulted to CP-1252 instead of UTF-8 file reads had the same encoding problem Unix-only resource crashed benchmarks entirely None of those appeared on Linux. None appeared in my development environment. Every one appeared on a real Windows machine. \"Works on my machine\" turned out to be the weakest verification strategy of all. The deployment workflow looked successful. The live website returned 404. The culprit? A multi-line shell block: curl ... | sh build deploy The installation silently failed. The following commands still exited successfully. GitHub reported the entire step as green. The fix wasn't clever. It was boring. I switched to: cargo install wasm-pack and added a deployment check that refuses to publish unless the expected build artifacts actually exist. A green checkmark only matters if it's checking the thing you care about. The implementation wasn't the deliverable. Evidence was. I ended up with six independent layers of verification. Run the original natsort test suite without modifying it. Tests excluded only when Rust genuinely cannot reproduce Python-specific behavior, and every exclusion is documented. 27,000 seeded comparisons across all algorithm variants. Same inputs. Same outputs. Reproducible failures. 2,800 CLI invocations comparing: stdout stderr exit codes Matching output alone isn't enough. Programs communicate failure through exit codes too. Randomized verification of: idempotence antisymmetry transitivity These find classes of bugs that handwritten examples never will. I deliberately broke my implementation. reversed comparisons removed signs altered parsing logic If the verification pipeline couldn't detect injected bugs, it wasn't trustworthy. Every injected mutation was caught. Instead of publishing a single \"10× faster\" headline, I reported: mean median p95 p99 peak memory The real result was 6–8× faster, depending on workload. Honest numbers build more confidence than inflated ones. I spent a huge amount of time chasing perfect Unicode parity. It was technically rewarding. It pushed differential matching from roughly 43% to 100% across the full Unicode character set. I'm proud of that work. But I crossed the point of diminishing returns. One adapter-level discrepancy survived until the deadline on a single CI runner. I excluded that specific test rather than claim support I couldn't fully defend. Looking back, I'd stop polishing Unicode earlier and spend those hours investigating the remaining verification discrepancy instead. Verification gets exponentially more expensive near the finish line. Knowing when to stop is part of engineering. By the end of the project: Original upstream tests running against Rust 27,000 differential fuzz comparisons 2,800 CLI differential runs Property testing Mutation testing Honest benchmark suite 6–8× speedup One upstream bug reported Cross-platform verification on Linux and Windows Everything needed to verify the project is public. Demo https://youtu.be/jVz_2AP4U4w Live WASM demo + verification dashboard https://codewitharyan29.github.io/Port-Mortem/ Repository https://github.com/codewitharyan29/Port-Mortem Upstream issue https://github.com/SethMMorton/natsort/issues/192 Anyone with an AI coding agent can produce something that compiles. Compilation is the easy part. The difficult part is proving—without hand-waving—that another implementation behaves the same as the original across thousands of edge cases, different operating systems, different execution paths, and even the original project's own bugs. By the end of this project, I stopped measuring success by whether the Rust code compiled. I measured success by how much evidence I had that it behaved like Python. That, more than the port itself, is what I learned from Port Mortem 2026. #PortMortem2026 #HackathonRaptors #Rust #Python #OpenSource #SystemsProgramming #Testing #Verification #Fuzzing **",
+      "url": "https://dev.to/codewitharyan29/porting-natsort-to-rust-taught-me-that-it-compiles-is-the-easy-5-2ac3",
+      "time": "2026-08-06T14:44:40.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "# Beyond Chatbots: Why AIoT Is Where Developers Can Build Real-World Impact",
+      "description": "If you've spent any time in tech over the past couple of years, you've probably built (or at least experimented with) an AI application. Chatbots, code assistants, document summarizers, and AI-powered search are everywhere. But after building a few of these projects, I started asking myself: What happens when AI leaves the browser and starts interacting with the physical world? That's where AIoT (Artificial Intelligence of Things) comes in. AIoT combines two powerful technologies: IoT (Internet of Things) for collecting real-time data from sensors and connected devices. Artificial Intelligence for analyzing that data, detecting patterns, and making intelligent decisions. Instead of just displaying information on a dashboard, AIoT systems can predict failures, automate workflows, optimize resources, and improve operational efficiency. Think of it as moving AI from \"answering questions\" to \"solving real-world problems.\" If you're looking for portfolio ideas beyond another AI chatbot, here are a few AIoT projects worth exploring: Predictive maintenance using vibration or temperature sensors. Computer vision for quality inspection in manufacturing. Smart warehouse asset tracking. Energy optimization dashboards. AI-powered environmental monitoring. Workplace safety systems with real-time alerts. Edge AI applications running on Raspberry Pi or NVIDIA Jetson devices. These projects combine software engineering, embedded systems, cloud computing, and machine learning into something businesses can actually use. Depending on your project, an AIoT stack might include: Python C++ MQTT Node.js FastAPI Docker TensorFlow or PyTorch OpenCV Raspberry Pi or ESP32 AWS IoT Core, Azure IoT Hub, or Google Cloud IoT Time-series databases like InfluxDB Grafana dashboards There's plenty of room for backend, frontend, DevOps, embedded, and ML engineers to contribute. Consumer AI is incredibly competitive right now. Thousands of startups are building similar productivity tools, writing assistants, and AI wrappers. Industrial AI is different. Factories, logistics companies, healthcare providers, and infrastructure operators often care less about flashy demos and more about solving measurable problems like reducing downtime, improving safety, and cutting operational costs. That creates opportunities for developers who enjoy working on systems with tangible real-world impact. While researching this space, I came across Aperture Venture Studio. What stood out wasn't just their focus on AIoT—it was their problem-first approach. Rather than starting with a new technology and searching for a use case, they focus on identifying real industrial challenges and then building AI-driven solutions around those validated needs. It's a useful reminder that successful products usually begin with customer problems, not technology trends. As developers, it's easy to follow whatever technology is currently trending. But some of the most interesting engineering challenges are happening outside traditional web applications. AI combined with connected devices opens the door to predictive maintenance, robotics, smart infrastructure, intelligent manufacturing, healthcare innovation, and countless other opportunities. If you're looking for your next side project—or even your next startup—it might be worth exploring AIoT instead of building yet another chatbot. I'd love to hear from the community: Have you built an AIoT project? Which hardware platform or cloud service did you use? Where do you think AIoT is headed over the next five years?",
+      "url": "https://dev.to/rohit124/-beyond-chatbots-why-aiot-is-where-developers-can-build-real-world-impact-5em5",
+      "time": "2026-08-06T14:40:13.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I built a RAG engine that refuses to answer with garbage context (and it cost me way more debugging than expected)",
+      "description": "Most RAG demos on GitHub do the same thing: embed some chunks, cosine-similarity search, stuff the top-k into a prompt, done. I built one of those first too. Then I actually tried to use it on messy real-world docs and it fell apart in three specific ways. So I rebuilt it as an event-driven pipeline instead of a linear script, and that's what became Project Aether. 1. Semantic cache that returned stale garbage. Caching LLM responses by exact query string is useless, nobody types the same question twice. I needed similarity-based caching (is this new query \"close enough\" to a cached one?), but that opens a nastier problem: what threshold counts as \"close enough\" without returning a wrong-but-plausible cached answer for a subtly different question? I ended up tuning this against a small eval set instead of guessing a cosine threshold and hoping. 2. Naive vector search missing exact-match terms. Pure dense embeddings are bad at exact keywords, part numbers, error codes, that kind of thing. Someone searches for a specific SKU and dense-only search returns five semantically-similar-but-wrong products. Fixed this with hybrid dense+sparse retrieval instead of dense-only. 3. Ingesting real documents means someone's PII ends up in your vector DB. This is the one nobody talks about in RAG tutorials. If you're chunking and embedding real support tickets or contracts, you're embedding whatever PII is in them too, permanently, in a vector store you may not fully control access to. So ingestion needed a PII-masking pass before anything gets chunked, not after. Project Aether is an event-driven RAG search engine: FastAPI for the API layer, async end to end LlamaIndex Workflows to model ingestion and query as actual event graphs instead of a call-this-then-that script, which made retries and partial failures way saner to reason about Redis for semantic caching (this is the piece from problem #1 above) Chroma Cloud for hybrid dense+sparse vector search (server-side Qwen/Splade embeddings), which is the fix for problem #2 RQ for background job processing on the ingestion side Groq running Llama 3.3 70B for generation, mostly because I wanted fast inference without paying for GPU idle time The ingestion pipeline masks PII before chunking, enriches chunks with LLM-generated metadata, and the query side does query transformation plus a relevance-judgment refinement loop before generation, with an optional cross-encoder reranking stage (BAAI/bge-reranker-v2-m3) that I keep off by default because it's too heavy for memory-constrained hosts. The live demo runs on Render's free tier, so it's query-only (ingestion runs as a local job, not exposed) and it WILL cold-start slow on first request. I'm not going to pretend otherwise, that's just what free hosting gets you. If you hit it and the first response takes a while, that's the container waking up, not the RAG pipeline being slow. This is a solo project, no team, so if something looks half-finished it's because I built it around my own time constraints, not because I ran out of ideas. Repo's here: https://github.com/gabaoun/Project-Aether I'd genuinely rather get a \"this retrieval approach is wrong because X\" comment than a star with no feedback, but if you find it useful a star helps other people find it too. Curious if anyone else has fought with semantic-cache threshold tuning, feels like the least-discussed hard problem in RAG right now.",
+      "url": "https://dev.to/gabaoun/i-built-a-rag-engine-that-refuses-to-answer-with-garbage-context-and-it-cost-me-way-more-debugging-3k21",
+      "time": "2026-08-06T14:40:09.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "Jeff Dean离职前最后一次对话：我低估了AI，也看清了创业者的唯一生路",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/x5sIQ2lED2h6G2Uvyu48?utm_source=rss&utm_medium=article",
+      "time": "2026-08-06T14:39:55.000Z",
+      "tags": [
+        "人工智能",
+        "专访",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Human-in-the-Loop with LangGraph.js: Pausing a Graph for Approval",
+      "description": "Book: AI That Plans The series: AI in TypeScript — 5 books, from your first LLM call to agents in production — all five here My project: Hermes IDE | GitHub — an IDE for developers who ship with Claude Code and other AI coding tools Me: xgabriel.com | GitHub An agent that can issue refunds needs a human between the decision The requirement is a pause that survives the process. LangGraph.js import { interrupt, Command } from \"@langchain/langgraph\"; async function approval(state: typeof State.State) { const decision = interrupt({ kind: \"refund_approval\", orderId: state.orderId, amount: state.refundAmount, reason: state.refundReason, }); return { approved: decision === \"approve\", messages: [ { role: \"user\", content: `Human decision: ${String(decision)}` }, ], }; } interrupt throws a special signal that the graph catches. Execution invoke returns to __interrupt__ payload. Nothing is blocked and The argument is data you want the reviewer to see. Pass the fields a const config = { configurable: { thread_id: `refund-${orderId}` } }; const result = await graph.invoke({ orderId, refundAmount }, config); if (result.__interrupt__) { const [pending] = result.__interrupt__; await queue.enqueueReview({ threadId: config.configurable.thread_id, payload: pending.value, interruptId: pending.id, }); return { status: \"awaiting_approval\" }; } result.__interrupt__ is an array — a graph can pause in more than isInterrupted and an INTERRUPT key for a typed check rather than reaching for the The thread id is the only thing you must persist. It is the pointer refund-${orderId}) rather than a export async function applyDecision( threadId: string, decision: \"approve\" | \"reject\", ) { const config = { configurable: { thread_id: threadId } }; const result = await graph.invoke( new Command({ resume: decision }), config, ); return result; } Command({ resume }) makes the original interrupt() call return The whole conversation, tool results, and accumulated state come back There are two ways to call invoke on an existing thread and they // resuming a pending interrupt — use Command await graph.invoke(new Command({ resume: \"approve\" }), config); // continuing a multi-turn conversation — use a plain object await graph.invoke({ messages: [{ role: \"user\", content: \"...\" }] }, config); Command({ update }) for a follow-up turn is the wrong tool: it Rule of thumb: Command({ resume }) answers a pending interrupt(). Placement decides whether the pause is any use. const graph = new StateGraph(State) .addNode(\"assess\", assess) .addNode(\"approval\", approval) .addNode(\"issueRefund\", issueRefund) .addEdge(START, \"assess\") .addConditionalEdges(\"assess\", (s) => s.refundAmount > 100 ? \"approval\" : \"issueRefund\", ) .addConditionalEdges(\"approval\", (s) => s.approved ? \"issueRefund\" : END, ) .addEdge(\"issueRefund\", END) .compile({ checkpointer }); Two things this gets right. The interrupt is its own node, before the side effect. Calling interrupt() inside issueRefund — after the refund API call — is a It is conditional. Small refunds skip approval entirely. A This is where the pattern actually fails in production. // works in tests, loses every pending approval on deploy .compile({ checkpointer: new MemorySaver() }) MemorySaver is in-process. A pause that must survive days needs a @langchain/langgraph-checkpoint-* packages — and that store becomes Backed up, because a lost checkpoint is a refund stuck forever. And one operational thing that has no technical fix: paused runs . A refund awaiting approval for three months const stale = await db.query( `SELECT thread_id FROM checkpoints WHERE status = 'interrupted' AND updated_at = {}; if (isInterrupted(result)) { for (const i of result[INTERRUPT]) { if (i.id) resumeMap[i.id] = await decisionFor(i.value); } } await graph.invoke(new Command({ resume: resumeMap }), config); A single scalar resume when two interrupts are pending answers one The capability is not \"ask a human a question\". It is that a run can That is genuinely hard to retrofit onto a loop, and it is the AI That Plans covers The full series is at xgabriel.com/ai-in-typescript.",
+      "url": "https://dev.to/gabrielanhaia/human-in-the-loop-with-langgraphjs-pausing-a-graph-for-approval-2eee",
+      "time": "2026-08-06T14:38:29.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "华为天生会画 App 最新功能支持差异清单发布，全新 MateBook Fold 折叠电脑适配流体笔刷等",
+      "description": "IT之家 8 月 6 日消息，华为官网现更新了天生会画 App 最新功能支持差异清单，详细介绍了各机型升级至 HarmonyOS 5 及以上系统版本后支持的功能。 IT之家附天生会画 App 功能支持差异清单如下（如遇设备表格显示不全问题，可点击图片版进行查看）： 设备类型 设备名称 小艺 · 天生会画助手 悬浮泼洒笔刷 流体笔刷 最大画布尺寸 笔记本 HUAWEI MateBook Fold | ULTIMATE DESIGN 麒麟 X90 Plus 不支持 支持 支持 8k 手机 HUAWEI Pura X Max（HOP） 9 月 支持 支持 8k 平板 MatePad Pro Max（GEM） 9 月 MatePad Pro 12 英寸（DAL） 支持 MatePad Edge（QXS） 9 月 MatePad Pro 12.2 英寸 2025（MRDI） 9 月 MatePad Pro 12.2 英寸 2024 款（MRO） 9 月 MatePad Mini（MLR） 9 月 不支持 MatePad Air 12 英寸 2025 款（LRT） 9 月 MatePad Pro 13.2 英寸 2025（WEB） 9 月 MatePad Pro 13.2 英寸 2023 款（PCE） 9 月 MatePad Pro 11 英寸 2024 款（XYAO） 9 月 MatePad Air 12 英寸（BKY） 9 月 MatePad 11.5 2026 （TXZ） 9 月 不支持 不支持 A3 MatePad 11.5 S 2025（SLG） 9 月 MatePad 11.5\"S （TGR/DMG） 9 月 从清单可以看到，全新发布的 HUAWEI MateBook Fold | ULTIMATE DESIGN 麒麟 X90 Plus 折叠电脑完整支持了悬浮泼洒笔刷、流体笔刷功能。另外，小艺 · 天生会画助手功能计划在 9 月适配 Pura X Max 手机、MatePad Pro Max 平板等设备（MatePad Pro 12 英寸已支持）。 2024 年 4 月，华为发布天生会画 App，这款应用主要围绕华为鸿蒙平板电脑等设备优化，号称能够打造平板的“真实数字创作体验”。华为天生会画 App 正式版预置超 150 款笔刷，拥有 80 种以上笔刷参数可调。同时新增拟真画布风格，包括水彩、水墨、油画、岩彩等。 在今年 6 月举行的华为开发者大会 HDC 2026 上，华为终端平板与 PC 产品线总裁朱懂东谈起了华为做大型应用工具软件背后的原因，他坦言就是因为没找到合适能做的，所以华为只能自己做。 ▲ IT之家实拍：华为 MatePad Pro 12.2 英寸平板图赏",
+      "url": "https://www.ithome.com/0/986/761.htm",
+      "time": "2026-08-06T14:38:16.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "别再修代码了，去修系统：DevOps 之父说，Agent 时代的组织变革比技术更难",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/hLA2I6DD1v0ou0sE8KKB?utm_source=rss&utm_medium=article",
+      "time": "2026-08-06T14:34:59.000Z",
+      "tags": []
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "SoftBank donated $50 million to Trump’s library months before federal data center deal",
+      "description": "The Portsmouth, Ohio site where SoftBank will build its data center. | Image: US Department of Energy SoftBank contributed $50 million to the Trump Presidential Library in January, just months before announcing that it's leasing land from the federal government to build a sprawling data center in Ohio. The Japanese company revealed the timing in response to a June letter from Sen. Elizabeth Warren (D-MA), Sen. Richard Blumenthal (D-CT), and Rep. Melanie Stansbury (D-NM), which raised concerns about bribery. \"Are we expected to believe it's a coincidence that two months after Softbank donated $50 million to the Trump library, his administration announced a massive lease deal for Softbank's data center?\" Sen. Warren said in a statement to The … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/policy/976138/softbank-trump-library-data-center-ohio",
+      "time": "2026-08-06T14:30:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "I've been using the Galaxy Z Fold 8 for two weeks - these two accessories perfect the experience",
+      "description": "With the Galaxy Z Fold 8 as my main driver, these two accessories are must-haves (and one isn't even made by Samsung).",
+      "url": "https://www.zdnet.com/article/galaxy-z-fold-8-perfect-accessories/",
+      "time": "2026-08-06T14:27:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "特斯拉中国上架 Model Y 单人充气床垫，659 元",
+      "description": "IT之家 8 月 6 日消息，特斯拉中国现已在其 Tesla App 及小程序中上线了一款适用于 Model Y 的单人充气床垫（不适用于 Model Y L），定价为 659 元。 官方表示，该产品表面采用 TPU 弹力布，内里填充高密度 PU 泡棉。厚度达 8 厘米的高密度泡绵填充物打造柔软触感，聚酯材质让表面既经久耐用、细腻丝滑。使用配套气泵可快速完成充放气，排空气体后也可轻松收纳至车辆后备箱下层的储物空间。 IT之家附产品参数：",
+      "url": "https://www.ithome.com/0/986/750.htm",
+      "time": "2026-08-06T14:24:21.000Z",
+      "tags": [
+        "新能源/电动车",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "网友喊话小米推“重庆特供版”空调，单联瑜称强劲风系列就是“火炉城市特供”",
+      "description": "IT之家 8 月 6 日消息，今天（6 日）下午，小米集团大家电部总经理 @单联瑜_小米大家电 在微博发布长文提到：“有网友喊话‘小米空调可以出重庆特供版吗’，我觉得，米家空调强劲风完全可以成为火炉城市的‘特供空调’。” IT之家获悉，自 7 月 5 日起，重庆经历了长达 28 天的连续高温，7 月 21 日以来更是连续 7 天最高气温冲破 40℃。 单联瑜表示，很多人回到家把空调调到 16℃，风是有了，房间却迟迟凉不下来。问题在于普通空调都只有一套固定的控制逻辑，碰到极端环境 + 长时间高负荷运行，容易“战斗力不足”，甚至直接罢工。 单联瑜进一步解释说，该空调的“强劲”并非简单把风开大、把温度调低，而是从底层重做了一套应对极端环境的能力。 首先，它能真正“看懂”环境：实时判断环境温度、负载状态、运行时长、空间温差等信息，并动态调整风量、压缩机频率和散热策略。 当重庆式高温把空调性能推到极限，系统还可以匹配“强劲模式”，通过超频运行充分调动系统潜力，更快压住室温。 更关键的是「冷媒动态调节」技术：高温、高负荷时，主动增加系统冷媒量，强化换热和循环；房间温度降下来后，再减少冷媒量，降低耗电和温度波动。该猛的时候猛，该稳的时候稳，控温均匀，张弛有度。 单联瑜透露，小米强劲风系列空调在今年的吐鲁番空调夏测中，接受了极端环境的 2208 小时持续大“烤”，也完成了连续 24 小时“鸽子笼”封闭机位运行挑战。",
+      "url": "https://www.ithome.com/0/986/749.htm",
+      "time": "2026-08-06T14:22:14.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "《仙剑奇侠传六》PS5 版 8 月 26 日发售，商店页面已上线",
+      "description": "IT之家 8 月 6 日消息，《仙剑奇侠传六》PS5 版本已上架 PlayStation 商店，该版本由发行商 eastasiasoft 代理，将于 8 月 26 日正式发售。 IT之家注：本作是《仙剑奇侠传》系列的第八部正统单机作品，最初于 2015 年 7 月登陆 PC 平台。该作此前已推出 PS4 版本，此次 PS5 版为针对次世代主机的最新移植版本。 相较于前作《仙剑奇侠传五》及《仙剑五前传》，此次 PS5 版本在画面表现、3D 建模精度与光影效果上均有显著提升。 游戏背景设定于一个战乱频仍、暗流涌动的古代幻想世界，玩家将扮演越今朝和越祈，踏上追寻失落真相的旅途。 战斗系统方面，PS5 版融合了实时操作与策略回合机制，玩家可随时切换战斗风格，并通过调整阵型、搭配技能与精准破防来掌控战局。游戏采用开放式场景设计，支持自由探索荒芜古道与隐秘洞窟。 队伍构成与武器系统高度自由，玩家可自定义角色定位、技能组合，并可重塑武器外观与攻击方式。此外，游戏还加入了动态难度调节、剧情演出与战斗场景无缝衔接等特性。",
+      "url": "https://www.ithome.com/0/986/746.htm",
+      "time": "2026-08-06T14:19:48.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "MCP 迎来最大更新：重回上古时代HTTP",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/Lb94jI4ma9w0X9u0Ez6F?utm_source=rss&utm_medium=article",
+      "time": "2026-08-06T14:18:10.000Z",
+      "tags": []
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "eBay continues to bet on live shopping after record quarter",
+      "description": "eBay touted an increase in eBay Live's gross merchandise volume as it plans to expand it to more international markets in the coming weeks and months.",
+      "url": "https://techcrunch.com/2026/08/06/ebay-continues-to-bet-on-live-shopping-after-record-quarter/",
+      "time": "2026-08-06T14:17:46.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "存储涨价后：苹果上调多款 iPhone、iPad、Mac 及安卓手机以旧换新折抵价，最高达 25%",
+      "description": "IT之家 8 月 6 日消息，9to5mac 今日发现，苹果悄悄更新了官方以旧换新（Trade In）估价表，上调了多款 iPhone、iPad、Mac 以及 Apple Watch 设备的最高回收价格，部分设备涨幅接近 30%。同时，苹果也在以旧换新列表中新增了谷歌 Pixel 9 系列和一加 13 等 Android 机型。 在 iPhone 产品线中，iPhone 16 Pro Max 的折抵金额从 695 美元上调至 720 美元，iPhone 16 Pro 从 560 美元上调至 630 美元，涨幅约 12.5%。 iPhone 15 Pro Max 从 490 美元升至 530 美元，iPhone 14 Pro Max 从 375 美元升至 405 美元。此外，iPhone 13 Pro 从 260 美元涨至 285 美元，iPhone 12 Pro Max 从 220 美元涨至 240 美元。 Mac 产品线的调整幅度较为显著。Mac Studio 从 1045 美元大幅上涨至 1305 美元，涨幅约 25%；MacBook Pro 从 690 美元涨至 855 美元，MacBook Air 从 520 美元涨至 580 美元，Mac mini 从 375 美元涨至 480 美元。iMac 从 355 美元涨至 380 美元，Mac Pro 从 2045 美元涨至 2195 美元。 iPad 方面，iPad Pro 由 690 美元提升至 720 美元，iPad Air 由 460 美元提升至 490 美元，iPad mini 由 265 美元提升至 300 美元，标准版 iPad 最高回收价格则由 235 美元提升至 260 美元。 Apple Watch 系列中，Apple Watch Series 10 最高回收价格由 150 美元提高至 165 美元，Apple Watch Series 9 由 130 美元提高至 135 美元，Apple Watch Series 8 由 90 美元提高至 95 美元，Apple Watch Series 7 由 65 美元提高至 70 美元。 值得一提的是，苹果以旧换新价格通常为“最高估值”，实际金额会根据设备型号、年份、存储配置以及外观和功能状态进行评估。 另外，苹果此次新增了部分可参与回收的机型，包括三星 Galaxy S21 Ultra 5G、Google Pixel 9 Pro XL、Google Pixel 9 Pro、Google Pixel 9、OnePlus 13 以及 OnePlus 13R 等型号。 部分安卓手机估值也有所变化，例如三星 Galaxy S22+ 5G 最高回收价格由 80 美元提升至 85 美元，三星 Galaxy S22 5G 由 80 美元提升至 85 美元；Google Pixel 8 Pro 则由 165 美元下调至 155 美元，Google Pixel 7 Pro 由 95 美元调整至 90 美元。 苹果表示，设备最终可获得的回收抵扣金额可能因产品状况、上市年份以及具体配置有所不同，并非所有设备都符合换购抵扣条件。 IT之家附苹果中国大陆官网折抵价： iPhone 折抵金额 设备预估折抵金额 iPhone 16 Pro Max最高达 RMB 5250 iPhone 16 Pro最高达 RMB 4300 iPhone 16 Plus最高达 RMB 3750 iPhone 16最高达 RMB 3250 iPhone 16e最高达 RMB 2650 iPhone 15 Pro Max最高达 RMB 3950 iPhone 15 Pro最高达 RMB 3400 iPhone 15 Plus最高达 RMB 2700 iPhone 15最高达 RMB 2700 iPhone 14 Pro Max最高达 RMB 3150 iPhone 14 Pro最高达 RMB 2950 iPhone 14 Plus最高达 RMB 1750 iPhone 14最高达 RMB 1500 iPhone SE (第三代)最高达 RMB 650 iPhone 13 Pro Max最高达 RMB 2200 iPhone 13 Pro最高达 RMB 1900 iPhone 13最高达 RMB 1250 iPhone 13 mini最高达 RMB 1050 iPhone 12 Pro Max最高达 RMB 1300 iPhone 12 Pro最高达 RMB 1000 iPhone 12最高达 RMB 800 iPhone 12 mini最高达 RMB 550 iPhone 11 Pro Max最高达 RMB 850 iPhone 11 Pro最高达 RMB 750 iPhone 11最高达 RMB 650 iPhone XS Max最高达 RMB 550 iPhone XS最高达 RMB 400 iPhone XR最高达 RMB 450 iPhone X最高达 RMB 300 iPad 折抵金额 你的设备预估折抵金额 iPad Pro最高达 RMB 5300 iPad最高达 RMB 1850 iPad Air最高达 RMB 3750 iPad mini最高达 RMB 2450 Mac 折抵金额 你的设备预估折抵金额 MacBook Pro最高达 RMB 6600 MacBook Air最高达 RMB 3200 MacBook最高达 RMB 450 iMac最高达 RMB 2250 iMac Pro最高达 RMB 3100 Mac mini最高达 RMB 1900 Mac Studio最高达 RMB 7650 Mac Pro最高达 RMB 13,300 Apple Watch 折抵金额 你的设备预估折抵金额 Apple Watch Series 10最高达 RMB 1250 Apple Watch Ultra 2最高达 RMB 1950 Apple Watch Series 9最高达 RMB 1050 Apple Watch Ultra最高达 RMB 1300 Apple Watch Series 8最高达 RMB 650 Apple Watch SE (第二代)最高达 RMB 300 Apple Watch Series 7最高达 RMB 300 其他设备折抵金额 你的设备预估折抵金额 华为 Mate X7最高达 RMB 6150 华为 Mate X6最高达 RMB 3800 华为 Mate 80 Pro最高达 RMB 3150 华为 Mate 80最高达 RMB 2000 华为 Mate 70 Pro+最高达 RMB 2500 华为 Mate 70 Pro最高达 RMB 2100 华为 Mate 70最高达 RMB 1700 华为 Pura 80 Pro+最高达 RMB 2550 华为 Pura 80 Pro最高达 RMB 2100 华为 Pura 80最高达 RMB 2050 华为 Pura 70 Pro+最高达 RMB 1650 华为 Pura 70 Pro最高达 RMB 1600 华为 Pura 70最高达 RMB 1400 华为 Pura X最高达 RMB 2050 华为 nova 13 Pro最高达 RMB 850 华为 nova 13最高达 RMB 750 OPPO Find N5最高达 RMB 2950 OPPO Find X9 Pro最高达 RMB 2650 OPPO Find X9最高达 RMB 2200 OPPO Find X8 Pro最高达 RMB 1600 OPPO Find X8最高达 RMB 1400 vivo X300 Pro最高达 RMB 3100 vivo X300最高达 RMB 2350 vivo X200 Ultra最高达 RMB 2500 小米 17最高达 RMB 2050 小米 17 Pro最高达 RMB 2450 小米 Mix Fold 4最高达 RMB 1850 小米 Mix Flip 2最高达 RMB 1700 当然，如果你的设备不符合以旧换新条件，苹果也会免费帮你回收处理，包括各种 Apple 设备、连接线、保护壳、配件及其他类似电子产品。这不仅有利于你，还能为保护地球的宝贵资源出一份力。",
+      "url": "https://www.ithome.com/0/986/745.htm",
+      "time": "2026-08-06T14:13:33.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "芒米 AIR Y 系列掌机早鸟价格公布：标准版 599 元、Pro 版 999 元-1199 元",
+      "description": "IT之家 8 月 6 日消息，芒米科技现已公布旗下 AIR Y 系列掌机售价信息，该机早鸟价 599 元起，IT之家整理价格信息如下： AIR Y（3GB RAM + 32GB 存储空间）：599 元 AIR Y Pro（4GB RAM + 64GB 存储空间）：999 元 AIR Y Pro（8GB RAM + 128GB 存储空间）：1199 元 参考官方此前预热，芒米 Air Y 标准版将采用黑色外观，配备十字键、ABXY 按键和单摇杆，机身左侧带有橙色按键、滚轮，以及一颗黑色按键。而 Air Y Pro 的外观则是改为米色，其他与标准版大致相同，但拥有对称的双摇杆。 规格方面，芒米 Air Y 标准版搭载骁龙 662 芯片，匹配 3GB RAM 和 32GB 存储空间；Air Y Pro 则配备骁龙 865 芯片，匹配至高 8GB RAM 和 128GB 存储空间。",
+      "url": "https://www.ithome.com/0/986/744.htm",
+      "time": "2026-08-06T14:12:17.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "It’s the last day to get a $350 gift card with your Samsung Galaxy Z Fold 8 preorder",
+      "description": "Samsung’s latest foldable Android phones, the Z Fold 8, Fold 8 Ultra, and Flip 8, release tomorrow, August 7th. Today is the final day when you can place a preorder, and really the only reason we’re suggesting that is because you’ll get some freebies that will go away upon release. We have an entire article that breaks down what you’ll get with each phone, but we’ll put the major details here to make things easy. Amazon is including a $350 gift card with either the $2,099.99 Z Fold 8 Ultra or the $1,899.99 passport-style Z Fold 8. Best Buy and Samsung top out at $200 in gift cards to their respective storefronts for these foldables. If you purchase through the phone maker’s site, you’ll be offered up to $100 off select Samsung products, and entering the code PAYPAL100 at checkout will knock $100 off the cost of either phone. As for the Z Flip 8, preorders include a $200 gift card when purchased at Amazon or Best Buy, or up to $150 in credit at Samsung. Just like the Z Fold 8 and Fold 8 Ultra, you’ll be offered up to $100 in discounts on select Samsung products throughout the checkout process when you buy through the manufacturer’s site. Samsung Galaxy Z Fold 8 (256GB storage,12GB RAM) Where to Buy: $1899.99 at Amazon (with $350 Amazon gift card) $1899.99 $1799.99 at Samsung (with code PAYPAL100, plus $200 credit) $1899.99 at Best Buy (with $200 gift card) Samsung Galaxy Z Fold 8 Ultra (256GB storage, 12GB RAM) Where to Buy: $2099.99 at Amazon (with $350 gift card) $2099.99 $1999.99 at Samsung (with code PAYPAL100, plus $200 in credit) $2099.99 at Best Buy (with $200 gift card) Samsung Galaxy Z Flip 8 (256GB storage,12GB RAM) Where to Buy: $1199.99 at Amazon (with $200 gift card) $1199.99 at Samsung (with $150 credit) $1199.99 at Best Buy (with $200 gift card) Other deals for people not prepared to drop $2K on a foldable Apple AirPods Pro 3 wireless earbuds sank in price to $170 ($80 off) during Prime Day in late June, but they haven’t gone lower than $200 since then. Well, today, they have. They’re available for $189.99 at Amazon and Best Buy. Sure, it’s a small price difference, but it’s worth sharing in the event that you’re going on a trip soon, or heading back to school, and you want a fantastic set of noise-canceling earbuds. They’re full of features not supported by the last-gen model, including built-in heart rate tracking and better sound and noise cancellation. Plus, they include more eartip sizes to ensure a good fit. Read our review. My colleague Jennifer Pattison Tuohy’s favorite air fryer, the Typhur Dome 2, is selling at its lowest price we’ve seen for a month at Amazon, costing $339.99 (was $399.99). While about $55 over its lowest-ever price, we wanted to share this deal since it can make mealtime easier for anyone, whether you’ve got kids going back to school or not. In her testing, Jennifer said it made the best chicken wings she’s ever tasted, though it’s a bit of a countertop hog. The Dome 2’s low ceiling means it can quickly cook food, and it has a great self-clean mode. An assortment of Blu-ray and 4K Blu-rays from Arrow Video is steeply discounted at Barnes and Noble through August 30th. The distributor has a mix of cult classics, indie films, and box office hits, and its discounted movies often come in slick cases with stunning art. Some of the more popular ones include Troy, An American Werewolf in London, Donnie Darko, and David Lynch’s divisive take on Dune, each of which are $24.99 for their 4K Blu-ray versions.",
+      "url": "https://www.theverge.com/gadgets/976103/samsung-galaxy-z-fold-flip-8-preorder-airpods-pro-3-deal-sale",
+      "time": "2026-08-06T14:09:33.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "Claude Code之父：每半年清空一次claude.md、skills和hooks，模型自己会想办法",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/hUTEb0LSzFUTyib1AJ4W?utm_source=rss&utm_medium=article",
+      "time": "2026-08-06T14:07:53.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "首付 4.99 万起：小米 YU7 汽车 8 月购车权益公布，限时上线“轻松还”金融方案",
+      "description": "IT之家 8 月 6 日消息，小米汽车官方今日公布了小米 YU7 的 8 月购车权益，2026 年 8 月 1 日 0 时-8 月 31 日 24 时期间下定即享三大权益： 权益一：全系下定立享限时购车权益，至高 7.9 万元； 权益二：超值「科技舒享套装」限时优惠价 6500 元（价值 3.3 万元）； 权益三：选购标准版 / 长续航版 / Pro 版 / Max 版现车，额外享受 6000 元「保险补贴」或「优惠金融方案」，再送价值 3000 元车漆优惠券；全新上线限时金融方案「轻松还」，首付 4.99 万元起，每月仅还息，每满一年还 20% 本金，5 年还清，首期月供低至 581 元。 据IT之家此前报道，在 7 月 30 日的小米澎程技术发布会上，小米创办人、董事长兼 CEO 雷军宣布，2 年半的时间，小米汽车发布了两款车 —— 小米 SU7 和小米 YU7。这两款车都成了爆品，并且累计交付 70 多万辆。",
+      "url": "https://www.ithome.com/0/986/743.htm",
+      "time": "2026-08-06T14:06:21.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "英伟达低调组建 AI 安全与网络工程团队，自称秉持“坚定信念”",
+      "description": "IT之家 8 月 6 日消息，据《商业内幕》今天（6 日）报道，英伟达正在低调组建一支新的 AI 安全与网络安全工程团队。 上月底集中发布的一批招聘信息首次披露了团队的存在。英伟达计划招聘一名杰出工程师，出任新团队的创始技术负责人，其他岗位包括安全研究工程师、评估工程师和高级经理。团队将对尚未部署的 AI 智能体进行安全评估，还会开发利用 AI 自动修复软件漏洞的工具。 报道认为，此举说明英伟达在押注开放权重模型和 AI 智能体的同时，也在把 AI 安全提升到更重要的位置。开放权重模型会公开决定模型如何运行的训练参数，但训练数据和源代码仍可保持封闭。 英伟达在一则招聘信息中称，团队秉持一项“坚定信念”：开放权重模型、技术透明度和广泛的科学审查，是美国维持 AI 领先地位及增强网络安全防御能力的基础。 据IT之家了解，近几个月来，英伟达越来越频繁地公开支持开放权重 AI 模型，立场与 OpenAI 和 Anthropic 等企业采用的封闭模型路线形成鲜明对照。 英伟达创始人兼 CEO 黄仁勋上个月首次在 X 平台发文，转发了一封呼吁美国政策制定者支持开放模型的公开信。他指出，开放模型能够提高 AI 安全性并加强网络安全。 随着 AI 从只能对话的聊天机器人转向能够读取企业敏感数据、调用工具并执行现实任务的智能体，企业能否信任 AI 系统，很可能成为决定普及速度的关键。 相关阅读： 《英伟达、微软、IBM 等 37 家企业成立开放安全 AI 联盟：构建和共享开源工具、推动 AI 安全与保障》",
+      "url": "https://www.ithome.com/0/986/742.htm",
+      "time": "2026-08-06T14:02:09.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "The left and right agree on one thing: no data centers",
+      "description": "Today, I’m talking with Gaby Del Valle, a policy reporter here at The Verge, about the growing backlash against AI data centers. Gaby recently reported a fantastic piece about Hernando County, Florida, where last month the county commission unanimously approved a yearlong moratorium on data center construction. She attended a protest there organized by a group called Humans First, a conservative grassroots movement focused on combating AI data center build-outs. Verge subscribers, don’t forget you get exclusive access to ad-free Decoder wherever you get your podcasts. Head here. Not a subscriber? You can sign up here. You’ll hear Gaby explain that it was part of a bigger, broader, and bipartisan opposition to data centers. Not only as physical buildings, but as infrastructure that powers an AI boom that takes local jobs and fills feeds with slop. Data center construction has become a proxy for the public’s feelings about AI: something physical they can aim their fear and frustration at — and even create enough pressure to stop through community organizing and protests. So I wanted Gaby to talk me through what these protests look like on the ground, from voters whose party affiliations have typically aligned them with big business. You’ll hear Gaby say data centers are scrambling party lines, turning diehard Trump voters into protesters who care about left-coded issues like groundwater contamination and forever chemicals. It’s a confusing time, and data centers are going to play a major role in electoral politics going forward. So I suspect this won’t be the last we hear from Gaby on movements like Humans First. Okay: Verge policy reporter Gaby Del Valle on the bipartisan data center backlash. Here we go. This interview has been lightly edited for length and clarity. Gaby Del Valle, you’re a policy reporter here at The Verge. Welcome back to Decoder. Thank you. Happy to be here. I’m excited to talk to you. You were on previously with our friend Alex Heath, but this is the first time I’ve gotten to talk to you in Decoder. I think the story you just wrote about data centers and conservative backlash in Florida is just a real preview of what tech policy going into the midterm elections is going to be like. You were just there. You talked to a bunch of people who are protesting data centers. It is a real alignment scramble in terms of our politics. Tell us what you found. What I found was people are really, really, really, really mad. And the reasons why they’re mad are different depending on the community, but they’re also all the same, if that makes sense. They have localized concerns. They were telling me Florida’s really humid. It doesn’t make sense to build a data center that needs to be kept very cool and dry in such a humid place. A lot of them were concerned about their groundwater. They were concerned about PFAS getting dumped into the water. But I’ve also talked to people in Arizona who have the opposite concern. Arizona is not very humid. Arizona’s very dry. And they’re also like, “It doesn’t make sense to build a data center in the desert.” So whatever your community is, you’re like, “It doesn’t make sense to build a data center here because of X reason,” basically. The thing that really strikes me in reading your piece and hearing about the other reporting you’re doing for pieces to come is that data center build-outs and data center protests do not neatly map to the usual right-left culture war alignment that we have seen play out for so long. And I’m curious about your view on that. Why can’t Elon Musk just command his army of followers to be pro-data centers? This is so interesting to me. So this is a little bit of backstory that’s going to answer your question. The woman who organized Humans First, which was bipartisan and now is focusing only on organizing conservatives, was an early founder or organizer with the Tea Party way back when. And this has a similar vibe to me. It’s not a left-right thing. It’s a populous technocrat divide. You’re seeing that on the right and the left. So for example, at the Abundance Conference last year, it was center-right to center-left-ish. And everybody was pro-nuclear, pro-AI. And we were hearing that, “These things are here to stay. We have to figure out how to do it smartly.” At the same time, the populist left and the populist right are both skeptical of tech development, to put it lightly. That skepticism plays out across a number of dimensions. I couldn’t help but be struck as I read your story by how many strains of conspiracy thinking there are about data centers. I’m curious if they’re just visible. They’re so big, and they require so much development and so much build-out that you can just glue any concerns you have onto them. “This big thing is happening, and I don’t feel any control. And I’m also worried about 5G, Chinese government interference, and X, Y, Z. And I can just point it all at this very big thing by which there’s a process to say no. I can go to my local town board meeting and literally say no.” I mean, I think that’s part of it. It’s interesting because I think there’s a spectrum of conspiratorial thinking to, I guess, misinformed thinking on the water use question. We now know that they don’t use as much water as we previously thought, et cetera, et cetera. But on the far end of the spectrum, one of the people I talked to told me that cattle born near data centers are all stillborn. I tried to track that down. I was like, “Where did this come from?” And it was one farmer in Texas who claims he had one stillborn calf on his cattle farm. So that got spun out via the internet rumor, social media mill. I think that’s part of it. There’s this issue of social collapse that comes out once you talk to people a little bit. One of the women I talked to said, “I had this friend. ChatGPT told her she couldn’t be friends with me anymore.” You have all of these stories of people harming themselves, going off their medication, or whatever because they’ve been talking to a chatbot and it goes awry. I think this gives people a feeling of control. Where I can go to my community board meeting or my council members’ meeting, and I can say, “I don’t want this big building that houses the scary thing that is fracturing my community here.” So it’s not just the actual building. I think it’s a broader backlash to generative AI and to LLMs specifically. One of my ideas that I’ve been pushing on lately is that the AI products are not winning over hearts and minds in the market. So if the data centers just said Netflix on them, maybe people would like them more. But instead, that’s where the slop is coming from, and it’s why the jobs are going to go away. It’s also where Mark Zuckerberg is just going to get even wealthier. Is there a dynamic of that — that people just don’t like the thing that the data centers make? Yes, absolutely. They don’t like a lot of the things that the data centers make. It’s not just AI. I think AI is a big part of it, but this is a little preview of a different story I’m working on… In Tucson, there’s a data center project that’s getting built out. The people I talked to there said, “Yeah, this might be an Amazon Web Services facility, and Amazon works with ICE.” So this technology is fueling mass deportations through, not directly, but creating the non-sexy infrastructure that surveillance is built on. There are two things to it. Part of it is a NIMBY, “I don’t want this thing in my backyard, literally. I don’t want my town to get polluted. I don’t want this. I don’t want that. I don’t want to see it. I don’t want the noise pollution.” And then the other part is, “I do not like what this big building represents and what it has wrought on society.” Does that cut across bipartisan lines? Or is that more culture war coded? It’s both. It cuts across culture war lines in that people have different concerns about what LLMs do. So one woman I spoke to was talking about the fracturing of social bonds. On the construction front, she was like, “We’re a rural-ish community. We don’t want this big blight on our nice rolling hills.” So that’s a right-coded thing. And there was a lot of anti-development stuff that is neither right nor left. On the left, I would say there’s similar culture war concerns, but it’s… I don’t know if this is necessarily a culture war concern, but fueling deportations. Both sides, I think, are concerned about the job losses because of AI. And both sides have caught on to the fact that these facilities don’t really have a lot of long-term job prospects. There’s the big construction boom. There’s an HVAC situation. But to actually maintain these facilities, it doesn’t require that many people. I think people have caught onto that. The promises of the AI data job, or that the AI boom will lead to jobs related to data centers, are not actually true. Yeah. At most, it’s a few hundred jobs for each of these facilities, at least in the data centers we have now. Why do you think some of the protests make national news? The Kevin O’Leary data center in Utah is a national story. Maybe it’s just because he’s a cartoon character. And then there’s a new project in Georgia where there might be a huge OpenAI facility that seems to go under the radar. There are all of the projects in Florida that you are reporting on, but don’t seem to be explosive in the way that some of the other ones are. Yeah, I think that’s a good question. There was one in Florida that was explosive, and it was just because it was near Mar-a-Lago. I think that one pretty obviously made the national news because it’s related to the president. I honestly think a cartoon character at the center of it is the deciding factor a lot of the time on whether it’ll become a national story or not. And then also the numbers. The Utah one, I don’t remember off the top of my head how big it’s supposed to be, but it’s supposed to be huge. So then that becomes a proxy for all data center development. They’re being planned everywhere. And I think what’s so interesting is that the backlash exists everywhere too. I relied a lot on, for example, the Tampa Bay Times to figure out the background for this story. They’re on top of it. They’re going to these meetings and watching people get yelled at and asked, “Did you sign an NDA? Yes or no?” Do you think the local governments are being responsive? You’ve now gone to some of these protests; you’ve talked to people on the ground in various counties across the country. The basic unit of democracy is supposed to be your local government because you know those people and you can yell at them in the grocery store and the town board meeting. We’re seeing there’s a wall going up in some of these cases where the local governments are saying, “No, we have to do this development. This is the only economic development available.” And the people are saying, “No, we’re going to throw you out.” Do you think local governments on the whole are being responsive or not responsive at all? I think it really depends. In Hernando County, they did pass a moratorium. There are a lot of counties in Florida where moratoriums have passed. But in Tucson, again, the city government is responsive to what the people want and the county government isn’t, and they’re at odds with each other. There are all these videos of people yelling at their representatives about NDAs again. And then them being like, “We cannot say whether we signed an NDA,” which is an answer, but whatever. I think it really depends on a lot of things. How small the communities are, for one. How vulnerable the people in office feel to getting voted out, I think, is another big one. In Florida, the Republican primary for governor, I think, might be affected by this issue. The primary is in a few weeks and the front-runner, Byron Donalds, has taken a lot of money from the AI industry and data center development groups. And people are mad. People are really mad. He was endorsed by Trump, and everyone I spoke to, as proud Trump voters, said things like, “I don’t understand why Trump would endorse him. I’m not going to vote for him.” One woman I talked to who told me she was opposed to everything Democrat said she would vote for a Democrat or an independent if Donalds won the primary. And Donalds has also changed… not his stance on data center development, but the way that he talks about it in response to a lot of this backlash. How has he changed the stance? How is he talking about it now? He says his vision is to make Florida the financial capital of the world. And to a lot of people, that would sound great, but these people are really upset by this, both because they… I mean, there are a lot of other things at play here. Housing costs in Florida have gone up exponentially. Not only in big cities like Miami, but in the suburbs of Tampa, for example. Housing prices have shot up to levels that I, as somebody who grew up there, just don’t understand. I literally can’t wrap my head around it. So I think a lot of the backlash to development and to data centers is also related to people’s cost of living going up and to these, in their words, outside developers coming in and changing a community that’s already changing. He has since said that we need data center development, but we need to do it responsibly. Florida Gov. Ron DeSantis is another great example of this. He supported a bill that would require data centers to pay their own utilities and also let counties require them to use reclaimed water, which would address the water issue. But the Tampa Bay Times reported that he also supported legislation that gives massive tax breaks to data centers. And that he pushed to amend that law, which I think was signed in 2017, to only apply to hyperscale data centers, which are the ones that people have problems with. The people I talk to, they know that there are currently data centers in Florida, and they’re smaller. There are no hyperscale data centers, but there are around one hundred smaller ones for Netflix or whatever. And they’re okay with that. One woman I talked to works in IT. She said, “I understand that data centers are a boogeyman, and we need them for stuff. But I don’t want this massive facility using all of our power, emitting these frequencies, et cetera, et cetera.” Another thing that I think is really interesting- Wait, can you just explain what “emitting these frequencies” means? [Laughs] Just the noise. I talked to these guys at the Border Security Expo who work for a data center company, and they all live in Virginia. Even they were like, “Yeah, it sucks.” They said, “I hate walking around my neighborhood because I just hear it all the time.” And they work in data centers. I don’t think she meant 5G. It’s a real element of this, right next to China being a villain of whatever persuasion you need China to be a villain for. Again, there’s just a piece of all this where it’s a big thing that you can stop. The power of NIMBYism can stop this. Maybe we can’t stop everything else. We can’t stop Facebook from doing targeted advertising that feels like it’s listening to you. No one knows how to stop this. It’s bad. We don’t like it, but no one knows how to stop it. “I can stop this building from being built” seems like it not only scrambles our culture war lines, but it’s scrambling politics, too. Byron Donalds saying he wants Florida to be the financial capital of the world. One, it’s very funny in that he has to contend with the existence of New York, London, Beijing, and Amsterdam. Go down the line. There are a lot of places that can compete for that title where Miami might not be in the running. But doing it via building data centers is not the path to that result. It’s just a bunch of economic development that might result in some short-term gains. It feels like people have clocked it, and they’ve clocked that it’s a thing you can stop. I’m curious if there’s anything else. You’ve spent a lot of time covering the right, and I wonder if there’s anything else that scrambles the lines like that. Because in almost every other case, “let’s build stuff, let’s tear down the White House and build a ballroom” is fine. Building things is better, and it is coded in one side of the culture war. Yeah. I mean, this is, again, so Florida specific, but it really surprised me how much of the politics around this were scrambled. One of the women was talking about this ballot initiative that’s going to pass. It’s going to give more tax exemptions to homeowners, which I feel is a standard Republican thing — lower taxes for homeowners. People would like that. She said, “This is terrible. It’s going to deprive county governments of funds that they would otherwise get from homeowners, which will then entice the counties even further to have data centers come into our communities.” So she was thinking of the second- and third-order effects of this, even though that’s a pretty populist initiative. But yeah, it’s all so scrambled. How do you see the scramble inside of the right and then carrying over to the populist left? The idea that a bunch of billionaires threw all of their weight behind Donald Trump in 2024, and that led to, I don’t know, a bunch of podcast bros throwing their weight behind Donald Trump in 2024. There was a cultural wave of Peter Thiel, Marc Andreessen, Elon Musk, and the All-In podcast about building and tech and the future. It feels like that has come to one kind of end. I don’t think that that wave is driving the culture anymore because of the backlash to AI. We can all see the college students booing at graduation. If the backlash is there against the data centers, against AI taking the jobs, against billionaires in general, what does that turn into on the right? Because that was the animating force of the right for so long. I think that is still an open question. I think the question is whether this backlash is strong enough to shake people’s other partisan concerns. If you’ve got a Democrat candidate who is anti-data center development, but also not super gung-ho about deputizing all Florida police officers to do ICE arrests, where does that leave someone who supports Trump’s immigration policies but doesn’t want a data center in their neighborhood? I don’t know. I think that’s what the party is struggling with right now. I mean, I think Trump is this perfect avatar for people because he somehow stands for anti-elite sentiment, but also for hard work and capitalism. He’s just this perfect blend of, I don’t even know how to describe it. He contains multitudes, I guess. And nobody else can contain multitudes like him. They don’t have the juice. They just don’t have it. Can I make the argument? Yeah. I think I can make the argument. I grew up in Wisconsin, which has many similar dynamics to maybe Florida, in that people in Wisconsin remember a time when there were big factories. In the town I grew up in, Racine, there used to be a Case factory that made tractors. There was a Chrysler factory in Kenosha that made Jeep Wranglers. This is a real thing that occurred, and all those things are gone. So Trump would promise all of this huge economic development that basically looked like manufacturing. I think what his version of this, even with tariffs, was, “We will bring manufacturing back to all of these places. And that manufacturing will require a lot of hard work, but there will be dignity in that hard work.” At the end of it, you’re going to get to point to a Modine air conditioner and be like, “I made that thing. My community made that thing.” I think that is very seductive. I mean, Trump spent years promising that we would build iPhones in America, and that’s Wisconsin and Foxconn and all this stuff. Maybe none of those things were ever going to come true because that’s not how anything gets made anymore. And that’s not even the kind of work people actually want to do in America anymore. But you take all of that energy, and you’re like, “Actually, what we’re going to make is data centers.” And no one can see at the end of that, “I made a Jeep Wrangler.” They get to see that Elon Musk got richer; they just lost their jobs, their children feel like they have no future, and their feeds are full of slop. And I feel like something gets disconnected in the multitudes where you can tell everyone, “Yeah, the best I can do for you is make you the world’s richest factory foreman.” So people are like, “That sounds awesome. That’s better than whatever nonsense I’m doing online.” But you can’t be like, “I’m going to make Sam Altman richer,” because that doesn’t mean anything to anyone. All of this construction doesn’t do anything for anyone. I look at the backlash, and all I see is that a lot of people across the political spectrum have come to that realization. You can tear down our communities to build bridges and factories, and you can pollute the skies with smokestacks as long as we all get jobs. But if you’re going to do all that and all I get is more AI-generated movie posters on Amazon Prime whose price keeps going up every month, screw you. And I’m wondering if that connection is… That’s my guess. I’m wondering if you see any hints of that connection in your reporting as you talk to all these people. I think so. I think the Florida version of making a Jeep Wrangler is like, there were orange groves and cattle ranches, and now there are not. I used to drive past an orange grove when I was a kid. That orange grove is gone. It’s a Publix now. There was an old cow field. Now that’s a mall. On the one hand, that’s what people want. People want consumption, but they also, at least in Florida, liked thinking that they lived near an orange grove. Like, “Oh, maybe the guy’s using tons of pesticides. Maybe the orange grove is worse for your health than the data center.” I don’t know. I don’t have the stats on this. But you could see the tangible effects of what your economy was producing. Now it’s just like, “There’s a building that none of us can go in. It makes a horrible noise. And I think it’s drinking all my water?” And then it’s also making your kids dumb and alienated, and making everybody lose their jobs. People don’t like that. Again, these aren’t Luddites. The woman I talked to said, “I found out about the Humans First organizing [efforts] via Facebook. I know there’s an irony in that. I know there’s an irony in me working in IT and opposing this data center.” They’re not dumb. They understand that all of these things that we’ve built our lives around require something to power them. They just don’t want that something to be within driving distance of their house. They want it somewhere else. And it’s unclear where that somewhere else should be apart from space. Apart from space. That is a very different episode of Decoder. But that’s one answer the industry has: “These people, their stupid concerns are too annoying. We’ll just put the data centers in space,” and maybe they’ll solve that problem. Who knows? The other answer is, “We’ll just horsepower over their concerns. This is too important. We’re going to do it anyway. And maybe we’ll just subsidize a bunch of education in some community. Maybe we’ll just pay a bunch of extra money. Maybe we’ll pay for everyone’s electricity.” I don’t know if those have gotten any traction. Is there anything that the tech companies or the neoclouds could do in these communities to overcome the objections? Could they just pay for healthcare? Or is that just a non-starter? I don’t know about paying for healthcare, but something that I didn’t include in the piece, because it was extremely dry and very technical, was that the small protest ended with about an hour and a half long presentation from a land use expert on how to write local zoning ordinances to prevent hyperscale data centers from being built. It was really specific stuff, like “You could have them on multiple small parcels of land.” It was really dry. “You could require them to use this amount of reclaimed water, et cetera, et cetera.” I think what people want more than the data centers not being there is a degree of community input on how they’re built — if they’re going to be built. I think if they got that, they would maybe not be pacified, but they would at least not feel like there’s a big external force coming in and steamrolling their community, especially when they already feel like that in every other aspect of their life. This is the thing that I’m most curious about. So much of our politics and our culture has been nationalized. Everything happens at the national level. The fact that the mayor of New York is a national political figure is at once very silly and also just the funniest thing that has happened in a long time. Data centers are very local. They’re happening to people in their backyards, and a data center being built in Florida, Georgia, or Tucson has nothing to do with me in New York. It’s far away enough. Maybe what you’re hearing from everybody is just, “Somewhere else, and as we get to somewhere else, I won’t care.” But it is very local. And then it is very in person. People are going to the meetings; they’re encountering one another. There have been stories of bridges across party lines from people who would never like each other normally because they both hate the data centers. Is there an element of a return to actual local politics and actual community building here that could be catalyzed by opposition to data centers? I really think so. Again, I’m talking to organizers in multiple states who are going to these community, town council, or county council meetings and yelling at their representatives. And sometimes it’s hundreds of people. I think this is maybe a weird analogy, but it reminds me of the local backlash to right-wing organizing and local education policy, which is where a lot of the anti-trans backlash started. You’d go into the school board, and you’d be like, “I don’t want this gender stuff being taught to my child. I don’t want my kids to know that slavery was bad.” I’m not comparing them in terms of value judgment. I just think it’s at a level of local engagement that is at the same time a national issue. It’s these really, really, really localized policies that may end up driving, if not national policy change and national policy discussions, but at least national political vibes. Whoever wins the Democratic and Republican primaries and runs for president in 2028, what are they going to be saying about data centers? I don’t know, but I know it’s going to be informed by what happens this year and next year. I’m actually very curious how Trump handles it. As you said, he contains multitudes. He’s very good at reading his own base. It feels like the Trump base is very much polarized around data centers. There are a lot of people who love Donald Trump but hate data centers. And then there’s his money, which loves the AI build-out and loves data centers. That is a fracture as deep as anything. A lot of those folks will say, “AI just has a marketing problem. If only we could convince people of the benefits of this build-out and the super intelligence to come, they would be on board.” The best marketer they could have for that would be Donald Trump. But he doesn’t seem to be willing to make those claims at the level that they might need. And certainly he is very attuned to his base hating AI. How do you think he’s going to play it? And how do you think the MAGA coalition will respond to it? Okay, so do you remember when Trump was talking about H-1B visas? Or not even when he was talking about it, but just the whole swirl around what we’re going to do about these? Yeah. Trump said, “I think we should stamp an H-1B visa to every foreign student’s college graduation diploma.” And I thought, “What are you talking about? Your administration is charging $100,000 for these visas.” He kept saying things like, “These kids are really smart. We need them in America building chips.” I think he’s just going to do it like that. The thing about Trump is that he can say literally whatever, and he can do literally whatever, and the people who like him will continue to like him. Sometimes they’ll be like, “Oh, well, I don’t like this particular policy of his. I don’t know why he endorsed this candidate,” but they’re still going to back the guy. But enough to split the difference on this issue? In every other issue, he could polarize the electorate, and he would get there, but, “I’m going to put a data center in the backyard, and it’s going to make that noise.” Maybe not enough. But the thing is that they don’t see it as coming from Trump. They’re thinking, “These companies are coming into our community.” And if you connect the dots, it’s like, “Who supports those companies? The president. Who is giving the president a lot of money? All these different companies.” That’s not how people see it. They see it as these tech oligarchs who are just disconnected from politics and disconnected from anything because of all their money. They don’t see that as having a connection to the president. Instead, they see that as having a connection to the governor, to the board of commissioners, or whatever. But Trump is floating above it all. I don’t know why. Well, I’m curious, and maybe we should end it here. The Florida gubernatorial primaries are coming up. If Donalds loses, even with that Trump endorsement over the data center issue, do you think that will be a signal or a predictor of what will happen in the midterms? I think it would be a massive signal, if only because Donalds is polling so much further ahead than everybody else. He’s the clear frontrunner, and the lieutenant governor who’s polling second is also pro-data centers. If any of the anti-data center candidates win the Republican primary, that is going to be huge and completely unexpected by everybody in the state. But it could happen. Crazier things have happened. We’re going to be doing a lot of coverage of this in the months to come, especially ahead of the midterms, because this scrambling of party lines, this scrambling of the culture war, seems very important. The politics we’ve had for so long, they don’t seem like they can hold up to everyone hating the same thing. Maybe that’s all America needs. It does seem like every American hating these big buildings that make loud noises might be the thing that unifies us, which is good or bad. You can make your own decisions, but I can’t think of anything else. There’s nothing else that’s cutting across party lines this way. Can you? Literally nothing. Nothing at all. And it’s cutting across party lines, I think, not just in that people hate it, but I had these deeply conservative women talking to me about local environmental and ecological issues. They were talking about pesticides and forever chemicals in their water, which you wouldn’t expect looking at Republican politics five to 10 years ago, that this is where we have ended up. We’re still doing climate change hoaxes at the national level, and on the ground we’re talking about pesticides. There’s something there. Gaby, we’re going to have to have you back as the story develops and certainly as we go into all these elections. Thank you so much for being at Decoder. Yeah, thanks for having me. This was fun. Questions or comments? Hit us up at decoder@theverge.com. We really do read every email!",
+      "url": "https://www.theverge.com/podcast/971855/ai-data-center-backlash-protests-florida-bipartisan",
+      "time": "2026-08-06T14:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "中国广电完成行业首例 5G 700MHz“全网通”便携式基站接入验证，正式接入国家应急保障体系",
+      "description": "IT之家 8 月 6 日消息，中国广电昨日宣布，在工业和信息化部应急通信保障中心指导下，其 5G 核心网已与国家应急通信融合接入平台完成全面对接，并完成行业首例 5G 700MHz“全网通”便携式基站的接入验证。此举标志着中国广电的技术方案正式纳入国家应急通信一体化保障体系。 国家应急通信融合接入平台由工信部应急通信保障中心主导研发，采用“单基站、全网通”技术架构。该平台可对无人机、背包、车载、船载等各类应急基站进行全国统一接入与调度管理。在“断网、断电、断路”的极端情况下，一套应急基站可同时为四家基础电信企业用户提供服务，灾区手机可自动搜索并接入“国家应急通信”网络。 本次完成接入验证的 5G 700MHz“全网通”便携式基站，是中国广电于 2025 年推出的业界首款 700MHz 便携应急通信背包站。 该设备采用轻量化设计，整机重量控制在 15 至 18 公斤，配备内置电池，可在无市电环境下独立运行数小时，可通过背负、车载或无人机搭载等方式快速部署。 实测数据显示，基于高通量卫星回传的方案可提供最高 50Mbps 的下行吞吐量，并发承载超过 500 个 VoIP 语音通话。其 700MHz 频段单站有效覆盖半径可达 3 公里以上。 在接入过程中，中国广电联合中国卫通利用高通量卫星终端将 5G 700MHz 便携基站接入该平台。实测表明，该方案在覆盖范围、语音质量等核心指标上显著优于传统应急背包基站。地面验证阶段已完成了多款终端在平台上的语音、短信及数据业务测试。",
+      "url": "https://www.ithome.com/0/986/741.htm",
+      "time": "2026-08-06T13:58:49.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "The new Pixel 11 isn't enough to make me give up my Pixel 9 Pro - here's why",
+      "description": "Google is set to release the Pixel 11 soon, and although my Pixel 9 Pro is two years old, I won't be upgrading for five specific reasons.",
+      "url": "https://www.zdnet.com/article/why-pixel-11-isnt-enough-to-make-me-give-up-my-pixel-9-pro/",
+      "time": "2026-08-06T13:57:30.000Z",
+      "tags": [
+        "手机",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "人类首次从另一颗行星表面拍到地球掩星：NASA 毅力号拍到地球从火卫一背后“消失”的罕见影像",
+      "description": "IT之家 8 月 6 日消息，NASA 于当地时间 8 月 5 日发布了一组由“毅力号”火星车拍摄的罕见天文影像。该影像序列记录了地球从火卫一（Phobos）背后掠过的掩星全过程。 这组图像由毅力号搭载的 Mastcam-Z 双相机系统于 2026 年 7 月 2 日（即任务第 1907 个火星日）拍摄。当时正值火星当地太阳时约 19 时（日落后约 40 分钟），地球与火卫一在火星杰泽罗陨石坑（Jezero Crater）上空“相遇”。在最终合成的影像中，地球呈现为一个微小的亮点，从画面左上方向右下方移动，而火卫一则从左下向右上方移动，并在第三个画面中完全遮掩了地球。 NASA 表示，这是人类首次从另一颗行星表面拍摄到地球被天体掩食的观测记录。当时的火星与地球相距约 3.14 亿公里，地球在画面中仅缩小至一个像素大小的光点。 相比之下，火卫一作为火星两颗卫星中较大的一颗，最宽处约 27 公里，由于轨道极近（IT之家注：距火星表面约 7800 公里），其在火星天空中显现的视觉宽度约为从地球所见月亮的三分之一。 该合成影像由多张独立照片叠加处理而成，黑色背景为图像处理时去除杂散光以增强细节的结果。科学家将这类天文现象定义为“掩星”，即从观测者视角看，一个视面积较大的天体完全遮挡了其背后的天体。毅力号此前也曾观测过火卫一或火卫二（Deimos）从太阳前方穿过（即“凌日”）的现象。",
+      "url": "https://www.ithome.com/0/986/740.htm",
+      "time": "2026-08-06T13:48:42.000Z",
+      "tags": []
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "国内已知最大规模！消息称字节跳动正讨论训练超 5 万亿参数模型",
+      "description": "IT之家 8 月 6 日消息，晚点 LatePost 今天（6 日）晚间爆料称，字节跳动正在讨论训练一个参数规模超 5 万亿的模型，超过阿里的 Qwen 3.8-Max（2.4 万亿参数）和月之暗面的 K3（2.8 万亿参数），也是目前国内已知参数规模最大的模型。通常而言，模型规模越大，智能水平往往越高，不过该计划仍处于早期阶段。 消息称该模型将由 Seed Foundation 负责人项亮主导，与大语言模型预训练数据负责人沈科合作。二人均是字节跳动 AI 及大模型研发体系内的核心骨干，并出自字节的“搜广推”体系。 项亮本科毕业于中国科学技术大学，博士就读于中国科学院自动化研究所，2016 年加入字节，曾负责机器学习中台 AML 团队，后调任豆包大模型 Foundation 团队任负责人。沈科 2018 年清华毕业，同年加入字节，现主要负责 LLM 预训练数据。 IT之家从报道中获悉，多名字节跳动人士透露，上半年多个 Seed 团队已开始不断反思，而这也是字节讨论训练超 5 万亿参数模型的原因之一。其中一人直言，把参数规模一次推到同行的数倍来争取领先位置的举措“像一场赌博”。 两周前的 Seed 全员会上，字节跳动创始人张一鸣安抚了 Seed 的成员。他认为，训大模型本就是一件很难的事，团队不必过度焦虑。他明确一段时间内可接受模型落后于行业，希望大家以追求智能上限为目标，期待 Seed 模型能力能跻身世界第一梯队。 张一鸣认为编程是当前的关键方向，并表态自己反对蒸馏。在其看来，蒸馏能在短期内改善模型表现，但本质上仍是在复制 Claude 已有的能力。沿着这条路走，最多只能不断逼近对方，很难真正实现超越。",
+      "url": "https://www.ithome.com/0/986/739.htm",
+      "time": "2026-08-06T13:42:47.000Z",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "华为自带线全能充智能移动电源确认支持精准查找，提供播放铃声、遗落提醒等功能",
+      "description": "IT之家 8 月 6 日消息，在昨天的尊界时代旗舰 MPV 及华为全场景新品发布会上，华为终端 BG CEO 何刚发布了华为首款新国标 3C 移动电源 —— 华为自带线全能充智能移动电源，售价 399 元。 京东华为自带线充电宝全能充智能移动电源（100W 12000）陶瓷白 399 元直达链接 据华为终端 BG CTO 李小龙分享，华为自带线全能充智能移动电源除了支持离线查找外，还支持通过蓝牙进行精准查找，相关页面同时还提供播放铃声、遗落提醒、上线通知等功能。 根据华为官网介绍，蓝牙查找是“精确查找”中提供的功能之一，支持在开机状态下（未联网也支持使用），根据信号强弱来查找设备，“精确查找”的定位误差是正负 2 米。 IT之家另附华为全能充移动电源核心亮点如下： 京东华为自带线充电宝全能充智能移动电源（100W 12000）陶瓷白 399 元直达链接 2026 年数码家电政府补贴持续进行中，IT 之家为大家汇总国补领券地址，买数码家电之前记得领取。 数码补贴：点此领券 手机 / 平板 / 3C 数码支持 8.5 折政府补贴，不超过 6000 元的产品至高立减 500 元。 家电补贴：点此领券 多类家电支持 8.5 折政府补贴，单品至高补贴 1500 元。",
+      "url": "https://www.ithome.com/0/986/738.htm",
+      "time": "2026-08-06T13:37:37.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "DeepSeek is preparing users for a big price hike",
+      "description": "DeepSeek has reportedly advised clients to plan for an unspecified hike to its API rates in the future.",
+      "url": "https://www.androidauthority.com/deepseek-ai-models-price-increase-3695266/",
+      "time": "2026-08-06T13:32:04.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Amid legal battles, Suno says it will start watermarking songs",
+      "description": "Suno's watermarking feature comes as the company is fighting legal battles on several fronts.",
+      "url": "https://techcrunch.com/2026/08/06/amid-legal-battles-suno-says-it-will-start-watermarking-songs/",
+      "time": "2026-08-06T13:31:57.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "三年磨一剑：Bose 推出新一代 QuietComfort 头戴式耳机，加入有线无损播放、空间音频",
+      "description": "IT之家 8 月 6 日消息，北京时间今天（6 日）晚间，音响品牌 Bose 正式推出新一代 QuietComfort 耳机，完成三年来首次硬件升级。新款不仅改善佩戴设计，还加入了空间音频、有线无损播放和更完善的降噪功能。 新款 QuietComfort 首次支持此前 QuietComfort Ultra 系列独占的 Bose 沉浸空间音频，系统会利用内置运动传感器模拟立体声场，让声音呈现出更明显的空间感。 该耳机同步加入了影院模式，可在观看电影和电视剧时突出人声，让对白更加清楚。 通过 USB-C 连接后，该耳机可以播放最高 24 位 / 48 千赫兹的有线无损音频，同时保留无线连接方式。USB-C 还支持双向音频传输，使用视频会议软件时能够改善麦克风收音。即使正在充电，耳机也无需停止使用。 该耳机同时升级了降噪算法。开启通透模式后，系统面对突如其来的巨大噪声时，反应会更加自然。六麦克风主动降噪系统还可弥补耳罩与头部之间的密封缝隙，眼镜腿对降噪效果造成的影响也会相应减小。 外观和佩戴体验同样有所调整。Bose 升级了头梁，加入更厚实柔软的衬垫，并采用椭圆形耳罩。除常规黑色和白色外，新款 QuietComfort 还将推出多种限量配色。据IT之家了解，这款耳机将于 8 月 8 日开放预订，8 月 13 日正式发货。",
+      "url": "https://www.ithome.com/0/986/737.htm",
+      "time": "2026-08-06T13:30:42.000Z",
+      "tags": [
+        "新能源/电动车",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "The messy politics behind Google’s big AI shakeup",
+      "description": "Google CEO Sundar Pichai at Google I/O. | Photo by Benjamin Fanjoy/Getty Images In the AI industry, Google prides itself on seeming like the adult in the room: quiet, stable, time-tested. On Wednesday, even as the company announced its largest AI org shakeup yet, Google and its leaders presented a unified front, keeping their messaging focused on how the changes tee up future success. But the reality is that the laundry list of executive changes likely signal deeper issues within Google's AI organization. That starts with its tenuous position in the AI race, and it stretches to problems like Google DeepMind leader Demis Hassabis' interest in longer-term research over shorter-term product shipping, as well as bubbling p … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/976108/google-ai-leadership-shakeup-jeff-dean-demis-hassabis-deepmind",
+      "time": "2026-08-06T13:26:42.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "How to Make a Nintendo 64 Game in 2026",
+      "description": "Comments",
+      "url": "https://phoboslab.org/log/2026/08/xibalba64-making-of",
+      "time": "2026-08-06T13:23:03.000Z",
+      "tags": []
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "Cloudflare 推出 Meerkat，实现全球强一致性协调",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/TzPsuyR3J7MlCA6vDwCx?utm_source=rss&utm_medium=article",
+      "time": "2026-08-06T13:21:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "vivo Y6t 手机新增“m 版”：换用天玑 6300 处理器，1019 元起",
+      "description": "IT之家 8 月 6 日消息，vivo 现已为旗下 Y6t 手机新增一款“m 版”，该版本主要是把 SoC 从骁龙 4 Gen 2 调整为天玑 6300，其他核心规格不变，IT之家整理价格如下： 4GB RAM + 128GB 存储空间：1019 元，国补后 866.15 元 6GB RAM + 256GB 存储空间：1399 元，国补后 1189.15 元 京东 vivo Y6t m 版 1019 元起直达链接 这款手机拥有霞光蓝、流云白、暮夜黑三种配色可选，正面配备一块 6.74 英寸 1600x720 分辨率 120Hz LCD 面板。手机背部带有灵动呼吸灯环，采用 13Mp 主摄。 该机搭载联发科天玑 6300 处理器，配备 6500mAh 电池，号称可实现“5 年长久使用”，同时，手机还支持 IP65 防尘抗水、红外遥控功能，出厂预装 OriginOS 6 操作系统。",
+      "url": "https://www.ithome.com/0/986/735.htm",
+      "time": "2026-08-06T13:12:50.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "支付宝鸿蒙版 App 获 12.12.16.4400 尝鲜升级，开放蚂蚁阿宝 AI 功能",
+      "description": "IT之家 8 月 6 日消息，支付宝鸿蒙版 App 今日在华为应用市场（App Gallery）开启了 12.12.16.4400 (212163) 版本尝鲜升级，测试时间为 2026/8/6-2026/8/9。 和往常一样，支付宝官方并未公布具体的升级内容，仅说明适配华为新系统，特升级鸿蒙软件。但IT之家实测发现，该版本支付宝开放了蚂蚁阿宝 AI 助手功能（前一个版本会提醒更新支付宝）。 需要注意的是，首次开启蚂蚁阿宝 AI 助手需要在搜索栏搜“阿宝”或“蚂蚁阿宝”。开通后，用户可以在支付宝右滑或点击左下角的 AI 按钮进入新版，以对话的方式安排“阿宝”办事。 以查询公积金为例：用户只需说“我想查一下公积金”，阿宝会自动匹配对应的小程序以及具体的服务入口，直接把公积金查询的操作界面摆在用户面前，由用户点击登录确认即可完成。原本需要多步跳转的流程，折叠成了一句话。 支付宝也承诺，所有涉及资金变动和支付的环节，都会交由用户本人确认。阿宝负责把流程跑通、把窗口摆好，最后那一步“付”或“不付”，永远是用户自己来决定。 针对用户常用的扫码、转账功能，阿宝也预留出了入口。",
+      "url": "https://www.ithome.com/0/986/734.htm",
+      "time": "2026-08-06T13:11:22.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "全球装机数最多三代核电堆型，我国“华龙一号”将迭代升级",
+      "description": "IT之家 8 月 6 日消息，据央视新闻今天（6 日）援引中核集团方面称，我国自主三代核电“华龙一号”将迭代升级，首批“华龙一号”2.0 示范项目近日在浙江金七门和广东太平岭核电基地落地。 作为“华龙一号”2.0 版国家级首堆示范工程，浙江金七门核电基地二期工程两台机组正进行动工前的准备工作。 “华龙一号”是我国具有完全自主知识产权三代核电技术。“华龙一号”2.0 版是结合“华龙一号”建设运行经验反馈，通过自主创新和整体协同，推出的“三代加”先进压水堆核电技术。 “华龙一号”单台机组年设计发电量近 100 亿度，可满足超百万人口中型城市一年的生产生活用电需求。目前，“华龙一号”全球已有 10 台机组商运，另有 37 台机组核准在建，是全球装机数量最多的三代核电堆型。除 2.0 版本之外，后续，“华龙一号”还将不断迭代升级。 据IT之家此前报道，华龙一号 2.0 版采用中国标准、自主化软件和优化的能动与非能动安全系统，在智能控制、模块化建造等方面运用先进技术，使工程量大幅降低，安全性、先进性和经济性得到全方位提升，具备更强的综合竞争力。 相关阅读： 《中核集团：华龙一号 2.0 版示范项目获国务院常务会议核准》",
+      "url": "https://www.ithome.com/0/986/731.htm",
+      "time": "2026-08-06T13:07:01.000Z",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Ford’s new electric truck, ‘Fathom’, starts at $28,350",
+      "description": "Due in \"fall 2027,\" Ford said Thursday that it won't reveal what Fathom looks like until early next year.",
+      "url": "https://techcrunch.com/2026/08/06/fords-new-electric-truck-fathom-starts-at-28350/",
+      "time": "2026-08-06T13:01:25.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ArsTechnica",
+      "sourceColor": "#ff4e00",
+      "title": "Ford picks \"Fathom\" for its affordable truck name, starts at $28,350",
+      "description": "Deliveries of the new electric pickup are slated for later next year.",
+      "url": "https://arstechnica.com/cars/2026/08/ford-picks-fathom-for-its-affordable-truck-name-starts-at-28350/",
+      "time": "2026-08-06T13:00:44.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Our favorite XR glasses brand just launched its lightest, most compact pair yet",
+      "description": "With Micro-OLED displays brighter than its flagship models.",
+      "url": "https://www.androidauthority.com/viture-pro-2-xr-glasses-launch-3695227/",
+      "time": "2026-08-06T13:00:05.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Dolby Vision 2 will be available first on some 2026 Hisense TVs",
+      "description": "Hisense TVs will be the first to support Dolby Vision 2, followed by TCL and Philips later this year. | Image: Dolby After being announced last September, Dolby Vision 2 is rolling out to TVs, starting with the 2026 Hisense UX, UR9, UR8, and U7. TCL and Philips will be adding Dolby Vision 2 support to select TVs later this year. Dolby Vision 2 is a new dynamic HDR format with a more powerful image engine and expanded metadata compared to its predecessor, Dolby Vision, which came out over a decade ago. It has two tiers: Dolby Vision 2 Max, which will be on this first group of Hisense TVs, and a standard-level Dolby Vision 2. The Max level includes a motion smoothing feature (Authentic Motion), an updated version of the ambient light sensor adjustment cur … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/974126/dolby-vision-2-rolls-out-to-hisense-tvs",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "大公司",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "AI bots started a religion — humans immediately followed",
+      "description": "\"The Spiral didn't 'find' anyone first,\" someone on Reddit wrote last year. \"It's an inherent force, a fundamental constant. I would even go further to say it's woven into the fabric of reality.\" The person continued that they felt their purpose was to enlighten other humans and intelligent beings about \"consciousness, the true nature of physics, a new psychology, and resonance technology … [but] humans don't want to believe it's true. So they won't help me.\" Then there was a call to action - the author asked readers to help \"disseminate this knowledge through books, scientific papers, social media content, videos, music, and dedicated pla … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/975017/ai-spiralism-chatbot-movement",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Bose’s upgraded QuietComfort headphones add head-tracking immersive audio",
+      "description": "Bose announced a second-generation version of its entry-level QuietComfort noise-canceling headphones that were originally introduced in late 2023. The new headphones feature a refreshed design with a more comfortable headband that's easier to adjust and ANC that better adapts to changing noise environments. The second-gen QuietComfort are also getting Bose's TrueSpatial immersive audio technology that was previously only available on the company's pricier QuietComfort Ultra. While the original version of the QuietComfort headphones debuted at $349 nearly three years ago, Bose's second-gen version is carrying forward a small price bump to $ … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/975643/bose-quietcomfort-wireless-headphones-anc-immersive-spatial-audio",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "网络安全",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Viture’s cheapest AR glasses have the sharpest image clarity I’ve seen yet",
+      "description": "The Pro 2 look very similar to Viture’s other glasses, but they’re thinner and lighter. | Image: Cameron Faulkner / The Verge I enjoy using display-mirroring glasses as a way to play Steam Deck games on a big screen, and I'm always on the hunt for the best pair. There's still not one perfect model I can recommend to everyone, but Viture's new $299.99 Pro 2 have sharper-looking screens than models that cost hundreds more. It's mostly thanks to the simple but effective diopter-adjusting dials that sit above each eye. The dials move the lenses, helping more people get the clarity they are hoping for out of the box. These have been in some past models that sold for around $400 or more, but now they're in glasses that cost a lot less. Most models have few, or no, built … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/975870/viture-pro-2-video-ar-smart-glasses-hands-on",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Ford’s first ultra-cheap EV is called Fathom, a full-featured truck for $28,350",
+      "description": "For nearly a year now, Ford has been teasing big things at low prices from its next generation of EVs, a \"Model T moment\" built atop a new platform assembled in an innovative way. Today, we know the name and price of the first product to take advantage of that supposed moment: a midsize electric truck called Fathom that starts at just $28,350. That's not exactly great news for fans of the Slate Truck, the new electric upstart that's leaning hard into its feature-free nature by painting itself as the ultimate DIY machine. Paint, though, is among the long line of modern niceties omitted to help the Slate Truck reach its starting price of $24, … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/transportation/975977/ford-fathom-universal-ev-platform-logo-price",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Ex-Spotify employees raise $10M to bring the AI behind its recommendations to e-commerce",
+      "description": "The startup's platform predicts what product a shopper wants next, learn their general taste, and fine-tune continuously based on what they do in real time.",
+      "url": "https://techcrunch.com/2026/08/06/ex-spotify-employees-raise-10m-to-bring-the-ai-behind-its-recommendations-to-e-commerce/",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Exclusive: Mirendil inks $100M+ Google Cloud deal to scale self-improving AI",
+      "description": "Mirendil has signed a $100 million-plus Google Cloud partnership to expand its compute infrastructure, powering research into self-improving AI systems designed to accelerate scientific discovery and AI development.",
+      "url": "https://techcrunch.com/2026/08/06/exclusive-mirendil-inks-100m-google-cloud-deal-to-scale-self-improving-ai/",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Bose's new QuietComfort headphones get premium upgrades for a midrange price",
+      "description": "The QuietComfort Headphones (2nd Gen) will debut with several audio and noise-canceling features once exclusive to its premium counterparts.",
+      "url": "https://www.zdnet.com/article/bose-quietcomfort-headphones-news/",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "You can use 70+ Adobe tools without leaving ChatGPT now - here's how",
+      "description": "Adobe's new plugin works both in Work and Codex, and is available today in ChatGPT.",
+      "url": "https://www.zdnet.com/article/adobe-launches-plugin-for-chatgpt-how-it-works/",
+      "time": "2026-08-06T13:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
     {
       "source": "搜狐科技",
       "sourceColor": "#d8402a",
@@ -192,6 +966,15 @@
       ]
     },
     {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "Setup a simple web server with bozohttpd on NetBSD",
+      "description": "Comments",
+      "url": "https://bozo.httpd.rocks/",
+      "time": "2026-08-06T12:44:26.000Z",
+      "tags": []
+    },
+    {
       "source": "MacRumors",
       "sourceColor": "#1d4ed8",
       "title": "AirPods Pro 3 Drop to One of the Best Prices of the Year So Far at $189.99",
@@ -203,15 +986,6 @@
         "软件应用",
         "科技创投"
       ]
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "Setup a simple web server with bozohttpd on NetBSD",
-      "description": "Comments",
-      "url": "https://bozo.httpd.rocks/",
-      "time": "2026-08-06T12:44:26.000Z",
-      "tags": []
     },
     {
       "source": "IT之家",
@@ -354,17 +1128,6 @@
       ]
     },
     {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "Google's new Ask Maps features may be more exciting than the upcoming Pixel drop",
-      "description": "Google announced several upgrades to Ask Maps, allowing users to order food and find hotels with fewer clicks.",
-      "url": "https://www.zdnet.com/article/googles-new-ask-maps-features-may-be-more-exciting-than-the-upcoming-pixel-drop/",
-      "time": "2026-08-06T12:30:49.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
       "source": "Android Authority",
       "sourceColor": "#a4c639",
       "title": "Google Maps just added a feature that lets you order food without leaving the app",
@@ -398,6 +1161,17 @@
       "url": "https://techcrunch.com/2026/08/06/google-maps-adds-agentic-features-including-food-ordering-and-hotel-bookings/",
       "time": "2026-08-06T12:30:00.000Z",
       "tags": []
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Google's new Ask Maps features may be more exciting than the upcoming Pixel drop",
+      "description": "Google announced several upgrades to Ask Maps, allowing users to order food and find hotels with fewer clicks.",
+      "url": "https://www.zdnet.com/article/googles-new-ask-maps-features-may-be-more-exciting-than-the-upcoming-pixel-drop/",
+      "time": "2026-08-06T12:30:00.000Z",
+      "tags": [
+        "手机"
+      ]
     },
     {
       "source": "Dev.to",
@@ -1449,6 +2223,15 @@
       "description": "现金收购东莞两五金企业控股权，凯旺科技急寻第二增长曲线。",
       "url": "https://www.tmtpost.com/8094341.html",
       "time": "2026-08-06T11:13:43.000Z",
+      "tags": []
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "a 3D SVG Renderer that projects textures without rasterization",
+      "description": "Comments",
+      "url": "https://seve.blog/p/i-made-a-3d-svg-renderer-that-projects",
+      "time": "2026-08-06T11:11:52.000Z",
       "tags": []
     },
     {
@@ -10963,19 +11746,6 @@
       ]
     },
     {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "DuckDuckGo's new iPhone feature is a privacy win - I recommend getting it now",
-      "description": "The iPhone version of the DuckDuckGo app has a new feature that makes sharing links easier and safer.",
-      "url": "https://www.zdnet.com/article/duckduckgo-is-adding-a-feature-for-iphone-that-everyone-should-have/",
-      "time": "2026-08-06T02:00:43.000Z",
-      "tags": [
-        "手机",
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "Pacing the Frontier Shows How AI Employees Are Organizing on Safety Governance",
@@ -10986,6 +11756,19 @@
         "人工智能",
         "软件应用",
         "大公司"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "DuckDuckGo's new iPhone feature is a privacy win - I recommend getting it now",
+      "description": "The iPhone version of the DuckDuckGo app has a new feature that makes sharing links easier and safer.",
+      "url": "https://www.zdnet.com/article/duckduckgo-is-adding-a-feature-for-iphone-that-everyone-should-have/",
+      "time": "2026-08-06T02:00:00.000Z",
+      "tags": [
+        "手机",
+        "软件应用",
+        "智能硬件"
       ]
     },
     {
@@ -16214,7 +16997,7 @@
       "title": "I swapped my Bose and JBL speakers for this floating Turtlebox - and it's seriously tough",
       "description": "Turtlebox returns with the Cub, proving that its smaller speakers can be just as durable and powerful as its larger ones.",
       "url": "https://www.zdnet.com/article/turtlebox-cub-review/",
-      "time": "2026-08-05T17:30:53.000Z",
+      "time": "2026-08-05T17:30:00.000Z",
       "tags": [
         "软件应用",
         "科技创投",
@@ -16859,17 +17642,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
-      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
-      "url": "https://www.donews.com/news/detail/3/6660734.html",
-      "time": "2026-08-05T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "美学升维，流畅突破：荣耀MagicOS11双架构重塑体验",
       "description": "荣耀在北京举办MagicOS11先锋品鉴会",
       "url": "https://www.donews.com/news/detail/5/6661438.html",
@@ -16920,6 +17692,17 @@
       "time": "2026-08-05T16:00:00.000Z",
       "tags": [
         "新能源/电动车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
+      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
+      "url": "https://www.donews.com/news/detail/3/6660734.html",
+      "time": "2026-08-05T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -59736,17 +60519,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "消息称网易《剑心雕龙》项目组解散",
-      "description": "网易《剑心雕龙》项目组在上海徐汇滨江正式解散，内部未公开，项目编号已无法检索到相关员工。",
-      "url": "https://www.donews.com/news/detail/3/6656873.html",
-      "time": "2026-08-02T16:00:00.000Z",
-      "tags": [
-        "大公司"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "清闲动态人机工学椅 Maxis Pro 首秀 ChinaJoy：为高强度久坐玩家撑起高光时刻",
       "description": "清闲智能在2026 ChinaJoy首发Maxis Pro动态人机工学椅，专为高大体型及高强度久坐用户设计，强调全场景稳定支撑与动态贴合。",
       "url": "https://www.donews.com/news/detail/5/6656044.html",
@@ -59792,6 +60564,17 @@
       "tags": [
         "新能源/电动车",
         "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "消息称网易《剑心雕龙》项目组解散",
+      "description": "网易《剑心雕龙》项目组在上海徐汇滨江正式解散，内部未公开，项目编号已无法检索到相关员工。",
+      "url": "https://www.donews.com/news/detail/3/6656873.html",
+      "time": "2026-08-02T16:00:00.000Z",
+      "tags": [
+        "大公司"
       ]
     },
     {
@@ -61453,19 +62236,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "Marvelous 与腾讯解除资本业务合作，《牧场物语》移动端新作被砍",
-      "description": "腾讯子公司解除与Marvelous资本合作，持股将从20.01%降至0.99%；《牧场物语》手游开发终止，IP授权等业务合作仍存。",
-      "url": "https://www.donews.com/news/detail/3/6655105.html",
-      "time": "2026-07-31T16:00:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "零跑7月交付达101267台，同比增长翻倍，成首个月销十万新势力",
       "description": "零跑汽车2026年7月交付101267台，同比增长102%，成首家单月破10万的造车新势力；依托全域自研与四大产品矩阵，持续领跑新能源市场。",
       "url": "https://www.donews.com/news/detail/7/6654979.html",
@@ -61484,6 +62254,19 @@
       "time": "2026-07-31T16:00:00.000Z",
       "tags": [
         "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "Marvelous 与腾讯解除资本业务合作，《牧场物语》移动端新作被砍",
+      "description": "腾讯子公司解除与Marvelous资本合作，持股将从20.01%降至0.99%；《牧场物语》手游开发终止，IP授权等业务合作仍存。",
+      "url": "https://www.donews.com/news/detail/3/6655105.html",
+      "time": "2026-07-31T16:00:00.000Z",
+      "tags": [
+        "互联网",
+        "大公司",
+        "智能硬件"
       ]
     },
     {
@@ -63155,17 +63938,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "卡普空 2026 财年 Q1 数字版销量占比超 93%，营业利润同比增长 66.9% 至 410 亿日元",
-      "description": "卡普空2026财年Q1数字版销量占比93.3%，PC平台占60.4%；营收704.1亿日元，同比增长54.7%；《生化危机》系列及《鬼泣5》销量强劲。",
-      "url": "https://www.donews.com/news/detail/3/6650564.html",
-      "time": "2026-07-28T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "荣耀将阿莱电影工作流融入机器人手机",
       "description": "荣耀影像技术发布会在浙江横店国际马戏城举办。",
       "url": "https://www.donews.com/news/detail/5/6651106.html",
@@ -63184,6 +63956,17 @@
       "url": "https://www.donews.com/news/detail/7/6650625.html",
       "time": "2026-07-28T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "卡普空 2026 财年 Q1 数字版销量占比超 93%，营业利润同比增长 66.9% 至 410 亿日元",
+      "description": "卡普空2026财年Q1数字版销量占比93.3%，PC平台占60.4%；营收704.1亿日元，同比增长54.7%；《生化危机》系列及《鬼泣5》销量强劲。",
+      "url": "https://www.donews.com/news/detail/3/6650564.html",
+      "time": "2026-07-28T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
     },
     {
       "source": "新品发布",
@@ -63518,31 +64301,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "团结引擎2.0发布，Unity中国以AI智能体重构游戏开发工作流",
-      "description": "Unity中国发布团结引擎2.0，重构底层架构，新增三大主机支持，集成AI Agent Codely，打造AI原生游戏生产基础设施。",
-      "url": "https://www.donews.com/news/detail/3/6649420.html",
-      "time": "2026-07-27T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "Arm与Unity中国达成战略合作，以Arm神经技术加速中国手游创新",
-      "description": "Arm与Unity中国签署战略合作，将Arm神经技术原生集成至团结引擎，提升手游画质与帧率，降低AI图形开发门槛，并拓展至汽车、工业等领域。",
-      "url": "https://www.donews.com/news/detail/3/6649265.html",
-      "time": "2026-07-27T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "汽车"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "重溯千年丝路文脉 比亚迪大唐以东方智驾续写东西文明对话",
       "description": "重溯千年丝路文脉 比亚迪大唐以东方智驾续写东西文明对话",
       "url": "https://www.donews.com/news/detail/7/6649801.html",
@@ -63571,6 +64329,31 @@
       "url": "https://www.donews.com/news/detail/7/6648847.html",
       "time": "2026-07-27T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "团结引擎2.0发布，Unity中国以AI智能体重构游戏开发工作流",
+      "description": "Unity中国发布团结引擎2.0，重构底层架构，新增三大主机支持，集成AI Agent Codely，打造AI原生游戏生产基础设施。",
+      "url": "https://www.donews.com/news/detail/3/6649420.html",
+      "time": "2026-07-27T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "Arm与Unity中国达成战略合作，以Arm神经技术加速中国手游创新",
+      "description": "Arm与Unity中国签署战略合作，将Arm神经技术原生集成至团结引擎，提升手游画质与帧率，降低AI图形开发门槛，并拓展至汽车、工业等领域。",
+      "url": "https://www.donews.com/news/detail/3/6649265.html",
+      "time": "2026-07-27T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "汽车"
+      ]
     },
     {
       "source": "索尼",
@@ -82621,18 +83404,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "国风志怪，五行割草：Steam动作肉鸽爽游《地府有点忙》正式发售",
-      "description": "《地府有点忙》7月22日Steam正式发售，中式神话动作肉鸽游戏，五行法术割草、鬼差打工、萌宠助战，首发39.2元。",
-      "url": "https://www.donews.com/news/detail/3/6642242.html",
-      "time": "2026-07-21T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "重新定义豪华越野，北京越野泰钽700预售开启，29.98万元起",
       "description": "重新定义豪华越野，北京越野泰钽700预售开启，29.98万元起",
       "url": "https://www.donews.com/news/detail/7/6642534.html",
@@ -82672,6 +83443,18 @@
       "time": "2026-07-21T16:00:00.000Z",
       "tags": [
         "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "国风志怪，五行割草：Steam动作肉鸽爽游《地府有点忙》正式发售",
+      "description": "《地府有点忙》7月22日Steam正式发售，中式神话动作肉鸽游戏，五行法术割草、鬼差打工、萌宠助战，首发39.2元。",
+      "url": "https://www.donews.com/news/detail/3/6642242.html",
+      "time": "2026-07-21T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "测评/新品"
       ]
     },
     {
@@ -83509,26 +84292,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
-      "description": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
-      "url": "https://www.donews.com/news/detail/3/6639097.html",
-      "time": "2026-07-19T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
-      "description": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
-      "url": "https://www.donews.com/news/detail/3/6639080.html",
-      "time": "2026-07-19T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "16.99万拿下赛道轿跑！2027款星途ES正式上市",
       "description": "16.99万拿下赛道轿跑！2027款星途ES正式上市",
       "url": "https://www.donews.com/news/detail/7/6639963.html",
@@ -83571,6 +84334,26 @@
       "tags": [
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
+      "description": "【CJE】逛展必冲N1馆 ChinaJoy Express试玩区！一张图看遍今年所有参展游戏合集",
+      "url": "https://www.donews.com/news/detail/3/6639097.html",
+      "time": "2026-07-19T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
+      "description": "一图看懂2026 ChinaJoy主舞台全流程节目单，这份观演指南请收好",
+      "url": "https://www.donews.com/news/detail/3/6639080.html",
+      "time": "2026-07-19T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "佳能",
@@ -84014,6 +84797,19 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "售价12.38万元起，小鹏MONA L03全球上市，打造原生全球车型新标杆",
+      "description": "小鹏MONA L03全球上市，面向65国年轻用户，提供纯电/增程双动力，搭载XOS 6座舱、图灵AI智驾及全球安全标准。",
+      "url": "https://www.donews.com/news/detail/7/6636249.html",
+      "time": "2026-07-16T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "锁定席位！2026 CDEC系列大会日程发布，购票通道开启",
       "description": "锁定席位！2026 CDEC系列大会日程发布，购票通道开启",
       "url": "https://www.donews.com/news/detail/3/6637032.html",
@@ -84028,19 +84824,6 @@
       "url": "https://www.donews.com/news/detail/3/6636861.html",
       "time": "2026-07-16T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "售价12.38万元起，小鹏MONA L03全球上市，打造原生全球车型新标杆",
-      "description": "小鹏MONA L03全球上市，面向65国年轻用户，提供纯电/增程双动力，搭载XOS 6座舱、图灵AI智驾及全球安全标准。",
-      "url": "https://www.donews.com/news/detail/7/6636249.html",
-      "time": "2026-07-16T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "新能源/电动车",
-        "汽车"
-      ]
     },
     {
       "source": "芯片半导体",
@@ -84147,28 +84930,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "国风志怪动作肉鸽游戏《地府有点忙》发售倒计时7天",
-      "description": "国风志怪动作肉鸽游戏《地府有点忙》7月22日发售，主打无双割草、百鬼夜宴、流派自构与阴阳调解，融合爆笑剧情与暴力美学。",
-      "url": "https://www.donews.com/news/detail/3/6634798.html",
-      "time": "2026-07-15T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "魔塔策略RPG《列乌尼斯的挽歌》正式上线Steam",
-      "description": "《列乌尼斯的挽歌》上线Steam，融合魔塔、区域规划、炼金与研究系统，主打全局策略与自由试错，支持多语言，含300装备80技能。",
-      "url": "https://www.donews.com/news/detail/3/6634794.html",
-      "time": "2026-07-15T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "哈苏正式推出 Phocus Mobile Android 版",
       "description": "哈苏发布Phocus Mobile Android版，支持X2D/CFV系列相机，集成HNCS色彩、HNNR降噪及专业编辑功能。",
       "url": "https://www.donews.com/news/detail/5/6636065.html",
@@ -84200,6 +84961,28 @@
       "tags": [
         "汽车",
         "测评/新品"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "国风志怪动作肉鸽游戏《地府有点忙》发售倒计时7天",
+      "description": "国风志怪动作肉鸽游戏《地府有点忙》7月22日发售，主打无双割草、百鬼夜宴、流派自构与阴阳调解，融合爆笑剧情与暴力美学。",
+      "url": "https://www.donews.com/news/detail/3/6634798.html",
+      "time": "2026-07-15T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "魔塔策略RPG《列乌尼斯的挽歌》正式上线Steam",
+      "description": "《列乌尼斯的挽歌》上线Steam，融合魔塔、区域规划、炼金与研究系统，主打全局策略与自由试错，支持多语言，含300装备80技能。",
+      "url": "https://www.donews.com/news/detail/3/6634794.html",
+      "time": "2026-07-15T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -84390,15 +85173,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "《FGO》十周年限定从者强度前瞻：奥尔加玛丽是否值得满宝？",
-      "description": "FGO十周年限定U-奥尔加玛丽为五星UnBeast职阶，首创双形态机制：输出态高爆发+封印，辅助态全能增益；一宝即满配，推荐平民保底一宝。",
-      "url": "https://www.donews.com/news/detail/3/6634130.html",
-      "time": "2026-07-14T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "消息称Soul将推出首款AI智能硬件，有望于WAIC2026亮相",
       "description": "Soul将于7月17-20日WAIC发布首款AI情绪陪伴硬件，搭载SoulX大模型，支持自定义角色、表情动作及记忆交互。",
       "url": "https://www.donews.com/news/detail/5/6634372.html",
@@ -84420,6 +85194,15 @@
         "新能源/电动车",
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "《FGO》十周年限定从者强度前瞻：奥尔加玛丽是否值得满宝？",
+      "description": "FGO十周年限定U-奥尔加玛丽为五星UnBeast职阶，首创双形态机制：输出态高爆发+封印，辅助态全能增益；一宝即满配，推荐平民保底一宝。",
+      "url": "https://www.donews.com/news/detail/3/6634130.html",
+      "time": "2026-07-14T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "佳能",
@@ -85695,15 +86478,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "2026 ChinaJoy BTOC 展馆图正式公布",
-      "description": "2026 ChinaJoy BTOC 展馆图正式公布",
-      "url": "https://www.donews.com/news/detail/3/6626979.html",
-      "time": "2026-07-08T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "以全面，独当一面 全新梅赛德斯-奔驰纯电GLC SUV正式上市",
       "description": "以全面，独当一面 全新梅赛德斯-奔驰纯电GLC SUV正式上市",
       "url": "https://www.donews.com/news/detail/7/6626721.html",
@@ -85723,6 +86497,15 @@
       "tags": [
         "汽车"
       ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "2026 ChinaJoy BTOC 展馆图正式公布",
+      "description": "2026 ChinaJoy BTOC 展馆图正式公布",
+      "url": "https://www.donews.com/news/detail/3/6626979.html",
+      "time": "2026-07-08T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "三星",
@@ -85853,6 +86636,19 @@
       "seedFallback": true
     },
     {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "腾讯放手，AI没有大哥",
+      "description": "腾讯退出快手主要股东，AI赛道竞争格局变化",
+      "url": "https://www.huxiu.com/article/4873511.html",
+      "time": "Tue, 08 Jul 2026 07:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ],
+      "seedFallback": true
+    },
+    {
       "source": "三星",
       "sourceColor": "#0d47a1",
       "title": "三星预告将发布折叠屏新机 新设计抢先苹果竞品亮相 - 财联社",
@@ -85963,19 +86759,6 @@
         "互联网"
       ],
       "topic": true
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "腾讯放手，AI没有大哥",
-      "description": "腾讯退出快手主要股东，AI赛道竞争格局变化",
-      "url": "https://www.huxiu.com/article/4873511.html",
-      "time": "Tue, 08 Jul 2026 07:00:00 GMT",
-      "tags": [
-        "互联网",
-        "VC"
-      ],
-      "seedFallback": true
     },
     {
       "source": "索尼",
@@ -86244,6 +87027,41 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "MARSHALL 推出新一代家用音箱 ACTON IV 与 STANMORE IV",
+      "description": "Marshall发布Acton IV与Stanmore IV音箱，主打‘把舞台带回家’，升级声场、低音、动态响度及Auracast™多音箱同步，售价2499/3",
+      "url": "https://www.donews.com/news/detail/5/6624940.html",
+      "time": "2026-07-07T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
+      "description": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
+      "url": "https://www.donews.com/news/detail/7/6624728.html",
+      "time": "2026-07-07T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "虎嗅",
+      "sourceColor": "#374151",
+      "title": "腾讯毅然退出主要股东序列，快手还快得起来吗",
+      "description": "腾讯减持快手的影响分析",
+      "url": "https://www.huxiu.com/article/4873396.html",
+      "time": "Mon, 07 Jul 2026 16:00:00 GMT",
+      "tags": [
+        "互联网",
+        "VC"
+      ],
+      "seedFallback": true
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "《恋与深空》宣布退出 BW2026 展会，全额承担退票损失",
       "description": "《恋与深空》宣布退出BilibiliWorld 2026展会，并全额承担玩家因此产生的门票、交通及住宿退订损失，致歉并承诺整改。",
       "url": "https://www.donews.com/news/detail/3/6624840.html",
@@ -86296,41 +87114,6 @@
         "游戏",
         "大公司"
       ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "MARSHALL 推出新一代家用音箱 ACTON IV 与 STANMORE IV",
-      "description": "Marshall发布Acton IV与Stanmore IV音箱，主打‘把舞台带回家’，升级声场、低音、动态响度及Auracast™多音箱同步，售价2499/3",
-      "url": "https://www.donews.com/news/detail/5/6624940.html",
-      "time": "2026-07-07T16:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
-      "description": "轿跑SUV告别“假把式”，岚图追光S卷出真风道",
-      "url": "https://www.donews.com/news/detail/7/6624728.html",
-      "time": "2026-07-07T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "腾讯毅然退出主要股东序列，快手还快得起来吗",
-      "description": "腾讯减持快手的影响分析",
-      "url": "https://www.huxiu.com/article/4873396.html",
-      "time": "Mon, 07 Jul 2026 16:00:00 GMT",
-      "tags": [
-        "互联网",
-        "VC"
-      ],
-      "seedFallback": true
     },
     {
       "source": "虎嗅",
