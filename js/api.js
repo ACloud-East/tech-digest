@@ -204,7 +204,6 @@ const API = {
         { key: '尼康', name: '尼康', color: '#34495e', group: 'theme' },
         { key: '佳能', name: '佳能', color: '#c0392b', group: 'theme' },
         { key: '科技专访', name: '科技专访', color: '#37474f', group: 'theme' },
-        { key: '上市科技', name: '上市科技', color: '#1b5e20', group: 'theme' },
         { key: 'techcrunch', name: 'TechCrunch', color: '#0f9d58' },
         { key: 'engadget', name: 'Engadget', color: '#2b2d32' },
         { key: 'zdnet', name: 'ZDNet', color: '#0066cc' },
@@ -316,25 +315,53 @@ const API = {
         // 上限 8000），data/news.json 会持续变大，前端总数随之自然增长。
         // 这里仍只去掉「同一次实时抓取内」的重复、允许与历史归档重复，以免总量被削。
         prog.merging = true; emit();
-        let merged = (base && base.articles) ? base.articles.slice() : [];
-        if (live && live.length) {
-            const seenLive = new Set();
-            for (const a of live) {
-                const k = (a.title || '').trim().toLowerCase();
-                if (k && !seenLive.has(k)) { seenLive.add(k); merged.push(a); }
+        let payload;
+        try {
+            // 优先在 Web Worker 中合并/清洗/排序，避免主线程被数千篇文章阻塞导致进度条卡顿
+            payload = await this._mergeInWorker(base && base.articles, live, base && base.updateTime, !!live && live.length > 0);
+        } catch (err) {
+            console.warn('Worker 合并失败，回退主线程:', err.message);
+            // 降级方案：主线程同步合并（老旧浏览器或不支持 Worker 时）
+            let merged = (base && base.articles) ? base.articles.slice() : [];
+            if (live && live.length) {
+                const seenLive = new Set();
+                for (const a of live) {
+                    const k = (a.title || '').trim().toLowerCase();
+                    if (k && !seenLive.has(k)) { seenLive.add(k); merged.push(a); }
+                }
             }
+            merged = merged.map(a => this._cleanArticle(a));
+            merged.sort((x, y) => new Date(y.time || 0) - new Date(x.time || 0));
+            if (merged.length > 8000) merged = merged.slice(0, 8000);
+            const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
+            payload = { articles: merged, updateTime, live: !!live, baseCount: (base && base.articles) ? base.articles.length : 0, liveCount: live ? live.length : 0 };
         }
-        // 清洗所有 HTML 残留（历史语料或实时接口都可能带编码过的标签）
-        merged = merged.map(a => this._cleanArticle(a));
-
-        merged.sort((x, y) => new Date(y.time || 0) - new Date(x.time || 0));
-        if (merged.length > 8000) merged = merged.slice(0, 8000); // 安全上限：每次刷新继续累加，直到 8000
-
-        // 刷新过 → 时间记为此刻；实时不可用 → 沿用历史语料的更新时间
-        const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
-        const payload = { articles: merged, updateTime, live: !!live, baseCount: (base && base.articles) ? base.articles.length : 0, liveCount: live ? live.length : 0 };
         this.setCache(cacheKey, payload);
-        onProgress({ stage: 'done', label: `加载完成，共 ${merged.length} 篇`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
+        onProgress({ stage: 'done', label: `加载完成，共 ${payload.articles.length} 篇`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
         return payload;
+    },
+
+    // 在独立 Worker 线程中合并，避免阻塞 UI 主线程
+    _mergeInWorker(baseArticles, liveArticles, baseUpdateTime, liveAvailable) {
+        return new Promise((resolve, reject) => {
+            let worker;
+            try {
+                worker = new Worker('js/merge-worker.js');
+            } catch (e) {
+                reject(e);
+                return;
+            }
+            let settled = false;
+            const cleanup = () => {
+                if (settled) return;
+                settled = true;
+                clearTimeout(timer);
+                try { worker.terminate(); } catch (_) {}
+            };
+            const timer = setTimeout(() => { cleanup(); reject(new Error('Worker 合并超时')); }, 5000);
+            worker.onmessage = (e) => { cleanup(); resolve(e.data && e.data.payload); };
+            worker.onerror = (err) => { cleanup(); reject(err); };
+            worker.postMessage({ base: baseArticles, live: liveArticles, updateTime: baseUpdateTime, liveAvailable });
+        });
     }
 };

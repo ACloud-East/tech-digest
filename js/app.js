@@ -87,10 +87,10 @@ const app = createApp({
         // ====== 平台 / 文体预设：一键套用对应平台的文体与字数，便于多平台分发 ======
         const platformPresets = [
             { key: 'press', label: '发布会新闻稿', icon: 'fa-newspaper',
-              set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 'auto',
+              set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 1200,
                 extraInstructions: '写成一篇标准发布会新闻稿：含导语、核心发布信息、关键规格参数、上市与价格信息、结语，客观正式、信息准确，不臆造。' } },
             { key: 'scoop', label: '新品谍报/速递', icon: 'fa-bolt',
-              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto',
+              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 500,
                 extraInstructions: '写成一篇新品谍报/速递风格文章：网感强、节奏快、突出最抓眼球的卖点，可略带悬念感，但数据必须来自原文。' } },
             { key: 'weibo', label: '新品谍报微博', icon: 'fa-weibo',
               set: { type: 'news', style: 'social', audience: 'general', wordCount: 300, plain: true, platform: 'weibo', language: 'zh_casual',

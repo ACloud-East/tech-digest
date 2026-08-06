@@ -501,8 +501,10 @@ export async function onRequestPost({ request, env }) {
         // 向客户端做打字机式输出（将最终正文切成小�? SSE 推送）
         const chunks = chunkText(finalText);
         const metaObj = { references, factChecked: suspicious };
-        if (allImages.length) metaObj.images = allImages.slice(0, 30);
-        const metaSse = references.length || allImages.length
+        // 小红书/微博输出要求不带图，避免社媒文案被正文图片打断阅读流
+        const noImages = body.platform === 'xhs' || body.platform === 'weibo';
+        if (allImages.length && !noImages) metaObj.images = allImages.slice(0, 30);
+        const metaSse = references.length || (allImages.length && !noImages)
             ? 'data: ' + JSON.stringify({ meta: metaObj }) + '\n\n'
             : (suspicious ? 'data: ' + JSON.stringify({ meta: { factChecked: true } }) + '\n\n' : '');
         const sse = chunks.map(c => 'data: ' + JSON.stringify({ content: c }) + '\n\n').join('') + metaSse + 'data: [DONE]\n\n';
