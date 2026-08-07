@@ -263,7 +263,6 @@
                                         <span class="ai-toggle-track"><span class="ai-toggle-thumb"></span></span>
                                         <i class="fa-solid fa-image"></i> 配图（从原文链接抓取图片插入文章）
                                     </label>
-                                    <span class="ai-hint">开启时，系统会从你粘贴的「原文链接」中抽取图片插入正文。关闭则<strong>生成文章不带配图</strong>。微博 / 小红书等社媒预设会<strong>自动关闭</strong>此项。</span>
                                 </div>
 
                                 <!-- 补充链接（可选，作为补充参考文献） -->
@@ -272,7 +271,7 @@
                                         <i class="fa-solid fa-link"></i> 原文链接（带图，可选）
                                     </label>
                                     <textarea class="ai-textarea ai-textarea-sm" v-model="aiForm.sources" placeholder="粘贴带图原文链接，系统会抓取正文并自动提取配图插入文章，例如：&#10;https://example.com/news/sony-fx9-iii&#10;https://www.sohu.com/a/xxx" rows="2"></textarea>
-                                    <span class="ai-hint">粘贴<strong>带图原文链接</strong>，系统会自动抓取正文、作为参考文献，并<strong>抽取原文图片插入生成文章当配图</strong>（经本站代理，绕过防盗链）。也可填主题词让系统联网检索。上方「参考原文」是你自己的<strong>主体草稿</strong>，不作为引用来源。</span>
+                                    <span class="ai-hint">系统会自动抓取正文、作为参考文献，并抽取原文图片当配图。也可填主题词让系统联网检索。</span>
                                 </div>
 
                                 <!-- 参考模板 -->
@@ -1011,6 +1010,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=46"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608060401"></script>
+    <script src="js/app.js?v=2608060501"></script>
 </body>
 </html>
