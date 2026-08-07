@@ -256,6 +256,16 @@
                                     <span class="ai-hint">开启后，系统会<strong>自动上网检索</strong>与主题相关的真实规格/性能/数据，作为 [1][2] <strong>参考文献</strong>注入文章，并在文末列出带链接的来源。你不须自己找链接。下方「补充链接」留空即可。</span>
                                 </div>
 
+                                <!-- 配图开关 -->
+                                <div class="ai-field">
+                                    <label class="ai-toggle">
+                                        <input type="checkbox" v-model="aiForm.withImages">
+                                        <span class="ai-toggle-track"><span class="ai-toggle-thumb"></span></span>
+                                        <i class="fa-solid fa-image"></i> 配图（从原文链接抓取图片插入文章）
+                                    </label>
+                                    <span class="ai-hint">开启时，系统会从你粘贴的「原文链接」中抽取图片插入正文。关闭则<strong>生成文章不带配图</strong>。微博 / 小红书等社媒预设会<strong>自动关闭</strong>此项。</span>
+                                </div>
+
                                 <!-- 补充链接（可选，作为补充参考文献） -->
                                 <div class="ai-field ai-field-ref">
                                     <label class="ai-label">
@@ -1001,6 +1011,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=46"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608060301"></script>
+    <script src="js/app.js?v=2608060401"></script>
 </body>
 </html>

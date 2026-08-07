@@ -39,6 +39,7 @@ const app = createApp({
             style: 'professional',
             wordCount: 'auto',
             autoRatio: null,   // 仅「新品谍报/速递」预设使用（0.6 → 目标字数≈原文×60%）；其它预设为 null
+            withImages: true,  // 配图开关：默认开启（带图）；社媒预设(微博/小红书)自动关闭
             audience: 'tech_fans',
             language: 'zh_professional',
             extraInstructions: '',
@@ -88,16 +89,16 @@ const app = createApp({
         // ====== 平台 / 文体预设：一键套用对应平台的文体与字数，便于多平台分发 ======
         const platformPresets = [
             { key: 'press', label: '发布会新闻稿', icon: 'fa-newspaper',
-              set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 1200,
+              set: { type: 'event', style: 'professional', audience: 'experts', wordCount: 1200, withImages: true,
                 extraInstructions: '写成一篇标准发布会新闻稿：含导语、核心发布信息、关键规格参数、上市与价格信息、结语，客观正式、信息准确，不臆造。' } },
             { key: 'scoop', label: '新品谍报/速递', icon: 'fa-bolt',
-              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto', autoRatio: 0.6,
+              set: { type: 'release', style: 'lively', audience: 'tech_fans', wordCount: 'auto', autoRatio: 0.6, withImages: true,
                 extraInstructions: '写成一篇新品谍报/速递风格文章：网感强、节奏快、突出最抓眼球的卖点，可略带悬念感，但数据必须来自原文。' } },
             { key: 'weibo', label: '新品谍报微博', icon: 'fa-weibo',
-              set: { type: 'news', style: 'social', audience: 'general', wordCount: 300, plain: true, platform: 'weibo', language: 'zh_casual',
+              set: { type: 'news', style: 'social', audience: 'general', wordCount: 300, plain: true, platform: 'weibo', language: 'zh_casual', withImages: false,
                 extraInstructions: '写成微博科技爆料/资讯：网感接地气、像数码博主爆料，用「微博透露/博主表示/据网友爆料/评论区有用户问…博主回复…」这类写法，传闻保留「据传/疑似/预计」语气；带 1-2 个 emoji 与话题标签 #索尼电影机#，不要小红书种草腔（禁用姐妹们/种草/谁懂啊），不堆参数表、不使用 ## 小标题。' } },
             { key: 'xhs', label: '小红书笔记', icon: 'fa-book-open',
-              set: { type: 'release', style: 'social', audience: 'general', wordCount: 500, plain: true, platform: 'xhs', language: 'zh_casual',
+              set: { type: 'release', style: 'social', audience: 'general', wordCount: 500, plain: true, platform: 'xhs', language: 'zh_casual', withImages: false,
                 extraInstructions: '写成小红书图文笔记：吸睛带 emoji 的标题、开篇用姐妹们/宝子们喊话、每段配 emoji、口语化有亲和力、把卖点揉进个人体验、结尾抛互动话题并带 #话题标签#，禁止 ## 小标题和参数表堆砌。' } },
         ];
         function applyPlatformPreset(p) {
@@ -642,6 +643,7 @@ const app = createApp({
             aiForm.value.language = item.language || 'zh_professional';
             aiForm.value.wordCount = item.wordCount || 800;
             aiForm.value.autoRatio = item.autoRatio || null;
+            aiForm.value.withImages = item.withImages !== undefined ? item.withImages : true;
             aiForm.value.title = item.inputTitle || '';
             aiForm.value.content = item.inputContent || '';
             aiForm.value.sources = item.inputSources || '';
@@ -752,10 +754,8 @@ const app = createApp({
                 if (fetchedText) {
                     aiForm.value.content = existing ? existing + '\n\n' + fetchedText : fetchedText;
                 }
-                // 保存抽到的图（后续统一注入正文）。
-                // 社媒（小红书/微博）要求不带图：仅保留正文文本，跳过从来源抓取的配图。
-                const isSocialPrefetch = aiForm.value.platform === 'xhs' || aiForm.value.platform === 'weibo';
-                if (imgs.length && !isSocialPrefetch) aiResultImages.value = imgs.slice(0, 12);
+                // 保存抽到的图（后续统一注入正文）。受「配图」开关控制：关闭时不抽取/注入配图。
+                if (imgs.length && aiForm.value.withImages) aiResultImages.value = imgs.slice(0, 12);
             } catch (e) {
                 console.warn('[prefetchSourceUrls] 抓取失败:', e.message);
             }
@@ -771,8 +771,8 @@ const app = createApp({
             aiResultTitle.value = '';
             aiResultImages.value = [];
             aiTab.value = 'structured';
-            // 社媒（小红书/微博）要求不带图：生成与注入全程禁用配图
-            const isSocial = aiForm.value.platform === 'xhs' || aiForm.value.platform === 'weibo';
+            // 配图开关：受 aiForm.withImages 控制（社媒预设会自动关掉），作为注入配图的唯一依据
+            const allowImages = !!aiForm.value.withImages;
             // 立即展示来源框：只要用户填了来源 URL 或开启联网搜索，框就出现，避免后续某次生成失败时整框丢失
             aiResultSources.value = parseSources(aiForm.value.sources);
             aiResultReferences.value = aiResultSources.value.map(u => ({ title: u, url: u, ok: true, note: '' }));
@@ -788,9 +788,9 @@ const app = createApp({
                     if (partial && partial.content !== undefined) aiResult.value = partial.content;
                 };
                 const result = await AIGenerator.generate(aiForm.value, onToken);
-                // 优先用云端回传的图；若云端失败，使用预抓取到的图。社媒禁用配图，跳过。
-                if (!isSocial && result.images && result.images.length) aiResultImages.value = result.images;
-                aiResult.value = injectImagesIntoContent(result.content, isSocial ? [] : aiResultImages.value);
+                // 优先用云端回传的图；若云端失败，使用预抓取到的图。配图开关关闭时不注入。
+                if (allowImages && result.images && result.images.length) aiResultImages.value = result.images;
+                aiResult.value = injectImagesIntoContent(result.content, allowImages ? aiResultImages.value : []);
                 aiResultTitle.value = result.title;
                 aiResultFactChecked.value = !!result.factChecked;
                 // 优先用函数端回传的 references（联网检索/抓取结果），否则回退到用户输入 URL
@@ -810,7 +810,7 @@ const app = createApp({
                 const plainResult = await AIGenerator.generate({ ...aiForm.value, plain: true }, onTokenPlain);
                 // 保险：若模型仍生成 [1]/[?] 引用编号，在非结构式中强制移除
                 const plainTextNoCite = (plainResult.content || '').replace(/\[(\d+|\?)\]/g, '');
-                aiResultPlain.value = injectImagesIntoContent(plainTextNoCite, isSocial ? [] : aiResultImages.value);
+                aiResultPlain.value = injectImagesIntoContent(plainTextNoCite, allowImages ? aiResultImages.value : []);
                 aiGeneratingPlain.value = false; // 非结构式完成
 
                 // 来源展示 + 历史记录
@@ -827,6 +827,7 @@ const app = createApp({
                     language: aiForm.value.language,
                     wordCount: aiForm.value.wordCount,
                     autoRatio: aiForm.value.autoRatio,
+                    withImages: aiForm.value.withImages,
                     inputTitle: aiForm.value.title,
                     inputContent: aiForm.value.content,
                     inputSources: aiForm.value.sources,
