@@ -2,3 +2,10 @@ node_modules/
 .DS_Store
 *.log
 data/fetch-cache.json
+
+# 部署时不该上传到公开站点的内容
+.git/
+.wrangler/
+.deploy_retry.sh
+*.md
+PREVIEW_*.md

@@ -741,7 +741,11 @@ const app = createApp({
                     body: JSON.stringify({ urls }),
                     signal: AbortSignal.timeout(20000),
                 });
-                if (!resp.ok) return;
+                if (!resp.ok) {
+                    // 服务器无内容返回，但用户提供了链接：清空参考原文框，避免旧草稿被当作主体污染
+                    aiForm.value.content = '';
+                    return;
+                }
                 const data = await resp.json();
                 const texts = [];
                 const imgs = [];
@@ -751,19 +755,23 @@ const app = createApp({
                     if (r.text) texts.push(r.text);
                     (r.images || []).forEach(u => { if (!imgs.includes(u)) imgs.push(u); });
                 }
-                // 把抓取到的正文填入「参考原文内容」框（若已有内容则追加）
-                const existing = (aiForm.value.content || '').trim();
                 const fetchedText = texts.join('\n\n').trim();
                 if (fetchedText) {
-                    // 用本次抓取到的原文【覆盖】填入，而非追加到旧草稿之后 —— 否则旧草稿会混入 prompt 造成「历史污染」
-                    aiForm.value.content = existing
-                        ? existing + '\n\n' + '（以下为本次粘贴链接抓取到的原文，请仅以本段为准撰写）\n' + fetchedText
-                        : fetchedText;
+                    // 关键修复（历史污染）：用本次抓取到的原文【整体覆盖】参考原文框，
+                    // 彻底丢弃框内任何旧草稿。否则旧草稿（例如之前测试残留的「FX5 固件升级」）
+                    // 会被放在 prompt 最前面当作主体，导致模型以旧草稿为准、新链接内容被污染。
+                    // 设计上：粘贴原文链接即表示「以本次链接内容为准」撰写，框内旧草稿不再保留。
+                    aiForm.value.content = '（以下为本次粘贴链接抓取到的原文，请仅以本段为准撰写）\n' + fetchedText;
+                } else {
+                    // 提供了链接但没抓到正文：清空框，避免旧草稿被当作主体污染生成结果
+                    aiForm.value.content = '';
                 }
                 // 保存抽到的图（后续统一注入正文）。受「配图」开关控制：关闭时不抽取/注入配图。
                 if (imgs.length && aiForm.value.withImages) aiResultImages.value = imgs.slice(0, 12);
             } catch (e) {
                 console.warn('[prefetchSourceUrls] 抓取失败:', e.message);
+                // 抓取异常但用户提供了链接：清空参考原文框，避免旧草稿污染
+                aiForm.value.content = '';
             }
         }
 
