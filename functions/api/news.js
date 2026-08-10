@@ -208,7 +208,7 @@ async function fetchOne(url, feed, timeoutMs) {
     }
 }
 
-async function fetchFeed(feed, timeoutMs = 8000) {
+async function fetchFeed(feed, timeoutMs = 5000) {
     let result = await fetchOne(feed.url, feed, timeoutMs);
     // 主源失败时依次尝试 fallback URL 列表（支持多镜像容错）
     if ((!result || result.length === 0) && feed.fallback) {
@@ -224,13 +224,14 @@ async function fetchFeed(feed, timeoutMs = 8000) {
 export async function onRequestGet() {
     // 整体执行预算：超过此时间就返回已收集到的部分结果，绝不无限等待。
     // 防止多个源同时变慢时函数体跑到 Cloudflare 函数超时上限，导致前端一直转圈。
-    const OVERALL_MS = 12000;
+    const OVERALL_MS = 9000;
     const deadline = Date.now() + OVERALL_MS;
     const buckets = new Array(FEEDS.length);
     await Promise.race([
         Promise.all(FEEDS.map((f, i) => {
-            // 单源超时不超过 8s，且不超过剩余预算（至少为 3s，避免尾部过短）
-            const budget = Math.min(8000, Math.max(3000, deadline - Date.now()));
+            // 单源超时收紧到 5s（上限），整体预算 9s：多数源 1~3s 即可返回，
+            // 个别被阻断的慢源（如部分境外 RSS）不再拖累整体到 12s+，让接口更快回包。
+            const budget = Math.min(5000, Math.max(3000, deadline - Date.now()));
             return fetchFeed(f, budget)
                 .then(r => { buckets[i] = r || []; })
                 .catch(() => { buckets[i] = []; });

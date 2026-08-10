@@ -223,7 +223,9 @@ const API = {
 
         // 1) 实时抓取 与 2) 历史语料 并行拉取，各自带超时（关键修复：
         //    原实现用裸 fetch 且无超时、且串行等待，单个慢源/CDN 挂起就会让界面永久转圈）。
-        const LIVE_MS = 25000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 25s 余量（实时数据体较小，先到先渲染）
+        const LIVE_MS = 18000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 18s 余量即止。
+                                 // 实测实时接口常因上游 RSS 慢源拖到 7~13s，过长会让进度条卡在「实时抓取」阶段；
+                                 // 实时数据体小、非必需，宁可快速超时回退到历史归档，也不阻塞看板主体。
         const BASE_MS = 60000;   // data/news.json：改累加归档后体积持续增长（当前 ~3MB / gzip ~1.06MB，
                                  // 上限 8000 篇时约 6MB / gzip ~2MB）。实测 CDN 正常回源仅 2.1s，
                                  // 但弱网首屏可能十几秒甚至更久；归档是看板主体，宁可多等也不要丢，故给到 60s。
@@ -305,6 +307,11 @@ const API = {
             this.setCache(cacheKey, cached); // 续命缓存 TTL
             onProgress({ stage: 'done', label: '联网拉取失败，已使用本地缓存展示', percent: 100, indeterminate: false, loaded: 0, total: 0 });
             return cached;
+        }
+
+        // 实时抓取失败/超时，但历史归档成功 → 仍正常展示归档，并提示「实时稍慢」，不让用户误以为什么都没加载
+        if ((!live || !live.length) && base && base.articles && base.articles.length) {
+            onProgress({ stage: 'done', label: `历史归档已加载（共 ${base.articles.length} 篇）；实时资讯暂时获取较慢，稍后刷新可补齐`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
         }
 
         // 3) 合并：历史归档为底，实时抓取追加。

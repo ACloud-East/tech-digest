@@ -1188,8 +1188,10 @@ const app = createApp({
 
         function refreshCurrentTab() {
             if (activePanel.value !== 'hotboard') return;
-            // 手动刷新：重新拉取服务器已抓取的最新数据（不会触发服务器端抓取，数据新鲜度取决于服务器上次整点抓取）
-            API.clearOldCache();
+            // 手动刷新：重新拉取服务器已抓取的最新数据。
+            // 注意：刷新前【不要】clearOldCache() —— 否则一旦本次实时抓取超时/失败，
+            // 本地缓存兜底也会被清掉，导致「实时无 + 缓存无」的「暂无科技资讯数据」空白板。
+            // 正确做法：先依赖缓存兜底，新数据成功后再由 setCache 自然覆盖。
             if (hotboardTab.value === 'social') fetchSocialHotlist();
             else fetchTechNews();
         }
