@@ -26,17 +26,17 @@ const API = {
         return a;
     },
 
-    getCache(key) {
+    getCache(key, ttl) {
         try {
             const c = localStorage.getItem(this.cachePrefix + key);
             if (!c) return null;
             const { data, ts } = JSON.parse(c);
-            if (Date.now() - ts > this.cacheTTL) { localStorage.removeItem(this.cachePrefix + key); return null; }
+            if (Date.now() - ts > (ttl || this.cacheTTL)) { localStorage.removeItem(this.cachePrefix + key); return null; }
             return data;
         } catch { return null; }
     },
-    setCache(key, data) {
-        try { localStorage.setItem(this.cachePrefix + key, JSON.stringify({ data, ts: Date.now() })); }
+    setCache(key, data, ttl) {
+        try { localStorage.setItem(this.cachePrefix + key, JSON.stringify({ data, ts: Date.now(), ttl })); }
         catch { this.clearOldCache(); }
     },
     clearOldCache() {
@@ -218,17 +218,19 @@ const API = {
         onProgress = onProgress || (() => {});
         const cacheKey = 'tech_all_v37';
 
-        // 先读本地缓存兜底：任何网络异常/超时都至少有一份可见数据，绝不白屏或一直转
-        const cached = this.getCache(cacheKey);
+        // 先读本地缓存兜底：历史归档体积大，缓存 TTL 给 1 小时，避免每次刷新都重拉 12MB。
+        // 实时接口仍会每次都跑，保证新内容不漏。
+        const ARCHIVE_TTL = 60 * 60 * 1000;
+        const cached = this.getCache(cacheKey, ARCHIVE_TTL);
 
         // 1) 实时抓取 与 2) 历史语料 并行拉取，各自带超时（关键修复：
         //    原实现用裸 fetch 且无超时、且串行等待，单个慢源/CDN 挂起就会让界面永久转圈）。
         const LIVE_MS = 18000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 18s 余量即止。
                                  // 实测实时接口常因上游 RSS 慢源拖到 7~13s，过长会让进度条卡在「实时抓取」阶段；
                                  // 实时数据体小、非必需，宁可快速超时回退到历史归档，也不阻塞看板主体。
-        const BASE_MS = 60000;   // data/news.json：改累加归档后体积持续增长（当前 ~3MB / gzip ~1.06MB，
-                                 // 上限 8000 篇时约 6MB / gzip ~2MB）。实测 CDN 正常回源仅 2.1s，
-                                 // 但弱网首屏可能十几秒甚至更久；归档是看板主体，宁可多等也不要丢，故给到 60s。
+        const BASE_MS = 180000;  // data/news.json：改累加归档后体积持续增长（当前 ~12MB / gzip ~4MB，
+                                 // 上限 8000 篇）。实测 CDN 正常回源仅 2.1s，但弱网/移动网络可能十几秒；
+                                 // 归档是看板主体，宁可多等也不要丢，故给到 180s（3 分钟）。
                                  // 超时只丢历史归档，实时部分不受影响（两者并行、各自独立超时）。
 
         // ---- 进度状态机：实时抓取(小/快) 与 历史归档(大/慢) 并行，各自回报，合成统一进度 ----
@@ -300,11 +302,17 @@ const API = {
             return null;
         })();
 
-        const [live, base] = await Promise.all([liveTask, archiveTask]);
+        let [live, base] = await Promise.all([liveTask, archiveTask]);
+
+        // 历史归档加载失败/超时，但本地缓存里还有上一次完整数据 → 用缓存当底座，
+        // 避免因归档一时拉不下来就只展示少量实时文章（用户会误以为"8000 篇变成 634 篇"）。
+        if ((!base || !base.length) && cached && cached.articles && cached.articles.length) {
+            base = { articles: cached.articles, updateTime: cached.updateTime || '' };
+        }
 
         // 实时与历史都拿不到，但本地有缓存 → 用缓存兜底（至少不白屏/不空转）
         if ((!live || !live.length) && (!base || !base.length) && cached) {
-            this.setCache(cacheKey, cached); // 续命缓存 TTL
+            this.setCache(cacheKey, cached, ARCHIVE_TTL); // 续命缓存 TTL
             onProgress({ stage: 'done', label: '联网拉取失败，已使用本地缓存展示', percent: 100, indeterminate: false, loaded: 0, total: 0 });
             return cached;
         }
@@ -346,7 +354,7 @@ const API = {
             const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
             payload = { articles: merged, updateTime, live: !!live, baseCount: (base && base.articles) ? base.articles.length : 0, liveCount: live ? live.length : 0 };
         }
-        this.setCache(cacheKey, payload);
+        this.setCache(cacheKey, payload, ARCHIVE_TTL);
         onProgress({ stage: 'done', label: `加载完成，共 ${payload.articles.length} 篇`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
         return payload;
     },
@@ -356,7 +364,7 @@ const API = {
         return new Promise((resolve, reject) => {
             let worker;
             try {
-                worker = new Worker('js/merge-worker.js?v=2608060101');
+                worker = new Worker('js/merge-worker.js?v=2608060901');
             } catch (e) {
                 reject(e);
                 return;

@@ -69,6 +69,7 @@ const app = createApp({
                 { value: 'technical', label: '技术硬核' },
                 { value: 'storytelling', label: '叙事故事' },
                 { value: 'concise', label: '简洁明了' },
+                { value: 'social', label: '社媒风格' },
             ],
             wordCounts: ['auto', 300, 500, 800, 1000, 1500, 2000],
             audiences: [
