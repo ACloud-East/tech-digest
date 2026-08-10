@@ -645,13 +645,16 @@ const app = createApp({
             aiForm.value.autoRatio = item.autoRatio || null;
             aiForm.value.withImages = item.withImages !== undefined ? item.withImages : true;
             aiForm.value.title = item.inputTitle || '';
-            aiForm.value.content = item.inputContent || '';
+            // 注意：不再把 item.inputContent 回填到「参考原文」框，防止旧草稿随下次生成静默污染 prompt
+            aiForm.value.content = '';
             aiForm.value.sources = item.inputSources || '';
             aiForm.value.keywords = item.inputKeywords || '';
             aiForm.value.template = item.inputTemplate || '';
             aiForm.value.extraInstructions = item.inputExtra || '';
             updateAILabels();
             aiShowOutput.value = true;
+            // 仅恢复「输入参数 + 上次成稿」用于查看/再生成；【不】把旧草稿回填到「参考原文」框，
+            // 避免旧内容随下一次生成静默混入 prompt（即「历史污染」）。如需以旧原文为素材，用户应手动粘贴。
             aiResult.value = item.resultContent || '';
             aiResultPlain.value = item.resultPlain || '';
             aiResultTitle.value = item.resultTitle || '';
@@ -692,8 +695,8 @@ const app = createApp({
                 else throw new Error('仅支持 Word（.docx）与 PDF（.pdf）文件，旧版 .doc 暂不支持');
                 text = (text || '').replace(/\r\n/g, '\n').trim();
                 if (!text) throw new Error('未能从该文件提取到文本，可能为空文件或扫描件（图片型 PDF 无法识别）');
-                const existing = (aiForm.value.content || '').trim();
-                aiForm.value.content = existing ? existing + '\n\n' + text : text;
+                // 上传新文档时【覆盖】原文框，而非追加到旧内容之后（避免旧草稿污染）
+                aiForm.value.content = text;
             } catch (err) {
                 alert('解析失败：' + (err && err.message ? err.message : err));
             } finally {
@@ -752,7 +755,10 @@ const app = createApp({
                 const existing = (aiForm.value.content || '').trim();
                 const fetchedText = texts.join('\n\n').trim();
                 if (fetchedText) {
-                    aiForm.value.content = existing ? existing + '\n\n' + fetchedText : fetchedText;
+                    // 用本次抓取到的原文【覆盖】填入，而非追加到旧草稿之后 —— 否则旧草稿会混入 prompt 造成「历史污染」
+                    aiForm.value.content = existing
+                        ? existing + '\n\n' + '（以下为本次粘贴链接抓取到的原文，请仅以本段为准撰写）\n' + fetchedText
+                        : fetchedText;
                 }
                 // 保存抽到的图（后续统一注入正文）。受「配图」开关控制：关闭时不抽取/注入配图。
                 if (imgs.length && aiForm.value.withImages) aiResultImages.value = imgs.slice(0, 12);
