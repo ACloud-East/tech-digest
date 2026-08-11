@@ -286,7 +286,10 @@ const API = {
             } catch (e) { console.warn('读取归档元数据失败:', e.message); }
         })();
 
-        // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。流式下载，逐字节回报进度
+        // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。
+        //    先尝试流式下载（带字节进度）；部分浏览器/网络对超大 JSON 的流式读取不稳定
+        //    （Chrome 无痕窗口尤其容易因内存/传输中断而失败），失败则回退到普通 fetch().json()，
+        //    同样能拿到完整数据，只是进度变为不确定动画。两层都失败才算真正拉不到。
         const archiveTask = (async () => {
             // 优先等 meta 就绪（通常 <100ms），最多等 500ms 避免阻塞
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
@@ -298,7 +301,12 @@ const API = {
                     prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
                 }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
-            } catch (e) { console.warn('读取历史语料失败/超时:', e.message); }
+            } catch (e) { console.warn('流式读取历史语料失败，回退普通 fetch:', e.message); }
+            // 兜底：普通 GET + response.json()，无流式进度但更稳，专治流式在部分浏览器失败的情况
+            try {
+                const r = await this.fetchJSON('data/news.json', BASE_MS);
+                if (r && Array.isArray(r.articles)) return { articles: r.articles, updateTime: r.updateTime || '' };
+            } catch (e) { console.warn('普通 fetch 读取历史语料失败/超时:', e.message); }
             return null;
         })();
 
@@ -364,7 +372,7 @@ const API = {
         return new Promise((resolve, reject) => {
             let worker;
             try {
-                worker = new Worker('js/merge-worker.js?v=2608060901');
+                worker = new Worker('js/merge-worker.js?v=2608061001');
             } catch (e) {
                 reject(e);
                 return;
@@ -376,7 +384,7 @@ const API = {
                 clearTimeout(timer);
                 try { worker.terminate(); } catch (_) {}
             };
-            const timer = setTimeout(() => { cleanup(); reject(new Error('Worker 合并超时')); }, 5000);
+            const timer = setTimeout(() => { cleanup(); reject(new Error('Worker 合并超时')); }, 15000);
             worker.onmessage = (e) => { cleanup(); resolve(e.data && e.data.payload); };
             worker.onerror = (err) => { cleanup(); reject(err); };
             worker.postMessage({ base: baseArticles, live: liveArticles, updateTime: baseUpdateTime, liveAvailable });
