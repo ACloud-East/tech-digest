@@ -1253,6 +1253,27 @@ async function main() {
         }, null, 2));
         console.log('\n已保存:', outPath);
         console.log('已保存元数据:', metaPath, `(${rawBytes} bytes, ${archive.length} 篇)`);
+
+        // ── 分片归档：把 8000 篇拆成多个 ~1000 篇的小文件，便于弱网/CDN 并行加载、
+        //    单文件失败可单独重试。整文件 12MB 在弱网长连接下常被中断且整段作废，
+        //    改成小分片后几乎不会再整体失败（见前端 js/api.js 的 archiveTask）。
+        const partsDir = path.join(__dirname, '..', 'data', 'news-parts');
+        fs.mkdirSync(partsDir, { recursive: true });
+        const PART_SIZE = 1000;
+        const parts = [];
+        for (let i = 0; i < archive.length; i += PART_SIZE) {
+            const chunk = archive.slice(i, i + PART_SIZE);
+            const partName = `part-${String(Math.floor(i / PART_SIZE)).padStart(3, '0')}.json`;
+            fs.writeFileSync(path.join(partsDir, partName), JSON.stringify(chunk, null, 2));
+            parts.push(partName);
+        }
+        fs.writeFileSync(path.join(partsDir, 'manifest.json'), JSON.stringify({
+            parts,
+            total: archive.length,
+            updateTime: output.updateTime,
+            partSize: PART_SIZE
+        }, null, 2));
+        console.log(`已保存分片归档: data/news-parts/ (${parts.length} 片 x ${PART_SIZE} 篇)`);
     }
     unique = archive; // 下方统计以最终归档为准
 

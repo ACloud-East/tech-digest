@@ -1,0 +1,15 @@
+{
+  "parts": [
+    "part-000.json",
+    "part-001.json",
+    "part-002.json",
+    "part-003.json",
+    "part-004.json",
+    "part-005.json",
+    "part-006.json",
+    "part-007.json"
+  ],
+  "total": 8000,
+  "updateTime": "2026-08-07T05:41:26.892Z",
+  "partSize": 1000
+}

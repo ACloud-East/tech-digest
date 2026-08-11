@@ -245,7 +245,11 @@ const API = {
                 if (prog.archKnown && prog.archTotal) {
                     const frac = Math.min(1, prog.archLoaded / prog.archTotal);
                     percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
-                    label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                    if (prog.archIsParts) {
+                        label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}（${Math.round(frac * 100)}%）`;
+                    } else {
+                        label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                    }
                 } else {
                     percent = -1; indeterminate = true; // 服务端分块压缩传输、拿不到总大小 → 走不确定动画 + 已下载量
                     label = `正在加载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知）`;
@@ -287,22 +291,54 @@ const API = {
         })();
 
         // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。
-        //    先尝试流式下载（带字节进度）；部分浏览器/网络对超大 JSON 的流式读取不稳定
-        //    （Chrome 无痕窗口尤其容易因内存/传输中断而失败），失败则回退到普通 fetch().json()，
-        //    同样能拿到完整数据，只是进度变为不确定动画。两层都失败才算真正拉不到。
+        //    优先用「分片归档」：整文件 12MB 在弱网/CDN 长连接下常被中断且整段作废，
+        //    故后端已拆成 ~1000 篇/片的小文件（data/news-parts/），前端并行加载、单片失败单独重试，
+        //    几乎不会再整体失败。分片不可用时再回退到整文件（流式 + 普通 fetch 两层）。
         const archiveTask = (async () => {
-            // 优先等 meta 就绪（通常 <100ms），最多等 500ms 避免阻塞
+            // 优先等 meta 就绪（最多 500ms，避免阻塞分片加载）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
+
+            // ── A) 分片归档：并行加载小文件，单片最多重试 3 次 ──
+            try {
+                const manifest = await this.fetchJSON('data/news-parts/manifest.json', 15000);
+                if (manifest && Array.isArray(manifest.parts) && manifest.parts.length) {
+                    const partUrls = manifest.parts.map(p => `data/news-parts/${p}`);
+                    const total = partUrls.length;
+                    let loadedCount = 0;
+                    const loadPart = async (url) => {
+                        let lastErr;
+                        for (let attempt = 0; attempt < 3; attempt++) {
+                            try {
+                                const arr = await this.fetchJSON(url, 30000);
+                                const list = Array.isArray(arr) ? arr : (arr && arr.articles) || [];
+                                return list;
+                            } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 400 * (attempt + 1))); }
+                        }
+                        console.warn('分片加载失败（已重试3次）:', url, lastErr && lastErr.message);
+                        return [];
+                    };
+                    const results = await Promise.all(partUrls.map(async (url) => {
+                        const list = await loadPart(url);
+                        loadedCount++;
+                        prog.archStarted = true; prog.archIsParts = true; prog.archLoaded = loadedCount; prog.archTotal = total; prog.archKnown = true;
+                        prog.merging = false; emit();
+                        return list;
+                    }));
+                    const articles = results.flat();
+                    if (articles.length) {
+                        return { articles, updateTime: manifest.updateTime || '' };
+                    }
+                }
+            } catch (e) { console.warn('分片归档清单读取失败，回退整文件:', e.message); }
+
+            // ── B) 整文件兜底：流式（带进度）失败则普通 fetch ──
             try {
                 const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
-                    // streamFetchJSON 的 total 来自 Content-Length；生产上分块 gzip 时它为 0，
-                    // 此时用 meta 提供的 expectedSize，让进度条保持真实百分比。
                     const effectiveTotal = total || expectedSize;
                     prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
                 }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
             } catch (e) { console.warn('流式读取历史语料失败，回退普通 fetch:', e.message); }
-            // 兜底：普通 GET + response.json()，无流式进度但更稳，专治流式在部分浏览器失败的情况
             try {
                 const r = await this.fetchJSON('data/news.json', BASE_MS);
                 if (r && Array.isArray(r.articles)) return { articles: r.articles, updateTime: r.updateTime || '' };
