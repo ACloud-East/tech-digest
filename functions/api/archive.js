@@ -5,13 +5,17 @@
  * 经常整段中断，只能拿到几百篇（其他浏览器正常 8000）。而同站点的 Function（/api/news）小响应在
  * 无痕里是通的。
  *
- * 解决：本接口把归档拆成小分片（data/news-parts/part-NNN.json，每片 ~1MB、~1000 篇），
- * 服务端读取后 gzip 压缩（每片线上下行 ~300KB），前端并行拉 8 个分片即可稳定凑齐 8000。
+ * 解决：本接口把归档拆成小分片（data/news-parts/part-NNN.json，每片 ~1000 篇），服务端读取后
+ * 由 Cloudflare 边缘自动 gzip 压缩（每片线上下行 ~300KB），前端并行拉 8 个分片即可稳定凑齐 8000。
  *
  * 路由：
- *   /api/archive?meta=1            -> 返回 data/news-parts/manifest.json（极小，含总分片数/总篇数）
- *   /api/archive?part=part-NNN.json-> 返回对应分片（gzip 压缩），前端按片并行加载、单片重试
- *   /api/archive（无参数）          -> 返回整包 data/news.json（兜底用，转发 Content-Length 供进度条）
+ *   /api/archive?meta=1            -> 返回 data/news-parts/manifest.json（极小，含总分片数/总篇数/每片字节数）
+ *   /api/archive?part=part-NNN.json-> 返回对应分片（交给 Cloudflare 自动 gzip）
+ *   /api/archive（无参数）          -> 返回整包 data/news.json（兜底用）
+ *
+ * 注意：不要在此处手动 gzip！实测 Cloudflare 会对响应再做一次自动压缩，导致「双重 gzip」——
+ * 浏览器只解压一次，拿到仍是 gzip 二进制，JSON.parse 直接报错。故这里只透传原始 body，
+ * 压缩交由 Cloudflare 边缘完成（已验证会对 Function 响应加 content-encoding: gzip）。
  */
 
 const SAFE_PART = /^part-\d+\.json$/;
@@ -44,24 +48,9 @@ export async function onRequestGet(context) {
         const resp = await env.ASSETS.fetch(assetUrl);
         if (!resp.ok) throw new Error('assets responded ' + resp.status);
 
-        // 分片走 gzip 压缩：每片从 ~1MB 压到 ~300KB，无痕里也能稳定下完；
-        // 浏览器会自动解压，前端用「分片数进度」展示，不依赖字节大小。
-        if (meta !== '1' && part) {
-            const gzipped = new Response(
-                resp.body.pipeThrough(new CompressionStream('gzip')),
-                {
-                    status: resp.status,
-                    headers: {
-                        'Content-Type': 'application/json; charset=utf-8',
-                        'Content-Encoding': 'gzip',
-                        'Cache-Control': 'no-cache',
-                    },
-                }
-            );
-            return gzipped;
-        }
-
-        // 清单 / 整包：转发上游 Content-Length，让进度条显示真实文件大小与百分比
+        // 透传原始 body，压缩交给 Cloudflare 边缘（避免双重 gzip）。
+        // 转发上游 Content-Length（若有）供前端参考；前端分片进度统一用 manifest.sizes
+        // （未压缩预期字节）计算，与压缩无关。
         const headers = {
             'Content-Type': 'application/json; charset=utf-8',
             'Cache-Control': 'no-cache',
