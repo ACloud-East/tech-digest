@@ -251,7 +251,11 @@ const API = {
                     const frac = Math.min(1, prog.archLoaded / prog.archTotal);
                     percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
                     if (prog.archIsParts) {
-                        label = `正在加载历史归档分片 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                        if (prog.archIsByte) {
+                            label = `正在加载历史归档分片 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
+                        } else {
+                            label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}（${Math.round(frac * 100)}%）`;
+                        }
                     } else {
                         label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
                     }
@@ -328,26 +332,32 @@ const API = {
             const loadShards = async (fn, retry, tag) => {
                 const parts = manifest.parts;
                 const total = parts.length;
+                // 有 sizes 时按「未压缩字节数」聚合（显示真实文件大小+平滑百分比）；
+                // 没有 sizes（如 cron 尚未重新生成 manifest）时降级为「分片计数」进度，避免把分片数当成字节显示。
+                const haveBytes = !!(partSizes && partSizes.length === total);
                 const sizeOf = (i) => (partSizes && partSizes[i]) || 0;
-                const totalBytes = partSizes ? partSizes.reduce((a, b) => a + b, 0) : 0;
+                const totalBytes = haveBytes ? partSizes.reduce((a, b) => a + b, 0) : total;
                 const partLoaded = new Array(total).fill(0);
+                let doneCount = 0;
                 const recompute = () => {
                     let l = 0; for (let i = 0; i < total; i++) l += partLoaded[i];
-                    prog.archStarted = true; prog.archIsParts = true;
-                    prog.archLoaded = l; prog.archTotal = totalBytes || total; prog.archKnown = !!(totalBytes || total);
+                    prog.archStarted = true; prog.archIsParts = true; prog.archIsByte = haveBytes;
+                    if (haveBytes) { prog.archLoaded = l; prog.archTotal = totalBytes; }
+                    else { prog.archLoaded = doneCount; prog.archTotal = total; }
+                    prog.archKnown = true;
                     emit();
                 };
                 const loadPart = (idx) => {
-                    const onProgress = (loaded) => { partLoaded[idx] = loaded; recompute(); };
+                    const onProgress = (loaded) => { if (haveBytes) { partLoaded[idx] = loaded; recompute(); } };
                     const once = () => fn(parts[idx], idx, onProgress);
                     return (async () => {
                         let lastErr;
                         for (let attempt = 0; attempt < retry; attempt++) {
-                            try { const arr = await once(); partLoaded[idx] = sizeOf(idx); recompute(); return Array.isArray(arr) ? arr : (arr && arr.articles) || []; }
+                            try { const arr = await once(); if (haveBytes) partLoaded[idx] = sizeOf(idx); else doneCount++; recompute(); return Array.isArray(arr) ? arr : (arr && arr.articles) || []; }
                             catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 300 * (attempt + 1))); }
                         }
                         console.warn(`分片(${tag})加载失败（已重试${retry}次）:`, parts[idx], lastErr && lastErr.message);
-                        recompute();
+                        if (!haveBytes) doneCount++; recompute();
                         return [];
                     })();
                 };
