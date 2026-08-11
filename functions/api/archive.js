@@ -17,14 +17,16 @@ export async function onRequestGet(context) {
         // env.ASSETS 是 Pages 提供的静态资源读取器，从 Cloudflare 内部网络取文件，稳定且快
         const resp = await env.ASSETS.fetch(url.toString());
         if (!resp.ok) throw new Error('assets responded ' + resp.status);
+        // 转发上游 Content-Length，让前端进度条能显示真实文件大小与百分比
+        // （即使 data/news-meta.json 被拦，也能凭 Content-Length 显示确定进度，不再卡顿）
+        const headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-cache',
+        };
+        const cl = resp.headers.get('content-length');
+        if (cl) headers['Content-Length'] = cl;
         // 直接透传响应体（流式），不在函数内缓冲 12MB，避免内存/超时压力
-        return new Response(resp.body, {
-            status: resp.status,
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Cache-Control': 'no-cache',
-            },
-        });
+        return new Response(resp.body, { status: resp.status, headers });
     } catch (e) {
         return new Response(JSON.stringify({ error: String((e && e.message) || e) }), {
             status: 502,

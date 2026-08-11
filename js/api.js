@@ -228,10 +228,12 @@ const API = {
         const LIVE_MS = 18000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 18s 余量即止。
                                  // 实测实时接口常因上游 RSS 慢源拖到 7~13s，过长会让进度条卡在「实时抓取」阶段；
                                  // 实时数据体小、非必需，宁可快速超时回退到历史归档，也不阻塞看板主体。
-        const BASE_MS = 180000;  // data/news.json：改累加归档后体积持续增长（当前 ~12MB / gzip ~4MB，
-                                 // 上限 8000 篇）。实测 CDN 正常回源仅 2.1s，但弱网/移动网络可能十几秒；
-                                 // 归档是看板主体，宁可多等也不要丢，故给到 180s（3 分钟）。
-                                 // 超时只丢历史归档，实时部分不受影响（两者并行、各自独立超时）。
+        // 归档各路超时（已收紧）：整条归档链路最坏情况必须在「看门狗」之前 resolve，
+        // 否则无痕等弱网环境会卡到看门狗触发 → 白屏「暂无资讯」。
+        const FUNCTION_MS = 60000; // /api/archive Function 代理：12MB 经服务端流式返回，正常 2~5s；
+                                   // 弱网/冷启动可能到几十秒，给 60s 余量；超时就回退分片/整文件。
+        const PART_MS = 10000;     // 单个分片：静态小文件正常 <1s；无痕等静态被掐的环境会很快失败，不重试拖时间
+        const WHOLE_MS = 25000;    // 整文件兜底：流式 + 普通 fetch 各 25s
 
         // ---- 进度状态机：实时抓取(小/快) 与 历史归档(大/慢) 并行，各自回报，合成统一进度 ----
         const prog = { liveDone: false, archStarted: false, archLoaded: 0, archTotal: 0, archKnown: false, merging: false };
@@ -301,8 +303,13 @@ const API = {
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
             // ── A) Function 代理：服务端读静态归档再流式返回，浏览器只走 Function 通路 ──
+            //    用 streamFetchJSON 边下边回报字节进度，进度条显示真实百分比与文件大小（不再卡顿/无大小）
             try {
-                const data = await this.fetchJSON('/api/archive', BASE_MS);
+                const data = await this.streamFetchJSON('/api/archive', FUNCTION_MS, (loaded, total) => {
+                    const effectiveTotal = total || expectedSize;
+                    prog.archStarted = true; prog.archIsParts = false;
+                    prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
+                }, expectedSize);
                 if (data && Array.isArray(data.articles) && data.articles.length) {
                     return { articles: data.articles, updateTime: data.updateTime || '' };
                 }
@@ -310,16 +317,16 @@ const API = {
 
             // ── B) 分片归档：并行加载小文件，单片最多重试 3 次 ──
             try {
-                const manifest = await this.fetchJSON('data/news-parts/manifest.json', 15000);
+                const manifest = await this.fetchJSON('data/news-parts/manifest.json', 10000);
                 if (manifest && Array.isArray(manifest.parts) && manifest.parts.length) {
                     const partUrls = manifest.parts.map(p => `data/news-parts/${p}`);
                     const total = partUrls.length;
                     let loadedCount = 0;
                     const loadPart = async (url) => {
                         let lastErr;
-                        for (let attempt = 0; attempt < 3; attempt++) {
+                        for (let attempt = 0; attempt < 2; attempt++) {
                             try {
-                                const arr = await this.fetchJSON(url, 30000);
+                                const arr = await this.fetchJSON(url, PART_MS);
                                 const list = Array.isArray(arr) ? arr : (arr && arr.articles) || [];
                                 return list;
                             } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 400 * (attempt + 1))); }
@@ -343,14 +350,14 @@ const API = {
 
             // ── C) 整文件兜底：流式（带进度）失败则普通 fetch ──
             try {
-                const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
+                const data = await this.streamFetchJSON('data/news.json', WHOLE_MS, (loaded, total) => {
                     const effectiveTotal = total || expectedSize;
                     prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
                 }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
             } catch (e) { console.warn('流式读取历史语料失败，回退普通 fetch:', e.message); }
             try {
-                const r = await this.fetchJSON('data/news.json', BASE_MS);
+                const r = await this.fetchJSON('data/news.json', WHOLE_MS);
                 if (r && Array.isArray(r.articles)) return { articles: r.articles, updateTime: r.updateTime || '' };
             } catch (e) { console.warn('普通 fetch 读取历史语料失败/超时:', e.message); }
             return null;
