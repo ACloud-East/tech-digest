@@ -1,7 +1,253 @@
 {
-  "updateTime": "2026-08-11T10:05:01.012Z",
+  "updateTime": "2026-08-11T10:21:58.967Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "DORA：AI 辅助软件开发的团队画像与能力模型，帮助团队将研究成果落地",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/1oV8oaYwzU15W5BdSL7C?utm_source=rss&utm_medium=article",
+      "time": "2026-08-11T10:21:38.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "挑战三星显示，消息称京东方争取为苹果 iPad Air 供应 OLED 面板",
+      "description": "IT之家 8 月 11 日消息，韩媒 The Elec 今天（11 日）傍晚援引业内消息称，京东方正争取进入苹果 iPad Air OLED 面板供应链，希望在三星显示之后成为第二家供应商。 目前，京东方已开始为下一代 iPad Air 开发 OLED 面板，研发工作正在拥有第六代 OLED 生产线的京东方重庆 B12 生产基地进行。 苹果已经选定三星显示作为 iPad Air OLED 面板的主供应商，预计今年底或明年初启动量产。京东方则希望获得第二供应商资格，目前尚未进入量产认证阶段，预计将先向苹果提交样品接受评估，再进入后续认证流程。 苹果预计将在今年底前后决定是否正式采用京东方的面板，初期订单可能仅用于中国市场机型或翻新设备。 业内预计，京东方能否通过量产认证将在 11 月或 12 月揭晓。苹果通常会在量产开始前一至两个月批准供应商生产，如果京东方未能通过认证，三星显示预计将独供首批 iPad Air OLED 面板。 报道提到，京东方此前已经进入苹果 iPhone OLED 供应链，但在包括 iPad 在内的 IT OLED 市场，三星、LG 等韩厂一直占据领先位置。 新款 iPad Air 将提供 11 英寸和 13 英寸两个版本，预计采用玻璃基板搭配薄膜封装（TFE）的混合型 OLED 面板。面板可能使用单堆栈 RGB 发光结构，TFT 背板采用低温多晶硅（LTPS）技术，并支持 60Hz 刷新率。 苹果将在 iPad Air 上采用成本较低的单堆栈 OLED 和 LTPS 技术，与定位更高的 iPad Pro 形成差异，同时保留 OLED 显示效果。随着 OLED 从 iPad Pro 进一步下放至 iPad Air，平板电脑 OLED 市场预计还将继续扩大。 业内人士指出，京东方正在开发 OLED 面板，目标是进入 iPad Air 供应链。最终能否拿到订单，以及供货规模有多大，将取决于苹果的评估和量产认证结果。 京东方同时还在争取 MacBook Pro OLED 订单，计划由成都 B16 第 8.6 代 OLED 生产线供货。不过，目前生产良率仍难以稳定，短期内向苹果大规模出货的可能性不高。业内预计，京东方要到 2028 年以后才有望进入 MacBook Pro OLED 供应链。",
+      "url": "https://www.ithome.com/0/988/448.htm",
+      "time": "2026-08-11T10:20:43.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "7 Tips to Make Your AI Agent More Predictable",
+      "description": "After months of building with AI coding tools, I found the difference between generated code that works and generated code that ships comes down to how you communicate with the AI. I have been sharing these lessons in a talk called \"It's Dangerous to Code Alone! Take This: Developer's AI Survival Guide\" and people keep asking me to write them down. How big is the gap? An MIT study across 100,000+ developers found that AI agents boosted code written by ~180%, while code that actually shipped to production rose by only ~30%. To demonstrate these tips, I built a link-sharing platform so my teammates can share resources without juggling multiple QR codes. I generated the frontend with Codex GPT 5.6 Sol and Figma MCP, and I am adding an AWS Blocks backend to swap out local mocks with real cloud infrastructure. You can find all the prompts in this repository. All of these tips are applicable to greenfield projects as well. I can't promise you it is going to have the 42 effect :) Each model reacts to prompts differently. The clearer you get, the faster you achieve your goal. You also need to remember that now we don't only have models, we also have effort levels. If you are not mindful about which model you are running with which effort level, you will have a hard time getting the results you want. Here are some general rules I follow (you can check the BUILD_PROMPT.md and the AWS Blocks skill in the repo for the full picture): Describe what you want. Works for simple, well-defined tasks. Here is my frontend build prompt. One sentence, clear outcome: Build \"Some Useful Links\" — a LinkTree-style web application using Next.js with SSR enabled. The complete visual design specification is in `DESIGN_SPEC.md` and reference screenshots are in the `design-previews/` folder. Implement the design pixel-perfectly. And for the backend migration to AWS Blocks: Replace the local JSON mock services in src/lib/services/local/ with AWS Blocks implementations. The service registry (index.ts) is the only file that should change in the existing codebase. Frontend must not be modified. Both are zero-shot: one clear task, no ambiguity. Show examples. Input, output. Input, output. The model picks up the shape. Research shows the format matters more than whether the examples are perfectly correct. In my BUILD_PROMPT.md, I use this for the service registry pattern. I show the AI what an implementation swap looks like: // src/lib/services/index.ts import { LocalAnalyticsStore } from './local/analytics-store.local'; import { LocalLinkStore } from './local/link-store.local'; import { LocalVisitTracker } from './local/visit-tracker.local'; // SWAP POINT: Replace these with cloud implementations export const analyticsStore = new LocalAnalyticsStore(); export const linkStore = new LocalLinkStore(); export const visitTracker = new LocalVisitTracker(); When I ask the AI to build the AWS Blocks backend, it sees this pattern and knows the target: create a BlocksAnalyticsStore, BlocksLinkStore, and BlocksVisitTracker that implement the same interfaces, then swap them in index.ts. I do not need to explain the concept of dependency injection. The example IS the explanation. Force the model to reason step by step before acting. For debugging, architecture decisions, or anything multi-step, this cuts logical errors significantly. I use this when asking the AI to plan the AWS Blocks migration: Before writing any code, analyze the existing service interfaces in src/lib/services/interfaces/. For each interface method, determine: 1. Which AWS Blocks building block maps to it (DistributedTable, KVStore, FileBucket, etc.) 2. What the key schema should be to support the query patterns 3. Whether the method needs authentication (check if the frontend calls it from an admin route or a public route) Write your analysis as a numbered plan. I will review it before you start implementing. The AI produces a plan I can review before it writes a single line of code. Without this step, it would just start building and often pick the wrong storage pattern for a given query. Use words like MUST, NEVER, ALWAYS, and STRICTLY FORBIDDEN. Avoid weak phrasing like \"Please try to,\" \"It is preferred,\" or \"Usually we do.\" Here is a comparison from my project. The frontend BUILD_PROMPT.md sets boundaries like this: All backend infrastructure must be local mocks — no cloud dependencies. The mocks must be documented clearly enough that another AI agent or developer can swap them for any cloud provider without restructuring. And the AWS Blocks skill sets boundaries for the backend side: Backend lives in `aws-blocks/index.ts`. Frontend imports from 'aws-blocks' (workspace package). The `client.js` is auto-generated — never edit it. Both are direct, absolute, and leave no room for interpretation. Telling the AI what NOT to do is often more effective than listing everything it should do. Frontend (AGENTS.md): - Do not add cloud SDKs, deployment configuration, external persistence, or source-controlled credentials unless the task explicitly requires them. - Import services from `@/lib/services`; components and route handlers must not import `src/lib/services/local/*` directly. - Keep unrelated refactors and generated-file churn out of focused changes. Backend (AWS Blocks skill): - Adding to an existing project? Scaffold into a temp dir, copy only `aws-blocks/` folder, then manually merge workspace config, scripts, and dependencies. The scaffolder overwrites root package.json, tsconfig.json, vite.config.ts, .gitignore. - Never edit index.cdk.ts, index.handler.ts, or client.js — these are auto-generated. You need to steer the agent in the correct direction. AI tools have dedicated files for this purpose: AGENTS.md CLAUDE.md Kiro steering files (.kiro/steering/) Kiro skills (.kiro/skills/) Some of these are loaded every session (steering files), giving the AI persistent rules. Others are loaded on demand (skills), giving the AI specialized knowledge only when it needs it. Both keep your context window lean. For the frontend, I have an AGENTS.md at the root that covers the full Next.js application: # AGENTS.md ## Project Overview Some Useful Links is a local-first, multi-page link-sharing application built with Next.js App Router, React, strict TypeScript, and Tailwind CSS. ## Commands npm install npm run dev npm run validate:links npm run lint npm run build ## Architecture - src/app: App Router pages, layouts, route handlers - src/components: UI grouped by admin, analytics, layout, links, share - src/lib/services/interfaces: Backend-neutral service contracts - src/lib/services/local: Local JSON-backed implementations - src/lib/services/index.ts: The only provider registration and swap point I also have two Kiro steering files that enforce cross-cutting rules regardless of the task: TypeScript rules (.kiro/steering/typescript.md) — enforces strict typing and build validation: # TypeScript Project Instructions ## Workflows & Validation - Pre-completion Check: Before completing any task or reporting success, you MUST run `npm run build` in the terminal. - Do not consider a task finished if the build command returns errors. Fix the errors first. ## Coding Conventions - Strict typing is enforced. You are strictly forbidden from using the `any` type. - Always define and apply the exact, correct types and interfaces for all variables, function parameters, and return values. - You are STRICTLY FORBIDDEN from using @ts-ignore. If unavoidable, use @ts-expect-error with a detailed comment. Agent behavior rules (.kiro/steering/agent.md) — controls what the AI can and cannot do on its own: # Agent Behavior Rules ## File and Folder Boundaries - DO NOT create any new Markdown files unless explicitly instructed by the user. - STRICTLY FORBIDDEN to auto-generate changelogs or documentation. - You MUST update the existing README.md if your changes alter the project's public API or architecture. ## Technology Boundaries - You MUST ALWAYS use the Strands Agents library with TypeScript for any agent development. - You are STRICTLY REQUIRED to use Claude Haiku 4.5 from Amazon Bedrock for all agent models. - You MUST ALWAYS use React and Vite with TypeScript for web development. - NEVER write or generate unit tests unless the user explicitly commands it. ## Security Boundaries - NEVER commit or hardcode sensitive information (client secrets, API keys, client IDs, resource IDs). ## Git Boundaries - Commits MUST stay under 150 lines of source code. - Every commit: single-sentence summary, blank line, detailed explanation (max 20 lines). - You MUST append `(Kiro)` to the author name using: git commit --author=\"[Git Username] (Kiro) \" These prevent the common annoyances: AI generating unwanted test files, committing giant diffs, sneaking any types past the compiler, or littering the repo with markdown files nobody asked for. Steering files are always loaded. But what about capabilities that are only needed sometimes? You do not want to load everything upfront because that wastes context. A Skill is a reusable, discoverable capability. The AI loads it only when it becomes relevant to the current task. The most important part of a Skill is the name and description. That is how the AI decides whether to use it. My AWS Blocks skill activates with this frontmatter: --- name: building-aws-blocks-apps description: \"Builds fullstack TypeScript applications on AWS using\" @aws-blocks/blocks. Use when working with any Building Block (KVStore, DistributedTable, Agent, AuthBasic...), ApiNamespace, BlocksStack, or the create-blocks-app CLI. --- The main SKILL.md is the overview: decision guides, project structure, quick start. Detailed reference lives in separate files: .kiro/skills/aws-blocks-development/ ├── SKILL.md # Overview + decision guide (under 200 lines) ├── CORE-ARCHITECTURE.md # Scope, ApiNamespace, JSON-RPC, CORS ├── TROUBLESHOOTING.md # Common errors and fixes └── blocks/ ├── auth-basic.md # AuthBasic patterns ├── distributed-table.md # DistributedTable patterns ├── api-namespace.md # ApiNamespace deep dive └── ... (20+ block files) When the AI needs to implement authentication, it loads blocks/auth-basic.md. When it needs to set up a database, it loads blocks/distributed-table.md. It does not carry all 122 KB of reference material in every conversation. Keep the root file under 200 lines. My AGENTS.md is 127 lines. The AWS Blocks SKILL.md is the overview (under 200 lines), with detailed reference files loaded on demand. Use the \"Router Pattern\": a root file that points to detailed references when needed. The AWS Blocks skill does exactly this with its block reference table. Project Context tells the AI where it is: \"This is a Next.js 14 App Router project using Tailwind CSS.\" Actionable Rules tell the AI what to do: \"Import services from @/lib/services; components must not import src/lib/services/local/* directly.\" Keep these separate. Context helps the AI orient itself. Rules constrain its behavior. Your AI sees everything in a stack: System instructions + steering files Full conversation history (every message) Tool output (files, terminal, search results) Your current request Performance degrades at 25% capacity, not 100%. You do not have the full context window available. The degradation starts much earlier than you think. Long sessions lead to the model \"forgetting\" earlier decisions, fixing one thing and breaking two others. Hallucinations increase as context fills up and your original constraints stop being followed. I have seen this firsthand. On the frontend side, I asked my AI to follow the service registry pattern from my AGENTS.md. After 15 turns of unrelated work, it started importing directly from src/lib/services/local/, exactly what I told it not to do. On the backend side, I had a session where I was building multiple API methods with AWS Blocks. After building the analytics endpoints, I asked it to add authentication. It generated a whole custom auth system instead of using the AuthBasic block that was in the skill file. The context was too full for it to reference back. Start fresh sessions for each new task Keep steering files under 200 lines Summarize progress in a file the AI can re-read, do not rely on conversation history Keep interactions to 5–7 turns per task max Vibe coding skips everything we know about building software: planning, analysis, design, testing, maintenance. All of it gone. Vibe coding works for prototyping and tiny fixes. But for anything beyond that, you need structure. Spec-Driven Development (SDD) is a methodology where detailed, unambiguous requirements are written and agreed upon before any actual coding begins. The spec is the contract between you and your AI. BUILD_PROMPT.md) Build \"Some Useful Links\" — a LinkTree-style web application using Next.js with SSR enabled. The complete visual design specification is in `DESIGN_SPEC.md` and reference screenshots are in the `design-previews/` folder. All backend infrastructure must be local mocks — no cloud dependencies. The mocks must be documented clearly enough that another AI agent or developer can swap them for any cloud provider without restructuring. 1. Framework: Next.js (App Router) with Server-Side Rendering enabled 2. Styling: Tailwind CSS with a custom theme from the design spec 3. Backend: Local mocks only — no cloud services, no external APIs MIGRATING_TO_CLOUD_PROMPT.md) Replace the local JSON mock services in `src/lib/services/local/` with AWS Blocks implementations. The existing service interfaces in `src/lib/services/interfaces/` are the contract. The service registry (`src/lib/services/index.ts`) is the only file that should change in the existing codebase. The frontend, routing, components, and design must remain untouched. 1. Backend runtime: AWS Blocks (`aws-blocks/index.ts`) 2. API layer: ApiNamespace with methods that mirror the existing service interface contracts 3. Auth: AuthBasic for admin routes (analytics dashboard, page management) 4. Data — Link pages: DistributedTable (stores page configurations and link entries) 5. Data — Analytics: DistributedTable (stores daily aggregate snapshots per page slug and date) 6. Data — Visit events: DistributedTable (stores raw page-view, link-click, and share events) 7. Hosting: Blocks Hosting for the Next.js frontend - [ ] All existing frontend functionality works unchanged - [ ] `npm run dev` starts both frontend and AWS Blocks local server on port 3000 - [ ] Admin routes require AuthBasic login - [ ] Click tracking persists events to DistributedTable - [ ] `npm run build` completes without TypeScript errors - [ ] `npm run deploy` deploys the full stack to AWS The AI knows exactly what to build, what the constraints are, and what \"done\" looks like. No ambiguity on either side. Start with Goals and Non-Goals: what are you building? What are you explicitly NOT building? Define your tech stack and project structure Add executable commands so the AI knows how to build and run things Write clear acceptance criteria so everyone knows when the work is done Set your boundaries: what should the AI always do? What should it ask you first? Model Context Protocol (MCP) is an open standard for connecting AI to the outside world. With MCP, your AI can: Connect to data sources (local files, databases, APIs) Run tools (search engines, calculators, linters) Follow workflows and specialized prompts Access knowledge that did not exist when it was trained Right now there is an MCP server for almost everything: GitHub, Slack, databases, documentation, cloud services. In my project, I used this in two places: Frontend: I connected Figma MCP so the AI could reference my actual design system when generating components. Instead of describing colors and spacing in text, it pulled the tokens directly from the Figma file. Backend: AWS Blocks is a new framework. The AI does not know its API surface from training data. Instead of pasting documentation into the chat (wasting context), I added an MCP server that gives the AI access to the AWS Blocks docs and API references on demand. It queries what it needs, when it needs it. The result: zero hallucinated API calls. The AI uses new ApiNamespace(scope, 'api', (context) => ({...})) because it can look up the actual signature, instead of guessing something like createApi(...). Some tasks deserve a spec. Others work fine as a quick conversation with the AI. Knowing which approach to use is what saves you time. Prototyping something Making smaller changes and tiny fixes Learning syntax and a new technology Automating one-off tasks Building production software Working in a team Designing complex architecture Working on brownfield projects (like adding AWS Blocks to an existing Next.js app) In my project, I vibe coded the initial design exploration with Figma MCP. But the moment I started building the actual app and the backend migration, I switched to specs. The frontend BUILD_PROMPT.md and the backend AWS Blocks skill together gave the AI everything it needed to produce consistent, predictable results. I am currently finishing the AWS Blocks backend for the link-sharing project and deploying it. I will write up that process in the next post. You can find the full project, including the BUILD_PROMPT.md, AGENTS.md, MIGRATING_TO_CLOUD_PROMPT.md, and the AWS Blocks skill files in this repository.",
+      "url": "https://dev.to/aws/7-tips-to-make-your-ai-agent-more-predictable-1ga4",
+      "time": "2026-08-11T10:20:35.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "行云科技：算力卡被卡在海关传闻不实，在手算力长期3-5年订单约150.82亿元",
+      "description": "行云科技公告，2026年8月11日公司关注到“行云科技的算力卡被卡在海关”等不实言论。经核查，相关传言不属实。自开展算力业务以来，公司海外采购的算力设备、零部件等均合规清关，未发生被海关扣留、滞留等无法通关情形，海外产品按计划正常清关到货，供应链稳定。截至公告披露日，公司在手算力长期3-5年订单规模约150.82亿元，所有订单均按合同约定正常履约。公司已启动信息溯源核查并向公安机关报警。",
+      "url": "https://wallstreetcn.com/livenews/3148020",
+      "time": "2026-08-11T10:18:58.000Z",
+      "tags": [
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "华为智选车产品总监彭磊：享界 G9 标配 ±12 度后轮转向，横向响应更“干净”",
+      "description": "IT之家 8 月 11 日消息，华为智选车产品总监（享界系列）彭磊今日发文，分享了鸿蒙智行首款科技豪华硬派 SUV —— 享界 G9 的“800V 全主动可断开稳定杆”核心亮点： 1. 路面不平：主动稳定杆主动断开左右悬架，解决低速不平路面左右晃动问题； 2. 转向侧倾：主动稳定杆主动产生扭矩，“拉住”左右悬架，对车身侧倾产生抑制，解决高速变道 / 转弯减小车身侧倾晃动。 据彭磊透露，享界 G9 标配搭载了 ±12 度的后轮转向，在横向响应会更加“干净”。 据IT之家此前报道，鸿蒙智行享界 G9 预售价 43.98 万元起，其中 Max+ 仅提供增程版, 新车长宽高分别为 5377/2050/1897mm，轴距 3160mm。新车全系标配 L3 级架构设计、华为乾崑智驾 ADS 5 高阶版、华为智擎双电机四驱 + 后桥自适应机械差速锁等。 鸿蒙智行官方此前还公布了享界 G9 座舱前排内饰官图。据介绍，新车搭载了寰宇三联屏，同时还配置了实体按键。从官图也可以看到，享界 G9 的车机预装了鸿蒙智行专属 HarmonyOS 车机。 鸿蒙智行享界 G9 选配一图知如下：",
+      "url": "https://www.ithome.com/0/988/447.htm",
+      "time": "2026-08-11T10:17:26.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "汽车"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "西交大提出QQWorld：仅需10行代码，世界模型成功率提升5.33个百分点",
+      "description": "西交大提出QQWorld：仅需10行代码，世界模型成功率提升5.33个百分点,高斯,梯度,样本,基线,潜变量,西交大,qqworld",
+      "url": "https://www.163.com/dy/article/L41U5RGT0511AQHO.html",
+      "time": "2026-08-11 10:17",
+      "tags": []
+    },
+    {
+      "source": "cnBeta",
+      "sourceColor": "#009a61",
+      "title": "离线会议轻松转写，深度研究创新实现多智能体协同，鸿蒙电脑小艺带来AI办公新体验",
+      "description": "8月5日，两款全新鸿蒙电脑——HUAWEIMateBookProS和HUAWEIMateBookFold非凡大师正式亮相，进一步丰富华为硬件产品矩阵。伴随新品亮相，系统级智能体小艺持续升级，小艺慧记、深度研究功能全面优化。除此之外，小艺还迎...",
+      "url": "http://www.cn-beta.com/redian/52296.html",
+      "time": "2026-08-11 10:17",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "博泰车联：获国内头部新能源车企项目定点 - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608113837997669.html",
+      "time": "2026-08-11T10:16:50.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Plan Around Next Month's Closure, Not Today's",
+      "description": "Every traffic API on the market answers the same question: what is closed right now? That question is worth answering. It is also the wrong one for most of the decisions a planner actually makes. The oversize load ships in three weeks. The seasonal lane is being quoted for August. The construction crew is scheduling a detour route for a job that starts after Labor Day. Nobody planning that work cares what is coned off this morning — they care what will be dug up when the truck gets there, and a live incident feed structurally cannot tell them. So the planner does the thing the tooling forces: opens six state DOT project pages in six browser tabs, reads six different PDF schedules, and writes the dates into a spreadsheet that is stale within a week. The data exists. It is published. It just isn’t queryable as data. It’s tempting to assume that future construction is just a work zone with a start date in the future, and that whatever feed carries today’s lane closures will carry next month’s too. It doesn’t, and the distinction matters operationally. Active work zones — the ones we wrote about in work zones along a route — come from real-time feeds describing conditions that exist right now. They appear when the cones go out and disappear when the crew leaves. Their whole design assumes you are asking about the present. Planned construction comes from somewhere else entirely: the agency’s project pipeline. A DOT’s capital program, its STIP project list, the “upcoming closures” page maintained by the district office. These records exist months before a single cone is placed, and they carry the thing planners need and live feeds lack — a projected start and end date. They also carry the property that makes them awkward to consume: those dates are estimates, and they move. Road511 now normalizes planned-construction records from nine states and provinces into one future_construction feature type — 2,161 projects as of today, each with whatever schedule the agency published. Virginia’s upcoming-closures layer is the deepest (927 records), with Delaware’s project portal close behind (774), then New Jersey’s STIP project locations (247), West Virginia’s project records (162) and North Carolina’s future-closures feed (42), with Idaho, New Brunswick, Nevada, and Prince Edward Island contributing the rest. West Virginia also publishes planned work as events carrying status=planned — another shape, same question. Treat that total as a reading, not a constant. Virginia’s layer is a rolling window that drops records once their dates pass: it stood at 2,176 in early July and 927 today, which is the feed working as designed rather than coverage being lost. Feeds also go quiet — Manitoba, Newfoundland, Nevada and Prince Edward Island are each returning nothing at the moment, so on any given day the number of jurisdictions actually publishing is smaller than the number we can parse. Query it rather than quoting it. Nine jurisdictions is not fifty, and we won’t pretend otherwise. But it’s the corridors where DOTs actually publish forward-looking schedules as machine-readable data, and each one arrives on its own schema, its own date format, and its own idea of what “start” means. Folding them into a single feature type with a single pair of timestamps is the work. Once every project shares one schema, “what will be under construction on this corridor in August” stops being a spreadsheet exercise and becomes a query. The /features endpoint now takes four scheduled-window filters — starts_after, starts_before, ends_after, ends_before — each accepting an RFC3339 timestamp or a plain YYYY-MM-DD date. Bound the window from both ends and you get overlap: every project whose scheduled dates intersect the period you care about, whether it starts inside the window, ends inside it, or spans straight through. GET /api/v1/features? type=future_construction& jurisdiction=VA& starts_before=2026-09-01& ends_after=2026-08-01 { \"data\": [ { \"id\": \"VA-fcon-WZNO4585395-12252025-298\", \"source\": \"VA\", \"jurisdiction\": \"VA\", \"feature_type\": \"future_construction\", \"name\": \"On I-66W Express Lanes from mile marker 65 to mile marker 43\", \"road_name\": \"On I-66W Express Lanes from mile marker 65 to mile marker 43\", \"latitude\": 38.886177, \"longitude\": -77.221801, \"is_active\": true, \"estimated_start_time\": \"2026-08-12T02:00:00Z\", \"estimated_end_time\": \"2026-08-12T09:00:00Z\", \"last_updated\": \"2026-08-11T08:43:55Z\" } ], \"total\": 801, \"limit\": 100, \"offset\": 0, \"has_more\": true } That is the whole ask: one call, one corridor, one month, every project that will be in the way. Add bbox or lat/lng/radius_km to narrow it to the geography the load actually travels, or hit /features/geojson to drop the same result straight onto a map. The filters match on the planned dates where an agency publishes them and fall back to actual dates where it doesn’t — so a source that reports only a real start time stays queryable on the same parameters, and you don’t need to know which kind of source you’re talking to. And a project with a known start but no published end is treated as open-ended: it matches ends_after, because a job with no end date certainly might still be running in August. It never matches ends_before, because nothing about it promises it will be finished. A record with no dates at all — a project the agency has announced but not scheduled — drops out of window queries entirely rather than quietly padding your results. Those two rules are the difference between a date filter you can plan against and one that lies to you at the edges. A planned start date is a forecast, and forecasts slip. Utility work runs long, a bridge job waits on steel, the whole thing gets pushed a season. Any planner who has been burned once knows not to treat estimated_start_time as gospel — and the useful response is not to distrust the data but to watch it change. So we keep the history. Every time an agency revises a project’s projected start or end, the change is recorded — old value, new value, when we saw it — and it’s queryable: GET /api/v1/analytics/feature-history? change_type=estimated_start_time_change That turns a static schedule into a signal. A project that has been rescheduled four times is telling you something a single date field never could. At the jurisdiction level, /analytics/scorecard asks the same question of a wider pool — how far does an agency move the end dates it publishes? — so you can calibrate how much slack a given DOT’s published dates historically need. It rolls up event-modelled roadwork rather than the future_construction records above, and it reports only the jobs whose revisions we can still see, so read the two as complementary views of the same habit rather than one number. Both live behind the analytics tier (Pro and up); the future_construction records themselves are available on every plan, free trial included. Permit and oversize-load planning — check the corridor for the delivery week, not for today, and catch the lane restriction that lands between quote and haul. Seasonal lane and contract pricing — know which corridors carry scheduled disruption during the months you’re quoting, before the rate is locked. Detour design that doesn’t collide — route around a work zone without routing into the one starting next week two miles over. Schedule-drift monitoring — watch the projects on your key corridors and get told when the dates move, instead of rediscovering it on arrival. Planning views that pair with the present — planned construction beside live work zones, bridge clearances, and seasonal load limits in one schema, on one corridor. These records come from the DOTs’ own project pipelines — official, attributed, and refreshed on our poll rather than transcribed by hand. The limits are real and worth stating plainly. Coverage is nine states and provinces, not the whole map, because forward-looking schedules are the least consistently published data a DOT produces — and as noted above, on any given day fewer than nine are actually returning records. Every date is an estimate, published by the agency and subject to revision without notice; that is a property of construction, not of the feed, and the change log exists precisely because of it. Detail varies — some sources give a full project description and route, others give a name and a pair of dates. And a planned closure is a plan: it tells you what an agency currently intends, which is the best information that exists three weeks out, and still not a promise. The job we take on is keeping nine project pipelines parsed, normalized, and current as they drift — so it isn’t yours. This is the same integration tax we described in the five road-data problems every NA fleet team hits, applied to the one dataset that lets you get ahead of the problem instead of reacting to it. API docs — the features surface, including future_construction and the scheduled-window filters Live map — see planned construction alongside live conditions Free API key — no credit card, 14-day trial Originally published on road511.com.",
+      "url": "https://dev.to/road511/plan-around-next-months-closure-not-todays-fge",
+      "time": "2026-08-11T10:16:35.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "美伊协议遥遥无期，分析师警告：油价或冲上120-140美元",
+      "description": "霍尔木兹海峡僵局持续发酵，油价面临重新定价压力。 布伦特原油周二一度突破90美元/桶，较上周末约83美元明显回升，但仍低于上月突破100美元的高点以及5月超过110美元的峰值。分析师警告，若海峡封锁持续，市场将被迫上调长期封锁的概率，油价可能进一步跃升至120至140美元/桶。 据华尔街见闻此前文章，美伊谈判前景周末进一步恶化。据央视，美国总统特朗普当地时间8月10日在社交媒体发帖称，他注意到，伊朗正在要求就过去五个月军事冲突中遭受的损失获得赔偿。特朗普称，“我同样要求伊朗进行赔偿，我已指示我的代表们将这一要求明确纳入未来所有谈判之中。” 这一言论令外界对于迅速达成重开霍尔木兹海峡协议的希望进一步黯淡，油价再度攀升。 油价与供应现实背离，市场等待“临界点” 当前油价仍未充分反映霍尔木兹海峡持续受阻带来的供应收紧，市场对谈判能够缓解危机的预期，正在与现实形成越来越大的落差。 据CNBC，Jefferies经济学家Modupe Adegbembo周一表示，交易员目前仍相信最终能够达成某种协议，从而恢复更多石油和货物通过海峡运输。但她警告，这种乐观情绪“具有时效性”，如果僵局持续至本周末甚至下周，油价不太可能继续维持当前的温和走势。 Capital Economics高级气候与大宗商品经济学家Kieran Tompkins表示，目前油价仍处于相对低位，反映市场同时在定价两种情景：能源运输迅速恢复，或霍尔木兹海峡长期关闭。若僵局进一步延续，市场将不得不上调长期封锁的隐含概率，前端原油期货价格或随之快速走高。 Tompkins进一步警告，若海峡持续关闭、经合组织石油库存继续快速下降，油市可能在第四季度初触及“临界点”——即库存无法继续吸收供应缺口，需求只能通过更高油价被迫下降。在历史经验下，这一阶段可能对应120至140美元/桶的油价水平。 缓冲因素减弱，油市上行风险升温 此前支撑油价维持低位的多重缓冲因素正在减弱，包括绕开霍尔木兹海峡的替代出口路线、疲弱需求以及阶段性增产等。 与此同时，市场对谈判进展的敏感度明显高于对实际供应约束的关注。只要出现任何缓和信号，交易员便迅速押注航运恢复，压低油价；但随着谈判迟迟没有实质进展，这种定价逻辑正面临挑战。 Energy Aspects创始人兼研究总监Amrita Sen表示，市场不可能永远维持当前低油价水平。她认为，近期油市对谈判进展的反应过于乐观，实际供应端仍面临较大压力，叠加地区基础设施持续遭到袭击，原油基本面整体仍偏向多头。 若霍尔木兹海峡僵局迟迟无法打破，市场定价的核心变量或将从“海峡何时恢复通航”，转向“长期封锁概率有多高”。一旦后者成为主导预期，油价可能迎来新一轮快速重估。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779182",
+      "time": "2026-08-11T10:16:08.000Z",
+      "tags": [
+        "互联网",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "【爱建汽车】自动驾驶国标发布，高阶智驾加速——汽车行业周报（2026/08/03-2026/08/09） - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_5953466437_162dab0450670b8k9m.html",
+      "time": "2026-08-11T10:16:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "EU Digital Services Act Requires Clear Terms Summaries From the Largest Platforms",
+      "description": "The European Union's Digital Services Act (DSA) makes terms and conditions a formal transparency issue, not merely a legal or user-experience concern. Under the regulation, providers of very large online platforms and very large online search engines must publish concise, easily accessible and machine-readable summaries of their terms. Those summaries must use clear and unambiguous language and be available in the official languages of the EU Member States where the service is offered. The requirement is set out in Article 14 of Regulation (EU) 2022/2065, the DSA's legal text. The official EUR-Lex version of the Digital Services Act also establishes broader requirements for intermediary services to make their terms clear, plain, intelligible, user-friendly and unambiguous. For the largest services, the summary obligation adds a more specific layer of accessibility and transparency. The DSA began applying to designated platforms and search engines across 2023 and 2024, before its wider application expanded in early 2024. Its EU-wide supervisory framework means terms governance is now part of an ongoing compliance responsibility for covered services. Article 14 applies to providers of intermediary services, but it creates an additional disclosure requirement for providers designated as very large online platforms (VLOPs) and very large online search engines (VLOSEs). The central practical distinction is that clear full terms are expected from intermediary services generally, while the largest covered services must also provide an accessible, machine-readable summary. Requirement area Intermediary services VLOPs and VLOSEs Terms language and presentation Clear, plain, intelligible, user-friendly and unambiguous Subject to the same baseline requirement Concise terms summary Not identified in the supplied research as a general Article 14 summary obligation Required to provide a concise, easily accessible and machine-readable summary Language availability for the summary Not applicable to the additional summary requirement Official languages of Member States where the service is offered Summary content Not applicable to the additional summary requirement Main elements of the terms, including available remedies and redress mechanisms A summary must address meaningful user information The DSA does not frame the summary as a marketing-friendly abstract detached from the legal terms. It must cover the main elements of the terms and conditions, including the remedies and redress mechanisms available to recipients of the service. That focus matters because users need to understand not only the rules that govern a service, but also the avenues available when they challenge a decision or seek redress. Machine readability is also significant. It makes the information more usable by tools and services, rather than limiting access to people willing to navigate a long legal document. Alongside the statutory obligation, the EU maintains a Digital Services Terms and Conditions Database and related tools intended to support transparency and access to terms summaries and related notices. For covered platforms, compliance cannot be treated as a one-time rewrite of a legal page. The requirement connects legal drafting, product design, localisation, publication workflows and records management. A concise summary has to remain aligned with the operative terms as those terms change, while continuing to be accessible to users in relevant Member States. A practical governance approach should account for: Ownership: clear responsibility across legal, policy, product and localisation teams. Change control: a process to update summaries when the underlying terms change. Language coverage: publication in the official languages required where the service is offered. Accessibility and format: user-facing placement that is easy to find, plus machine-readable delivery for covered large services. Redress information: a clear account of the remedies and redress mechanisms referenced in the terms. This does not mean every online business is a VLOP or VLOSE. The DSA's specific summary requirement described here applies to providers in those categories. However, the broader Article 14 standard for clearer, more intelligible terms is relevant to intermediary-service providers, and the largest-platform rules illustrate the direction of EU transparency expectations. For businesses operating complex digital services, this is where governance tooling can prevent legal text, customer communications and operational processes from drifting apart. Scalevise can help assess how AI-supported workflows fit into terms governance, localisation and compliance operating models through an AI consultancy engagement. A structured review can identify ownership gaps and change-control risks before they become a transparency problem. Request a consultation to discuss your AI governance and compliance workflow. What does the DSA require from very large online platforms and search engines? They must provide a concise, easily accessible and machine-readable summary of their terms and conditions. The summary must use clear and unambiguous language and be available in the official languages of Member States where the service is offered. Where is the terms summary requirement in the Digital Services Act? The requirement is codified in Article 14 of Regulation (EU) 2022/2065, the Digital Services Act. What information must a DSA terms summary cover? It must cover the main elements of the terms and conditions, including the remedies and redress mechanisms available to recipients of the service. Does the DSA summary requirement apply to every online business? The specific concise, accessible and machine-readable summary requirement described here applies to very large online platforms and very large online search engines. Article 14 also sets broader standards for intermediary-service terms to be clear, plain, intelligible, user-friendly and unambiguous. The DSA makes understandable terms a concrete platform-transparency obligation. For VLOPs and VLOSEs, a concise and machine-readable summary is a required complement to full terms, not a substitute for them. The most durable response is a governance process that keeps legal terms, summaries, language versions and redress information aligned as services evolve.",
+      "url": "https://dev.to/alifar/eu-digital-services-act-requires-clear-terms-summaries-from-the-largest-platforms-2p2",
+      "time": "2026-08-11T10:15:30.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达Vera Rubin内存成本占六成，SOCAMM2推高单价至2万美元 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1061542181_120333371?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-11T10:14:38.000Z",
+      "tags": [
+        "芯片/半导体",
+        "电脑硬件",
+        "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Don't Know How to Code. I'm Learning Anyway.",
+      "description": "A_Zoology postgraduate's honest journey into the world of coding. **I have a BSc in Life Science and an MSc in Zoology. I know cells.i know organisms.i know how to sit with a research problem and think it through carefully. But code?not long ago, i couldn't even read a line of it-i didn't know what i was looking at, how it was meant to be read,or how it was meant to be written. So why did i start? Honestly-fear. i kept watching the world move faster,technology becoming the language of everything,and i felt something uncomfortable sitting in my chest. a quiet fear. what if i get left behind? not dramatically,not all at once-just slowly,quietly,becoming irrelevant in a world that was speaking a language i never learned. That fear was the first reason. The second was something harder to admit—I want to build my name in this field.i want a career here. I don't even fully know what that looks like yet. but the want is there.loud and clear,even when everything else is confusing. And the third reason-the one that actually gets me through the hard days-is curiosity.a real pull towards this whole world of coding.i don't fully understand it yet, but something about it draws me in. In the beginning,a missing comma or a stray hyphen made no sense to me. i didn't understand why they mattered,or how something so small could break everything.i'd stare at an error with no idea what i'd done wrong. Now, slowly,i've started noticing those small mistakes myself-usually after i run the code and it breaks.it's a tiny thing.but it's mine. So here i am.still at the beginning.learning on kaggle. making mistakes i'll probably write about here. This blog is not a tutorial. i have nothing to teach you yet. This is just a story told honestly, from inside the confusion. I hope you'll read along. _**",
+      "url": "https://dev.to/sanchisharma/i-dont-know-how-to-code-im-learning-anyway-3bok",
+      "time": "2026-08-11T10:14:20.000Z",
+      "tags": [
+        "手机",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "国民技术：自10月1日起对公司部分产品价格上调10%—20%",
+      "description": "国民技术发布产品价格调整通知函，今年以来，受AI产业持续升温的影响，全球供应链结构深刻调整，半导体的产品结构、生产成本与交期也因市场需求而发生较大变化。MCU产品亦有结构性压力，有关产品需求的增长与供给矛盾较为突出。经审慎评估，公司决定自2026年10月1日起对公司部分产品价格进行10%至20%的上调。（证券时报）",
+      "url": "https://wallstreetcn.com/livenews/3148016",
+      "time": "2026-08-11T10:14:04.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "中美新能源车市场同时减速，谁在补位？",
+      "description": "政策影响立竿见影地反映在数据上：2025年前三季度，美国电动车销量在“补贴末班车”效应下同比增长约15%；税收抵免到期后，四季度销量同比腰斩45%；进入2026年，一季度销量同比降三分之一，其中3月销量约9.…",
+      "url": "https://www.sohu.com/a/1061333635_115571?scm=10001.341_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-11 10:14",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "An inter-mesh deployment pipeline",
+      "description": "Comments",
+      "url": "https://blog.zm.is/an-inter-mesh-deployment-pipeline/",
+      "time": "2026-08-11T10:11:38.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "宇树IPO，谁都输不起",
+      "description": "把宇树招股书里的财务数据拆开看，它的经营路线在过去三年发生了剧烈转变。 在过去三年里，宇树通过提升关节电机、减速器和控制器等核心零部件的自研比例，将人形机器人的整机成本大幅拉低，从而完成了从四足消费级硬件向…",
+      "url": "https://www.sohu.com/a/1061331126_116132?scm=10001.341_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-11 10:09",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Your Spring AI tests are slow, flaky, and cost money. Here's how to make them deterministic.",
+      "description": "You wire up Spring AI, the ChatClient fluent API feels great, your feature works. Then you sit down to write a test — and every good option is bad. A test that calls a real model is: Slow. A hosted call is a second or two; run it on every branch and it adds up. Run inference locally (Ollama + Testcontainers) and a cold call is ~47 s. Either way it's not a loop you run on save. Expensive. Every run of every test is billable tokens — times every developer, times every CI job. Unrepeatable. The same prompt can answer differently tomorrow. A test that asserts on model output is flaky by construction. Untestable in CI. No GPU, no model container, and putting a provider API key in a pipeline to run unit tests is a security problem, not a testing strategy. The usual workarounds all hurt: Mockito means hand-building Spring AI's nested ChatResponse → Generation → AssistantMessage graph and asserting against a response you wrote; WireMock/MockWebServer means owning each provider's exact wire JSON, SSE frames, and tool-call envelopes, and rewriting it all when you switch providers; the real model is the four problems above, accepted rather than solved. There's a well-worn answer from the HTTP world — Ruby's VCR, Python's vcrpy: record the real interaction once, replay it deterministically after. The catch is those work at the HTTP layer, and Spring AI's value is the abstraction above HTTP. So I built the same idea where Spring AI actually lives. One dependency: io.github.rifatcakir spring-ai-test-tools 0.1.0 test One property (src/test/resources/application-test.yml): spring: ai: test: vcr: enabled: true mode: RECORD_OR_REPLAY # REPLAY_ONLY in CI Your test doesn't change at all — you write it exactly as you would against a real model: @SpringBootTest class OrderStatusTest { @Autowired ChatClient.Builder chatClientBuilder; @Test void answersAQuestionAboutTheOrder() { String answer = chatClientBuilder.build().prompt() .user(\"What's the status of order ORD-4471?\") .call().content(); assertThat(answer).contains(\"shipped\"); } } First run reaches a real model and writes src/test/resources/llm-cache/{sha256}.json — you commit that file. Every run after replays it in under a millisecond, offline. FIRST RUN slow · costs tokens · needs network Your test ──▶ ChatClient ──▶ Real LLM ──writes──▶ cassette.json (committed) EVERY RUN AFTER instant · $0 · fully offline Your test ──▶ ChatClient ◀──reads── cassette.json (~0.8 ms) The advisor attaches to every ChatClient.Builder in the context via ChatClientBuilderCustomizer — so nothing under test, and nothing in production, knows the cache exists. In CI you seal it with mode: REPLAY_ONLY: now a cache miss is a loud failure, not a silent call to a live model. The cache key is an exact SHA-256 over the canonical request; there is no fuzzy matching, ever. (This is why Spring AI's production semantic cache doesn't solve the testing problem — it matches on similarity thresholds, which is exactly backwards for a test.) The point isn't a benchmark number — it's what disappears: No network call on replay. Zero HTTP requests (asserted by a request counter in the suite) — no latency, no timeouts, no rate limits, no flakiness. No tokens. Zero spend, every run, forever. Runs in a keyless, GPU-less CI. The thing that was impossible becomes the default. Deterministic. The same committed response, the same assertion, every run. And yes, replay is ~0.8 ms (median over 200 timed iterations in a real Spring context) versus a warm hosted call of ~1–2 s or a local cold call of ~47 s — but treat that as a side effect. The real win is that the network, the cost, and the rate limits are simply gone. Up front, because senior engineers rightly distrust silver bullets — this sits above the HTTP layer, so it cannot test that layer: Retry/backoff, timeouts, a 429 with Retry-After, connection pooling, a body arriving malformed mid-stream → that's WireMock/MockWebServer, and they're the right tool. Anything that isn't a model call → Mockito, as always. Proving the integration really works against a real provider → a genuine integration test before you ship. This doesn't replace that; it replaces running it on every commit. Each of these is verified against a real model, not assumed: Tool / function calling. A @Tool call's name and arguments are part of the cache key, and on replay the recorded tool result is injected without re-running the real method — so a test can't accidentally write to your database or send an email. When you do want the real method to run, there's an opt-in mode. Streaming. A Flux replays chunk-for-chunk — not a single-chunk fake — tool-call fragments included. Structured output. An .entity(MyDto.class) call's target schema is part of the cache key, so two output types with the same prompt never collide. Embeddings. EmbeddingModel calls cache independently of chat; a replayed vector is exactly, not approximately, what was recorded. Spring AI's own evaluators. RelevancyEvaluator / FactCheckingEvaluator run deterministically in CI (the judge call itself is recorded), or live on demand for a drift check. Repo: https://github.com/rifatcakir/spring-ai-test-tools Docs: https://rifatcakir.github.io/spring-ai-test-tools Runnable examples: https://github.com/rifatcakir/spring-ai-test-tools-example Independent, community project (not affiliated with Spring/Broadcom), Apache-2.0, currently 0.1.0 and early — tested against Java 21 · Spring Boot 4.0.0 · Spring AI 2.0.0. If you try it, issues and feedback are genuinely wanted.",
+      "url": "https://dev.to/rifatcakir/your-spring-ai-tests-are-slow-flaky-and-cost-money-heres-how-to-make-them-deterministic-1og7",
+      "time": "2026-08-11T10:07:48.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "铭瑄瑷珈主板 MS-iCraft B850M CROSS 发售，1299 元",
+      "description": "IT之家 8 月 11 日消息，铭瑄 (Maxsun) 主板新品 MS-iCraft B850M CROSS 现已发售，定价 1299 元。这一型号采用“偶像瑷珈”主题设计，散热装甲上方 LED 小屏通电后会呈现 Q 版瑷珈眨眼动画。 这一型号以白色为底色并点缀以粉蓝，散热装甲与显卡瞬拆结构线条圆润柔和，背部则有 Q 版瑷珈 + 梦幻流星丝印；随附瑷珈立牌、Q 版贴纸。 MS-iCraft B850M CROSS 主板搭载 10+2+1 相供电，其中核心供电应用 110A SPS DrMPS，搭配 2×8Pin EPS CPU 供电接口；此外还配备有快装 Wi-Fi 天线、数显 Debug 诊断灯、实体功能按键。 内存： 4× DDR5 UDIMM (2DPC/2SCP)，支持 8000MT/s 超频 PCIe 插槽： 1× PCIe Gen5 ×16； 1× PCIe Gen4 ×4（尾部开放）。 存储： 1× M.2 2280 / 2242，PCIe Gen5×4； 1× M.2 22110 / 2280 / 2242，PCIe Gen5 ×4； 1× M.2 22110 / 2280 / 2242，PCIe Gen4 ×4； 4× SATA III 6Gbps。 网络： 有线：瑞昱 RTL8126，支持 5GbE； 无线：联发科 MT7925，支持 Wi-Fi 7 (160MHz) & 蓝牙 5.4。 音频： 瑞昱 ALC1220 CODEC。 外部 I/O： 板内接口：1× USB-C 20Gbps、1× 一分二 USB 5Gbps、1× 一分二 USB 480Mbps、1× USB 480Mbps、2× 5V ARGB、1× 12V RGB； 后部接口：4× USB-A 480Mbps、1× DisplayPort 1.4、1× HDMI 2.0、1× USB-C 10Gbps、4× USB-A 10Gbps、1× 5GbE RJ45、一对 Wi-Fi 天线插孔、5× 音频插孔、1× S/PDIF-out。 京东铭瑄 MS-iCraft B850M CROSS 主板 1299 元直达链接",
+      "url": "https://www.ithome.com/0/988/437.htm",
+      "time": "2026-08-11T10:06:20.000Z",
+      "tags": [
+        "芯片/半导体",
+        "电脑硬件",
+        "软件应用"
+      ]
+    },
     {
       "source": "机器之心",
       "sourceColor": "#512da8",
@@ -11,6 +257,68 @@
       "time": "2026-08-11 10:06",
       "tags": [
         "科技创投"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "大模型开始卷「越狱」了",
+      "description": "是骡子是马，让它自己越狱出来看看 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1674681?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-11T10:05:14.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Explainable Causal Reinforcement Learning for wildfire evacuation logistics networks with inverse simulation verification",
+      "description": "Explainable Causal Reinforcement Learning for wildfire evacuation logistics networks with inverse simulation verification The Spark: A Learning Journey into Crisis AI It started with a simulation that refused to behave. I was tinkering with a simple evacuation model—a grid of roads, a spreading fire, and a few thousand virtual agents trying to escape. The reinforcement learning agent I'd trained kept sending evacuees toward the fire. Not because it was broken, but because my reward function had inadvertently rewarded \"movement\" over \"survival.\" That failure was my gateway into a deeper question: how do we build AI systems that not only optimize complex logistics under extreme uncertainty but also explain why they make those decisions? And how do we verify those explanations when we can't run real-world experiments? This article chronicles my exploration of Explainable Causal Reinforcement Learning (XC-RL) applied to the nightmarish complexity of wildfire evacuation logistics—and the inverse simulation framework I built to verify what the models claim to have learned. Wildfire evacuation is a \"wicked problem\" for AI. It combines: Non-stationary dynamics: Fire fronts move unpredictably, wind shifts constantly Strict temporal constraints: Every second of delay compounds risk exponentially Resource scarcity: Limited vehicles, fuel, road capacity, and personnel Human irrationality: Panic, hesitation, and herd behavior defy classical models Causal complexity: Correlation ≠ causation in life-or-death scenarios Traditional reinforcement learning approaches—like DQN or PPO—can optimize routes, but they operate as opaque black boxes. When an agent reroutes a bus convoy through a smoke-filled canyon, we need to know why. Is it because the canyon is genuinely safer, or because the agent learned a spurious correlation with \"shorter distance\"? During my research of causal inference in RL, I discovered that the standard toolkit (SHAP values, LIME, attention maps) provides attributions, not explanations. They tell you which inputs mattered, but not how the system would behave if those inputs were causally intervened upon. For evacuation logistics, that distinction is existential. My journey led me to a three-tier architecture that I believe represents the future of safety-critical RL: Causal World Model: A learned graph that encodes the true causal structure of evacuation dynamics (fire spread, road closure cascades, population movement) Policy Network: A PPO-based agent that acts through the causal model rather than directly from raw observations Inverse Simulation Verifier: A separate system that runs \"counterfactual rollouts\" to test whether the policy's stated reasons for actions match actual behavior Let me walk you through each component as I built it. The first challenge was representing the environment causally. I moved beyond simple state-action pairs to a Structural Causal Model (SCM) with a graph structure G = (V, E), where nodes represent: Fire intensity at location (x, y) at time t Road capacity (dynamic, affected by debris and smoke) Population density in each evacuation zone Available vehicle resources Wind vector and humidity Edges represent causal relationships. For instance, Fire(x,y,t) → RoadCapacity(x,y,t+1) captures the causal link between fire proximity and road usability. import networkx as nx import numpy as np from typing import Dict, Tuple class CausalEvacuationModel: def __init__(self, road_network: nx.Graph, fire_sources: list): self.road_network = road_network self.causal_graph = nx.DiGraph() self._build_causal_structure(fire_sources) def _build_causal_structure(self, fire_sources): # Add fire nodes for i, source in enumerate(fire_sources): self.causal_graph.add_node(f\"fire_{i}\", type=\"fire\", pos=source, intensity=0.8) # Add road nodes with causal edges from fire for (u, v, data) in self.road_network.edges(data=True): node_id = f\"road_{u}_{v}\" self.causal_graph.add_node(node_id, type=\"road\", capacity=data['capacity']) # Causal edge: fire → road (fire reduces capacity) for i, source in enumerate(fire_sources): dist = np.linalg.norm(np.array(source) - np.array(data['midpoint'])) if dist Dict[str, float]: \"\"\"Do-calculus style intervention: set node value and propagate.\"\"\" # This is where we use Pearl's do-operator intervened = {} intervened[node] = value # Propagate through causal graph (simplified linear approximation) for descendant in nx.descendants(self.causal_graph, node): # Apply causal effect along edges parents = list(self.causal_graph.predecessors(descendant)) effect = sum(self.causal_graph[parent][descendant]['strength'] * intervened.get(parent, 0.0) for parent in parents if parent in intervened) intervened[descendant] = effect return intervened Learning Insight: The critical realization here was that standard do-calculus requires knowing the full causal graph a priori. In real wildfire scenarios, we don't. I had to implement a causal discovery layer using PC algorithm variants on historical fire data, then refine with expert knowledge from fire engineers. The policy network doesn't see raw pixels or sensor readings. Instead, it receives the causal embeddings—representations of the current state that have been transformed through the causal graph. This forces the agent to reason about causes rather than correlations. import torch import torch.nn as nn import torch.optim as optim from torch.distributions import Categorical class CausalPolicyNetwork(nn.Module): def __init__(self, causal_dim: int, action_dim: int, hidden_dim: int = 128): super().__init__() self.causal_encoder = nn.Sequential( nn.Linear(causal_dim, hidden_dim), nn.ReLU(), nn.Linear(hidden_dim, hidden_dim), nn.ReLU() ) # Separate heads for action and explanation self.action_head = nn.Linear(hidden_dim, action_dim) self.explanation_head = nn.Linear(hidden_dim, causal_dim) # Predicts causal factors def forward(self, causal_state: torch.Tensor): encoded = self.causal_encoder(causal_state) action_logits = self.action_head(encoded) # The explanation head predicts which causal factors drove this decision # This is our \"explainability\" hook explanation_weights = torch.softmax(self.explanation_head(encoded), dim=-1) return action_logits, explanation_weights class CausalPPOAgent: def __init__(self, causal_model: CausalEvacuationModel): self.causal_model = causal_model self.policy = CausalPolicyNetwork( causal_dim=causal_model.causal_graph.number_of_nodes(), action_dim=4 # [north, south, east, west] routing decisions ) self.optimizer = optim.Adam(self.policy.parameters(), lr=3e-4) def select_action(self, state: np.ndarray, explain: bool = False): # Transform raw state through causal model causal_state = self._to_causal_embedding(state) causal_tensor = torch.FloatTensor(causal_state).unsqueeze(0) action_logits, explanation_weights = self.policy(causal_tensor) if explain: # Return both action and causal explanation action = Categorical(logits=action_logits).sample() explanation = explanation_weights.squeeze().detach().numpy() # Map explanation weights back to causal graph nodes node_names = list(self.causal_model.causal_graph.nodes()) explanation_dict = {node_names[i]: float(explanation[i]) for i in range(len(node_names))} return action.item(), explanation_dict return Categorical(logits=action_logits).sample().item() Key Discovery: During my experimentation with this architecture, I found that forcing the policy to output explanation weights before the action (as a kind of \"reasoning scratchpad\") dramatically improved both performance and interpretability. The agent couldn't \"cheat\" by making decisions without committing to causal reasons. This is the part I'm most proud of. The problem with RL explanations is that they're post-hoc—the agent acts, then we try to explain. But what if we could verify the explanation by running the policy backward? Inverse simulation works like this: Take a policy decision: \"Route Bus 7 through Canyon Road because fire intensity at Ridge Road exceeds threshold\" Run a counterfactual simulation where we intervene on the causal model: set fire intensity at Ridge Road to below threshold Check if the policy changes its decision If yes → the explanation is causally valid If no → the explanation is spurious import simpy from typing import List, Dict, Any class InverseSimulationVerifier: def __init__(self, causal_model: CausalEvacuationModel, policy_agent: CausalPPOAgent): self.causal_model = causal_model self.agent = policy_agent def verify_explanation(self, original_state: Dict, original_action: int, explanation: Dict[str, float], num_counterfactuals: int = 100) -> Dict[str, float]: \"\"\" Verify if the explanation is causally valid by running inverse simulations with counterfactual interventions. \"\"\" verification_results = {} # For each causal factor in the explanation for factor, weight in explanation.items(): if weight 0.7 # Threshold } return verification_results def generate_verified_explanation(self, state: Dict, action: int) -> Dict[str, Any]: \"\"\"Generate and verify explanations in one pass.\"\"\" # Get initial explanation from policy _, raw_explanation = self.agent.select_action(state, explain=True) # Verify through inverse simulation verified = self.verify_explanation(state, action, raw_explanation) # Filter to only verified causal factors verified_factors = { factor: data for factor, data in verified.items() if data['verified'] } # Build human-readable explanation explanation_text = self._format_explanation(verified_factors) return { 'action': action, 'verified_causal_factors': verified_factors, 'explanation_text': explanation_text, 'confidence': np.mean([d['causal_validity'] for d in verified_factors.values()]) } During my investigation of inverse verification, I discovered something counterintuitive: the most confident explanations (high weight in the policy's explanation head) were often the least causally valid. The policy had learned to \"explain\" decisions using salient but non-causal features—like smoke color instead of fire proximity. The inverse simulation caught these spurious explanations and forced the policy to rely on true causal drivers. Let me show you a complete implementation for a simplified but realistic scenario: evacuating a small town with two evacuation routes, one mountain road and one coastal road. python import numpy as np import matplotlib.pyplot as plt from dataclasses import dataclass from typing import List, Tuple @dataclass class EvacuationScenario: population: int = 5000 vehicles: int = 1500 road_capacity: List[int] = None # vehicles per minute fire_speed: float = 0.5 # km per minute wind_direction: float = 45 # degrees def __post_init__(self): if self.road_capacity is None: self.road_capacity = [30, 25] # mountain, coastal class WildfireEvacuationSystem: def __init__(self, scenario: EvacuationScenario): self.scenario = scenario self.causal_model = self._build_causal_model() self.agent = CausalPPOAgent(self.causal_model) self.verifier = InverseSimulationVerifier(self.causal_model, self.agent) def _build_causal_model(self) -> CausalEvacuationModel: # Build road network graph road_network = nx.Graph() road_network.add_edge(\"town\", \"mountain_pass\", capacity=self.scenario.road_capacity[0], midpoint=(10, 20)) road_network.add_edge(\"town\", \"coastal_route\", capacity=self.scenario.road_capacity[1], midpoint=(5, 15)) road_network.add_edge(\"mountain_pass\", \"safe_zone\", capacity=self.scenario.road_capacity[0], midpoint=(20, 25)) road_network.add_edge(\"coastal_route\", \"safe_zone\", capacity=self.scenario.road_capacity[1], midpoint=(10, 10)) # Fire source near coastal route fire_sources = [(8, 12)] return CausalEvacuationModel(road_network, fire_sources) def run_evacuation(self, timesteps: int = 100) -> Dict[str, Any]: \"\"\"Run the full evacuation with explainable decisions.\"\"\" state = self._initialize_state() decisions_log = [] for t in range(timesteps): # Agent makes decision with explanation action, explanation = self.agent.select_action(state, explain=True) # Verify the explanation through inverse simulation verified = self.verifier.verify_explanation(state, action, explanation) # Log decision with verification decisions_log.append({ 'timestep': t, 'action': action, 'explanation': verified, 'state': state.copy() }) # Update state based on action and fire dynamics state = self._update_state(state, action, t) # Emergency stop if fire reaches town if state['fire_proximity'] Dict: \"\"\"Update evacuation state based on action and fire dynamics.\"\"\" # Action 0: use mountain route (safer but slower) # Action 1: use coastal route (faster but fire risk) # Action 2: hold position # Action 3: split evacuation new_state = state.copy() fire_advance = self.scenario.fire_speed * np.cos(np.radians(self.scenario.wind_direction)) # Update fire position new_state['fire_proximity'] -= fire_advance if action == 0: evacuated = min(state['road_capacity'][0], state['population']) new_state['evacuated'] += evacuated new_state['population'] -= evacuated elif action == 1: # Coastal route is faster but riskier risk_factor = 1.0 / (state['fire_proximity'] + 0.1) evacuated = min(state['road_capacity'][1] * risk_factor, state['population']) new_state['evacuated'] += evacuated new_state['population'] -= evacuated # Fire risk causes casualties casualties = int(evacuated * 0.1 * risk_factor) new_state['evacuated'] -= casualties new_state['casualties'] += casualties elif action == 3: # Split evacuation mountain_cap = state['road_capacity'][0] * 0.6 coastal_cap = state['road_capacity'][",
+      "url": "https://dev.to/rikinptl/explainable-causal-reinforcement-learning-for-wildfire-evacuation-logistics-networks-with-inverse-5c2g",
+      "time": "2026-08-11T10:04:49.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Three Years Later, I Finally Submitted My Frontend Mentor Challenge",
+      "description": "I Finally Submitted a Frontend Mentor Challenge I Started in 2023 Three years, one old project, one tablet, and a very different version of me. In 2023, I did something that probably felt very small at the time. I started a Frontend Mentor challenge. I was still very early in my journey with frontend development. I was learning, experimenting, breaking things, fixing them, and trying to understand how websites were actually built. And here's the funny part: I didn't even have my own laptop. I built the project using my dad's tablet. Yes, a tablet. I was determined enough to make it work. I remember opening my code, working through the design, trying to make the page look like the challenge, and learning things along the way. But I didn't finish it. Or rather... I didn't submit it. Life moved on. I continued learning frontend development. I started working on other projects. I learned more HTML and CSS. Eventually I moved into JavaScript and started exploring backend development too. That old challenge just became one of those unfinished things sitting somewhere in my past. Fast forward to 2026 During my SIWES, I was given an assignment at my training center. The assignment was related to Frontend Mentor. When I saw it, I immediately remembered the old challenge. That project from 2023. The one I had built on my dad's tablet. The one I never submitted. And I thought: \"Why don't I finally finish it?\" So I went back to it. Coming back to old code is weird One of the strangest experiences as a developer is looking at code you wrote years ago. You see things you used to think were difficult. You see decisions you would make differently now. You notice mistakes that you didn't even realize were mistakes. And sometimes you just stare at something and think: \"Why did I write it like this?\" But that's actually one of the best ways to see your growth. The code wasn't necessarily terrible. I had just changed. The developer who started that project in 2023 wasn't the same developer who returned to it in 2026. The project became more than a challenge When I finally worked on it again, I wasn't just trying to complete an old Frontend Mentor assignment. I was comparing two versions of myself. 2023 me And the funny thing is... The project hadn't changed. I had. I finally submitted it After all those years, I finally submitted the challenge. Not in 2023. Not in 2024. Not in 2025. 2026. Three years after I started it. And honestly, I'm glad I didn't delete it. Because if I had, I wouldn't have had the opportunity to see how much I had grown. Finish the old projects sometimes There's a lesson I'm taking from this. As developers, we're always looking forward. The next tutorial. The next framework. The next project. The next challenge. The next thing we need to learn. But sometimes it's worth looking backward. Open an old project. Read your old code. Run it again. See what you understand now that you didn't understand then. You might be surprised. Not because the old project is amazing. But because you're no longer the person who built it. From a tablet to where I am now The part that makes me smile the most is remembering that I built that first version using my dad's tablet. At the time, I didn't have all the resources I have now. But I had curiosity. And I had the willingness to try. Three years later, I'm still here. Still learning. Still building. Still breaking things. Still fixing things. Still trying to become a better developer. And that old Frontend Mentor challenge? It finally has a submission. Better late than never. What about you? Do you have an old project sitting somewhere that you never finished? Maybe you should open it again. You might not just finish the project. You might discover how much you've grown.",
+      "url": "https://dev.to/deolawage/three-years-later-i-finally-submitted-my-frontend-mentor-challenge-3ob1",
+      "time": "2026-08-11T10:04:20.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "【视频】昆明特斯拉Model S 人不对一切白搭 - 汽车之家",
+      "description": "",
+      "url": "https://chejiahao.autohome.com.cn/info/26169180",
+      "time": "2026-08-11T10:03:40.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Why recovery readiness has become the new standard for cyber resilience - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/paid-content/article/why-recovery-readiness-has-become-the-new-standard-for-cyber-resilience/",
+      "time": "2026-08-11T10:03:03.000Z",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -38,6 +346,19 @@
       ]
     },
     {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "Google teases the Pixel 11 Pro in new video",
+      "description": "Google is unveiling the Pixel 11 family and the Pixel Watch 5 on August 12. Ahead of that, the company has already released a teaser video for the Pixel Watch 5 last week, gently poking fun at the device's weirdly-shaped competitors. Today Google is back with another teaser video, this time for the Pixel 11 Pro. This one is less about the competition, and more about the fact that these devices are apparently a solid 11 on a scale of 1 to 10. Or something like that. See for yourself: The Pixel 11, Pixel 11 Pro, Pixel 11 Pro XL, and Pixel 11 Pro Fold are all expected to be powered by...",
+      "url": "https://www.gsmarena.com/google_teases_the_pixel_11_pro_in_new_video-news-74103.php",
+      "time": "2026-08-11T10:01:02.000Z",
+      "tags": [
+        "手机",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
       "source": "Android Authority",
       "sourceColor": "#a4c639",
       "title": "I combined my Fitbit Air with an analog watch — it’s the only way I wear the tracker now",
@@ -59,6 +380,43 @@
       "tags": [
         "科技创投",
         "智能硬件"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "iPhone 20 周年版不会被取消，但也不是你想象的样子",
+      "description": "等待一个傻妞手机 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1674661?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-11T10:00:43.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "How to formally verify an agent governance framework with TLA+",
+      "description": "Why verify agent governance at all? Multi-agent systems are hard to reason about. A circuit breaker that \"should\" kick in, a state machine that \"should\" never skip a state — these are the kind of things you can prove, not just hope. Over the past year we've built multi-agent systems on CrewAI, AutoGen, and LangGraph. Getting agents to do things was never the hard part. The hard part was the question nobody had a good answer for: when an agent acts on its own, what stops it from crossing a line? This post walks through how we formalized our agent governance state machine with TLA+ and model-checked its safety invariants. The full specs live in the MAREF repo (Apache-2.0, pip install maref). A naive governance state machine can skip states or jump unpredictably. We wanted a state space where every transition is a provably single-bit step — no skipped states, no hidden jumps. That's what a Gray Code gives you: consecutive values differ by exactly one bit (Hamming distance = 1). For a 4-bit FSM: 0 (0000) → 1 (0001) → 3 (0011) → 2 (0010) → 6 (0110) → ... If a transition ever jumps two bits, it's a bug by construction — the model checker catches it. The README claims 5 invariants; here's what they actually are in the spec (files in src/formal/ and gray-code-fsm/): State reachability — every governance state is reachable from the initial state (BFS witness, validator.py). Transition determinism — no two transitions fire from the same state on the same input. Halt absorption — once the machine enters HALT, it can never leave (HaltGovAbsorbing PROPERTY in MarefJoint34MC.cfg). Safety gate integrity — unsafe transitions are blocked at the gate (SafetyGateIntegrity, INV-002 in MAREF_ConstitutionalRedLines.tla). Red line immutability — constitutional red lines cannot be changed at runtime (RedLineImmutability, INV-001). The formal-verify.yml workflow runs the real TLC model checker on every push to the formal specs. It verifies four specs, not just one: Spec File What it checks Gray Code FSM MarefLiteModel.tla TypeOK + HaltGovAbsorbing + TerminalsAbsorbAgent Consensus MAREF_Consensus.tla Byzantine bounds, quorum integrity, trust-weight correlation Constitutional Red Lines MAREF_ConstitutionalRedLines.tla RL-001..005 (red-line immutability, safety gate, audit completeness) Test Integration MAREF_TestIntegration.tla Cross-border consistency, prompt-rot detection All types are kept finite (bounded integer/string domains) so TLC can fully enumerate the state space instead of timing out. One subtlety worth sharing: TLA+ liveness (<>P) is universal over behaviors, so \"state reachability\" can't be a TLC PROPERTY for a non-deterministic model. We use a BFS validator.py for reachability witnesses and reserve TLC for the universal invariants. This distinction is easy to get wrong the first time. pip install maref # The specs are in the repo: # gray-code-fsm/MarefJoint34.tla — joint governance FSM # src/formal/MAREF_ConstitutionalRedLines.tla — constitutional invariants # gray-code-fsm/MarefJoint34MC.cfg — TLC model checker config Full spec: https://github.com/maref-org/maref/tree/main/gray-code-fsm Formal verification is not free. We use it only for the governance core — the few hundred lines that enforce safety boundaries. The orchestration layer (10k+ lines) uses unit tests and integration tests instead. Model checking state spaces explodes fast; keep the verified core small and finite. All types are kept finite (bounded integer/string domains) so TLC can fully enumerate the state space. Liveness properties like \"reachability\" use a BFS validator instead of TLC <>P (which is universal over behaviors and can't witness existence). Apache-2.0, no commercial restrictions. This is the first in a series on building governance for autonomous agents. Follow for the next one: \"Why your multi-agent system needs a circuit breaker.\"",
+      "url": "https://dev.to/maref/how-to-formally-verify-an-agent-governance-framework-with-tla-4ei0",
+      "time": "2026-08-11T10:00:29.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Top 5 MCP Servers Worth Setting Up If You Work Solo",
+      "description": "MCP servers are leverage, not toys The first thing to internalise about Model Context Protocol: every server you wire up adds tool-use tokens to every Claude request, whether you use the tool or not. The browser-automation MCP server alone often adds 4-6K tokens of tool descriptions to your context. Wire up six servers and you've spent your premium context on advertising tools that won't fire in this conversation. That's why \"more MCP servers\" isn't the right question. The right question is: which workflows do I want Claude to handle without copy-pasting? Then pick the smallest MCP that answers each one. / #1 FILESYSTEM The official filesystem MCP server lets Claude read, write, and search files in a scoped directory. It sounds underwhelming. It is the highest-ROI MCP server for a solo dev, by far. Why: most of your context loss with Claude isn't intellectual, it's logistical. You spend tokens copy-pasting file contents, asking Claude to remember layouts, re-explaining what's in the repo. With filesystem MCP, Claude can read the file once instead of you describing it twenty times. Setup is one block in your mcp.json. Lock it down to one or two project directories, don't let it browse $HOME. / #2 GIT The git MCP server gives Claude git diff, git log, git blame, and a few related read-only operations. Set it up once and Claude can answer \"when did this function change last?\" without you copy-pasting log output. Pair it with filesystem MCP and you've got 80% of what code review tools sell as a product, running in your terminal for zero ongoing cost. / #3 OBSIDIAN The Obsidian Local REST API plugin + a thin MCP wrapper lets Claude read and write Obsidian notes directly. We use this every day on NeuraGrowth: project memory, daily logs, brainstorming docs, feedback memos all live in Obsidian and Claude reads/writes them in-conversation. The win isn't the writing, it's the reading. When a session compacts and you need Claude to recall what you decided two weeks ago, having that decision in a markdown file that Claude can pull up is the difference between continuity and re-litigating every choice. / #4 BROWSER AUTOMATION Playwright or Puppeteer MCP servers let Claude open a browser, navigate, take screenshots, fill forms. Heavy on tokens, install it last, not first. Where it earns its weight: UI regression checks on local dev servers, scraping data from sites without APIs, sanity-checking that a fix actually fixed the rendered page. Don't enable it globally; turn it on per-task when you have a browser-shaped job. / #5 POSTGRES The Postgres MCP server (or similar for MySQL / SQLite) lets Claude run SELECT queries against a connected database. Configure it READ-ONLY, that's the only safe mode for daily use. The use case: \"how many users signed up in the last 30 days?\" stops being a five-minute task. Claude writes the query, runs it, returns the number. Same for ad-hoc data debugging during a bug investigation. Don't grant write access from Claude unless you have very specific reasons and a backup strategy. \"All-in-one AI agent\" servers. These bundle filesystem, git, browser, search, code-exec into one big MCP. Token cost explodes, scope creep makes them fragile, and the abstractions hide what's actually happening. SaaS MCP wrappers for tools you don't use. Notion, Linear, Jira, Slack, each has an MCP server. If you don't use the tool, the tool descriptions still eat context. Only install what you actually touch weekly. Anything that re-implements Claude's own search. Vector search MCPs, semantic-search-over-codebase MCPs, Claude's built-in grep/glob is plenty for repos under ~100K LOC. Skip the index-builder layer until you genuinely need it. Install in this order, test each, then move on: Filesystem, scoped to your active repo. 10 minutes. Git, same repo. 10 minutes. Obsidian (if you note in Obsidian), 15 minutes including the REST API plugin setup. Postgres, only if you have a production DB. 15 minutes for read-only config. Browser automation, install last and toggle per-session. 20 minutes. Don't try to set up all five in one session. Each is a small commitment of muscle memory; cramming them in one Saturday leads to forgetting how to invoke half of them by Tuesday. The temptation with MCP is the same as the temptation with VS Code extensions: install everything that looks shiny, accumulate cruft, never use 80% of it. Resist. Two well-configured servers beat ten lazily configured ones every single time. When you genuinely hit the limit of what your current setup can do, add the next one deliberately. Originally published at neuragrowth.co. I run a one-person digital-products studio and write up what breaks in production.",
+      "url": "https://dev.to/robswierk/top-5-mcp-servers-worth-setting-up-if-you-work-solo-ch",
+      "time": "2026-08-11T10:00:01.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
       ]
     },
     {
@@ -94,6 +452,33 @@
         "人工智能",
         "智能硬件"
       ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "The Agricultural Data Africa Needs Already Exists. It's Just 100 Years Old.",
+      "description": "The data problem for AI in African agriculture is not a lack of data. It is a structural absence of structured data — the kind that AI agents can query, validate, and reason with. The raw material exists. It has existed for over a century. It sits in the public domain, digitized by libraries and archives, waiting to be structured. The British East Africa Protectorate agricultural reports from 1910-1922 document, county by county, which crops grew where, what yields looked like in drought years versus good years, which soil types supported what cultivation, and which traditional practices survived contact with colonial agricultural extension. The Kew Gardens Economic Botany Series from 1906-1920 contains botanical surveys of East African crops — sorghum, millet, cassava, cowpea, moringa — with documented water requirements, storage characteristics, and soil tolerances. The East Africa Meteorological Department records from 1900-1940 show rainfall patterns before the satellite era: where the long rains reliably arrive, where they don't, where the variability is structurally high. These documents are free. They are in the public domain. They are not behind paywalls. They are in libraries. The problem: they are in the format of 1910. Scanned PDFs. Handwritten tables. Narrative reports in colonial English. Measurement systems that predated standardization. No AI agent built in 2025 can query them the way it needs to. \"What is the planting calendar for sorghum in semi-arid Kenya?\" requires that someone has extracted, structured, validated, and made available the answer in a format that agents can use. That structured layer is what's missing. Not the underlying knowledge. The MCP servers in the East Africa coordination stack (wapimaji-mcp, kilimo-mcp, bima-mcp) need grounded knowledge to reason correctly. When a farmer asks an AI agent about optimal planting dates for a semi-arid county, the agent needs historical knowledge of rainfall patterns and crop tolerances — not just a general LLM approximation. That knowledge exists in the 1910 Kew surveys. The work is structuring it so the MCP can use it. Six public domain datasets now available on HuggingFace: East Africa agricultural data — crop profiles, rainfall zones, soil types from USDA and Kew (1906-1922) Swahili historical corpus — Krapf 1882, Taylor 1891, Steere 1870: the vocabulary of East African coordination in the language 200 million people speak East Africa health historical — disease patterns, altitude factors, traditional medicine documentation (1895-1920) East Africa legal and land tenure — customary systems, colonial legislation, dispute resolution (pre-1928) Africa historical maps catalog — metadata for PD maps from Library of Congress, National Archives, Kew (1688-1925) Open government climate catalog — NASA, NOAA, USDA datasets structured for African agricultural use All public domain. All structured for AI agent use. All connected to the coordination infrastructure stack. The knowledge infrastructure problem in Africa is not a lack of knowledge. It is a lack of structured access to knowledge that already exists. Public domain works published before 1928 are the closest thing to free raw material in the information economy. The opportunity is not to extract value from them. It is to structure them so they can flow. These datasets are available at huggingface.co/gmahia. Related coordination tools at pypi.org/user/gmahia.",
+      "url": "https://dev.to/gabrielmahia/the-agricultural-data-africa-needs-already-exists-its-just-100-years-old-1l1f",
+      "time": "2026-08-11T10:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达联手六家华尔街金融巨头 搭建AI基础设施融资平台 计划撬动超过5000亿美元 - 证券时报",
+      "description": "",
+      "url": "https://www.stcn.com/live/video-detail/24829.html",
+      "time": "2026-08-11T09:58:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ],
+      "topic": true
     },
     {
       "source": "IT之家",
@@ -214,6 +599,18 @@
       ]
     },
     {
+      "source": "超能网",
+      "sourceColor": "#00a0e9",
+      "title": "《沙堡》放出首个Demo试玩：带来极致的沙盒游戏体验，享受宁静放松的建造时刻",
+      "description": "《沙堡（Sandcastle）》是一款由Bubblebird Studio开发、Future Friends Games发行的沙盒游戏，将登陆PC平台，具体发售日期待定，目前首个试玩Demo已经在Steam平台放出。 if (IsMobile()) { jQuery(\"iframe\").attr(\"width\", \"100%\"); jQuery(\"iframe\").attr(\"height\", jQuery(\"#post_body\").width() * 9 / 16); } else jQuery(\"iframe\").attr(\"height\", jQuery(\"#post_body\").width() * 9 / 16 + 120); 手机通道：哔哩哔哩 沐浴在热带海岸的微温阳光下，静下心来筑起宏伟的沙堡。挖掘护城河，高筑城墙与塔楼，再用些许木头、卵石、贝壳与海藻点缀一番，平缓的潮汐与轻柔的海浪加上治愈的色彩，让每一次建造都成为宁静放松的时刻。 这里没有时间限制，只有舒缓的潮起潮落与和煦阳光。发掘冲刷上岸或深埋沙中的隐藏宝藏，为沙雕杰作增添独特风采。解锁各种工具来收集湿沙，筑起高耸的城墙，雕琢复杂的城垛，并精心设计护城河来抵御或引流层层涌来的海浪。 游戏内置独特的水沙物理系统，让奇思妙想化为现实。沙土的紧实、崩塌与定型都取决于湿度和压力，海浪也会如现实般流动、汇聚并慢慢侵蚀城墙，若是把塔楼雕刻得太薄便会坍塌，而用湿沙加固则能任凭风浪拍打依然屹立不倒。这一切带来的是仿佛置身真实海滩亲手堆沙堡般的触觉体验，享受无与伦比的满足感。 收集海星即可解锁丰富的自定义选项，从沙子种类、海滩布局到规模大小，赋予海滩独一无二的魅力。无论是碧波环绕的宁静环礁、水浅滩平的幽静潟湖、微风轻拂的绵延沙洲，还是涓涓细流汇入大海的蜿蜒三角洲，每道海岸线都是全新的画布，邀你在这片崭新海滨风景中尽情搭建、装饰与放松。",
+      "url": "http://www.expreview.com/107526.html",
+      "time": "2026-08-11T09:55:00.000Z",
+      "tags": [
+        "手机",
+        "游戏"
+      ]
+    },
+    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "Forms, payloads, and live inputs in Fitz LiveViews",
@@ -225,6 +622,18 @@
         "芯片/半导体",
         "软件应用"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "台积电批准294亿美元资本预算扩充产能，将提高先进制程及先进封装布局 - 新浪财经",
+      "description": "",
+      "url": "https://cj.sina.cn/articles/view/5182171545/134e1a99902002i2r4",
+      "time": "2026-08-11T09:51:03.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -265,6 +674,18 @@
         "专访",
         "科技创投"
       ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "论见 | 大模型变现，“账”该怎么算 - 搜狐网",
+      "description": "",
+      "url": "https://m.sohu.com/a/1061539100_121455647?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-11T09:48:38.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -543,6 +964,20 @@
       "topic": true
     },
     {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "2026高端手机推荐哪款？华为苹果OPPO三大旗舰横评+FAQ - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/article/nimxvun5809702.html",
+      "time": "2026-08-11T09:34:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "小鹏G9L的自动驾驶辅助系统有哪些升级？ - 新浪网",
@@ -592,6 +1027,20 @@
         "游戏",
         "软件应用"
       ]
+    },
+    {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "适合工作用的手机推荐2026：华为/荣耀/iQOO/OPPO横评，哪款才是打工人效率神器？+FAQ - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/article/nimxvun5808900.html",
+      "time": "2026-08-11T09:33:00.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
     },
     {
       "source": "智能汽车",
@@ -738,6 +1187,17 @@
         "人工智能",
         "手机",
         "软件应用"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "7 simple gadgets that can make your home smarter for under $100 - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/smart-home/simple-smart-home-gadgets-under-100/",
+      "time": "2026-08-11T09:30:00.000Z",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -1214,6 +1674,31 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "【网通社快报】7月新能源车零售渗透率达65.1% 自主品牌占比83.8%",
+      "description": "",
+      "url": "https://auto.ifeng.com/c/8vVTkEAOXaD",
+      "time": "2026-08-11T09:02:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "网络安全"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "网通社汽车-更新-更全-更权威的全球汽车资讯 - 网通社",
+      "description": "",
+      "url": "http://www.news18a.com/news/storys_285092.html",
+      "time": "2026-08-11T09:02:00.000Z",
+      "tags": [
+        "汽车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "网通社汽车-更新-更全-更权威的全球汽车资讯 - news18a.com",
       "description": "",
       "url": "http://www.news18a.com/news/storys_285092.html",
@@ -1390,7 +1875,7 @@
       "source": "超能网",
       "sourceColor": "#00a0e9",
       "title": "台积电与索尼或合资建新厂：投资1万亿日元，生产下一代高性能图像传感器",
-      "description": "由台积电（TSMC）、索尼、电装（DENSO）株式会社及丰田合作组建的日本先进半导体制造公司（JASM），于2022年4月在日本九州岛的熊本县开始建设新的生产基地。首座晶圆厂（Fab 1）于2024年底开始量产，台积电已启动Fab 2的建设项目，从最初规划的6/7nm工艺升级至3nm工艺，原计划2027年末开始运营，不过现在大概率推迟至2028年。 据TrendForce报道，索尼与台积电在半导体生产方面的合作不仅限于原来的晶圆厂计划，传闻双方正在筹建新合资工厂，共同开发和量产下一代图像传感器，总投资预计达1万亿日元（约合62.76亿美元/人民币423.39亿元），地点同样选在熊本县。这样的投资规模与索尼半导体业务四年的资本支出相当，接近于台积电在在日本的首座晶圆厂。 索尼与台积电早在5月就达成合作的基本框架，具体细节仍在讨论中，预计很快会有最终协议，而且还会与日本经济产业省就政府补贴事宜展开磋商。索尼与台积电将分别持股60%和40%，在2026财年（至2027年3月）之前完成合资公司的设立。新的合资工厂将会为苹果iPhone生产下一代高性能图像传感器，未来还将涉足“实体AI”等领域，也就是机器人和自动驾驶车辆等新兴的物理AI应用。除了生产线外，还会规划配套相应的研发设施。 虽然索尼现在占据了全球CMOS图像传感器市场超过一半的份额，但是来自中韩的竞争对手以积极的投资缩小差距。索尼希望通过与台积电的合作强化自身的技术优势，在日益激烈的竞争环境中守住领导地位。",
+      "description": "由台积电（TSMC）、索尼、电装（DENSO）株式会社及丰田合作组建的日本先进半导体制造公司（JASM），于2022年4月在日本九州岛的熊本县开始建设新的生产基地。首座晶圆厂（Fab 1）于2024年底开始量产，台积电已启动Fab 2的建设项目，从最初规划的6/7nm工艺升级至3nm工艺，原计划2027年末开始运营，不过现在大概率推迟至2028年。 据TrendForce报道，索尼与台积电在半导体生产方面的合作不仅限于原来的晶圆厂计划，传闻双方正在筹建新合资工厂，共同开发和量产下一代图像传感器，总投资预计达1万亿日元（约合62.76亿美元/人民币423.39亿元），地点同样选在熊本县。这样的投资规模与索尼半导体业务四年的资本支出相当，接近于台积电在在日本的首座晶圆厂。 索尼与台积电早在5月就达成合作的基本框架，具体细节仍在讨论中，预计很快会有最终协议，而且还会与日本经济产业省就政府补贴事宜展开磋商。索尼与台积电将分别持股60%和40%，在2026财年（至2027年3月）之前完成合资公司的设立，预计2029年量产。新的合资工厂将会为苹果iPhone生产下一代高性能图像传感器，未来还将涉足“实体AI”等领域，也就是机器人和自动驾驶车辆等新兴的物理AI应用。除了生产线外，还会规划配套相应的研发设施。 虽然索尼现在占据了全球CMOS图像传感器市场超过一半的份额，但是来自中韩的竞争对手以积极的投资缩小差距。索尼希望通过与台积电的合作强化自身的技术优势，在日益激烈的竞争环境中守住领导地位。",
       "url": "http://www.expreview.com/107524.html",
       "time": "2026-08-11T08:56:00.000Z",
       "tags": [
@@ -1425,20 +1910,6 @@
       "topic": true
     },
     {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "英伟达联手六大金融巨头设立5000亿美元算力融资平台 - 网易新闻客户端",
-      "description": "",
-      "url": "https://c.m.163.com/news/a/L42KTL0305199NPP.html",
-      "time": "2026-08-11T08:55:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "灯光太亮，特斯拉召回 - 电子工程专辑",
@@ -1452,13 +1923,17 @@
       "topic": true
     },
     {
-      "source": "新品发布",
-      "sourceColor": "#ad1457",
-      "title": "新浪网· - 新浪网",
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达联手六大金融巨头设立5000亿美元算力融资平台 - 网易新闻客户端",
       "description": "",
-      "url": "https://www.sina.cn/news/detail/5330771197034830.html",
-      "time": "2026-08-11T08:52:00.000Z",
-      "tags": [],
+      "url": "https://c.m.163.com/news/a/L42KTL0305199NPP.html",
+      "time": "2026-08-11T08:55:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
+      ],
       "topic": true
     },
     {
@@ -1756,6 +2231,19 @@
         "手机",
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "2026 年 7 月国内新能源车零售渗透率达65.1%_新浪新闻 - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/detail/5330767627690214.html",
+      "time": "2026-08-11T08:38:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "网络安全"
+      ],
+      "topic": true
     },
     {
       "source": "Dev.to",
@@ -2056,6 +2544,20 @@
       ]
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "乘联分会：7月特斯拉中国出口66,330辆 - 手机网易网",
+      "description": "",
+      "url": "https://www.163.com/dy/article/L42ISSQ005198CJN.html",
+      "time": "2026-08-11T08:20:03.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "两厢钢炮焕新：全新高尔夫，8155 芯片兼顾操控与通勤 - 车家号",
@@ -2147,7 +2649,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "France to ban unsolicited telemarketing calls",
-      "description": "Article URL: https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html Comments URL: https://news.ycombinator.com/item?id=49254880 Points: 102 # Comments: 59",
+      "description": "Article URL: https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html Comments URL: https://news.ycombinator.com/item?id=49254880 Points: 124 # Comments: 79",
       "url": "https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html",
       "time": "2026-08-11T08:15:46.000Z",
       "tags": [
@@ -2244,6 +2746,20 @@
         "手机",
         "芯片/半导体",
         "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "智元机器人、宇树科技出货量远超特斯拉 - 东方财富",
+      "description": "",
+      "url": "https://finance.eastmoney.com/a/202608113837864057.html",
+      "time": "2026-08-11T08:12:02.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司",
+        "智能硬件"
       ],
       "topic": true
     },
@@ -3252,6 +3768,19 @@
       ]
     },
     {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "深读 | 特斯拉，七巨头中的短板",
+      "description": "2025年，特斯拉整车销售业务毛利润降至86亿美元（614亿人民币）；同年，比亚迪汽车业务毛利润1329亿，相当于特斯拉的216%。 2024年，特斯拉净利润腰斩，近28亿美元“卖碳收入”占净利润的39%…",
+      "url": "https://www.sohu.com/a/1061530332_115207?scm=10001.344_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-11 07:29",
+      "tags": [
+        "新能源/电动车",
+        "汽车",
+        "大公司"
+      ]
+    },
+    {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "英伟达撬动5000亿美元，黄仁勋称AI芯片是生息资产 - 新浪网",
@@ -3679,7 +4208,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "小米汽车7月准确零售销量确认，增长压力给到澎程N系列SUV - 汽车之家",
+      "title": "小米汽车7月准确零售销量确认，增长压力给到澎程N系列SUV - 车家号",
       "description": "",
       "url": "https://chejiahao.autohome.com.cn/info/26169864",
       "time": "2026-08-11T07:07:41.000Z",
@@ -3693,10 +4222,10 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "小米汽车7月准确零售销量确认，增长压力给到澎程N系列SUV - 车家号",
+      "title": "小米汽车7月准确零售销量确认，增长压力给到澎程N系列SUV - 汽车之家",
       "description": "",
       "url": "https://chejiahao.autohome.com.cn/info/26169864",
-      "time": "2026-08-11T07:07:41.000Z",
+      "time": "2026-08-11T07:07:09.000Z",
       "tags": [
         "手机",
         "汽车",
@@ -3886,7 +4415,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The Water Footprint of AI",
-      "description": "Article URL: https://doi.org/10.1016/j.watres.2026.125866 Comments URL: https://news.ycombinator.com/item?id=49254351 Points: 11 # Comments: 2",
+      "description": "Article URL: https://doi.org/10.1016/j.watres.2026.125866 Comments URL: https://news.ycombinator.com/item?id=49254351 Points: 13 # Comments: 4",
       "url": "https://doi.org/10.1016/j.watres.2026.125866",
       "time": "2026-08-11T07:00:57.000Z",
       "tags": [
@@ -5291,7 +5820,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Mcptoon – Token-efficient MCP CLI client",
-      "description": "Article URL: https://github.com/activeing123/mcptoon Comments URL: https://news.ycombinator.com/item?id=49253721 Points: 45 # Comments: 35",
+      "description": "Article URL: https://github.com/activeing123/mcptoon Comments URL: https://news.ycombinator.com/item?id=49253721 Points: 47 # Comments: 35",
       "url": "https://github.com/activeing123/mcptoon",
       "time": "2026-08-11T05:26:58.000Z",
       "tags": [
@@ -5741,55 +6270,20 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Petlibro Offers: 30% Off in August 2026",
-      "description": "Save on Petlibro essentials, including automatic feeders, water fountains, and accessories to keep cats and dogs fed, hydrated, and comfortable every day.",
-      "url": "https://www.wired.com/story/petlibro-discount-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Sealy Promo Codes: $100 Off",
-      "description": "Whether you’re switching from springs to memory foam or just want to sleep cooler this summer, these Sealy mattress deals will have you waking up refreshed—and with cash left in your wallet.",
-      "url": "https://www.wired.com/story/sealy-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "L.L.Bean Promo Codes and Coupons: 75% Off",
-      "description": "Find the best L.L.Bean promo codes and coupons for 10% off your first order, major sale discounts, free shipping on $75+, and extra savings for select groups.",
-      "url": "https://www.wired.com/story/ll-bean-promo-code/",
+      "title": "Skullcandy Discount Code: 30% Off | August 2026",
+      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
+      "url": "https://www.wired.com/story/skullcandy-discount-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": []
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
-      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
-      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
+      "title": "Sony Coupons: 45% Off Sony Headphones, WF-1000XM6 Earbuds, and Sony Cameras for August 2026",
+      "description": "Upgrade your setup with Sony’s newest releases. Save on industry-leading noise-canceling audio, and pro-level Alpha cameras.",
+      "url": "https://www.wired.com/story/sony-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
-      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
-      "url": "https://www.wired.com/story/playstation-discount-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "游戏",
         "智能硬件"
       ]
     },
@@ -5827,22 +6321,57 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Skullcandy Discount Code: 30% Off | August 2026",
-      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
-      "url": "https://www.wired.com/story/skullcandy-discount-code/",
+      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
+      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
+      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
-      "tags": []
+      "tags": [
+        "科技创投"
+      ]
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Sony Coupons: 45% Off Sony Headphones, WF-1000XM6 Earbuds, and Sony Cameras for August 2026",
-      "description": "Upgrade your setup with Sony’s newest releases. Save on industry-leading noise-canceling audio, and pro-level Alpha cameras.",
-      "url": "https://www.wired.com/story/sony-promo-code/",
+      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
+      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
+      "url": "https://www.wired.com/story/playstation-discount-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
+        "游戏",
         "智能硬件"
       ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Petlibro Offers: 30% Off in August 2026",
+      "description": "Save on Petlibro essentials, including automatic feeders, water fountains, and accessories to keep cats and dogs fed, hydrated, and comfortable every day.",
+      "url": "https://www.wired.com/story/petlibro-discount-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Sealy Promo Codes: $100 Off",
+      "description": "Whether you’re switching from springs to memory foam or just want to sleep cooler this summer, these Sealy mattress deals will have you waking up refreshed—and with cash left in your wallet.",
+      "url": "https://www.wired.com/story/sealy-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "L.L.Bean Promo Codes and Coupons: 75% Off",
+      "description": "Find the best L.L.Bean promo codes and coupons for 10% off your first order, major sale discounts, free shipping on $75+, and extra savings for select groups.",
+      "url": "https://www.wired.com/story/ll-bean-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": []
     },
     {
       "source": "Wired",
@@ -8294,17 +8823,6 @@
     {
       "source": "钛媒体",
       "sourceColor": "#ff9800",
-      "title": "宇树IPO，谁都输不起",
-      "description": "一次不能输的样板工程。",
-      "url": "https://www.tmtpost.com/8098378.html",
-      "time": "2026-08-11T02:09:20.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "钛媒体",
-      "sourceColor": "#ff9800",
       "title": "算法费减免为0，元气森林鲸吞无人零售？",
       "description": "四年不披露营收后，元气森林把增长押给货柜。",
       "url": "https://www.tmtpost.com/8097996.html",
@@ -8732,6 +9250,16 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "新浪网· - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/detail/5330660699145173.html",
+      "time": "2026-08-11T01:33:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "特斯拉设计师称新款Roadster很快来 - sina.cn",
       "description": "",
       "url": "https://www.sina.cn/news/article/nimwyqv4464613.html",
@@ -8822,7 +9350,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "H3-metal – Native MiniMax-H3 inference for Apple Silicon",
-      "description": "Article URL: https://github.com/antirez/h3.c Comments URL: https://news.ycombinator.com/item?id=49252179 Points: 271 # Comments: 50",
+      "description": "Article URL: https://github.com/antirez/h3.c Comments URL: https://news.ycombinator.com/item?id=49252179 Points: 276 # Comments: 56",
       "url": "https://github.com/antirez/h3.c",
       "time": "2026-08-11T01:22:09.000Z",
       "tags": [
@@ -9210,7 +9738,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Chicken Scheme 6.0",
-      "description": "Article URL: https://code.call-cc.org/releases/6.0.0/NEWS Comments URL: https://news.ycombinator.com/item?id=49251702 Points: 191 # Comments: 20",
+      "description": "Article URL: https://code.call-cc.org/releases/6.0.0/NEWS Comments URL: https://news.ycombinator.com/item?id=49251702 Points: 194 # Comments: 21",
       "url": "https://code.call-cc.org/releases/6.0.0/NEWS",
       "time": "2026-08-11T00:24:15.000Z",
       "tags": [
@@ -9434,7 +9962,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The UK's war on anonymity has come to America",
-      "description": "Article URL: https://www.effort.news/uk-lobby Comments URL: https://news.ycombinator.com/item?id=49251411 Points: 497 # Comments: 415",
+      "description": "Article URL: https://www.effort.news/uk-lobby Comments URL: https://news.ycombinator.com/item?id=49251411 Points: 504 # Comments: 427",
       "url": "https://www.effort.news/uk-lobby",
       "time": "2026-08-10T23:45:50.000Z",
       "tags": [
@@ -9637,7 +10165,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Scroll through all 43252003274489856000 Rubik's Cube states",
-      "description": "Article URL: https://everycube.alen.is/ Comments URL: https://news.ycombinator.com/item?id=49251179 Points: 188 # Comments: 61",
+      "description": "Article URL: https://everycube.alen.is/ Comments URL: https://news.ycombinator.com/item?id=49251179 Points: 193 # Comments: 62",
       "url": "https://everycube.alen.is/",
       "time": "2026-08-10T23:16:25.000Z",
       "tags": [
@@ -9764,7 +10292,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "As AI eats the web, the internet’s collective memory is disappearing",
-      "description": "Article URL: https://thewalrus.ca/google-search-is-dying/ Comments URL: https://news.ycombinator.com/item?id=49250836 Points: 297 # Comments: 285",
+      "description": "Article URL: https://thewalrus.ca/google-search-is-dying/ Comments URL: https://news.ycombinator.com/item?id=49250836 Points: 304 # Comments: 301",
       "url": "https://thewalrus.ca/google-search-is-dying/",
       "time": "2026-08-10T22:36:30.000Z",
       "tags": [
@@ -9919,6 +10447,17 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/i-tried-google-wallets-new-allowance-feature/",
+      "time": "2026-08-10T21:57:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/i-tried-google-wallets-new-allowance-feature/",
@@ -10027,7 +10566,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Claude marks AI-generated content",
-      "description": "Article URL: https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content Comments URL: https://news.ycombinator.com/item?id=49250109 Points: 177 # Comments: 134",
+      "description": "Article URL: https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content Comments URL: https://news.ycombinator.com/item?id=49250109 Points: 179 # Comments: 138",
       "url": "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content",
       "time": "2026-08-10T21:36:56.000Z",
       "tags": [
@@ -10387,6 +10926,17 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "This pocket-sized gadget helped cut down our editor's screen time - and it's on sale - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/brick-back-to-school-deal/",
+      "time": "2026-08-10T19:50:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "This pocket-sized gadget helped cut down our editor's screen time - and it's on sale - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/brick-back-to-school-deal/",
@@ -10731,7 +11281,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Rust SIMD on the GPU",
-      "description": "Article URL: https://www.vectorware.com/blog/simd-on-gpu/ Comments URL: https://news.ycombinator.com/item?id=49247477 Points: 183 # Comments: 92",
+      "description": "Article URL: https://www.vectorware.com/blog/simd-on-gpu/ Comments URL: https://news.ycombinator.com/item?id=49247477 Points: 185 # Comments: 92",
       "url": "https://www.vectorware.com/blog/simd-on-gpu/",
       "time": "2026-08-10T18:12:49.000Z",
       "tags": [
@@ -10775,20 +11325,6 @@
       "tags": [
         "智能硬件"
       ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "智元机器人、宇树科技出货量远超特斯拉 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608113837864057.html",
-      "time": "2026-08-10T18:07:58.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司",
-        "智能硬件"
-      ],
-      "topic": true
     },
     {
       "source": "TechCrunch",
@@ -10849,6 +11385,18 @@
     {
       "source": "搜狐科技",
       "sourceColor": "#d8402a",
+      "title": "科学 | 别再高频找AI聊天，它解决不了根本问题",
+      "description": "但聊久了之后，超过一半的人都把AI当成了自己的朋友、伙伴，甚至是恋人。结果就是：你看似一直在被陪伴、被安慰，但导致你孤独的根本问题，一点都没被解决。所以也有研究认为，AI聊天机器人确实能提供不错的情绪价值，特…",
+      "url": "https://www.sohu.com/a/1061122288_116157?scm=10001.344_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-10 17:50",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
       "title": "警惕！别再高频找AI聊天，它解决不了根本问题",
       "description": "但聊久了之后，超过一半的人都把AI当成了自己的朋友、伙伴，甚至是恋人。结果就是：你看似一直在被陪伴、被安慰，但导致你孤独的根本问题，一点都没被解决。所以也有研究认为，AI聊天机器人确实能提供不错的情绪价值，特…",
       "url": "https://www.sohu.com/a/1061122288_116157?scm=10001.344_14-200000.0.0-0-0-0-0.",
@@ -10874,7 +11422,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Learning more about Claude's mathematical capabilities",
-      "description": "Article URL: https://www.anthropic.com/research/riemann-zeta Comments URL: https://news.ycombinator.com/item?id=49247070 Points: 199 # Comments: 138",
+      "description": "Article URL: https://www.anthropic.com/research/riemann-zeta Comments URL: https://news.ycombinator.com/item?id=49247070 Points: 206 # Comments: 139",
       "url": "https://www.anthropic.com/research/riemann-zeta",
       "time": "2026-08-10T17:41:13.000Z",
       "tags": [
@@ -11058,7 +11606,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Needle2: 14MB agentic LLM for phones, wearables, smart home and robots",
-      "description": "Hey HN, Henry from Cactus here! We previously released Cactus Needle, a 14MB agentic LLM for tool call, device use, and structured extraction for phones, wearables, smart homes, small robots and microcontrollers. We got really great feedback here, and have now incorporated the suggestions to release Needle 2. The whole model is a single 14MB binary that runs a full session in 28MB of RAM; 45m parameters at 2bit compression. Needle hits 500 tokens/sec decode speed on a Raspberry Pi 5, sits between 400-1,500 tokens/sec on VR devices like Meta Quest 3S and Apple Vision Pro, and ranges 300-700 on sub-$200 phones such as the Samsung A-Series. On the tool call and mobile device use benchmarks, Needle 2 trades wins with closest small models like LFM2.5 230M and Apple Foundation Model, at 5x to 70x smaller, both at f16 vs Needle 2 at 2bit. Needle is based on Simple Attention Networks from our paper (https://arxiv.org/abs/2607.18363). Edge AI has lately meant Macs and PCs, but that is just 1.5 billion of over 21 billion connected IoT devices in the world today, and in emerging markets most phones ship under $200, no NPU, cheap GPUs. These include budget phones, Raspberry Pis, microcontrollers, wearables, small robots like Reachy Mini, and connected home devices. A conventional transformer of Needle's width and depth spends 164 MFLOPs per token, and even one squeezed down to Needle's parameter count spends 87, Needle spends 70. Even on a high-end phone, an always-on assistant lives inside a power budget; every MFLOP is milliwatt-hours, and Needle spends 7x to 85x fewer of them per token than the smallest performant LLMs. More about the architecture in the link. When we structure intelligence for consumer devices as functions with typed parameters, the only hard part is mapping a messy sentence onto them; which function, with which values. Our research found that when framed that way, the problem needs no world knowledge and no open-ended prose, which is why 45M parameters suffice. Needle 2 expands to structured extraction where the schema can be passed in-place of tools and the model returns structured output. You can use Needle as a text-classification model with an enum field, as a summarization model by providing a schema that extracts key fields, everything but free-range decode. Every product has its own tool vocabulary and fine-tuning needle helps it achieve frontier-level performance on custom tasks, so using the python package (https://github.com/cactus-compute/needle), Needle can be fine-tuned Needle on a Mac/PC in minutes to a few hours, with automated data-generation pipeline, just pass a couple samples. Nonetheless, every response carries a learned confidence score based our Cactus Hybrid technique. If above your threshold, act, below it, escalate to the cloud or bigger model. Combining Needle 2 with a private DeepSeek-v4-Flash deployment works particularly well for enterprise-level tasks at barely any cost, we can help with this setup. We have put a lot of thoughts into Needle 2 but might still be missing quite a lot, please use the playground in the provided link to test Needle and share your thoughts, always appreciated! Comments URL: https://news.ycombinator.com/item?id=49246804 Points: 331 # Comments: 130",
+      "description": "Hey HN, Henry from Cactus here! We previously released Cactus Needle, a 14MB agentic LLM for tool call, device use, and structured extraction for phones, wearables, smart homes, small robots and microcontrollers. We got really great feedback here, and have now incorporated the suggestions to release Needle 2. The whole model is a single 14MB binary that runs a full session in 28MB of RAM; 45m parameters at 2bit compression. Needle hits 500 tokens/sec decode speed on a Raspberry Pi 5, sits between 400-1,500 tokens/sec on VR devices like Meta Quest 3S and Apple Vision Pro, and ranges 300-700 on sub-$200 phones such as the Samsung A-Series. On the tool call and mobile device use benchmarks, Needle 2 trades wins with closest small models like LFM2.5 230M and Apple Foundation Model, at 5x to 70x smaller, both at f16 vs Needle 2 at 2bit. Needle is based on Simple Attention Networks from our paper (https://arxiv.org/abs/2607.18363). Edge AI has lately meant Macs and PCs, but that is just 1.5 billion of over 21 billion connected IoT devices in the world today, and in emerging markets most phones ship under $200, no NPU, cheap GPUs. These include budget phones, Raspberry Pis, microcontrollers, wearables, small robots like Reachy Mini, and connected home devices. A conventional transformer of Needle's width and depth spends 164 MFLOPs per token, and even one squeezed down to Needle's parameter count spends 87, Needle spends 70. Even on a high-end phone, an always-on assistant lives inside a power budget; every MFLOP is milliwatt-hours, and Needle spends 7x to 85x fewer of them per token than the smallest performant LLMs. More about the architecture in the link. When we structure intelligence for consumer devices as functions with typed parameters, the only hard part is mapping a messy sentence onto them; which function, with which values. Our research found that when framed that way, the problem needs no world knowledge and no open-ended prose, which is why 45M parameters suffice. Needle 2 expands to structured extraction where the schema can be passed in-place of tools and the model returns structured output. You can use Needle as a text-classification model with an enum field, as a summarization model by providing a schema that extracts key fields, everything but free-range decode. Every product has its own tool vocabulary and fine-tuning needle helps it achieve frontier-level performance on custom tasks, so using the python package (https://github.com/cactus-compute/needle), Needle can be fine-tuned Needle on a Mac/PC in minutes to a few hours, with automated data-generation pipeline, just pass a couple samples. Nonetheless, every response carries a learned confidence score based our Cactus Hybrid technique. If above your threshold, act, below it, escalate to the cloud or bigger model. Combining Needle 2 with a private DeepSeek-v4-Flash deployment works particularly well for enterprise-level tasks at barely any cost, we can help with this setup. We have put a lot of thoughts into Needle 2 but might still be missing quite a lot, please use the playground in the provided link to test Needle and share your thoughts, always appreciated! Comments URL: https://news.ycombinator.com/item?id=49246804 Points: 335 # Comments: 131",
       "url": "https://cactuscompute.com/needle",
       "time": "2026-08-10T17:22:07.000Z",
       "tags": [
@@ -11267,7 +11815,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "What's the best programming language for coding agents?",
-      "description": "Related: Which programming languages are most token-efficient? - https://news.ycombinator.com/item?id=46582728 - Jan 2026 (91 comments) Comments URL: https://news.ycombinator.com/item?id=49245936 Points: 176 # Comments: 117",
+      "description": "Related: Which programming languages are most token-efficient? - https://news.ycombinator.com/item?id=46582728 - Jan 2026 (91 comments) Comments URL: https://news.ycombinator.com/item?id=49245936 Points: 182 # Comments: 120",
       "url": "http://danluu.com/pl-tokens/",
       "time": "2026-08-10T16:28:58.000Z",
       "tags": [
@@ -11401,6 +11949,17 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/managers-biggest-ransomware-targets-ways-to-stay-safe/",
+      "time": "2026-08-10T16:08:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/managers-biggest-ransomware-targets-ways-to-stay-safe/",
@@ -11456,6 +12015,29 @@
       "tags": []
     },
     {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
+      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
+      "url": "https://www.donews.com/news/detail/3/6665925.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "大公司"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
+      "description": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
+      "url": "https://www.donews.com/news/detail/7/6666955.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
       "title": "汤臣倍健增收不增利，主动迎接阵痛",
@@ -11496,6 +12078,29 @@
       "tags": [
         "大公司",
         "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "腾讯启动2027校园招聘，岗位设置、人才标准迭代更新",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/it/2026-08-11/doc-inimxvum4247015.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "曝字节Seed AI数据安全负责人将离职 官方暂无回应",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/it/2026-08-11/doc-inimxvum4246648.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能"
       ]
     },
     {
@@ -11565,12 +12170,113 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "不止设备达标，更筑体系安全，科密引领涉密销毁行业合规新范式",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvum4256650.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "英特尔宣布募资千亿扩产 全力冲刺AI芯片制造",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxvun5838632.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "这次真急了！日本机构整车拆解比亚迪K-Car海獭找差距",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0674834.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "AI 入口，开始收费",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0670579.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "TikTok 带货博主卷疯快递：三天，从深圳到伦敦",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvun5828867.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "提前玩首款云台手机！荣耀Robot Phone超前品鉴会明起举办",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxvun5828920.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "10秒骤降60°C！玩家用零下51°C冷冻喷雾给CPU降温：一喷瞬间起霜",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0667273.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "章鱼动力肌电大模型实现数据采集“一模千人”",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxvum4240198.shtml",
       "time": "2026-08-10T16:00:00.000Z",
       "tags": [
         "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Lockin U独家专访澳大利亚国立大学：AI时代，大学如何培养不可替代的人才？",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0679696.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "专访"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "赋能传统制造业转型，广州恒尔PE颗粒全自动吨袋包装机诠释国产高性价比",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvun5838557.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "科技创投"
       ]
     },
     {
@@ -11620,6 +12326,24 @@
       "title": "反弹止步，新的机会",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0663607.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "“大路灯”从来不是风口，而是Waldmann走了几十年的路",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvum4256781.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "超视立眼镜：从镜片设计、佩戴适应性到售后服务的拆解",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvui7483744.shtml",
       "time": "2026-08-10T16:00:00.000Z",
       "tags": []
     },
@@ -11790,6 +12514,79 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "Meta 扎克伯格：美国若想取得开源 AI 领先，就得减少政策障碍",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7973642.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "美国本土直播带货 长出一头200亿美元巨兽",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6246369.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "杰富瑞分析师：因良率不佳，苹果已砍掉 20 周年全玻璃 iPhone 机型",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7963044.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "扎克伯格呼吁美国放宽开源 AI 限制，以应对中国竞争",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmh6225641.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "消息称智谱 API 用户接近 700 万，已启用超 5 万块国产算力芯片",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmf4723788.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "苹果在iPhone和MacBook测试中国长鑫存储芯片：落地难度极大！",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6210880.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "Fiber for AI｜《漫话空芯》：智算集群协同不给力？换成空芯光纤试试",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvum4228100.shtml",
@@ -11909,91 +12706,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0632902.shtml",
       "time": "2026-08-10T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "Meta 扎克伯格：美国若想取得开源 AI 领先，就得减少政策障碍",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7973642.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "美国本土直播带货 长出一头200亿美元巨兽",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6246369.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "互联网"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "杰富瑞分析师：因良率不佳，苹果已砍掉 20 周年全玻璃 iPhone 机型",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7963044.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "扎克伯格呼吁美国放宽开源 AI 限制，以应对中国竞争",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmh6225641.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "消息称智谱 API 用户接近 700 万，已启用超 5 万块国产算力芯片",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmf4723788.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "苹果在iPhone和MacBook测试中国长鑫存储芯片：落地难度极大！",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6210880.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
-      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
-      "url": "https://www.donews.com/news/detail/3/6665925.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "大公司"
-      ]
     },
     {
       "source": "新浪科技",
@@ -12811,7 +13523,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Ante, a coding agent in a single binary that runs offline",
-      "description": "Article URL: https://github.com/AntigmaLabs/ante Comments URL: https://news.ycombinator.com/item?id=49245437 Points: 133 # Comments: 79",
+      "description": "Article URL: https://github.com/AntigmaLabs/ante Comments URL: https://news.ycombinator.com/item?id=49245437 Points: 134 # Comments: 79",
       "url": "https://github.com/AntigmaLabs/ante",
       "time": "2026-08-10T15:59:23.000Z",
       "tags": [
@@ -12830,6 +13542,17 @@
         "人工智能",
         "手机",
         "电脑硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "This blazing-fast, super-private browser delivers a brand new beta - try it for free - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/orion-browser-linux-beta/",
+      "time": "2026-08-10T15:56:00.000Z",
+      "tags": [
+        "科技创投"
       ]
     },
     {
@@ -13498,6 +14221,19 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/ugreen-finder-pro-solar-powered-finder-tag-review/",
+      "time": "2026-08-10T14:25:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/ugreen-finder-pro-solar-powered-finder-tag-review/",
@@ -13541,6 +14277,15 @@
         "智能硬件"
       ],
       "topic": true
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "This Mac dock gives me lag-free dual displays with no sketchy drivers - for $150 - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/startech-driverless-dual-display-universal-mac-docking-station-review/",
+      "time": "2026-08-10T14:24:00.000Z",
+      "tags": []
     },
     {
       "source": "ZDNet",
@@ -13718,7 +14463,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Mark Zuckerberg attacks 'closed' AI rivals as Meta returns to open models",
-      "description": "https://archive.is/20LOJ https://www.meta.com/thefutureisforeveryone/ Comments URL: https://news.ycombinator.com/item?id=49243880 Points: 504 # Comments: 467",
+      "description": "https://archive.is/20LOJ https://www.meta.com/thefutureisforeveryone/ Comments URL: https://news.ycombinator.com/item?id=49243880 Points: 507 # Comments: 469",
       "url": "https://www.ft.com/content/4e3957f8-ea7c-4c46-a3de-cdce8e526878",
       "time": "2026-08-10T14:06:22.000Z",
       "tags": [
@@ -13738,6 +14483,17 @@
         "人工智能",
         "手机",
         "软件应用"
+      ]
+    },
+    {
+      "source": "搜狐科技",
+      "sourceColor": "#d8402a",
+      "title": "机器人赛道新岗位：“骨科大夫”专治缺胳膊断腿",
+      "description": "赵鑫所在的机构，平均每个月只能接到1-3台机器人和机器狗维修的订单；房京华公司在全国的5个维修网点，过去一年共维修超1万台家用扫地机及各类商用服务机器人，但月均只有5、6台人形机器人和10多台机器狗的维修订…",
+      "url": "https://www.sohu.com/a/1061008407_211762?scm=10001.344_14-200000.0.0-0-0-0-0.",
+      "time": "2026-08-10 14:06",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -13937,6 +14693,15 @@
       "tags": [
         "智能硬件"
       ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "We lab-tested Ecovac's next-gen robot mop - here's where it shines (and struggles) - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/kitchen-household/deebot-x12-omnicyclone-review-ecovacs-robot-vacuum/",
+      "time": "2026-08-10T13:45:00.000Z",
+      "tags": []
     },
     {
       "source": "ZDNet",
@@ -14354,6 +15119,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/how-i-use-claude-cowork-record-a-skill-for-automated-research/",
+      "time": "2026-08-10T12:26:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/how-i-use-claude-cowork-record-a-skill-for-automated-research/",
@@ -14425,6 +15202,17 @@
         "测评/新品"
       ],
       "topic": true
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Squeak 6.1",
+      "description": "Article URL: https://squeak.org/release_notes/6.1/ Comments URL: https://news.ycombinator.com/item?id=49242653 Points: 267 # Comments: 129",
+      "url": "https://squeak.org/release_notes/6.1/",
+      "time": "2026-08-10T12:15:53.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "Android Authority",
@@ -15440,8 +16228,8 @@
       ]
     },
     {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
+      "source": "三星",
+      "sourceColor": "#0d47a1",
       "title": "万元手机推荐2026：华为、三星、OPPO折叠屏横评，谁才是真香之选？+FAQ - 新浪网",
       "description": "",
       "url": "https://www.sina.cn/news/article/nimvnpi1265435.html",
@@ -17600,143 +18388,6 @@
       ]
     },
     {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "最新「中产身份证」：《奥德赛》点映票",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimvxcf2777726.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "传智谱ARR今年将达20亿美元，七月来新增200万API用户",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/it/2026-08-10/doc-inimwcmh6217453.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "小鹏汽车离职高管，扎堆去往同一家机器人公司",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/csj/2026-08-10/doc-inimvnpp4937929.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "九号平衡车燃动版发布 出行更舒适、一车玩转城市与户外",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpp4913798.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "九号发布E3 GO电动滑板车 3公里生活圈有它就够了",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpi1237369.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "野人先生崔渐为：从品牌诞生就不缺投资人上门，熟知的机构都来过，但目前没有接受过任何投资",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-10/doc-inimvhfr4938170.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "南航一航班因乘客可乐爆瓶折返：飞溅液体击伤空姐眼部",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvxcf8037507.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "华为Mate 80系列达成全新里程碑：销量累计突破820万台 单周狂卖将近20万",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvsvm4851467.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "阿维塔回应“与华为合作不是必要项”言论：系误读 并非否认双方合作价值",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvsvi8079113.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "日本车企的混动护城河被中国EV攻破！全球电车均价首次低于混动车",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvnpp4938616.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "高铁双人座被免票儿童挤成3人座 网友建议家长买儿童票",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimwcmc7955539.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "华为终于听劝了！折叠屏笔记本要出青春版：万元左右、带外屏",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimuzxr8242723.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "电脑硬件",
-        "大公司"
-      ]
-    },
-    {
       "source": "DoNews",
       "sourceColor": "#00a971",
       "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
@@ -17818,6 +18469,143 @@
       "tags": [
         "手机",
         "汽车",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "最新「中产身份证」：《奥德赛》点映票",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimvxcf2777726.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "传智谱ARR今年将达20亿美元，七月来新增200万API用户",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/it/2026-08-10/doc-inimwcmh6217453.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小鹏汽车离职高管，扎堆去往同一家机器人公司",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/csj/2026-08-10/doc-inimvnpp4937929.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "九号平衡车燃动版发布 出行更舒适、一车玩转城市与户外",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpp4913798.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "九号发布E3 GO电动滑板车 3公里生活圈有它就够了",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpi1237369.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "南航一航班因乘客可乐爆瓶折返：飞溅液体击伤空姐眼部",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvxcf8037507.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "华为Mate 80系列达成全新里程碑：销量累计突破820万台 单周狂卖将近20万",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvsvm4851467.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "阿维塔回应“与华为合作不是必要项”言论：系误读 并非否认双方合作价值",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvsvi8079113.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "日本车企的混动护城河被中国EV攻破！全球电车均价首次低于混动车",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvnpp4938616.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "高铁双人座被免票儿童挤成3人座 网友建议家长买儿童票",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimwcmc7955539.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "华为终于听劝了！折叠屏笔记本要出青春版：万元左右、带外屏",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimuzxr8242723.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "野人先生崔渐为：从品牌诞生就不缺投资人上门，熟知的机构都来过，但目前没有接受过任何投资",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-10/doc-inimvhfr4938170.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
         "科技创投"
       ]
     },
@@ -18107,6 +18895,15 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "It's a bird, it's a plane, it's an MIT robot that goes from swimming to flying - in seconds - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/video/wtf-bird-scale-robot/",
+      "time": "2026-08-09T12:01:48.000Z",
+      "tags": []
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "It's a bird, it's a plane, it's an MIT robot that goes from swimming to flying - in seconds - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/video/wtf-bird-scale-robot/",
@@ -18277,6 +19074,18 @@
       "sourceColor": "#0066cc",
       "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event",
       "description": "Google is set to announce its Pixel 11 series phones - here's what we know.",
+      "url": "https://www.zdnet.com/article/what-to-expect-rumors-made-by-google-2026/",
+      "time": "2026-08-09T10:15:00.000Z",
+      "tags": [
+        "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event - zdnet.com",
+      "description": "",
       "url": "https://www.zdnet.com/article/what-to-expect-rumors-made-by-google-2026/",
       "time": "2026-08-09T10:15:00.000Z",
       "tags": [
@@ -18554,6 +19363,17 @@
         "游戏"
       ],
       "topic": true
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Google spoiled its own Pixel 11 event - Video - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/video/google-spoiled-its-own-pixel-11-event/",
+      "time": "2026-08-09T06:02:03.000Z",
+      "tags": [
+        "手机"
+      ]
     },
     {
       "source": "ZDNet",
@@ -19150,6 +19970,17 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "Made by Google event: Pixel 11 Pro, Fold and Watch 5 breakdown - Video - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/video/made-by-google-event-pixel-11-pro-fold-watch-5-breakdown/",
+      "time": "2026-08-08T13:03:22.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Made by Google event: Pixel 11 Pro, Fold and Watch 5 breakdown - Video - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/video/made-by-google-event-pixel-11-pro-fold-watch-5-breakdown/",
@@ -19568,6 +20399,20 @@
       "tags": [
         "芯片/半导体"
       ]
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "躺着赚死对头！每卖一张XBOX实体盘索尼都能捞一笔 - 腾讯新闻",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260808A07DQ100",
+      "time": "2026-08-08T05:53:00.000Z",
+      "tags": [
+        "游戏",
+        "互联网",
+        "大公司"
+      ],
+      "topic": true
     },
     {
       "source": "索尼",
@@ -33478,6 +34323,18 @@
         "大公司",
         "科技创投"
       ]
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "自动驾驶有了统一“准入门槛” - thecover.cn",
+      "description": "",
+      "url": "https://m.thecover.cn/news_details.html?eid=2s%2BEnJdtfJOH90qSdq8Jkw==",
+      "time": "2026-08-06T12:17:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
     },
     {
       "source": "智能汽车",
@@ -51046,6 +51903,18 @@
       "time": "2026-08-05T16:02:33.000Z",
       "tags": [
         "手机",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼DualSense信仰蓝特别版开箱：那道蓝光，现在握在手里了 - 17173",
+      "description": "",
+      "url": "http://news.17173.com/content/08062026/000128128.shtml",
+      "time": "2026-08-05T16:01:28.000Z",
+      "tags": [
         "测评/新品"
       ],
       "topic": true
@@ -94248,6 +95117,16 @@
       "topic": true
     },
     {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼 2026 财年一季报确认已提交收购腾龙提案，加码 E 卡口镜头生态 - 新浪财经",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-03/doc-inikyxur6276998.shtml",
+      "time": "2026-08-03T01:11:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
       "source": "超能网",
       "sourceColor": "#00a0e9",
       "title": "ROG Swift OLED PG32UCWM上架：Tandem RGB OLED显示器，售价8499元",
@@ -96095,899 +96974,6 @@
         "人工智能",
         "软件应用",
         "专访"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "小米汽车7月交付量超3万台 - finance.eastmoney.com",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608013828986321.html",
-      "time": "2026-08-01T01:25:58.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "小米汽车7月交付量超3万台 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608013828986321.html",
-      "time": "2026-08-01T01:25:58.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "小米汽车：小米汽车7月交付量超过30000台 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608013828984885.html",
-      "time": "2026-08-01T01:24:21.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "小米汽车：小米汽车7月交付量超过30000台 - eastmoney.com",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608013828984885.html",
-      "time": "2026-08-01T01:24:21.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉考虑出售中国业务，为与SpaceX的潜在合并铺路 - cn.wsj.com",
-      "description": "",
-      "url": "https://cn.wsj.com/articles/tesla-weighs-sale-of-china-business-to-pave-way-for-potential-spacex-merger-9d755aa4",
-      "time": "2026-08-01T01:09:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - 腾讯新闻",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "互联网",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - qq.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - News.QQ.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - xw.qq.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro将于8月3日亮相 配置与售价公布 - view.inews.qq.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260801A0478F00",
-      "time": "2026-08-01T00:43:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "尽管价格有所上涨，PlayStation仍宣称PS5主机比个人电脑更实惠 - Notebookcheck CN",
-      "description": "",
-      "url": "https://www.notebookcheck-cn.com/PlayStation-PS5.1357549.0.html",
-      "time": "2026-08-01T00:14:00.000Z",
-      "tags": [
-        "游戏",
-        "电脑硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "PlayStation希望通过“GTA 6”盒装激活码的形式取代商店中的实体游戏光盘 - Notebookcheck CN",
-      "description": "",
-      "url": "https://www.notebookcheck-cn.com/PlayStation-GTA-6.1357567.0.html",
-      "time": "2026-08-01T00:14:00.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "中微公司未来五年内至少覆盖60%的半导体高端设备，整体产能规划不低于700亿元 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608023829087865.html",
-      "time": "2026-08-01T00:08:52.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026年长续航纯电SUV横评：高速补能谁更强 - 汽车之家",
-      "description": "",
-      "url": "https://chejiahao.autohome.com.cn/info/26079889",
-      "time": "2026-07-31T23:25:05.000Z",
-      "tags": [
-        "汽车",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "马斯克称考虑出售特斯拉中国业务是假消息 - RFI",
-      "description": "",
-      "url": "https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20260731-%E9%A9%AC%E6%96%AF%E5%85%8B%E7%A7%B0%E8%80%83%E8%99%91%E5%87%BA%E5%94%AE%E7%89%B9%E6%96%AF%E6%8B%89%E4%B8%AD%E5%9B%BD%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%81%87%E6%B6%88%E6%81%AF",
-      "time": "2026-07-31T21:00:21.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "马斯克称考虑出售特斯拉中国业务是假消息 - rfi.fr",
-      "description": "",
-      "url": "https://www.rfi.fr/cn/%E4%B8%AD%E5%9B%BD/20260731-%E9%A9%AC%E6%96%AF%E5%85%8B%E7%A7%B0%E8%80%83%E8%99%91%E5%87%BA%E5%94%AE%E7%89%B9%E6%96%AF%E6%8B%89%E4%B8%AD%E5%9B%BD%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%81%87%E6%B6%88%E6%81%AF",
-      "time": "2026-07-31T21:00:21.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "【索尼】计划2028年1月停止生产PlayStation实体光盘，数字下载占比已达78% - 搜狐网",
-      "description": "",
-      "url": "https://m.sohu.com/a/1057375185_122132398?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-07-31T19:06:25.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "【索尼】计划2028年1月停止生产PlayStation实体光盘，数字下载占比已达78% - sohu.com",
-      "description": "",
-      "url": "https://m.sohu.com/a/1057375185_122132398?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-07-31T19:06:25.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "创业记对话途家网创始人罗军精彩图集 - 凤凰网科技",
-      "description": "",
-      "url": "https://tech.ifeng.com/c/7eWtJaY3YRu",
-      "time": "2026-07-31T17:35:47.000Z",
-      "tags": [
-        "专访",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "创业记对话途家网创始人罗军精彩图集 - tech.ifeng.com",
-      "description": "",
-      "url": "https://tech.ifeng.com/c/7eWtJaY3YRu",
-      "time": "2026-07-31T17:35:47.000Z",
-      "tags": [
-        "专访",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "对话潞晨科技创始人：国产芯片真正站稳脚跟，离不开软件生态协同建设 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-07-31/detail-iniksnxe9326044.d.html?vt=4&wm=1224?pagetag",
-      "time": "2026-07-31T17:03:03.000Z",
-      "tags": [
-        "芯片/半导体",
-        "软件应用",
-        "专访"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉的冰火时刻 - 36 Kr",
-      "description": "",
-      "url": "https://m.36kr.com/p/3920596475997824",
-      "time": "2026-07-31T16:15:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉的冰火时刻 - 36Kr",
-      "description": "",
-      "url": "https://m.36kr.com/p/3920596475997824",
-      "time": "2026-07-31T16:15:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉的冰火时刻 - 36kr.com",
-      "description": "",
-      "url": "https://m.36kr.com/p/3920596475997824",
-      "time": "2026-07-31T16:15:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼摊牌回应实体盘争议！玩家炸锅了 官方评论区被冲",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1140/1140617.htm",
-      "time": "2026-07-31T16:13:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼摊牌回应实体盘争议！玩家炸锅了 官方评论区被冲 - news.mydrivers.com",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1140/1140617.htm",
-      "time": "2026-07-31T16:13:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "Marvelous 与腾讯解除资本业务合作，《牧场物语》移动端新作被砍",
-      "description": "腾讯子公司解除与Marvelous资本合作，持股将从20.01%降至0.99%；《牧场物语》手游开发终止，IP授权等业务合作仍存。",
-      "url": "https://www.donews.com/news/detail/3/6655105.html",
-      "time": "2026-07-31T16:00:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "零跑7月交付达101267台，同比增长翻倍，成首个月销十万新势力",
-      "description": "零跑汽车2026年7月交付101267台，同比增长102%，成首家单月破10万的造车新势力；依托全域自研与四大产品矩阵，持续领跑新能源市场。",
-      "url": "https://www.donews.com/news/detail/7/6654979.html",
-      "time": "2026-07-31T16:00:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "深蓝汽车7月销量29213辆",
-      "description": "深蓝汽车7月销量同比增7.52%，海外环比增22.87%，累计销量破91万辆；技术领先，激光雷达、800V高压平台等加速落地；全球化覆盖超100国。",
-      "url": "https://www.donews.com/news/detail/7/6654945.html",
-      "time": "2026-07-31T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "致敬科创中国新质力量｜2026科创先锋案例征集正式启动",
-      "description": "2026年，是我国“十五五”规划的开局之年，科技创新正从“局部突破”向“全面领跑”跨越，新质生产力已成为推动经济高质量发展的核心动能。 在人工智能领域，大模型技",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33690601",
-      "time": "2026-07-31 15:30",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼表示停止生产 PlayStation 光盘无论现在还是未来都不会对其业务产生任何负面影响 - 17173",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/230940846.shtml",
-      "time": "2026-07-31T15:09:40.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼表示停止生产 PlayStation 光盘无论现在还是未来都不会对其业务产生任何负面影响 - news.17173.com",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/230940846.shtml",
-      "time": "2026-07-31T15:09:40.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼 PlayStation 乐高套装被曝 10 月 1 日发售，同步推出《宇宙机器人》赠品 - 新浪网",
-      "description": "",
-      "url": "https://tech.sina.cn/2026-07-31/detail-iniktkaz4378564.d.html?vt=4&cid=79649&node_id=79649",
-      "time": "2026-07-31T14:43:25.000Z",
-      "tags": [
-        "智能硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼 PlayStation 乐高套装被曝 10 月 1 日发售，同步推出《宇宙机器人》赠品 - 手机新浪网",
-      "description": "",
-      "url": "https://tech.sina.cn/2026-07-31/detail-iniktkaz4378564.d.html?vt=4&cid=79649&node_id=79649",
-      "time": "2026-07-31T14:43:25.000Z",
-      "tags": [
-        "手机",
-        "智能硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼 PlayStation 乐高套装被曝 10 月 1 日发售，同步推出《宇宙机器人》赠品 - tech.sina.cn",
-      "description": "",
-      "url": "https://tech.sina.cn/2026-07-31/detail-iniktkaz4378564.d.html?vt=4&cid=79649&node_id=79649",
-      "time": "2026-07-31T14:43:25.000Z",
-      "tags": [
-        "智能硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼 PlayStation 乐高套装被曝 10 月 1 日发售，同步推出《宇宙机器人》赠品 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-07-31/doc-iniktkaz4378564.shtml",
-      "time": "2026-07-31T14:28:00.000Z",
-      "tags": [
-        "智能硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "AI进入真实研发场景的三重障碍",
-      "description": "AI真的能加快科研的速度吗？大语言模型可以在几秒钟内生成成百上千条科学猜想，但它们能否被采信，不仅要经过物理世界的真实检验，也受制于研发组织的协作流程、数据基础",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33688834",
-      "time": "2026-07-31 14:15",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy S26 FE 相机参数曝光：50MP 主摄 + 8MP 长焦 - 手机新浪网",
-      "description": "",
-      "url": "https://tech.sina.cn/2026-07-31/detail-iniktkau9225573.d.html?vt=4",
-      "time": "2026-07-31T13:45:06.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼公布2026财年Q1财报，PSN月活创1.25亿新纪录 - 机核GCORES",
-      "description": "",
-      "url": "https://www.gcores.com/articles/217837",
-      "time": "2026-07-31T12:34:50.000Z",
-      "tags": [
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼公布2026财年Q1财报，PSN月活创1.25亿新纪录 - gcores.com",
-      "description": "",
-      "url": "https://www.gcores.com/articles/217837",
-      "time": "2026-07-31T12:34:50.000Z",
-      "tags": [
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "专访是石科技联合创始人毛运航：一家国产Token“优化工厂”的生意经 - 新浪财经",
-      "description": "",
-      "url": "https://cj.sina.cn/articles/view/5597884738/14da8f142020026msa",
-      "time": "2026-07-31T12:21:29.000Z",
-      "tags": [
-        "专访"
-      ],
-      "topic": true
-    },
-    {
-      "source": "科技专访",
-      "sourceColor": "#37474f",
-      "title": "专访是石科技联合创始人毛运航：一家国产Token“优化工厂”的生意经 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://cj.sina.cn/articles/view/5597884738/14da8f142020026msa",
-      "time": "2026-07-31T12:21:29.000Z",
-      "tags": [
-        "专访"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "40-50万3款豪华中型轿车深度横评：谁更贴合家用商用两用人群？ - 网通社",
-      "description": "",
-      "url": "https://auto.news18a.com/news/storys_280995.html",
-      "time": "2026-07-31T11:10:01.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "40-50万3款豪华中型轿车深度横评：谁更贴合家用商用两用人群？ - auto.news18a.com",
-      "description": "",
-      "url": "https://auto.news18a.com/news/storys_280995.html",
-      "time": "2026-07-31T11:10:01.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "坚定不移：索尼重申将于2028年初取消实体光盘生产 - 机核GCORES",
-      "description": "",
-      "url": "https://www.gcores.com/articles/217833",
-      "time": "2026-07-31T11:09:40.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "坚定不移：索尼重申将于2028年初取消实体光盘生产 - gcores.com",
-      "description": "",
-      "url": "https://www.gcores.com/articles/217833",
-      "time": "2026-07-31T11:09:40.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "空穴来风？马斯克称特斯拉考虑出售中国业务是假新闻 - dw.com",
-      "description": "",
-      "url": "https://www.dw.com/zh/%E7%A9%BA%E7%A9%B4%E6%9D%A5%E9%A3%8E%E9%A9%AC%E6%96%AF%E5%85%8B%E7%A7%B0%E7%89%B9%E6%96%AF%E6%8B%89%E8%80%83%E8%99%91%E5%87%BA%E5%94%AE%E4%B8%AD%E5%9B%BD%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%81%87%E6%96%B0%E9%97%BB/a-78188871",
-      "time": "2026-07-31T10:11:15.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "空穴来风？马斯克称特斯拉考虑出售中国业务是假新闻 - DW",
-      "description": "",
-      "url": "https://www.dw.com/zh/%E7%A9%BA%E7%A9%B4%E6%9D%A5%E9%A3%8E%E9%A9%AC%E6%96%AF%E5%85%8B%E7%A7%B0%E7%89%B9%E6%96%AF%E6%8B%89%E8%80%83%E8%99%91%E5%87%BA%E5%94%AE%E4%B8%AD%E5%9B%BD%E4%B8%9A%E5%8A%A1%E6%98%AF%E5%81%87%E6%96%B0%E9%97%BB/a-78188871",
-      "time": "2026-07-31T10:11:15.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "随着 GTA6 蓄势待发，索尼表示已确保充足的内存供应以达成 PS5 销售目标。 - 17173",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/180950295.shtml",
-      "time": "2026-07-31T10:09:50.000Z",
-      "tags": [
-        "游戏",
-        "电脑硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "随着 GTA6 蓄势待发，索尼表示已确保充足的内存供应以达成 PS5 销售目标。 - news.17173.com",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/180950295.shtml",
-      "time": "2026-07-31T10:09:50.000Z",
-      "tags": [
-        "游戏",
-        "电脑硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "20-30万3款燃油中型轿车深度横评：谁更贴合城市通勤用户？ - 网通社",
-      "description": "",
-      "url": "http://auto.news18a.com/news/storys_280974.html",
-      "time": "2026-07-31T09:55:01.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "20-30万3款燃油中型轿车深度横评：谁更贴合城市通勤用户？ - auto.news18a.com",
-      "description": "",
-      "url": "http://auto.news18a.com/news/storys_280974.html",
-      "time": "2026-07-31T09:55:01.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼正面回应光盘停产风波：听到玩家的不满但计划不会改变- SONY 索尼 - cnBeta.COM",
-      "description": "",
-      "url": "https://www.cnbeta.com.tw/articles/tech/1571142.htm",
-      "time": "2026-07-31T09:54:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "甘肃电投集团“紫金驭能”大模型重磅发布 - 中国能源新闻网",
-      "description": "",
-      "url": "https://www.cpnn.com.cn/qiye/jishu2023/202607/t20260731_1905808.html",
-      "time": "2026-07-31T09:09:42.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼承认取消 PlayStation 实体光盘的决定引发了“强烈争议”，但坚称“我们将谨慎推进”。 - 17173",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/170910722.shtml",
-      "time": "2026-07-31T09:09:10.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼承认取消 PlayStation 实体光盘的决定引发了“强烈争议”，但坚称“我们将谨慎推进”。 - news.17173.com",
-      "description": "",
-      "url": "http://news.17173.com/content/07312026/170910722.shtml",
-      "time": "2026-07-31T09:09:10.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "人类在农业兴起之初会说数万种语言",
-      "description": "一项7月23日发表于《科学》的研究发现，人类在3000年至1000年前，曾使用过数万种语言。这一数字远超目前全球使用的7500多种人类语言。 研究显示，农业的兴",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33688420",
-      "time": "2026-07-31 08:28",
-      "tags": []
-    },
-    {
-      "source": "澎湃新闻",
-      "sourceColor": "#1e88e5",
-      "title": "新技术重建百万年基因家谱，两个神秘祖先在现代人类DNA中现形",
-      "description": "现代人类的基因组里，还藏着怎样不为人知的故事？ 7月30日，美国加州大学伯克利分校研究团队在《科学》杂志发表一项成果，宣布在现代人类基因组中定位了来自两个未知远",
-      "url": "https://www.thepaper.cn/newsDetail_forward_33688415",
-      "time": "2026-07-31 08:20",
-      "tags": []
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "新能源车渗透率破六成 国内现存相关企业超182万家 - 央广网",
-      "description": "",
-      "url": "https://www.cnr.cn/tech/techyw/kan/20260731/t20260731_527739518.shtml",
-      "time": "2026-07-31T07:52:25.000Z",
-      "tags": [
-        "新能源/电动车",
-        "网络安全"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼净利润暴涨32%，“过气日本巨头”逆袭重生 - 新浪财经",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/3177552411/bd659a1b00101h7im",
-      "time": "2026-07-31T07:39:49.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼净利润暴涨32%，“过气日本巨头”逆袭重生 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/3177552411/bd659a1b00101h7im",
-      "time": "2026-07-31T07:39:49.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - 腾讯新闻",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
-      "time": "2026-07-31T07:05:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - qq.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
-      "time": "2026-07-31T07:05:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - QQ News",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
-      "time": "2026-07-31T07:05:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - News.QQ.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
-      "time": "2026-07-31T07:05:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "佳能",
-      "sourceColor": "#c0392b",
-      "title": "佳能EOS R6 V荣获2026年第十一届ChinaJoy黑金奖 - xw.qq.com",
-      "description": "",
-      "url": "https://view.inews.qq.com/a/20260731A07OR000?uid%5B0%5D=100042670174&uid%5B1%5D=100042670174",
-      "time": "2026-07-31T07:05:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "新品发布",
-      "sourceColor": "#ad1457",
-      "title": "国家发展改革委举行7月份新闻发布会 - ndrc.gov.cn",
-      "description": "",
-      "url": "https://www.ndrc.gov.cn/xwdt/xwfb/202607/t20260731_1406862.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼首度回应 2028 年停产 PS5 实体光盘：我们理解大家的不满但不会因为玩家反对而改变计划，将谨慎推进数字化转型 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/tech/2026-07-31/detail-iniksxpf4469510.d.html?vt=4",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "高端手机推荐哪款？2026年旗舰横评：华为/iPhone/OPPO怎么选+FAQ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996097_1d5af32c106804suby.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "甘肃电投集团携手华为发布“紫金驭能”大模型- 华为企业业务 - Huawei Enterprise",
-      "description": "",
-      "url": "https://e.huawei.com/cn/news/2026/industries/grid/purple-gold-energy-modeling",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "高端手机推荐哪款？2026年旗舰横评：华为/iPhone/OPPO怎么选+FAQ - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879996097_1d5af32c106804suby.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "哪款冰箱保鲜时间长？2026横评：双系统只是底线，真空/磁控才是真王牌+FAQ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879923161_1d5ae15d906801n40y.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "哪款冰箱保鲜时间长？2026横评：双系统只是底线，真空/磁控才是真王牌+FAQ - 手机新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879923161_1d5ae15d906801n40y.html",
-      "time": "2026-07-31T07:00:00.000Z",
-      "tags": [
-        "手机",
-        "测评/新品"
       ],
       "topic": true
     }
