@@ -291,14 +291,24 @@ const API = {
         })();
 
         // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。
-        //    优先用「分片归档」：整文件 12MB 在弱网/CDN 长连接下常被中断且整段作废，
-        //    故后端已拆成 ~1000 篇/片的小文件（data/news-parts/），前端并行加载、单片失败单独重试，
-        //    几乎不会再整体失败。分片不可用时再回退到整文件（流式 + 普通 fetch 两层）。
+        //    加载顺序（容错递进）：
+        //    A) /api/archive —— 经 Cloudflare Function 服务端代理读取归档，绕过「浏览器直连静态大文件被中断」
+        //       的问题（与能正常工作的 /api/news 同一条通路），最稳；
+        //    B) 分片归档 data/news-parts/ —— 静态小文件并行加载，单片失败重试 3 次；
+        //    C) 整文件 data/news.json —— 流式 + 普通 fetch 两层兜底。
         const archiveTask = (async () => {
-            // 优先等 meta 就绪（最多 500ms，避免阻塞分片加载）
+            // 优先等 meta 就绪（最多 500ms）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
-            // ── A) 分片归档：并行加载小文件，单片最多重试 3 次 ──
+            // ── A) Function 代理：服务端读静态归档再流式返回，浏览器只走 Function 通路 ──
+            try {
+                const data = await this.fetchJSON('/api/archive', BASE_MS);
+                if (data && Array.isArray(data.articles) && data.articles.length) {
+                    return { articles: data.articles, updateTime: data.updateTime || '' };
+                }
+            } catch (e) { console.warn('Function 代理读取归档失败，回退分片:', e.message); }
+
+            // ── B) 分片归档：并行加载小文件，单片最多重试 3 次 ──
             try {
                 const manifest = await this.fetchJSON('data/news-parts/manifest.json', 15000);
                 if (manifest && Array.isArray(manifest.parts) && manifest.parts.length) {
@@ -331,7 +341,7 @@ const API = {
                 }
             } catch (e) { console.warn('分片归档清单读取失败，回退整文件:', e.message); }
 
-            // ── B) 整文件兜底：流式（带进度）失败则普通 fetch ──
+            // ── C) 整文件兜底：流式（带进度）失败则普通 fetch ──
             try {
                 const data = await this.streamFetchJSON('data/news.json', BASE_MS, (loaded, total) => {
                     const effectiveTotal = total || expectedSize;
