@@ -1261,17 +1261,22 @@ async function main() {
         fs.mkdirSync(partsDir, { recursive: true });
         const PART_SIZE = 1000;
         const parts = [];
+        const sizes = [];
         for (let i = 0; i < archive.length; i += PART_SIZE) {
             const chunk = archive.slice(i, i + PART_SIZE);
             const partName = `part-${String(Math.floor(i / PART_SIZE)).padStart(3, '0')}.json`;
-            fs.writeFileSync(path.join(partsDir, partName), JSON.stringify(chunk, null, 2));
+            const partContent = JSON.stringify(chunk, null, 2);
+            fs.writeFileSync(path.join(partsDir, partName), partContent);
             parts.push(partName);
+            sizes.push(Buffer.byteLength(partContent, 'utf-8')); // 未压缩字节数，供前端显示真实进度与文件大小
         }
         fs.writeFileSync(path.join(partsDir, 'manifest.json'), JSON.stringify({
             parts,
             total: archive.length,
             updateTime: output.updateTime,
-            partSize: PART_SIZE
+            partSize: PART_SIZE,
+            sizes,
+            size: sizes.reduce((a, b) => a + b, 0)
         }, null, 2));
         console.log(`已保存分片归档: data/news-parts/ (${parts.length} 片 x ${PART_SIZE} 篇)`);
     }

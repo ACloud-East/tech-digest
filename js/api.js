@@ -67,13 +67,16 @@ const API = {
     // onProgress(loadedBytes, totalBytes) —— totalBytes 优先来自 HTTP Content-Length；
     // 若服务端 gzip 分块传输不返回总大小，则用 expectedSize（由 data/news-meta.json 提供）作为总大小，
     // 这样即使 Cloudflare 压缩分块，前端仍能显示真实百分比。
-    async streamFetchJSON(url, timeoutMs, onProgress, expectedSize = 0) {
+    async streamFetchJSON(url, timeoutMs, onProgress, expectedSize = 0, useExpected = false) {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), timeoutMs);
         try {
             const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            const total = Number(resp.headers.get('content-length')) || expectedSize || 0;
+            // useExpected=true 时忽略服务端 Content-Length，改用预期大小（如分片的未压缩字节数），
+            // 避免「服务端已 gzip 压缩」导致 Content-Length 是压缩后大小、而 reader 拿到解压后字节的错位。
+            const total = (useExpected && expectedSize) ? expectedSize
+                : (Number(resp.headers.get('content-length')) || expectedSize || 0);
             const reader = resp.body.getReader();
             const chunks = [];
             let loaded = 0;
@@ -248,7 +251,7 @@ const API = {
                     const frac = Math.min(1, prog.archLoaded / prog.archTotal);
                     percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
                     if (prog.archIsParts) {
-                        label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}（${Math.round(frac * 100)}%）`;
+                        label = `正在加载历史归档分片 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
                     } else {
                         label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}（${Math.round(frac * 100)}%）`;
                     }
@@ -302,8 +305,88 @@ const API = {
             // 优先等 meta 就绪（最多 500ms）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
-            // ── A) Function 代理：服务端读静态归档再流式返回，浏览器只走 Function 通路 ──
-            //    用 streamFetchJSON 边下边回报字节进度，进度条显示真实百分比与文件大小（不再卡顿/无大小）
+            // 取归档清单：优先走 Function 通路（?meta=1，无痕里稳），再回退静态清单
+            let manifest = null;
+            try {
+                const m = await this.fetchJSON('/api/archive?meta=1', 8000);
+                if (m && Array.isArray(m.parts) && m.parts.length) manifest = m;
+            } catch (e) { console.warn('Function 取清单失败，回退静态清单:', e.message); }
+            if (!manifest) {
+                try {
+                    const m = await this.fetchJSON('data/news-parts/manifest.json', 8000);
+                    if (m && Array.isArray(m.parts) && m.parts.length) manifest = m;
+                } catch (e) { console.warn('静态清单读取失败:', e.message); }
+            }
+            const expectedTotal = (manifest && manifest.total) || 0;
+            const partSizes = (manifest && Array.isArray(manifest.sizes)) ? manifest.sizes : null;
+            // 完整度阈值：分片/整文件加载后文章数需达到预期的 90% 才算成功；
+            // 否则视为「加载不完整」（无痕下大响应常被中断成几百篇），继续回退下一路径。
+            const enough = (n) => n >= Math.max(100, (expectedTotal || n) * 0.9);
+
+            // 通用：并行加载分片。fn(name, idx, onProgress) 返回该片文章数组；
+            // 进度按「未压缩字节数」(manifest.sizes) 聚合，故 gzip 不影响百分比与文件大小显示。
+            const loadShards = async (fn, retry, tag) => {
+                const parts = manifest.parts;
+                const total = parts.length;
+                const sizeOf = (i) => (partSizes && partSizes[i]) || 0;
+                const totalBytes = partSizes ? partSizes.reduce((a, b) => a + b, 0) : 0;
+                const partLoaded = new Array(total).fill(0);
+                const recompute = () => {
+                    let l = 0; for (let i = 0; i < total; i++) l += partLoaded[i];
+                    prog.archStarted = true; prog.archIsParts = true;
+                    prog.archLoaded = l; prog.archTotal = totalBytes || total; prog.archKnown = !!(totalBytes || total);
+                    emit();
+                };
+                const loadPart = (idx) => {
+                    const onProgress = (loaded) => { partLoaded[idx] = loaded; recompute(); };
+                    const once = () => fn(parts[idx], idx, onProgress);
+                    return (async () => {
+                        let lastErr;
+                        for (let attempt = 0; attempt < retry; attempt++) {
+                            try { const arr = await once(); partLoaded[idx] = sizeOf(idx); recompute(); return Array.isArray(arr) ? arr : (arr && arr.articles) || []; }
+                            catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 300 * (attempt + 1))); }
+                        }
+                        console.warn(`分片(${tag})加载失败（已重试${retry}次）:`, parts[idx], lastErr && lastErr.message);
+                        recompute();
+                        return [];
+                    })();
+                };
+                const results = await Promise.all(parts.map((_, i) => loadPart(i)));
+                return results.flat();
+            };
+
+            // ── A) Function 分片代理（首选，无痕里最稳）：归档拆小片、改走 Function 通路，
+            //    服务端已 gzip（每片线下行 ~300KB），前端并行加载 + 单片重试，稳定凑齐 8000 ──
+            try {
+                if (manifest && manifest.parts.length) {
+                    const articles = await loadShards(
+                        (name, idx, onProgress) => this.streamFetchJSON(
+                            `/api/archive?part=${encodeURIComponent(name)}`, FUNCTION_MS, onProgress,
+                            (manifest.sizes && manifest.sizes[idx]) || 0, true
+                        ),
+                        3, 'Function'
+                    );
+                    if (enough(articles.length)) {
+                        return { articles, updateTime: manifest.updateTime || '' };
+                    }
+                    console.warn(`Function 分片仅加载 ${articles.length}/${expectedTotal}，回退静态分片`);
+                }
+            } catch (e) { console.warn('Function 分片读取归档失败，回退静态分片:', e.message); }
+
+            // ── B) 静态分片：data/news-parts/ 并行加载，单片最多重试 2 次 ──
+            try {
+                if (manifest && manifest.parts.length) {
+                    const articles = await loadShards(
+                        (name, idx, onProgress) => this.streamFetchJSON(`data/news-parts/${name}`, PART_MS, onProgress, (manifest.sizes && manifest.sizes[idx]) || 0, true),
+                        2, '静态'
+                    );
+                    if (articles.length) {
+                        return { articles, updateTime: manifest.updateTime || '' };
+                    }
+                }
+            } catch (e) { console.warn('静态分片归档失败，回退整文件:', e.message); }
+
+            // ── C) 整文件兜底：Function 整包 / 静态整包，流式（带进度）失败再普通 fetch ──
             try {
                 const data = await this.streamFetchJSON('/api/archive', FUNCTION_MS, (loaded, total) => {
                     const effectiveTotal = total || expectedSize;
@@ -313,46 +396,12 @@ const API = {
                 if (data && Array.isArray(data.articles) && data.articles.length) {
                     return { articles: data.articles, updateTime: data.updateTime || '' };
                 }
-            } catch (e) { console.warn('Function 代理读取归档失败，回退分片:', e.message); }
-
-            // ── B) 分片归档：并行加载小文件，单片最多重试 3 次 ──
-            try {
-                const manifest = await this.fetchJSON('data/news-parts/manifest.json', 10000);
-                if (manifest && Array.isArray(manifest.parts) && manifest.parts.length) {
-                    const partUrls = manifest.parts.map(p => `data/news-parts/${p}`);
-                    const total = partUrls.length;
-                    let loadedCount = 0;
-                    const loadPart = async (url) => {
-                        let lastErr;
-                        for (let attempt = 0; attempt < 2; attempt++) {
-                            try {
-                                const arr = await this.fetchJSON(url, PART_MS);
-                                const list = Array.isArray(arr) ? arr : (arr && arr.articles) || [];
-                                return list;
-                            } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 400 * (attempt + 1))); }
-                        }
-                        console.warn('分片加载失败（已重试3次）:', url, lastErr && lastErr.message);
-                        return [];
-                    };
-                    const results = await Promise.all(partUrls.map(async (url) => {
-                        const list = await loadPart(url);
-                        loadedCount++;
-                        prog.archStarted = true; prog.archIsParts = true; prog.archLoaded = loadedCount; prog.archTotal = total; prog.archKnown = true;
-                        prog.merging = false; emit();
-                        return list;
-                    }));
-                    const articles = results.flat();
-                    if (articles.length) {
-                        return { articles, updateTime: manifest.updateTime || '' };
-                    }
-                }
-            } catch (e) { console.warn('分片归档清单读取失败，回退整文件:', e.message); }
-
-            // ── C) 整文件兜底：流式（带进度）失败则普通 fetch ──
+            } catch (e) { console.warn('Function 整包读取失败，回退静态整包:', e.message); }
             try {
                 const data = await this.streamFetchJSON('data/news.json', WHOLE_MS, (loaded, total) => {
                     const effectiveTotal = total || expectedSize;
-                    prog.archStarted = true; prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
+                    prog.archStarted = true; prog.archIsParts = false;
+                    prog.archLoaded = loaded; prog.archTotal = effectiveTotal; prog.archKnown = !!effectiveTotal; emit();
                 }, expectedSize);
                 if (data && Array.isArray(data.articles)) return { articles: data.articles, updateTime: data.updateTime || '' };
             } catch (e) { console.warn('流式读取历史语料失败，回退普通 fetch:', e.message); }
