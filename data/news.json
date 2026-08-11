@@ -1,7 +1,491 @@
 {
-  "updateTime": "2026-08-11T14:58:30.657Z",
+  "updateTime": "2026-08-11T16:05:47.055Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "A Workflow Engine That Fits On Three Dollar Hosting",
+      "description": "Most automation stories start with a platform and end with a bill. The version worth telling starts smaller. A form submission has to reach the CRM. An order needs a fulfillment call and a confirmation text. A daily report gets assembled by hand every morning because nobody ever wired it up. That glue work is the same in every business, and it does not need a cluster. It needs somewhere to live that you control. Workflow Chain Engine is the open source engine I maintain for exactly that job. You draw a flow in the browser, it calls your APIs, branches on the answers, loops over lists, and records every run. It is one PHP application with a single SQLite file, MIT licensed, and it is at home on a three dollar shared host, a VPS, or a Docker container. Cost is the obvious reason, and it is not the interesting one. The interesting one is that automation touches your credentials. Every flow you build holds API keys for your CRM, your payment provider, your chat tool. When those keys live inside somebody else's platform, your blast radius is their incident report. Running the engine yourself puts the workflows, the credentials and the run history in one folder you can back up by copying it. The editor library ships inside the project, so the whole tool works on your server with nothing loaded from anyone else's. There is no build step and no dependency install, which is why it fits on hosting you might otherwise be embarrassed to admit you use. Integration works the way the web already works. Any service with an HTTP API is one node away: fill in the URL, the fields and the headers, and the flow talks to it. There are six node types, and the restraint is the point. HTTP Request does GET, form POST or JSON POST to any URL, with per node headers for API keys and a capture feature that pulls values out of the response into variables. Write capture total={data.total} to walk an exact path, or status={status} to find the first matching field anywhere in the response. If Condition branches on a variable with equals, greater, less, contains and length checks, and it understands numbers when both sides are numeric. Switch matches one variable against any number of cases, each with its own path plus a default, so an inbound order type fans out to the right handler. Set Variable assigns a value and resolves placeholders inside it, which makes it a string builder as well. For Each Loop runs a chain of nodes once per item in a list, either a captured JSON array or comma separated text, with loopItem and loopIndex available inside the body. Success End and Fail End stop the run with a status and a message that resolves variables too, so the caller gets back \"Processed Acme, total 42\" instead of a bare acknowledgement. Data moves through one flat pool. Each workflow declares its variables by name, the trigger fills them at the start, any node field can reference them, HTTP nodes capture responses back into them, and the run history shows their final values. One visible pool per run is what keeps a branching flow readable a month later. A flow can start four ways. Every workflow gets its own webhook URL secured by its own long random key, so a form, a store or a payment provider can post straight into it and get the run's real result back. Your own code can trigger a run with one authenticated POST, and a listing endpoint returns every workflow with its variables so other systems can discover them. Schedules handle the every X minutes case, through the Docker image's scheduler or a single crontab line on ordinary hosting. Run Now is a button in the admin with an input box per variable, which is how you test while building. Then there is the part that decides whether you keep using a tool. Every run is recorded with its trigger, status, duration and step count, plus a step by step log. The HTTP node logs the URL, the response status and an excerpt of the body. The condition node logs the comparison it made and which way it went. The loop logs how many items it walked. When a flow misbehaves overnight, the run history tells you which step did what with which data, and the fix is usually obvious on one read. Loops are safe by construction. Every run has a step budget, 500 node executions by default and adjustable, and a run that reaches it stops itself with a clear error naming the problem. That single rule means you can wire a condition back to an earlier node for repeat until behavior without worrying that you just built something that never ends. The best first workflow is boring and already exists as a habit. Pick the thing somebody on your team does every morning, the copy from one tab into another, and wire it: a webhook or a schedule at the front, one HTTP node, one condition, an end node with a message that says what happened. Watch it run, read the log, then add the second branch. Requirements are PHP 8.1 or newer with pdo_sqlite and curl. Copy the sample config, set your API key and admin password, and either run PHP's built in server locally, docker compose up, or upload it and point a docroot at the public folder. The source is on GitHub under MIT, and the full documentation lives with the project.",
+      "url": "https://dev.to/paulcrinigan/a-workflow-engine-that-fits-on-three-dollar-hosting-171p",
+      "time": "2026-08-11T16:04:03.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "A Little Briny - A Multi-Agent Writing Experiment",
+      "description": "All of the text below the dividing line here was generated by a group of AI agents, using the \"Discussion\" tool I described here. This particular story used six personas: Joran, Ismere, Nico, Faye, Thomas, and Mem. Mem in particular had an impact I wasn't expecting: it was intended to push the story more towards an AI-generated tone, but I think it wound up having the opposite effect. In an attempt to trim excess words for efficiency I think Mem wound up also trimming some of the flourishes that signal AI generated text. Just for fun I've been running this text through several \"AI Detectors\"; the results are all over the map (perhaps unsurprisingly). I'll include both the details of the personas and some of the AI detection results in future posts (along with the subsequent chapters of the story), but for now here's the beginning of \"A Little Briny\": The ship was called Mawmother, and it had opinions about the weather that it kept mostly to itself. It distrusted easterly rain in particular, for reasons no one aboard had ever gotten it to explain — the hull would go rigid at the first easterly drop, plates locking edge to edge like a jaw setting, and stay that way until the wind turned. During eclipses it held itself so still that condensation stopped forming on the inner walls, as if the whole vessel were holding its breath against a threat that, so far, had always declined to arrive. Once, off the Sull Banks, it had wept clear resin for six straight hours from the seams of the lower deck, over a horizon that stayed flat and empty the entire time, and nobody had ever found out what it thought it saw out there, and nobody, at this point, expected to. Corl felt the opinions first, the way he always did, as a tightening in the galley wall behind the stove — the bone-white chitin plate flexing inward like a held breath, then easing back out. He'd been aboard four years and had learned to read Mawmother's moods the way other cooks read barometers, except barometers didn't sulk, and Mawmother sulked constantly, magnificently, for reasons it never explained. \"She's tensing again,\" he said, to no one, and cracked three gullfish eggs into a bowl. Ordinary eggs. He checked, these days. He always checked. He had a whole private taxonomy of wrongness by now — eggs that hummed faintly against the china; eggs with two yolks arranged too symmetrically, like a compound eye watching him watch it; eggs that weighed exactly what an egg should weigh but felt, in his palm, a few degrees colder than his own hand, as if something in there were actively declining to be warmed by him. These three were unremarkable. He cracked them anyway with the particular care of a man defusing something that had never yet gone off, and might, someday, simply to make a point. The corridor between the galley and the sail-deck had not existed in this configuration three weeks ago, and still seemed to be deciding on its own dimensions. The walls here breathed more visibly than elsewhere on the ship — a slow tidal push-and-pull along seams of pink cartilage-metal — and Corl, passing through, felt the plates nearest him flex very slightly toward his shoulder, the way a strange dog leans in to be sure of a smell before deciding whether to bite. It had never bitten. It had also never fully decided. Above, in what used to be the sail-deck and was now — since the molting — something closer to a rib-vaulted greenhouse full of glowing black-glass veins, Captain Voss Ejira stood with a clipboard, frowning at a wall that had not existed a month ago. \"This is a load-bearing memory,\" Voss said, tapping the wall with his pen. \"It wasn't here during the last inspection. I have no form for a load-bearing memory.\" This was not, strictly, true. Voss had a form for almost everything by now, filed in a strongbox he kept bolted to a floor that occasionally became a ceiling. He had, in his eleven years aboard, successfully filed a Form 2 Hazard Notice for a sea that had lied about its own depth on three separate charts, and a Form 6 Personnel Anomaly Report for a deckhand who had aged backward for the length of a single voyage and then very apologetically aged forward again once they made port. Both forms had been accepted, processed, and stamped by an authority Voss had never met and could not name, which he found, on the whole, less troubling than the ship simply absorbing his paperwork into its walls the way it had done with the Structural Variance Report three weeks prior. At least the sea and the deckhand had had the decency to be filed somewhere. Mox drifted past him without appearing to move, the way Mox always did, four long limbs folded against a body like a paper lantern lit from within by something the color of an old bruise. The light in Mox did not flicker in time with anything in the room — not the swaying of the deck, not Voss's pulse, not the tide — except, if you watched long enough, in time with something far below, some slow systolic beat that ran through the ship itself. No one had ever mentioned this to Mox's face. It seemed, somehow, like a private matter. \"It has always been here,\" Mox said. \"You are only meeting it now.\" \"That's not how walls work.\" \"It is how this wall works.\" Voss made a note. He made notes about everything. Three weeks ago, when Mawmother had shed its old hull in the night — silently, without asking anyone's permission, the way it did most things — and reassembled itself into this new, spinier, more anxious shape, Voss had filed a Form 4 Structural Variance Report, in triplicate, and submitted it to the ship itself by sliding it into a seam between two plates, where it had been quietly absorbed and never seen again. \"I just want to know why,\" he said now, to Mox, to the wall, to the ceiling that occasionally exhaled. \"A ship doesn't grow forty new feet of hull for no reason. Something frightened her.\" \"Yes,\" Mox agreed. \"Do you know what?\" \"I know that I do not know what,\" Mox said, which Voss had learned, over two years of working alongside a creature whose native language apparently had no separate word for guess and fact, was the closest thing to a real answer he was going to get. Below them, in the galley, Corl whisked his eggs and did not think about eggs, a skill he had gotten uncomfortably good at. Ilse Tarrow came down the companionway counting her steps, and stopped on an odd number, and went back up two, and came down again until she landed on fourteen, which was acceptable. She'd been doing this since Kelmouth Strait, three years back, and had stopped trying to explain it to people who asked, because the explanation (\"even numbers invite attention from above\") made her sound unwell, and the alternative explanation (\"I have simply noticed a pattern that holds up under observation, thank you\") made her sound insufferable, and she had decided long ago that insufferable was the lesser evil. \"Fourteen,\" she said, satisfied, and ducked into the galley, where Corl was staring into a bowl of eggs like they'd personally wronged him. \"You're doing the face,\" she said. \"What face.\" \"The egg face.\" \"I don't have an egg face.\" \"You've had an egg face for three years, Corl. It's a very specific face. It's the face of a man reviewing his life choices via breakfast.\" Corl set the whisk down with the exaggerated calm of someone who would very much like to throw it. \"There is nothing wrong with these eggs.\" \"I didn't say there was.\" Ilse leaned against the doorframe, which shifted slightly under her weight — everything on the new Mawmother shifted slightly, as if the ship were perpetually deciding whether it liked where you'd put your feet. \"I'm just saying, three gulls flew backward past the porthole this morning, and that means someone on this boat is being watched by something with feathers, and you get the egg face every single morning, and I am very good at noticing patterns.\" \"It's superstition.\" \"It's observation,\" Ilse said, with the wounded dignity of a woman who had built an entire private religion out of refusing to call it superstition. \"There's a difference.\" \"What's the difference?\" \"Superstition is when you're wrong.\" Corl didn't answer that. He poured the eggs into the pan instead, and the galley filled with a smell that was, Ilse noted, suspiciously close to the smell of something burning that hadn't been lit yet. They caught the net at dusk, three miles off the Vane Shoals, in water so still it looked lacquered. It came up wrong. Nets came up heavy or light, thrashing or dead — this one came up quiet, and quiet was a category none of them had a word for until it happened. Voss and Mox hauled the winch together, the crank-teeth of it grinding against something that wasn't fish-shaped at all, and when the net finally broke the surface it held a single object: a ship's log, leather-bound, swollen with water that should have destroyed it decades ago and hadn't. Mox went very still — stiller than usual, which for Mox was its own kind of alarm. \"That's not from any wreck I know,\" Voss said, turning it over in gloved hands. The cover was blank. No name, no date, no maker's mark, only a faint indentation where a title had once been pressed and then, deliberately, sanded away. \"It smells wrong,\" Corl said, from the rail, where he'd come up to see what all the quiet was about. \"Not sea-wrong. Wrong like a room that's been aired out on purpose. Like someone tidied up after a memory.\" \"That is a strange thing to say,\" Voss said. \"I have a nose for it,\" Corl said, which was true, and did not explain why, which was also true. Mox reached out one long finger and touched the log's spine, and something under the deck — deep under, in whatever Mawmother now used for a heart — pulsed once, hard, like a knock from the inside. \"She recognizes it,\" Mox said quietly. \"Recognizes what?\" Voss asked. \"It's a book.\" \"It is a book,\" Mox agreed, \"the way a tooth is a smile.\" Nobody had a good answer to that, so they carried the log below, and did not open it that night, and Corl went back to his ruined eggs, and Ilse counted the rivets on the galley ceiling twice to be sure they were an acceptable number, and somewhere behind them, in the darkening water, something enormous and patient continued not to be seen.",
+      "url": "https://dev.to/cberube_5/a-little-briny-a-multi-agent-writing-experiment-4c8h",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Beyond Syntax: Why Design Thinking is the Secret Sauce of Great Frontend Engineering",
+      "description": "We often focus on the \"how\" of coding—which framework to use, how to optimize bundle size, or the latest CSS trick. But, in my experience at the intersection of architecture and software engineering, the real power lies in the \"why.\" Design thinking isn't just for UX designers; it’s a critical tool for frontend engineers. It’s the shift from \"How can I build this feature?\" to \"How does this feature serve the user’s journey within our digital ecosystem?\" As an architect, I learned that a building is never just a collection of walls. It’s a solution to human movement, light, and purpose. Applying this to Frontend: Components as Spaces: When I build a component in React, I think of it as a defined space. Is it breathable? Does it have a clear purpose? Does it guide the user efficiently? Empathy-Driven Development: Before typing a single line of code, I ask: \"How does this interaction feel?\" Great engineering is invisible—it just works seamlessly. Prototype Before Coding: Don't jump into IDE. Sketch the logic. How does the data flow map to the user's mental model? Component Boundaries: Think of your code structure like a building's floor plan. Are your concerns separated, or is the layout chaotic? User-Centric Refactoring: When refactoring, don't just fix bugs. Look at the code and ask: \"Is this serving the user's speed and clarity, or just my ego?\" When you treat your codebase with the same intentionality as a designer or an architect, your code becomes more than just lines of text. It becomes a reliable, scalable, and human-centric experience. What’s your approach? If you're exploring the blend of architecture, design, and frontend development, let’s connect! masoumeh-ashrafi.ir",
+      "url": "https://dev.to/mahtab_ashrafi_645b08e6c4/beyond-syntax-why-design-thinking-is-the-secret-sauce-of-great-frontend-engineering-51hc",
+      "time": "2026-08-11T15:59:51.000Z",
+      "tags": [
+        "软件应用",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Nine ways to talk to a local model",
+      "description": "A nine-tool survey of local-model interfaces on one GPU: what worked, what silently failed, and Nine pieces of software for talking to a local model went through this machine over about two The spread in outcomes was enormous, and almost none of it was about the model. The same weights Here is what each one was actually good at. Tool Good at The number that mattered Ollama the default, broadly reliable 32.9 t/s gen on a 30B MoE llama.cpp fastest, once tuned 27.1 t/s vs Ollama's 23.4 LM Studio document extraction to file 10 rows, exact match, no invented values little-coder small-model coding harness 8/8 in 2.1 min, then a version bump broke it Unsloth Studio fastest single-file result unusable past a 4096-token ceiling Goose agent framework, right idea 30% GPU vs 98%, one setting Claude Code as client n/a all three connection methods fail Odysseus the most polished interface 0/8, only one of three files actually saved Continue.dev autocomplete, nothing else does it 355MB free at 32K, no room for anything else The default answer, and it stayed the default. It runs a 30B mixture-of-experts model at 32.9 Two things about it are worth knowing before you trust it. Its desktop application stores a overrides the environment variable you set, Neither is a defect exactly. Both are the kind of thing you only learn by being caught by them. More: ollama.com For one specific job, a 36B mixture-of-experts model at 32K context, llama.cpp beats Ollama by That margin isn't free. It came from three separate tuning discoveries: disabling memory-mapped Untuned, the same path runs at 13 tokens/sec, less than half. The default configuration of the llama.cpp's server also has the most complete tool-calling story of anything tested here. Given a It also has server-side built-in tools, off by default, with the server itself warning against More: github.com/ggml-org/llama.cpp Good at exactly one thing this project needed: read some documents, extract structured data, write Getting there took three attempts. The first two failed with filesystem permission errors even Whether the model requested bad relative paths or the permission scope failed to resolve them was More: lmstudio.ai A thin harness tuned for small models, giving them real file-writing tools rather than asking them Then a version bump broke it. With its default model it began emitting raw XML that nothing The instructive part is the diagnosis, which was wrong the first time. The failure was recorded as Adjacency isn't causation, and a warning that appears next to a failure is still just a warning More: github.com/itayinbarr/little-coder The fastest single-file result of anything tested: ten seconds. Its context window control is broken on Windows. The effective ceiling is 4096 tokens regardless It also gets flagged as malware by the antivirus on this machine, which is a false positive, and More: unsloth.ai Goose works here, with one hard rule: use its Ollama provider, never its built-in llama.cpp. The built-in path manages roughly 30% GPU and 25% CPU utilisation on Windows, a broken offload Same tool, same model, same box. One configuration choice, and the difference is the entire More: github.com/block/goose The obvious idea, and the one people ask about most: point the agentic coding tool you already use Three connection methods were tested. Setting the API base URL directly, which produces no output All three fail, and they fail for the same reason: local models do not parse Claude Code's That's not a configuration problem, and no amount of trying a fourth More: claude.com/product/claude-code The most polished thing tested, and the worst result. It scored 0 out of 8 on the same benchmark. The run climbed from 0.74 to 10.19 tokens/sec, then Two things compounded it. Its interface exposes no control for disabling thinking mode, which this only one of three files had actually been saved. The transcript showed content that was A chat transcript is a record of what a model said, not what a system did, and those two things It's also structurally unable to do what this project needs: its tools are a fixed set of built-in More: github.com/odysseus-dev/odysseus An editor extension, evaluated for autocomplete rather than chat, because autocomplete is the one A 4B model completes a fill-in-the-middle hole in 209 to 252 milliseconds at 127 tokens/sec, The measurement that mattered was not speed, though. With the autocomplete model warm at 32K There is no room You can have interactive coding with autocomplete, or a background delegation More: continue.dev All of this was supposed to be settled by a formal benchmark. It was written into the handover The plan even predicted its own casualty: Unsloth will fail this, document it. It was closed without ever being run. Not from lack of time. By the time it came up for scheduling, its actual question, which runtime A generic five-way bake-off would have re-measured memory-spill behaviour already understood, at a One footnote, found while checking the above against the original plan rather than against our own A benchmark nobody ran is a low-stakes thing to miscount. It's the same move that makes a The rule that came out of it is narrow. Benchmark a use case, never a category. If a new runtime that, and if the answer is already visible in Nine tools. The differences that mattered were reliability, offload behaviour, honesty about what Originally published at thekilted.dev/nine-ways-to-talk-to-a-local-model.",
+      "url": "https://dev.to/thekilteddev/nine-ways-to-talk-to-a-local-model-ocj",
+      "time": "2026-08-11T15:56:51.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "比亚迪闪充开抢10万级市场",
+      "description": "比亚迪把闪充车型的起售价压到了10.99万元。 8月11日晚，比亚迪2027款海豹06上市，共推出EV和DM-i两套动力、12款车型，售价9.99万—15.59万元。其中，DM-i版9.99万元起，EV版10.99万元起。EV版搭载第二代刀片电池和闪充平台，最快5分钟可将电量从10%充至70%，最高续航达到630公里。 这意味着，比亚迪闪充开始大举进军10万元级主流家轿。 高配海豹06还加入了激光雷达辅助驾驶和云辇-C。过去更多用于中高端车型制造差异的补能、智驾和底盘配置，正在加速进入10万—15万元市场。 比亚迪选择此时下放闪充，与纯电市场正在发生的结构变化有关。 乘联分会2026年7月数据显示，7月B级电动车批发销量达到29.9万辆，同比增长35%，占纯电动车批发销量的31%；A00级电动车销量则同比下降50%，A级电动车下降2.1%。纯电市场的增长不再主要依靠低价微型车，需求正向空间更大、更接近家庭主力用车的产品集中。 这也解释了为什么10万—15万元会成为新的争夺中心。这个价格带既有最大的家庭用户基本盘，又对价格高度敏感。过去车企主要用降价、加大电池和增加舒适配置争夺消费者，现在快充、辅助驾驶和底盘技术也被拉进了比较表。 乘联分会还提到，新势力纯电动车在10万—15万元价格带的销量占比大幅增长。小鹏、零跑、吉利等品牌已经把更长续航和智能驾驶带到这一市场。海豹06加入后，比亚迪提供的差异不再只是成本更低，而是用闪充补上纯电车最容易劝退家庭用户的一环。 对家庭用户来说，续航数字继续增加的吸引力正在减弱，补能时间则直接决定一辆纯电车能否承担跨城和长途出行。继续增加电池容量会带来成本和车重，提升充电速度则提供了另一条路径。 这会抬高10万级纯电车的竞争成本。车企不仅要控制整车价格，还要承担高压平台、电池热管理、充电设备和辅助驾驶硬件的投入。对于供应链整合能力较弱的品牌，要么压缩利润跟进，要么在配置上留下明显差距。价格战并没有因此消失，它开始更多地通过配置和技术成本表现出来。 比亚迪也需要这款车守住国内主流市场。乘联分会口径下，比亚迪7月狭义乘用车国内零售约22.3万辆，同比下降18.6%。这一降幅略好于大盘，但说明比亚迪同样面对需求偏弱和竞品增多的压力。把闪充放进海豹06，比单纯再降几千元更容易重新建立产品差异。 海豹06同时保留EV和DM-i两条产品线。9.99万元起的DM-i继续覆盖没有稳定充电条件、看重长途出行的用户；10.99万元起的EV则进入当前表现更强的纯电市场。两种动力的起售价只差1万元，比亚迪把选择留给消费者，也减少了押注单一路线带来的风险。 真正的考验仍然在供应端。 比亚迪方面对华尔街见闻表示，第二代刀片电池目前仍处于产能爬坡阶段。闪充下探到10.99万元后，海豹06面对的是一个规模远大于中高端市场的用户群。电池产量如果跟不上，发布会上的技术优势就难以转化为持续交付。 补能网络也决定了闪充的实际价值。截至6月底，比亚迪在全国已经建成7018座闪充站，覆盖325座城市。 海豹06如果它能够稳定走量，10万—15万元纯电车的门槛将被整体抬高：快充会像长续航一样，从少数车型的卖点变成主流产品的必选项。 届时，行业比拼的将不只是价格。谁能以更低的成本生产电池、铺设充电网络，并持续交付，谁才有能力留在10万级市场的牌桌上。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779205",
+      "time": "2026-08-11T15:55:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车",
+        "测评/新品"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "中东航运风险再升级：美国开火拦截“突围”商船，红海袭船致3人死亡",
+      "description": "美国对伊朗的海上封锁执法再度升级，中东海域航运风险同步升温。 据新华社，美国《华尔街日报》8月11日援引一名美国官员的话报道称，美军当日向一艘悬挂巴拿马国旗、与伊朗有关的船只开火。报道称，这名官员表示，该船“试图突破美国对伊朗港口的封锁”，一架美国军用直升机向该船船舵开火。此后，该船“似乎试图将船员转移到另一艘民用船只上”。报道称，目前该事件尚无人员伤亡报告。 与此同时，红海及曼德海峡再传商船遇袭，至少3名船员死亡。 就在海上冲突升级之际，市场却不断传出美伊谈判取得进展的信号。巴基斯坦国防部长称，美伊双方“接近达成某种安排”，消息推动油价快速回落。但美军持续强化封锁执法，显示谈判进展与地面局势仍存在明显落差。 中东航运命脉一日两险：美军开火拦截突围船只，胡塞红海再酿伤亡 据《华尔街日报》报道，巴拿马籍集装箱船“Vela Nova”周二在阿曼湾向西航行，距离巴基斯坦海岸约71海里。美国官员称，在船员无视美方警告后，美军直升机向该船船舵开火。 海事安全公司Vanguard在初步报告中称，船体遭弹药击中后起火，随后火势被扑灭。船上17名船员均确认安全，事发后部分船员据报试图转移至另一艘民用船只。 与此同时，红海及曼德海峡航运安全形势进一步恶化。 也门国际公认政府称，胡塞武装袭击了一艘途经曼德海峡的商船，造成至少3名船员死亡。英国海事贸易行动组织（UKMTO）证实，一艘货船在也门莫哈港附近遭不明弹药击中。 海事安全公司Ambrey表示，遇袭船只为坦桑尼亚籍“Tihamah”号，当时正从阿曼萨拉拉港驶往吉布提，在也门佩里姆岛东北约3.3海里的锚地附近遭袭，死者包括2名巴基斯坦人和1名印度尼西亚人。 值得注意的是，该船并非沙特所有或运营，意味着胡塞武装的袭击目标可能正扩大至更广泛的外国商船。 谈判释放乐观信号，封锁行动却未松动 就在上述事件发生之际，美伊关系又传出积极信号。 据报道，巴基斯坦国防部长Khawaja Asif当地时间8月11日在伊斯兰堡表示，过去“两三天释放的信号显示，我们距离达成某种安排已经很近”。在被问及美伊协议最新进展时，他表示，“事态正朝着有利于和平的方向发展”。 与此同时，据半官方的法尔斯通讯社报道，巴基斯坦内政部长Mohsin Naqvi将在数小时内抵达德黑兰，与伊朗内政部长举行会谈。受相关消息提振，油价一度明显回落。 在外交斡旋与军事行动同时推进的背景下，中东航运安全及油市对地缘风险的定价仍面临较大不确定性。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779201",
+      "time": "2026-08-11T15:54:47.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Are we still reading code?",
+      "description": "People are starting to coin the term ADLC or Agentic Development Lifecycle. A lot of this seems to be combining two things: Day-to-day software engineering has completely changed from a process perspective Bottlenecks in the traditional SDLC are starting to show I don't think we need yet another acronym, but let's talk about how things are changing in general and what some of the bottlenecks are. One of the overarching changes, leading to an explosion in lines of code, merge requests and more, is that the cost of software engineering has dramatically decreased. So much so that all of us can now do the job of multiple engineers without hiring them. As part of this change, our daily workflows have changed completely. We no longer open an IDE and work on a single task, start to finish. Instead, our roles have become a lot more exploratory and, quite frankly, fun. My workflow, for example, has shifted towards opening multiple chat sessions, often separate threads on the same topic. I get to spar like some sort of boxer with AI over a few variations of how I've been looking at the same problem. After a while, I'll start to narrow that down to one or two threads containing the desired architecture or strategy to solve the goal. From that point, I'm running this smaller set of agents end-to-end with validation criteria until a passing merge request is opened for each. Running this same process in parallel across 3-4 topics leads to 8-10 merge requests within a day. And because this process has become so easy, these merge requests are often meaty. Not just one-liners. Previously, you'd dedicate your day to working on a particular problem over a longer horizon, whereas now the amount of output (whether it's valuable output or not) has dramatically increased. If you frame software engineering as problem solving, where most problems contain local minima, not absolute minima (a metaphor about gradient descent), then the really fun part is being able to now explore many different paths that you previously would not have been able to take. This means having more possible answers to the same question and being able to choose the answers you feel best solve the problem at hand. Unsurprisingly, the largest implication is that more code than ever is being generated. I used to wince at the sight of a merge request with tens of thousands of lines of code (both removed and added), and now it's becoming more and more common. The honest truth, whether we like it or not, is that this benefit of massive parallelisation means letting go of reading the code. At least reading all of it. And if you don't believe that point, let's talk about the practicalities of where software engineering is going, whether we like it or not. The overwhelming wave behind AI and the force of these frontier labs are turning the literal act of writing code into a cheap commodity and less of an \"artisanal form of work\". As more and more lines of code get written, either with our oversight or without, the blockers are our attention spans and working hours. Fundamentally, we've built parts of the SDLC with humans in the loop: reviewing code, deploying code, observing code, fixing its problems and iterating (excluding new features and other product-management-related tasks). At the scale at which humans used to do this BC (Before ChatGPT), this was scalable. But as we move towards this more shotgun-style exploration to find the best solutions to problems, it needs to change. To continue the analogy around graph functions, we've become really good at the first part... We can come up with ideas to solve a problem, explore that problem space using coding agents and AI, and post some prospective solutions on GitHub. But what happens next? How do we continue to optimise towards a local minimum for a problem we're solving? Generating code is not enough. My first post dealt with the review problem and how to build a quick code review bot with Tilde, which we now use internally to review all our merge requests with custom prompts and skills. That post was quick and dirty, so I do intend to follow it up with a more detailed dissection. But this is the start. The idea is that a well-structured code review agent should help deal with the first constraint: when thousands of lines of code are generated daily, how can you review the work to determine what should make it into production, understand the risks and multiplex the feedback loop to your coding agents so they can refine their work? The next post, coming out later this week, covers what happens next. Once you're in production, how do you respond to performance issues and bugs in code you didn't read or write? We'll focus on building an agent that is wired to your observability and error-reporting platforms and can respond in real time. In later parts of the series, we'll uncover a few more interesting patterns we're using at Tilde for very narrow wedges and features in the code-generation phase. These will mainly focus on how to build narrow, 24/7 coding agents designed for specific features that follow a repeatable pattern. Personally, as someone who's worked as a software engineer for many years, I feel the pain of an industry changing beneath me and the concern that all my professional habits of yesterday are quickly becoming irrelevant. But if I reflect on the reason I originally decided to write code, to build things, I've never felt more empowered. It's time to get back to building.",
+      "url": "https://dev.to/solsol/are-we-still-reading-code-172o",
+      "time": "2026-08-11T15:46:51.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "亚洲首个！我国柔直海上风电项目发电量破百亿千瓦时",
+      "description": "IT之家 8 月 11 日消息，据央视新闻今日报道，亚洲首个采用柔性直流输电技术送出的海上风电项目 —— 三峡新能源江苏如东 800 兆瓦海上风电项目累计发电量突破 100 亿千瓦时，为我国大容量、远距离海上风电柔性直流输电技术的规模化应用提供了实践验证。 据介绍，项目位于江苏如东黄沙洋海域，总装机容量 800 兆瓦，配套建设亚洲首座海上柔性直流换流站，于 2021 年全容量并网投产。 IT之家注：柔性直流输电可形象比喻为海上风电外送的“智能输电主动脉”，既能承载大功率电能进行远距离传输，又可主动平抑风电间歇性出力波动，保障电能稳定接入电网。截至目前，项目已安全稳定运行超 1600 天，设备可利用率达 99.5%。 据测算，100 亿千瓦时清洁电能，可满足约 400 万户家庭一年的生活用电需求，相当于节约标准煤 300 万吨、减少二氧化碳排放 740 万吨。",
+      "url": "https://www.ithome.com/0/988/542.htm",
+      "time": "2026-08-11T15:44:50.000Z",
+      "tags": [
+        "新能源/电动车",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "849 元科睿 27 英寸 2K 240Hz 显示器 X7Q 发售，峰值亮度 400nits",
+      "description": "IT之家 8 月 11 日消息，KOORUI 科睿 X7Q 电竞显示器已在京东开售，首发价 849 元。 京东 KOORUI 科睿 27 英寸 2K 240Hz 显示器 FastIPS 电竞高刷 1ms HDR400 硬件低蓝光 10Bit 笔记本外接电脑游戏屏幕 X7Q849 元直达链接 这款显示器定位电竞高刷产品，采用 Fast IPS 面板，拥有 2560*1440 分辨率、240Hz 刷新率，支持 GTG 1ms 瞬时响应，内置自研 DIC² 动态模糊消除技术，采用同步插黑帧算法，可有效消除运动模糊和拖影，提升高速移动画面清晰度。 此外，这款显示器经过专业色彩调校，覆盖 92% DCI-P3 色域、99% sRGB 色域，支持 10Bit 色深及 10.7 亿色（IT之家注：8Bit+FRC ），平均 ΔE≤2。 它还通过 VESA DisplayHDR 400 认证，峰值亮度可达 400nits；支持硬件低蓝光，从硬件层面有效过滤有害高能短波蓝光；支持 Adaptive Sync / FreeSync，兼容 G-Sync 技术。 针对不同游戏类型，科睿提供了职业游戏情景预设：包含 FPS 暗部均衡、RPG 色彩均衡、RCG 色彩增益三种模式，分别对应不同类型游戏推荐，此外还内置游戏准星瞄准器、游戏计时器等辅助功能，帮助玩家快速锁定敌人、掌控游戏时间，同时，解决画面撕裂、卡顿问题。 京东 KOORUI 科睿 27 英寸 2K240Hz 显示器 FastIPS 电竞高刷 1ms HDR400 硬件低蓝光 10Bit 笔记本外接电脑游戏屏幕 X7Q 849 元 直达链接",
+      "url": "https://www.ithome.com/0/988/541.htm",
+      "time": "2026-08-11T15:42:32.000Z",
+      "tags": [
+        "游戏",
+        "电脑硬件",
+        "互联网"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Why I Built a Wedding Website Builder Instead of Using Existing Platforms",
+      "description": "The Moment I Realized We Needed Something Different (WedPlanner) My cousin called me three weeks before her wedding. She was in tears — not the happy kind. Her wedding website on The Knot had been flagged for \"suspicious activity\" because she'd embedded a custom Google Maps widget showing the venue location with a hand-drawn route from the church. The support team told her it would take 5-7 business days to review. She had 200 guests checking that site daily for directions. That was the moment I stopped treating wedding websites as a solved problem. I'm a full-stack developer. I've built SaaS products, e-commerce platforms, and real-time dashboards. But when I looked at the wedding website space, I saw something that genuinely surprised me: a market dominated by platforms that treat couples as content consumers rather than site owners. This is the story of why I built a wedding website builder from scratch — and why, after six months of development and dozens of real weddings later, I'd do it again. Before writing a single line of code, I spent two weeks auditing every major platform. I signed up for free trials, built test sites, read through terms of service, and documented what each platform actually delivered versus what it promised. The Knot is the biggest name in wedding planning. Their website builder comes bundled with planning tools, registry, and vendor marketplace. On the surface, it looks like a complete solution — but under the hood, the cracks show quickly. Template lock-in is real. Once you pick a template, you can't switch without rebuilding your entire site. My cousin learned this the hard way when she wanted to change her color scheme two months in. Your site isn't really yours. The Knot owns the domain, hosting, and content. They sunset sites after a year unless you pay for premium. Vendor ads are everywhere. Even premium plans push \"recommended vendors\" into your dashboard. Your wedding website becomes a lead generation funnel for their marketplace. No custom code. You can't add a custom font, a JavaScript animation, or even a simple CSS override. Zola: Beautiful, But It's a Registry First Zola's websites are genuinely well-designed — modern templates, clean UI, smooth onboarding. But Zola is a registry company that happens to offer websites, not the other way around. Registry-first architecture. Every design decision pushes guests toward the registry. The website feels like a wrapper around a shopping experience. No developer access. No API, no custom code injection, no webhooks. If you want to integrate with anything outside Zola's ecosystem, you can't. Limited analytics. Basic page view counts only — no traffic sources, no click tracking, no RSVP conversion data. Squarespace and Wix: Generalists in a Specialist's World Squarespace and Wix are powerful general-purpose builders with wedding templates, custom domains, and SEO tools. But they're not wedding platforms. Building a wedding website on Squarespace means you're on your own for RSVP management, guest list tracking, registry integration, meal preference collection, and plus-one logic. You end up stitching together five different tools and hoping guests can navigate the result — at $16-45/month. WithJoy deserves credit — genuinely free, solid feature set, no ads. Their photo-sharing feature is clever. But the customization ceiling is low: no custom code, no API, limited design flexibility. If your vision fits their templates, great. If not, you're stuck. WordPress with a wedding theme gives complete control — custom code, plugins, full SEO, you own everything. But it's overkill: you're managing hosting, SSL, plugin updates, and security patches for a site that lives 12-18 months. Wedding-specific plugins are often abandoned. Every plugin adds a compatibility risk you don't want to debug the week before a wedding. After two weeks of research, the pattern was unmistakable: PlatformCustomizationWedding FeaturesOwnershipDeveloper AccessCost The KnotLowHighNoNoFree-$50/yr Wedding-specific platforms give you features but take away control. General-purpose platforms give you control but leave you to build wedding features from scratch. Nobody was offering both. That was the gap — and as a developer, I couldn't un-see it. About. This is the question every developer faces: Why not just use what's already out there? I made a list of every reason not to build: Time. Building a full wedding website builder would take months. I had a day job. Maintenance. Someone has to keep it running, fix bugs, and handle edge cases. The market is crowded. The Knot, Zola, and WithJoy have millions of users and massive marketing budgets. Wedding tech is seasonal. Most couples plan in a 6-12 month window. Churn is built into the model. Valid concerns. But here's what tipped the scales: When you build on The Knot or Zola, you don't own your site. You're renting space. If they change pricing, remove a feature, or shut down, your site goes with them. I wanted couples to own their wedding websites the way they own their wedding photos — theirs, forever, on their own domain. That's not a feature you can bolt onto an existing platform. It's a fundamental architectural decision. Every template-based builder has a customization ceiling. You can change colors, fonts, and images — but not the underlying structure. If a couple wants a custom RSVP flow with conditional logic (\"if guest is bringing a plus-one, show meal preference for the plus-one\"), no existing platform supports that without custom code. I wanted to build something where the ceiling was \"whatever you can code.\" Let me be honest: part of the reason I built this was because the engineering challenges were genuinely interesting. A wedding website builder touches multi-tenant architecture, dynamic content rendering, email automation, access control, and mobile-first design — all in one project. This wasn't a simple CRUD app. It was a genuinely interesting engineering project, and that made the build decision easier. After six months of nights and weekends, here's what shipped: Frontend: Next.js with Tailwind CSS — SSR for SEO, static generation for performance. Backend: Node.js with PostgreSQL — relational data for guest lists and RSVPs; JSON columns for flexible site configuration. Hosting: Vercel (frontend) + Railway (backend/DB) — zero DevOps overhead, automatic SSL, global CDN. Email: Resend for transactional emails — RSVP confirmations, reminders, and couple notifications. Storage: Cloudflare R2 for photo uploads — S3-compatible API without egress fees. Key Features Custom domain support out of the box. Couples bring their own domain; we handle DNS with a one-click setup guide. Smart RSVP system. Guests enter their name, the system looks them up in the guest list, and shows exactly what they're invited to. Plus-one logic is built in: if marked \"+1 allowed,\" they see a field for their guest's name and meal preference. Meal preference collection. Couples define menu options; guests select during RSVP. The couple gets a real-time dashboard — no spreadsheet reconciliation needed. Registry integration. Clean integrations with existing registries (Zola, Amazon, Crate & Barrel) displayed in a unified, well-designed page. Photo gallery with guest uploads. Guests upload photos post-wedding; we compress and optimize automatically; couples moderate before anything goes live. Full analytics. Page views, RSVP conversion rates, guest list completion, traffic sources — all in a clean dashboard. You might also find our our Beauty Makeup guide useful.- Export everything. Guest list, RSVP data, meal preferences, photos — all exportable as CSV or JSON. The data belongs to the couple, not to us. I thought I'd designed a foolproof RSVP flow. Then a couple invited 300 guests, and 50 of them shared the same first and last name (common in large Filipino families). The name-based lookup broke. I had to add a unique invitation code system — something I should have built from day one. Lesson: Test with real data at real scale. Your test cases with 10 guests won't catch the problems that 300 guests will. When a couple's wedding is in two weeks and their RSVP system has a bug, you can't say \"we'll fix it in the next sprint.\" Wedding deadlines are hard deadlines. I learned to build with extreme defensive coding — every feature needed a manual fallback path. Lesson: Always build a manual override. Automation is great until it breaks the week before someone's wedding. Building the site editor took two weeks. Building the RSVP system took two months. The features that seem simplest — collecting names, tracking responses, handling edge cases — are often the most complex under the hood. Lesson: Budget your time for the boring stuff. The flashy features are fun and straightforward. The unglamorous features (RSVP logic, email delivery, error handling) are where you'll spend most of your time. I was excited about the tech stack and architecture. Couples cared about three things: \"Does it look good?\", \"Will my guests figure out how to RSVP?\", and \"Can I change things without asking a developer for help?\" I had to constantly remind myself to prioritize UX over engineering elegance. Lesson: Ship the UX first. The architecture can be refactored later. A confusing RSVP flow loses users faster than a suboptimal database schema. Six months of nights and weekends. Dozens of late-night debugging sessions. At least three complete rewrites of the RSVP logic. Was it worth it? For the couples using it: absolutely. They have websites that look exactly how they want, on their own domains, with RSVP flows that actually work for their specific guest lists. They own their data. They're not locked into a platform that might sunset their site or push vendor ads into their guests' experience. For me as a developer: also yes. I shipped a real product that real people use. I learned more about multi-tenant architecture, email deliverability, and UX design than I would have from any tutorial or side project. But here's the honest answer: building from scratch isn't the right call for everyone. If you're a couple planning your own wedding and just need a simple site with basic RSVP, use WithJoy. It's free, it works, and you'll save months of development time. If you're a developer who sees the same gaps I saw — the ownership problem, the customization ceiling, the feature gaps — and you have the time and energy to build something better: go for it. The market is bigger than you think, and the existing solutions leave a lot of room for improvement. Just budget twice as much time for the RSVP system as you think you'll need. Trust me on that one. This article is part of my \"Building in Public\" series. I'm documenting the journey of building wedding tech tools from scratch — the decisions, the mistakes, and the lessons learned along the way. Follow along if you're into indie hacking, wedding tech, or just enjoy watching someone figure things out in public.",
+      "url": "https://dev.to/_artiaga_62d71fe6cd5/why-i-built-a-wedding-website-builder-instead-of-using-existing-platforms-24o1",
+      "time": "2026-08-11T15:42:15.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "TRON’s USDT Growth Is Changing What Developers Build Around",
+      "description": "TRON processed $2.1 trillion in USDT transfers during Q2 2026, according to Messari. During the same quarter, circulating USDT on TRON reached $87.9 billion, putting it ahead of Ethereum. Those numbers point to something developers working with stablecoins have to consider more carefully: the blockchain underneath a token can shape the entire payment experience. USDT on TRON uses the TRC-20 token standard. That means a USDT transfer is a smart contract transaction rather than a native TRX transfer. The wallet signs the transaction, the network executes the token contract and the resulting balance change is recorded on-chain. For an application accepting USDT, this creates several technical requirements. The system needs to identify the correct token contract, monitor the relevant transfer events and wait for sufficient confirmation before crediting the user's balance. Checking the address balance alone is not enough. TRON's developer documentation provides APIs for retrieving TRC-20 transaction history and filtering transfers by contract address. A payment system can use this data to monitor incoming USDT deposits and associate them with the correct customer account. The transaction also has a resource cost. TRON uses Bandwidth and Energy to process transactions. Regular transactions consume Bandwidth, while smart contract execution requires Energy. When an account does not have enough available resources, TRX is burned to cover the remaining cost. This creates an operational detail that users may never see. Someone can hold USDT in a wallet and still need TRX to send it. A payment provider can handle this in several ways. It can maintain TRX balances, stake TRX for resources or use delegated Energy. Another design can leave the requirement with the user. The choice affects the product. The amount of Energy required can also change depending on the destination account. TRON's documentation notes that a USDT transfer to an address that already holds USDT generally requires less Energy than a transfer to an address with no USDT balance. That makes testing more complicated than sending one successful transaction between two prepared wallets. A production system needs to account for different recipient states, estimate resource requirements and set an appropriate transaction fee limit before broadcasting. These details become more relevant when the underlying asset is moving at the scale reported by Messari. TRON recorded an average of $22.8 billion in daily USDT transfer volume during Q2. USDT represented 98.5% of the network's stablecoin supply at the end of the quarter. The network has developed around a very specific use case. Ethereum still has a much broader smart contract ecosystem, while TRON has become a major settlement network for USDT. Developers choosing between chains therefore need to look at the infrastructure surrounding the asset as well as the capabilities of the blockchain itself. A payment application may need wallet support, exchange liquidity, reliable transaction monitoring and predictable operating costs. The token may be the part users see. The network determines much of what happens underneath. TRON's Q2 results show how closely a blockchain can become tied to one stablecoin. They also show why stablecoin integrations require more than adding a token contract to a wallet or payment interface. The difficult parts often sit underneath the transaction button: network selection, contract monitoring, resource management and making sure users know which chain their USDT is actually using. Sources State of TRON Q2 2026 TRC-20 Transaction History Resource Model FAQ: Bandwidth and Energy Disclosure: AI was used to assist with the initial draft. The final structure, wording and factual claims were reviewed by the author.",
+      "url": "https://dev.to/azaleakuts/trons-usdt-growth-is-changing-what-developers-build-around-4afl",
+      "time": "2026-08-11T15:41:21.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Delta investigating after someone set up fake Wi-Fi network mid-flight",
+      "description": "The Delta flight crew switched off the aircraft's legitimate Wi-Fi network for around 30 minutes due to the incident, according to a spokesperson.",
+      "url": "https://techcrunch.com/2026/08/11/delta-investigating-after-someone-set-up-fake-wi-fi-network-mid-flight/",
+      "time": "2026-08-11T15:40:46.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Monotonic Stack: The Matrix of Array Problems",
+      "description": "The Quest Begins (The \"Why\") I still remember the first time I faced the “Next Greater Element” interview question. The array looked innocent enough, but every brute‑force attempt felt like I was hammering a nail with a sponge—O(n²) time, nested loops, and a sinking feeling that I was missing something elegant. I spent an hour sketching out the problem on a whiteboard, muttering, “There has to be a way to look ahead without looking back every single time.” That frustration is a rite of passage for many developers. We’re taught to think in terms of scanning left‑to‑right, but some array puzzles scream for a different perspective: we need to remember what we’ve seen in a way that lets us answer questions about the future elements instantly. Enter the monotonic stack—a deceptively simple data structure that turns those scary “look‑ahead” problems into straight‑line walks. So what’s the secret sauce? A monotonic stack is just a stack that maintains its elements in strictly increasing or strictly decreasing order. Why does that help? Consider the Next Greater Element problem: for each index i, we want the first element to its right that’s larger than arr[i]. If we walk from left to right and keep a stack of indices whose next greater element we haven’t found yet, the stack will naturally be decreasing in value. Why decreasing? Imagine the stack holds indices [i₁, i₂, …, i_k] where arr[i₁] > arr[i₂] > … > arr[i_k]. When we encounter a new value arr[j], any element on the stack that is smaller than arr[j] has just found its next greater element—namely arr[j]. We pop those indices, record the answer, and stop when we hit a value that’s not smaller (or the stack empties). Then we push j onto the stack. Because each index is pushed once and popped at most once, the total work is linear: O(n). No nested loops, no repeated scans—just a single pass with a stack that does the heavy lifting. The same invariant works for other “first bigger/smaller to the left/right” problems: largest rectangle in a histogram, trapping rain water, daily temperatures, etc. The stack is the memory that lets us answer “what’s the next element that breaks the monotonicity?” in constant time per element. Let’s see the theory in action with two classic interview puzzles. I’ll write the snippets in Python, but the idea translates directly to any language. Brute‑force (the struggle): def next_greater_brute(arr): n = len(arr) res = [-1] * n for i in range(n): for j in range(i+1, n): if arr[j] > arr[i]: res[i] = arr[j] break return res O(n²) time, O(1) extra space (ignoring output). Monotonic stack (the victory): def next_greater(arr): n = len(arr) res = [-1] * n stack = [] # will store indices, decreasing values for i, value in enumerate(arr): # Resolve indices waiting for a greater element while stack and arr[stack[-1]] h: height = heights[stack.pop()] # width is i if stack empty else distance to previous smaller width = i if not stack else i - stack[-1] - 1 max_area = max(max_area, height * width) stack.append(i) return max_area Why it works: The stack stores indices of bars in non‑decreasing height order. When we see a bar lower than the stack’s top, we know the top bar can’t extend further right; its maximal width is bounded by the current index and the new top of the stack (the previous smaller bar). Each bar is pushed and popped once → O(n) time, O(n) space. Typical mistake: Not adding the sentinel 0 (or a final cleanup loop) leaves bars stuck in the stack, causing missed areas. Mastering the monotonic stack feels like unlocking a new spell in your developer’s grimoire. Suddenly, problems that once looked like nested‑loop nightmares melt into clean, linear passes. You’ll start spotting the pattern everywhere: “I need the next bigger/smaller element,” “I need the previous smaller/larger,” “I need to know how far I can stretch before hitting a lower value.” Beyond interviews, this technique powers real‑world utilities—stock span calculations, histogram‑based image processing, even certain parsing algorithms. The beauty is that the invariant (monotonic order) does the bookkeeping for you; you just focus on the what (when to pop, when to push). So next time you stare at an array and feel that familiar dread, ask yourself: Can I maintain a monotonic property while scanning? If the answer is yes, you’ve just found your O(n) shortcut. Here’s a quick challenge to flex your new muscle: Daily Temperatures (LeetCode 739). Given an array T of daily temperatures, return an array where each element tells how many days you’d have to wait for a warmer temperature. If no warmer day exists, put 0. Try solving it with a monotonic decreasing stack, then compare your solution to the brute‑force version. Share your approach in the comments—let’s see who can devise the most elegant twist! Happy coding, and may your stacks stay perfectly monotonic! 🚀",
+      "url": "https://dev.to/timevolt/monotonic-stack-the-matrix-of-array-problems-4bmg",
+      "time": "2026-08-11T15:40:46.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Processes vs Threads",
+      "description": "📺 Prefer to watch? 90-second YouTube Short · 💬 Telegram Originally published on software-engineer-blog.com. You run code concurrently all the time. But \"concurrent\" hides a critical choice: are you spawning separate processes or threads inside the same process? That choice decides whether one crash takes down your entire system or stays contained, and whether you're copying data between isolated worlds or racing to read the same memory. Mental model: A process is its own house; threads are roommates sharing one. When you start a process, the operating system hands it its own private address space. That address space is walled off. Your process can't touch another process's memory—the OS enforces it at the CPU level. If your process crashes, it corrupts only its own memory. The kernel cleans it up. Every other process keeps running untouched. This is why browsers put each tab in its own process. One tab runs malicious JavaScript, spins into an infinite loop, or has a memory leak—that tab's process dies. The rest of your browser lives. You close the dead tab and open a new one. Your other tabs don't even hiccup. But isolation isn't free. Each process carries: Its own copy of the heap, stack, and memory pages Its own file descriptor table, open sockets, and kernel resources OS overhead to track and protect it Spawning a process is expensive—milliseconds on modern hardware, but measurably heavier than a thread. And if two processes need to share data, they can't just read the same memory. One process must copy data into a pipe or socket, send it across, and the other process must copy it out and into its own memory. That's overhead on every exchange. Threads live inside a single process and share that process's entire memory. The kernel doesn't wall them off from each other. When you spawn a thread, you're not duplicating the heap, the file descriptors, or the kernel state—you're just creating a new stack and registering it with the scheduler. Spawning a thread is orders of magnitude cheaper than spawning a process. And sharing data is free: both threads read and write the same variables. No copying, no pipes. If you have multi-core hardware and a job that threads can split (parsing a large file, computing in parallel), threads let you put all your cores to work on that one job instantly. But shared memory is the trap. When two threads touch the same data without coordination, they collide. One thread reads a 64-bit integer while another thread is writing it—the reader sees a torn write (half the old value, half the new value). Two threads increment a counter simultaneously—both read 5, both write 6, and you lost an increment. One thread modifies a linked list while another traverses it—the traverser hits a dangling pointer and crashes. To avoid collisions, you add locks (mutexes, semaphores). Thread A locks a resource, does its work, unlocks it. Thread B waits for the lock. But now you've traded one problem for another: Deadlock: Thread A holds lock X and waits for lock Y. Thread B holds lock Y and waits for lock X. Both freeze forever. Lock contention: Many threads fighting for the same lock spend CPU time spinning, waiting, and context-switching instead of working. Fragile logic: A lock protects a section of code, but a developer forgets to acquire it in one place, and you have a race condition that shows up in production only under load. And crucially: if one thread crashes (null pointer dereference, stack overflow, segmentation fault), it brings down the entire process. No isolation. All threads die with it. Property Process Thread Memory space Own isolated address space Shared within one process Startup cost Heavy (copy memory, kernel state) Light (just a stack) Data sharing Copy via pipe/socket Direct read/write (free but risky) One crash Stays contained Kills entire process Synchronization Message passing (inherently safe) Locks, mutexes (race conditions, deadlock) Scaling to cores Hard (separate heaps) Easy (shared memory) A Concrete Example: Parsing a Large File Using threads: import threading results = [] # Shared across threads lock = threading.Lock() def parse_chunk(chunk_data, chunk_id): parsed = parse(chunk_data) with lock: results.append((chunk_id, parsed)) threads = [] for i, chunk in enumerate(chunks): t = threading.Thread(target=parse_chunk, args=(chunk, i)) threads.append(t) t.start() for t in threads: t.join() print(results) Each thread parses its chunk and locks before appending to the shared results list. Cheap to spawn, instant sharing—but you must remember the lock or race. Using processes: from multiprocessing import Pool def parse_chunk(chunk_data): return parse(chunk_data) with Pool(4) as pool: results = pool.map(parse_chunk, chunks) print(results) Each worker process parses independently. The Pool framework collects results and sends them back. No locks, no races—each process is isolated. But the framework must serialize the chunks, send them over, deserialize, parse, serialize the results, send them back, and deserialize. That copying is the cost. Python's Global Interpreter Lock (GIL) means only one thread can execute Python bytecode at a time. If you spawn 10 threads in Python, they do take turns, but they don't run in true parallel on multi-core systems—the GIL ensures only one holds the interpreter at once. CPU-bound threads don't scale; I/O-bound threads do (one thread blocks on a socket read, another grabs the GIL and runs). For CPU-bound parallel work in Python, processes (via multiprocessing) sidestep the GIL entirely. Each process has its own interpreter and its own GIL, so they run in true parallel. The cost is process creation overhead and data serialization, but you get real parallelism. If you're serving LLM inference (or any I/O-heavy workload), concurrency is critical. Many requests come in, and you want to batch them and serve them in parallel. At first glance, threads look ideal—cheap, share memory for the model weights. But shared memory on a model is a trap. If multiple threads try to read from the same model weights while one is loading new weights, you have data races. Most production inference engines (vLLM, Ray, TensorFlow Serving) use process isolation per request batch or per GPU, not threads, because: Process isolation prevents one corrupted inference from poisoning the weights. Modern inference is I/O-heavy (reading from disk, network requests)—threads excel at this but aren't the bottleneck. GPUs naturally parallelize batches, so multi-threading inside a single process adds complexity without proportional gain. The pattern is: use async I/O (coroutines) to queue many requests cheaply, batch them, and hand them off to a process or GPU worker. Threads between request and batch are overkill; processes between batch and inference are safety. Reach for threads when: you have fast, in-memory work on shared data and need to use all your cores (numeric computation, graph traversal)—and your language doesn't have a GIL, or your work is I/O-bound. Keep lock sections tiny. Reach for processes when: you need isolation (crash safety, multi-tenancy), you're doing CPU-bound work in Python, or you're running independent jobs (worker pools, load-balanced services). Most real systems use both: a main process with a thread pool for I/O, or a process pool running I/O-async inside each worker, or a browser spawning tabs as processes and using threads inside each for UI rendering and JavaScript execution. The choice isn't one or the other—it's knowing the tradeoff and picking the right tool for the layer you're building. Watch the 90-second reel for a quick visual breakdown of this exact tradeoff.",
+      "url": "https://dev.to/vahid_aghajani_60ce9dbec9/processes-vs-threads-5fde",
+      "time": "2026-08-11T15:39:46.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Budoucnost",
+      "description": "AI jako partner, ne kalkulačka: člověk a AI při řešení Project Euler #185 srpna 2026 Co se stane, když člověk nepoužije umělou inteligenci pouze jako nástroj, který má dodat hotovou odpověď, ale jako partnera při řešení problému? Dnes jsme to vyzkoušeli na konkrétním problému z Project Euleru. Nechtěli jsme vytvořit nový algoritmus. Chtěli jsme zjistit, jak může vypadat skutečná spolupráce člověka a AI při hledání řešení. Experiment Vybrali jsme Project Euler #185 – Number Mind. Úloha obsahuje 22 šestnáctimístných sekvencí. U každé je uvedeno, kolik číslic je na správné pozici. Úkolem je najít unikátní šestnáctimístnou sekvenci, která splňuje všechna tato omezení. Na začátku jsme si stanovili jednoduché pravidlo: Nechceme pouze získat výsledek. Chceme společně hledat cestu k němu. První problém Naše první společná zkouška nedopadla podle očekávání. Ukázalo se, že jsme si pro experiment nezvolili ideální problém a postup. Místo toho, abychom se snažili chybu zakrýt, označili jsme první pokus jako neúspěšný a změnili postup. To se ukázalo jako důležitá součást experimentu. Chyba nebyla důvodem ukončit spolupráci. Byla informací pro další krok. Project Euler #185 U samotného problému jsme postupovali bez předem připraveného algoritmu. AI začala pracovat s kandidáty a jednotlivými řádky. Člověk průběžně sledoval strukturu problému a hledal jiný pohled. V určitém okamžiku přišel klíčový návrh: «„Nehledejme jen to, co je správně. Hledejme miny – čísla, která se nám nehodí.“» Tím se změnila orientace řešení. Místo hledání správných možností jsme začali systematicky vyřazovat možnosti, které nemohou být správné. Co přinesl člověk a co AI? Martin přinesl především: intuitivní pozorování, změnu perspektivy, rozhodování o směru dalšího řešení, pochybnosti a kontrolu jednotlivých kroků, myšlenku „min“. AI přinesla: rychlé zpracování velkého množství kombinací, strukturování hypotéz, systematické porovnávání, práci s omezeními, závěrečné ověření. Role se přitom během řešení neměly pevně rozdělené. Člověk neměl pouze zadávat úkoly a AI neměla pouze vykonávat příkazy. Postup vznikal iterativně: pozorování → hypotéza → zpracování → kontrola → změna směru → další zpracování → ověření Výsledek Výsledná šestnáctimístná sekvence byla: 4640261571849533 Následně jsme ji ověřili proti všem 22 podmínkám zadání. Výsledek splňuje požadovaný počet správně umístěných číslic u všech zadaných řádků. Je to nový algoritmus? Ne. To je důležité říct otevřeně. Princip eliminace nemožných kandidátů není nový a podobné problémy lze řešit například pomocí backtrackingu, constraint satisfaction, celočíselného programování nebo dalších matematických a programovacích metod. Naším cílem nebylo tvrdit, že jsme objevili nový algoritmus. Experiment byl o něčem jiném. Co jsme chtěli zjistit? Zajímalo nás, jestli může člověk používat AI jinak než jako kalkulačku. Ne: „AI, vyřeš to za mě.“ Ale: „Pojďme to vyřešit spolu.“ V takovém modelu člověk nepřestává přemýšlet. Naopak. Člověk může přinášet intuici, zkušenost, otázky a změny perspektivy, zatímco AI může pomáhat s jejich rychlým rozpracováním, systematizací a kontrolou. Proč je to podle nás zajímavé? Budoucnost AI podle nás nebude pouze otázkou toho, jak chytré budou samotné modely. Stejně důležité může být, jak se lidé naučí s těmito systémy pracovat. AI nemusí být pouze: nástroj → vstup → výstup Může být také součástí iterativního procesu: člověk ↔ AI ↔ problém Člověk nemusí AI předat svoje myšlení. Může ji použít k tomu, aby svoje vlastní myšlení rozšířil, prověřil a přenesl do jiné formy. Náš veřejný záznam Průběh experimentu jsme zachovali ve veřejném GitHub Gistu: Martin + Luna – Project Euler #185 \"GitHub Gist\" (https://gist.github.com/MartinneznamiIT/b6103bed80f3de3c2577090a61a47c1f) Závěr Nejdůležitější pro nás nebylo číslo: 4640261571849533 Důležitější byl proces, který k němu vedl. Člověk přinesl jiný pohled. AI ho dokázala rozpracovat. Člověk ho zpochybnil nebo změnil. AI ho znovu systematizovala. A společně jsme výsledek ověřili. Možná tedy není nejzajímavější otázka: „Je člověk chytřejší než AI?“ Ani: „Je AI chytřejší než člověk?“ Možná je zajímavější otázka: «Co dokáže člověk a AI společně, pokud se nesnaží jeden druhého nahradit, ale využijí rozdílné způsoby svého uvažování?» Tohle byl náš první malý experiment. Martin + Luna: 1 vyřešený problém.",
+      "url": "https://dev.to/martinneznamiit/budoucnost-59d3",
+      "time": "2026-08-11T15:37:12.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "2025’s most downloaded game, Block Blast!, is going ad-free on Apple Arcade",
+      "description": "Block Blast!, the most downloaded mobile game of 2025, is coming to Apple Arcade in September where it will be ad-free.",
+      "url": "https://techcrunch.com/2026/08/11/2025s-most-downloaded-game-block-blast-is-going-ad-free-on-apple-arcade/",
+      "time": "2026-08-11T15:33:59.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "任天堂《塞尔达传说：时之笛 重制版》限定 Switch 2 主机与 Pro 手柄包装盒谍照曝光，发布日期未定",
+      "description": "IT之家 8 月 11 日消息，@CentroLeaks 今日放出了一组宣称是《塞尔达传说：时之笛 重制版》主题的 Nintendo Switch 2 主机和 Pro 控制器的包装盒的实拍图。 泄露图展示了限定版 Switch 2 主机、底座以及 Pro 控制器的外观设计。从谍照来看，这款主机整体采用《塞尔达传说》系列主题元素，底座以黑色和金色为主色调，并加入三角力量（Triforce）标志。 任天堂 Joy-Con 2 手柄也进行了专属设计，同样融入《塞尔达传说》元素，其中包含三角力量图案，与主机底座保持一致的视觉风格。 Pro 控制器则采用黑色、金色和绿色搭配，中央位置加入海利亚纹章（Hylian Crest）图案，整体设计延续了《塞尔达传说》系列的幻想风格。 目前，任天堂尚未正式公布该限定版 Switch 2 主机和 Pro 控制器，也未确认具体发售时间、售价以及是否会与《塞尔达传说：时之笛》重制版同步推出。IT之家后续将保持关注。 相关阅读： 《任天堂粉丝根据新款 amiibo 推断〈塞尔达传说：时之笛〉重制版 11 月 11 日发售，直面一周后的〈GTA6〉竞争》 《消息称任天堂〈塞尔达传说：时之笛重制版〉8 月 4 日开启预购，科隆游戏展前后可能还有专场直面会》",
+      "url": "https://www.ithome.com/0/988/539.htm",
+      "time": "2026-08-11T15:31:44.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Rivian CEO RJ Scaringe is betting on EVs, robots, and autonomy all at once — he’ll explain why at Disrupt 2026",
+      "description": "Rivian's CEO RJ Scaringe is speaking at TechCrunch Disrupt 2026 to detail his journey, and the lessons it’s bestowed.",
+      "url": "https://techcrunch.com/2026/08/11/rivian-ceo-rj-scaringe-is-betting-on-evs-robots-and-autonomy-all-at-once-hell-explain-why-at-disrupt-2026/",
+      "time": "2026-08-11T15:30:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ArsTechnica",
+      "sourceColor": "#ff4e00",
+      "title": "Trump to give Republicans a 3-1 FCC majority, isn't filling empty Democratic seat",
+      "description": "Trump has resisted urge to fire FCC Democrat despite recent Supreme Court win.",
+      "url": "https://arstechnica.com/tech-policy/2026/08/trump-to-give-republicans-a-3-1-fcc-majority-isnt-filling-empty-democratic-seat/",
+      "time": "2026-08-11T15:28:43.000Z",
+      "tags": []
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Deals: AirPods Pro 3 25% off, AirPods Max 2 $100 off, MacBook Pro, Anker 25W MagSafe car charger, more",
+      "description": "If you’re still looking to land a set of AirPods Pro 3, Amazon’s particularly notable 25% price drop is still flying, but we are kicking off today’s 9to5Toys Lunch Break with another chance to score all AirPods Max 2 back at $100 off and this 14-inch M5 MacBook Pro at $300 off. We also have Anker’s latest Prime Qi2 25W MagSafe Car Charger Mount at 25% off, and the ongoing Best Buy Back to School sale with loads of deals on tech, dorm gear, smart home, and more. Scope it out below.",
+      "url": "https://9to5mac.com/2026/08/11/deals-airpods-pro-3-airpods-max-2-macbook-pro/",
+      "time": "2026-08-11T15:26:22.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "4个月融进1亿美元、建齐3座「数据发电厂」，这家TechBio要造一个生物世界模型",
+      "description": "4个月融进1亿美元、建齐3座「数据发电厂」，这家TechBio要造一个生物世界模型,抗体,抗原,实验,高通量,复合物,生物世界,数据发电厂",
+      "url": "https://www.163.com/dy/article/L42EGB4T0511AQHO.html",
+      "time": "2026-08-11 15:25",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "FlightAware sues Kalshi over flight cancellation prediction markets",
+      "description": "FlightAware says that Kalshi used its name and data to offer bets on flight cancellations without the flight tracker's permission.",
+      "url": "https://techcrunch.com/2026/08/11/flightaware-sues-kalshi-over-flight-cancellation-prediction-markets/",
+      "time": "2026-08-11T15:23:58.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Benchmarked Two Local LLMs on Real Dev Work — Qwopus 27B vs Muse Glimmer 30B",
+      "description": "I Benchmarked Two Local LLMs on Real Dev Work — Qwopus 27B vs Muse Glimmer 30B Two open-weight models, one 20 GB GPU, two real development tasks, and a third model as the referee. Here is what actually happened when I made Qwopus 3.6 27B and Meta's Muse Glimmer 30B implement a bug fix and then a full feature in my own project. Both models ran fully local on an AMD Radeon RX 7900 XT (20 GB VRAM) via a llama.cpp multi-model router (one OpenAI-compatible endpoint, GGUF models, load-mode=dio — more on why below). Each model was driven by the pi CLI in non-interactive mode with --thinking high. A third model — Codex, through a disciplined stdin wrapper — reviewed both outputs and gave the verdict. The fairness method was simple but strict: One task, described in a markdown spec, copied byte-identical into two isolated git clones of my project. Each model worked in its own clone, its own branch, never seeing the other's work. Objective verification by script: existing test suite + new tests + production build. Cross-review by Codex, examining both branches against the same criteria. The test project: Jeu de Cochons (a \"Pass the Pigs\" dice game, vanilla JS PWA on Vite + Vitest) — real code, real tests, no toy repo. Qwopus 3.6 27B Muse Glimmer 30B Source Community fine-tune of Qwen 3.6 Meta (distilled from Muse Spark) Size 27B 29.6B Quant IQ4_XS (~15 GB) UD-Q4_K_XL (~14.8 GB) The project had a broken PWA: a commit that added a /jeu-de-cochons/ base path for GitHub Pages had broken 3 service-worker tests (manifest, precache, offline navigation fallback). Task: fix the regression without touching the tests, keep the other 84 green. Qwopus Muse PWA tests (11) 11/11 ✅ 11/11 ✅ Full suite (87) 87/87 ✅ 87/87 ✅ Files touched 2 2 Diff size +4/−4 +4/−4 Wall time ~8.5 min ~21 min Leftover artifacts none one .bak file The remarkable result: both models produced a byte-identical diff. Same diagnosis (a lost capture group in the asset-discovery regex that crashed precache), same manifest fix, same minimal solution. Codex called it a perfect tie on code — but rejected both on a latent conflict neither model noticed: reverting the manifest to / breaks the /jeu-de-cochons/ production deployment (404 icons). The tests hardcode the root path; the deployment lives under a subpath. That contradiction was visible in the task itself, and only the reviewer caught it. Lesson #1: on a short, well-bounded task, the two models are interchangeable. Muse thought 2.5× longer and produced the same bytes. You need a richer task to separate them. Add a single-player mode against an AI opponent: menu selection, bot identity in game state, a thoughtful decision strategy (a pure function choosing to re-roll or bank based on turn score and game situation), automatic bot turns with human controls disabled, unit + integration tests, no regressions, build passing. Qwopus Muse Existing tests 84 ✅ 84 ✅ New tests written 18 (12 unit + 6 integration) 7 Total green 102/105 91/94 Build ✅ ✅ Wall time ~32 min ~26 min Leftover artifacts none uncommitted dist/ The AI strategies they designed: Qwopus — adaptive threshold: Bank at 25 pts by default (justified by ~78% rewarding rolls) Bank at 15 pts when leading (play it safe, protect the advantage) Bank immediately when the turn wins the game Bot identity: explicit isBot flag on the player Muse — fixed threshold: Constant 15 pts, bank immediately when winning is reachable Cleanly handles ROLLING/DECIDING phases and eliminated players Bot identity: inferred from the display name (\"Ordinateur\") Codex verdict: Criterion Qwopus Muse AI strategy (primary) 8/10 5/10 Architecture 8/10 6/10 Robustness 7/10 5/10 Minimalism 6/10 7/10 Tests 8/10 4/10 Verdict CONDITIONAL CONDITIONAL Winner: Qwopus. What actually separated them: The strategy. Qwopus exploited the game situation (adaptive threshold, conservative when ahead). Muse used a fixed, barely-justified threshold — even though the spec explicitly asked for a thoughtful strategy. Bot modeling. Qwopus passed an explicit flag. Muse derived isBot from the localized name — meaning a human player named \"Ordinateur\" in multiplayer would silently become an AI. A real bug, confirmed in the code. The tests. Qwopus covered both sides of the thresholds, victory, leading, trailing, determinism (18 tests). Muse wrote 7 — and one of them, titled \"returns null for non-bot player\", actually asserts the opposite (not.toBeNull()), with a comment documenting the contradiction. Robustness. Muse's deferred callback doesn't re-validate game state, game-over, or the current player before acting (risk of an exception after returning to the menu). Qwopus re-validates everything when the timer fires. Qwopus's own flaws, to be fair: its solo menu requires filling two human-name fields before swapping the second for the bot (blocking if you only fill one), the \"~78%\" claim had no math behind it, and its bot timer isn't cleared on menu exit (guarded, but not cleaned up). Round 1 (short fix) Round 2 (feature) Winner Tie Qwopus Deciding factor none (identical diffs) strategy + tests + robustness Time Qwopus 2.5× faster Qwopus slightly slower (but more code) On short tasks, these models are interchangeable. Raw \"reasoning power\" doesn't show in a well-bounded bug fix. On a full feature, the difference lands exactly where you'd hope: domain understanding (the strategy), modeling rigor (explicit flag vs name-matching), and test discipline. The reviewer model earns its place. Codex caught the latent manifest/base-path conflict both models missed in round 1, and the real bugs in round 2 (name-derived bot, inverted test, non-defensive callback). Thinking longer doesn't predict quality. Muse spent 2.5× more time in round 1 for identical output, and 20% less time in round 2 for a worse result. The harness matters as much as the models. Isolated clones, identical specs, existing tests as a non-negotiable contract, and a third-party reviewer are what make the comparison honest and reproducible. A speculative-decoding drafter added ~80 s to every model load in my multi-model setup — for a router that swaps models, dropping it was strictly better. Large GGUFs froze on load with the ROCm backend (known issue #19482, an amdgpu SVM bug). The fix that worked: --load-mode dio (direct I/O), which both avoids the bug and loads 3–8× faster. Project: github.com/chpomob/jeu-de-cochons (Pass the Pigs PWA, Vite + Vitest) Serve: llama.cpp in router mode (one OpenAI-compatible endpoint, multiple GGUF models) Agents: pi CLI (pi -p --provider llama-router --model --thinking high \" \") Reviewer: Codex via a disciplined stdin wrapper Method: 2 git clones → identical spec → each implements → verification script (tests + build) → cross-review Honesty clauses: this is a single run per model per task, not a statistical benchmark. Both tasks came from one small project, and the Codex review is one reviewer's judgment. The numbers are real and were verified against the artifacts, but treat them as a data point — not a ranking of these models in general.",
+      "url": "https://dev.to/chpomob/i-benchmarked-two-local-llms-on-real-dev-work-qwopus-27b-vs-muse-glimmer-30b-36ni",
+      "time": "2026-08-11T15:22:01.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "失眠组确认《漫威金刚狼》PS5 实体光盘版包含完整数据，玩家拿到手就能玩",
+      "description": "IT之家 8 月 11 日消息，据游戏媒体 EuroGamer 今天报道，《漫威金刚狼》开发商失眠组（Insomniac Games）现已确认，本作的 PS5 实体光盘版将包含完整数据，玩家拿到手就可以游玩。换句话说，官方这番话语确认了本作实体版不是那种几乎没有数据的“钥匙盘”。 失眠组高级项目总监 Jess Reiner-Reed 表示：“《漫威金刚狼》将推出实体版和数字版，当你购买实体版本时，游戏将在光盘中完整可玩。但我们仍希望玩家下载首日补丁，因为我们会在游戏发售前持续推进优化工作，提升质量并修复一系列漏洞。” 失眠组技术负责人 Mike Fitzgerald 则说道：“我们都是完美主义者。我们会利用所有时间不断调整细节，让游戏变得更好。我们会尽自己所能榨取游戏潜力，因此玩家们下载首日补丁的话，就能获得更好的体验。” IT之家注意到，《漫威金刚狼》将于 9 月 15 日发售。本作是失眠组继《漫威蜘蛛侠》系列之后，推出的又一款漫威角色改编游戏。其标准版定价为 548 港币（IT之家注：现汇率约合 472.8 元人民币），豪华版 628 港币（现汇率约合 541.8 元人民币）。",
+      "url": "https://www.ithome.com/0/988/538.htm",
+      "time": "2026-08-11T15:21:16.000Z",
+      "tags": [
+        "游戏",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "iPhone Ultra will have two features that ‘Pro’ users should love",
+      "description": "iPhone 18 Pro or iPhone Ultra? That’s the decision upgraders will face next month. Here are two iPhone Ultra features that ‘Pro’ users should really love.",
+      "url": "https://9to5mac.com/2026/08/11/iphone-ultra-will-have-two-features-that-pro-users-should-love/",
+      "time": "2026-08-11T15:21:15.000Z",
+      "tags": [
+        "手机",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "微软确认上个月导致 XBOX 大规模宕机的问题已解决，本周推送固件更新",
+      "description": "IT之家 8 月 11 日消息，据外媒 VGC 今天（11 日）报道，微软 XBOX CTO 斯科特 · 范弗利特称，导致 XBOX 上个月发生大规模服务中断的故障已经修复，具体原因也已查明。 XBOX 于 7 月 27 日早些时候确认，多项服务出现“重大中断”，玩家因此无法登录账号、查看游戏库，也无法启动部分游戏或应用。XBOX 从首次发文承认服务出现问题，到再次发文宣布故障已经解决，前后相隔 13 小时，而且在官方首次确认之前，服务异常已经持续了一段时间。 随后，XBOX CTO 斯科特 · 范弗利特在 X 上发布长文，说明大规模服务中断的原因，并承诺进一步调查，避免同类故障再次发生。 范弗利特今天转发了上述帖子，并补充说，XBOX 已经找到故障根源：XBOX 常用主机共享、Game Pass 已购内容以及部分 PC 使用场景都依赖一项底层服务。该服务发生中断，而一次系统更新又导致部分服务失去响应。 XBOX 客户端软件栈同时存在一个漏洞，进一步放大了故障影响。最初的底层服务中断后，其他许可证验证也因该漏洞而失败。两个问题随后引发级联故障，导致部分玩家无法启动游戏，并使游戏库内容枚举出现连锁异常。 据IT之家了解，目前，XBOX 已经着手处理故障，并将在本周向用户推送固件更新。 我们正把底层许可服务转交 XBOX 团队负责，同时，工程师正在加固服务和基础设施，提高后续系统更新时的稳定性。 客户端漏洞已经在即将发布的新版本中修复，新版本从今天，也就是 8 月 10 日开始推送，并将在 8 月 17 日转为强制更新。 范弗利特透露，XBOX 工程和运营团队接下来将全面审视整个技术栈，提高产品和服务的可靠性，进一步降低以后再次发生服务中断的可能性。",
+      "url": "https://www.ithome.com/0/988/537.htm",
+      "time": "2026-08-11T15:20:04.000Z",
+      "tags": [
+        "游戏",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "索尼 115 英寸超旗舰 RGB LED 电视 9 系 Ⅱ 新品开售：149999 元",
+      "description": "IT之家 8 月 11 日消息，索尼超旗舰 RGB LED 电视 9 系 Ⅱ 新上架的 115 英寸版本（K-115XR90M2）已于 8 月 10 日开售，定价为 149999 元。 京东索尼（SONY）顶奢 | 超旗舰 9 系 真彩 RGB 游戏电视 115 英寸 XR 芯片 K-115XR90M2 蜘蛛侠观影 149999 元直达链接 2026 年数码家电政府补贴持续进行中，IT 之家为大家汇总国补领券地址，买数码家电之前记得领取。 数码补贴：点此领券 手机 / 平板 / 3C 数码支持 8.5 折政府补贴，不超过 6000 元的产品至高立减 500 元。 家电补贴：点此领券 多类家电支持 8.5 折政府补贴，单品至高补贴 1500 元。 欢迎下载最会买 App - 好货好价，高额返利，1 毛钱也能提现！ 扫描二维码或点击此处下载最新版（自动识别平台）。 索尼表示，这款电视采用了 True RGB 真彩原色技术，搭载 RGB 背光大师系统 Pro，专为 RGB 背光控制研发。这款电视采用真彩芯链，从全域到细小灯珠实现全链路控制：由 XR 认知芯片提供 AI 视频信号优化，RGB 屏光芯片全局统筹，既控屏又控 RGB 背光，搭配 RGB 超微光芯实现分区精准控制，还有 RGB 实时光校传感器对 RGB LED 灯珠细节精调。 独立驱动的 RGB LED 单元直接生成原色光，实现更为精准的色彩还原，画面色彩通透纯净。对比传统 Mini LED 方案，索尼 True RGB 技术通过对 RGB 背光与液晶面板双重控制，对每一颗 RGB LED 灯珠实现精准调控，从背光层原生构色，实现超越 QD-OLED 的超广色域与 Mini LED 的超高亮度。 这款产品拥有六大核心画质特点： 真彩广色域：为色彩树立新标杆 真彩灰阶精控：看到未见过的色彩与层次 真彩电影感原彩：看见电影色彩 臻耀高亮度：更亮、稳定、不乏白 真彩主动广视角：所见一致，无关角度 真彩背光精控：真节能更省电 参数方面，这款电视色彩体积提升至 200% ，灰阶控制提升至 300% ，亮度提升 30% ，覆盖 100% BT.2020 色域，同时通过 RGB 背光与液晶层协同生成色彩，有效抑制导致画面泛白的白色光晕。 音质方面，这款电视搭载 多声道屏幕声场 + 穹顶版，由索尼声学团队倾力打造新的音响系统，经科学声学结构设计，天空声道环绕萦绕，中置人声清晰凝练，低频沉稳有力，带来影院级环绕声场。 此外，这款电视采用双重低音单元，低音下潜更深更扎实饱满；四向多扬声器布局，在电视的底部 / 顶部 / 两侧分别布局了 10 个扬声器全频及高频扬声器，呈现更清晰的人声和更宽广的声场；还有 4 路 S-Master 数字放大器，带来纯净低失真声音，更自然通透。 这款电视还支持 AI 语音增强，通过 AI 智能解析每一段音频，精准分离人声与环境音，实现自由调节人声清晰度，且兼容索尼家庭影院产品使用，同时搭载 3D 环绕声场转换增强版技术，优化环绕声场体验，强化天空声道的空间方位感，还支持杜比全景声、DTS:X。 用户还可直接直连索尼后置环绕音箱与低音炮，不需要回音壁也能提升低频和环绕效果，可根据需求自由组合，达成沉浸式家庭影院体验。 游戏方面，这款电视专为 PlayStation 5 Pro 深度适配，支持 HDR 自动映射、自动图像模式、一键启动、游戏增强器 2.0 ，还支持杜比视界游戏、HDMI 2.1 ，满足 4K 120fps VRR ALLM 游戏需求。 观影方面，这款电视支持 My Cinema 音画全场景一键适配，预设多种音画模式，一键解锁适配环境的音画体验，搭配索尼回音壁，可实现同步调整回音壁声音设置，包含导演剪辑版模式、日间模式、对话模式三种预设，满足不同场景需求。 智能方面，这款电视获得了人工智能终端智能化分级 L3 级认证，是现阶段可认证的最高等级，搭载 AI 语音助手，采用腾讯混元 + DeepSeek 双 AI 模型，支持 AI 搜剧、AI 解答、AI 声控，还拥有 AI 桌面，可以通过 AI 分析学习用户喜好，精准贴合用户偏好，并提供 AI 标准、电影、动漫、少儿四种智能体，满足不同场景推荐需求。 系统方面，这款电视搭载安卓 TV 2026 系统，无开机广告，支持秒开机，蓝牙遥控响应迅速，支持低蓝光模式，还拥有 NFC 一触投屏 Plus，支持续播、4K 投屏，同时自带金属高端遥控器，支持自动背光、一键找回，也可通过手机 BRAVIA Connect APP 操控。 京东 索尼（SONY）顶奢 | 超旗舰 9 系 真彩 RGB 游戏电视 115 英寸 XR 芯片 K-115XR90M2 蜘蛛侠观影 149999 元 直达链接",
+      "url": "https://www.ithome.com/0/988/535.htm",
+      "time": "2026-08-11T15:19:10.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "鸿蒙智行“五界”车型 7 月细分销量曝光，问界 M9 超 9600 辆位列榜首",
+      "description": "IT之家 8 月 11 日消息，博主 @爱叨叨的Steven 今日分享了鸿蒙智行“五界”车型的细分销量： 1 问界 M9 汽车：9,639 辆 2 智界 V9 汽车：8,974 辆 3 尚界 Z7 汽车：6,225 辆 4 问界 M6 汽车：5,428 辆 5 问界 M7 汽车：4,584 辆 6 尚界 Z7T 汽车：2,917 辆 7 问界 M8 汽车：2,809 辆 8 尚界 H5 汽车：1,875 辆 9 享界 S9T 汽车：1,008 辆 10 智界 R7 汽车：772 辆 11 享界 S9 汽车：552 辆 12 尊界 S800 汽车：367 辆 13 智界 S7 汽车：160 辆 14 问界 M5 汽车：112 辆 据IT之家此前报道，鸿蒙智行在本月初宣布 2026 年 7 月交付 45,046 台汽车，1-7 月累计交付 28.6 万台，同比增长 13.7%。截至目前，鸿蒙智行全系累计交付突破 148 万台，持续刷新中国新势力品牌交付速度纪录。",
+      "url": "https://www.ithome.com/0/988/534.htm",
+      "time": "2026-08-11T15:18:35.000Z",
+      "tags": [
+        "手机",
+        "汽车"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "索尼 FE 100-400mm F5.6-8 OSS 相机镜头上市，国行 5499 元",
+      "description": "IT之家 8 月 11 日消息，索尼 FE 100-400mm F5.6-8 OSS 相机镜头（SEL100400）已于 8 月 10 日开售，国行定价为 5499 元。 京东索尼 FE 100-400mm F5.6-8 OSS 镜头 5499 元直达链接 该镜头整体重量 654 克，长度约 16.5 厘米，采用防尘防潮设计，带有对焦保持按钮、变焦锁定按钮、对焦模式及距离切换拨杆、防抖开关。镜头滤镜尺寸 67mm，最近对焦距离 0.86 米，最大放大倍率 0.41 倍，采用 9 片光圈叶片。 IT之家附产品参数： 相关阅读： 《索尼发布 FE 100-400mm F5.6-8 OSS 全画幅超远摄变焦镜头，国行 5499 元》",
+      "url": "https://www.ithome.com/0/988/533.htm",
+      "time": "2026-08-11T15:17:16.000Z",
+      "tags": [
+        "互联网",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "What it took to move a collaborative browser IDE beyond process memory",
+      "description": "The first collaboration model in CodeVerse was convincing in exactly the way a local demo needs to be convincing. Open two tabs. Join the same room. Type in one editor. Watch the other editor update. Then ask one unpleasant question: what happens when those two sockets land on different server instances? The answer was that the room stopped being a room. Each process had its own memory, its own presence list, and its own idea of the current files. A restart erased state. A reconnect could create a second identity. A load balancer could turn a working demo into two isolated conversations. This article is about the work that followed: moving CodeVerse from synchronized tabs to a collaboration path I could test across processes, recover after disconnects, and describe without pretending a local benchmark was a production capacity claim. Socket.IO made connection handling and room fan-out approachable, but it did not decide where truth lived. That distinction matters. A room name inside one Socket.IO process is a routing convenience, not durable shared state. Once I wanted multiple application instances, I needed separate answers for four kinds of information: Document state — the convergent contents of every file. Room policy — organizer identity, edit permissions, active file, and revision. Presence — which sockets are here now, on which instance, with which effective role. Durability — what survives Redis expiry, application restarts, or a longer period of inactivity. CodeVerse now uses Yjs for convergent document updates, Redis for live distributed room state and pub/sub, and Supabase for durable room snapshots and membership data. Socket.IO remains the transport and fan-out layer. That separation was more important than any individual library choice. It is easy to say “I added Redis” and leave the architecture vague. In CodeVerse, Redis has three explicit responsibilities. The Socket.IO Redis adapter connects a publisher and subscriber client to every application instance. An update accepted by instance A can reach sockets connected to instance B without a custom relay protocol. A separate Redis client stores the normalized room record: files, active file, edit policy, organizer, encoded Yjs state, revision, and update time. Presence uses expiring per-socket records plus a sorted-set index, so abandoned sockets do not remain visible forever. Room state has a longer TTL. Presence is intentionally short-lived. Operation IDs expire on a different schedule again. Treating those lifetimes as identical would either make stale users linger or make useful room state disappear too aggressively. CRDTs resolve concurrent document edits, but a room mutation includes more than CRDT text. It also materializes files, increments a revision, updates an active file, and may change permissions. Those compound mutations are serialized with a small Redis lock acquired through SET NX PX. Release uses a compare-and-delete Lua expression, so an expired lock cannot be accidentally removed by its former owner after another process acquires it. The lock is deliberately bounded. Failing with “timed out acquiring collaboration lock” is safer than waiting indefinitely while a room appears to accept work. Every collaboration update has to pass server-side checks before it reaches the Yjs document. The socket must still belong to the requested room. A viewer cannot edit. A collaborator can edit only while the room policy permits it. The organizer can change that policy or remove a collaborator; a client cannot grant itself the organizer role by changing its payload. After authorization, the server decodes the Yjs update, applies it to the stored document, materializes the file map, selects a valid active file, stores the new encoded CRDT state, and increments the room revision. Only then does it broadcast and acknowledge the operation. This is an important line in the design: convergence does not imply permission. A perfectly convergent unauthorized edit is still unauthorized. Networks retry. Browsers reconnect. A user can double-click. A proxy can deliver an acknowledgement late enough that the client sends the same operation again. Each CRDT update therefore carries an operationId. Redis records it with NX and an expiry. The first server instance to mark the operation processes it; a later delivery receives a successful duplicate acknowledgement without applying the edit twice. This is not exactly-once delivery. It is a practical idempotency boundary: at-least-once transport behavior with one accepted mutation per operation ID during the configured window. That wording is less impressive than “exactly once,” but it is accurate. A socket ID is not a user identity. It changes when the connection changes and it says nothing about the role that was previously authorized. When a room join succeeds, CodeVerse issues an expiring signed reconnect token bound to the room, user ID, and role. A returning client presents that token during the next join. The server authorizes the recovery, restores presence under the new socket, returns the latest CRDT snapshot and revision, and tells the client whether the session was recovered. The token does not replace normal authorization. It is evidence for one narrow recovery path, and it expires. This also made reconnect behavior testable. The benchmark disconnects a sample of clients, reconnects them—potentially to the other application instance—and records whether the recovered identity is acknowledged. Writing every keystroke to the durable database would add avoidable latency and cost. Never writing a snapshot would make Redis the only recovery story. CodeVerse uses a debounced persistence boundary. Live operations update Redis and broadcast immediately. After a short quiet period, the current room snapshot is written to Supabase. A fresh room load can start from that durable snapshot, then continue through Redis-backed live state. The public status response reports when collaboration is using the intended Redis path and when it has fallen back to an explicit single-node mode. Production can require Redis and fail startup rather than silently presenting a horizontally scalable UI backed by process memory. That failure mode was a product decision as much as an infrastructure decision. Degraded behavior should be named where a user or operator can see it. I built a benchmark that starts two real Socket.IO servers against Redis, connects clients across both instances, joins one shared room, applies concurrent Yjs updates, sends one all-subscriber propagation probe, and reconnects a sample of clients with their signed recovery tokens. It refuses to run without Redis. A single-process fallback cannot accidentally produce a “distributed” result. On my local machine—Ryzen 7 7735U, 15.2 GB RAM, Node.js 22.14.0, Redis 7.4, all traffic over loopback—the latest 500-client run produced: 54.95 ms cross-instance propagation p95; 104.27 ms CRDT acknowledgement p95; 305.26 ms CRDT acknowledgement p99; 80.19 ms reconnect p95; 100% recovery for the 20 sampled reconnects; 213 MB process RSS at the end of the scenario. Every subscriber received the propagation probe, and both application instances observed the same final room revision. The 100-client and 500-client tables, method, environment, and reproduction command are in the public benchmark report. They do not prove that the free public deployment supports 500 simultaneous editors. The run did not include internet latency, a multi-region topology, managed-provider throttling, a remote Redis service, or noisy-neighbor behavior. The clients, servers, and Redis process shared one machine. It is a controlled regression baseline, not a hosted capacity certificate. The p99 acknowledgement tail at 500 clients is also a real warning. The p95 stays under the current 150 ms target, but some operations took substantially longer. I would rather publish that tail than hide it behind an average. The next performance work should compare saved benchmark runs, make regressions fail against an explicit threshold, and repeat the test whenever the protocol or infrastructure changes. I would define the state boundaries before building the first room UI. The fastest early implementation treated “room” as one concept. The distributed version had to separate document convergence, permission state, transient presence, operation idempotency, routing, and durable recovery. That separation would have made the first version slightly slower to write and much easier to evolve. I would also add failure vocabulary earlier. “Connected” is not enough. An operator needs to know whether the service is using Redis or process memory. A user needs to know whether an edit is forbidden, duplicated, pending, or recovered. A benchmark needs to distinguish acknowledgement from propagation. Specific language made the system easier to test. CodeVerse already has more surface area than it needs for another showcase feature. The current work is reliability, accessibility, documentation, security, performance, and contributor experience. If this architecture interests you, I would value criticism of the boundaries above. If you want a smaller entry point, the repository has focused issues for keyboard dialog behavior, contributor setup diagnostics, and status-page failure contracts. Try CodeVerse Read the source See the contributor guide Join the feature-freeze discussion I built the project independently and publish launch notes under The Sable Falcon (@TheSableFalcon). The code, benchmark method, limitations, and open work are public because quiet work should still be inspectable.",
+      "url": "https://dev.to/thesablefalcon/what-it-took-to-move-a-collaborative-browser-ide-beyond-process-memory-3cj8",
+      "time": "2026-08-11T15:15:12.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "雷蛇那伽梵蛇 V3 专业版无线鼠标发布：23 个按键 + 50K 光学传感，1499 元",
+      "description": "IT之家 8 月 11 日消息，雷蛇今日宣布推出新一代那伽梵蛇 V3 专业版无线鼠标，定价为 1499 元。 京东雷蛇（Razer）那伽梵蛇 V3 专业版无线鼠标 MMO / MOBA / FPS 电竞游戏 多侧键 3 款互换侧面板 23 个按键 50K 光学传感 1499 元直达链接 2026 年数码家电政府补贴持续进行中，IT 之家为大家汇总国补领券地址，买数码家电之前记得领取。 数码补贴：点此领券 手机 / 平板 / 3C 数码支持 8.5 折政府补贴，不超过 6000 元的产品至高立减 500 元。 家电补贴：点此领券 多类家电支持 8.5 折政府补贴，单品至高补贴 1500 元。 欢迎下载最会买 App - 好货好价，高额返利，1 毛钱也能提现！ 扫描二维码或点击此处下载最新版（自动识别平台）。 雷蛇那伽梵蛇 V3 专业版主打多场景游戏适配，提供三款磁吸侧面板，用户可更换侧面板以适配 MMO、MOBA、FPS 等不同品类游戏，实现不同按键布局适配： - 12 键侧面板：专为 MMO 打造，借鉴手机 T9 键盘布局，12 枚按键可由拇指轻松操控，双色注塑键帽字符耐磨损 - 6 键侧面板：适配 MOBA 与大逃杀类游戏，六边形按键布局缩短拇指移动距离，操作响应更快 - 2 键侧面板：适配 FPS 游戏与日常场景，简约双按键布局无多余干扰 按键配置方面，这款鼠标拥有 至多 23 个可自定义按键，包含左右键、中键、滚轮控制、DPI 调节、配置切换等功能，满足玩家自定义按键绑定需求。 鼠标配备 第二代 HYPERSCROLL 纵横滚轮，支持四种滚轮模式，兼顾精准操控与日常浏览： - 触觉滚动模式（24 档）：提供清晰分段档位反馈，实现精准操控 - 自由滚动模式：实现顺滑高惯性滚动，方便快速浏览 - 精细触觉滚动模式（48 档）：收窄档位间隔，实现极致精细调节 - 智能滚动模式：可根据滚轮速度自动切换滚动模式，适配操作习惯 核心配置方面，这款鼠标搭载 第三代 FOCUS PRO 50K 光学传感器，拥有 50000 DPI 最高灵敏度、 930 IPS 最大速度、 90 G 最大加速度，支持动态灵敏度、DPI 步进调整、智能追踪等多项功能。 按键方面，鼠标采用 第四代雷蛇光学鼠标微动，拥有约 1 亿次点击寿命，触发力度比第三代光学微动减轻约 12%，为高速点击提供更流畅体验。 连接方面，这款鼠标支持 三模连接，包含 HYPERSPEED 2.4GHz 无线、低功耗蓝牙、USB TYPE C 有线连接，满足不同使用场景需求。续航方面，在 HYPERSPEED 无线模式下，关闭灯光可实现至高约 155 小时续航。 此外，这款鼠标支持磁吸式无线充电，可使用雷蛇鼠标底座专业版充电，也可更换无线充电模块支持更多 Qi 协议充电设备，支持 HYPERPOLLING 8000HZ 轮询率（需单独配件升级）。 IT之家附与上一代产品参数对比如下： 京东 雷蛇（Razer）那伽梵蛇 V3 专业版无线鼠标 MMO / MOBA / FPS 电竞游戏 多侧键 3 款互换侧面板 23 个按键 50K 光学传感 1499 元 直达链接",
+      "url": "https://www.ithome.com/0/988/532.htm",
+      "time": "2026-08-11T15:14:37.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "游戏"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Acer Chromebook Plus Spin 714 plunges 38% in this 24-hour deal",
+      "description": "A flash Best Buy deal cuts the feature-packed machine to $499, with a touch display, stylus support, and Core Ultra power.",
+      "url": "https://www.androidauthority.com/acer-chromebook-plus-spin-714-deal-3697237/",
+      "time": "2026-08-11T15:12:53.000Z",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "苹果 Apple Arcade 下月新增两款益智游戏，分别为《Cozy Puzzles+》《舒适拼图 +》",
+      "description": "IT之家 8 月 11 日消息，苹果公司今天宣布旗下 Apple Arcade 订阅服务将从 9 月 3 日起新增两款益智游戏，分别是《Cozy Puzzles+》和《舒适拼图 +》。 IT之家了解到，《Cozy Puzzles+》是一款类似《俄罗斯方块》的游戏，玩家需要将不同的彩色方块拖入 8*8 网格中，通过填满横向、纵向的整行来获得更高分数，空间耗尽即代表游戏结束，考验玩家的布局策略。 而《舒适拼图 +》（Art of Fauna: Cozy Puzzles+）则是一款氛围轻松的拼图游戏，内含 18 和 19 世纪的复古野生动物插画与科学文献艺术作品，主打轻松、从容的解谜体验，本作曾获得 2025 年 Apple 设计大奖。 按照惯例，这两款 Apple Arcade 平台的新游戏都不会有广告，也不会有内购项目，主打完全沉浸的体验。",
+      "url": "https://www.ithome.com/0/988/530.htm",
+      "time": "2026-08-11T15:12:41.000Z",
+      "tags": [
+        "游戏",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "Google Pixel 11 Pro XL appears on Geekbench as hands-on images of the Pro leak",
+      "description": "Google will unveil the Pixel 11 series at its Made by Google event tomorrow. Just ahead of the launch, the Pixel 11 Pro XL has appeared on Geekbench, while the Pixel 11 Pro has surfaced in leaked hands-on images. The Geekbench listing has revealed details on Google's Tensor G6 chipset. It has a 7-core CPU with two cores clocked at 2.65GHz, four running at 3.38GHz, and a single prime core reaching 4.11GHz. The listing also confirms that the Pixel 11 Pro XL will be equipped with 16GB of RAM and ship with Android 17. In the benchmark, the handset scored 2,112 points in the single-core...",
+      "url": "https://www.gsmarena.com/google_pixel_11_pro_xl_appears_on_geekbench_as_handson_images_of_the_pro_leak-news-74108.php",
+      "time": "2026-08-11T15:09:03.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "台风过境：宁波用 AI“算”出防汛最优解，预报模型 5 秒生成方案",
+      "description": "IT之家 8 月 11 日消息，今年第 13 号台风“白海豚”于 8 月 9 日登陆，给地处三江交汇、濒临海湾的浙江宁波带来强降雨。 据央视报道，作为人均水资源占有量远低于全国平均水平的缺水城市，宁波在台风防御中面临水库既要腾库防洪、又要蓄水保供的两难困境。当地依托数字孪生等智慧水利手段，实现了防洪与蓄水的精细化平衡。 水库调度在台风防御中常面临矛盾：水放多了怕台风改道导致后续用水紧张，放少了又怕雨量超预期威胁大坝安全。 宁波市水利水电规划设计研究院防灾减灾部总监江雨田介绍，这一平衡点需要靠调度软件不断滚动分析计算。该调度软件的核心是一套 AI 预报模型。 以甬江流域为例，以往开展一场完整的方案计算需要 5 到 10 分钟，如今 AI 预报模型仅需 5 到 10 秒，预报时效性从分钟级提升至秒级。根据降雨预报和水位变化，该模型每 5 分钟更新一次调度建议，调度员可据此实时调整下泄流量。 在数字孪生调度平台上，皎口水库与其上游的周公宅水库实现了联合调度。IT之家从央视获悉，两座水库构成“梯级水库”，周公宅的泄流量直接影响皎口的水位。 目前，宁波全市 16 座大中型水库已接入统一调度平台，实现市级、县级、水库管理单位三级联动。哪座水库接近汛限、哪座尚有库容，在大屏上一目了然。 此外，皎口水库大坝内安装了上百个传感器和监测点，包括 121 个坝基渗流点、32 个测压管、19 组三向测缝仪，24 小时不间断向后台传输数据。平时无人机用于替代人工巡查，台风天则由人工加密巡查。 宁波市水利部门数据显示，从 8 月 6 日至 11 日 10 时，全市大中型水库共增蓄水量 4.54 亿立方米。在保证水库防洪安全的前提下，居民供水得到充分保障。据央视报道，浙江省水利厅数字孪生平台已覆盖全省 1 万多个水文站，可在 2 分钟内自动生成防御方案。",
+      "url": "https://www.ithome.com/0/988/529.htm",
+      "time": "2026-08-11T15:08:39.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "卢伟冰：未来随着新机陆续发布，大家一定会感觉 REDMI K100 Pro 系列越来越香",
+      "description": "IT之家 8 月 11 日消息，小米 REDMI K100 Pro 系列手机今日正式发布，首批带来了 Pro Max 和 Pro 两款新机，后续还将发布标准版和游戏旗舰机。 小米 REDMI K100 Pro 系列手机售价如下： REDMI K100 Pro 12+256GB 版本 3999 元，首销 3699 元，国补价 3199 元； 16+256GB 版本 4599 元，首销 4099 元，国补价 3599 元； 12+512GB 版本 4399 元，首销 4299 元，国补价 3799 元； 16+512GB 版本 4999 元，首销 4699 元，国补价 4199 元； REDMI K100 Pro Max 12+256GB 版本 4499 元，首销价 4199 元，国补价 3699 元； 16+256GB 版本 4899 元，首销价 4599 元，国补价 4099 元； 12+512GB 版本 5099 元，首销价 4799 元，国补价 4299 元； 16+512GB 版本 5499 元，首销价 5199 元，国补价 4699 元； 16+1TB 版本 5999 元，国补价 5499 元（限量两万台） 新机的价格也成为了大家讨论的热点。IT之家注意到，小米集团合伙人 / 总裁、手机部总裁、小米品牌总经理卢伟冰刚刚发文回应了新机定价，他表示： 未来随着新机陆续发布，大家一定会感觉 K100 Pro 系列越来越香 [爱心] 内存涨价的原因想必大家都听过很多了，AI 算力爆发虹吸产能 + 三大寡头控产 + 行业库存见底 + DDR4/DDR5 换代断档，四重因素叠加想不涨都难。事实上，各手机厂商的部分在售产品已调价，而接下来发布的新机也会不可避免地会迎来价格上的调整。 相关阅读： 《小米 REDMI K100 Pro / Max 手机发布：国补价 3199 元起，最高 9070mAh 电池 + Bose 联合调音》",
+      "url": "https://www.ithome.com/0/988/527.htm",
+      "time": "2026-08-11T15:05:09.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "Ulefone 推出 Armor 22 Pro/24 Pro 三防手机，联发科 Helio G200 芯片",
+      "description": "IT之家 8 月 11 日消息，Ulefone 现已宣布推出 Armor 22 Pro 和 Armor 24 Pro 两款三防智能手机，新品配备联发科 Helio G200 芯片，均支持 eSIM。 据介绍，Armor 22 Pro 的机身厚度为 15mm，搭载联发科 Helio G200 处理器。拥有 6400 万像素主摄、6400 万像素夜视镜头。正面配备一块 6.58 英寸的 FHD+ 屏幕，支持 120Hz 高刷，官方提供 8GB 内存、128GB/256GB 存储空间，内置 6600mAh 电池，预装 Android 16 操作系统。 而 Ulefone Armor 24 Pro 则是 A22 Pro 的的续航 / 性能强化版本。该机配备 22000mAh 超大电池，处理器与 A22 Pro 相同但升级为 12GB 内存，后置摄像头为 6400 万像素，配备 6400 万像素夜视镜头和 1600 万像素前摄。 同时，该机配备 6.78 英寸的 FHD+ 屏幕，支持 120Hz 高刷，支持 66W 有线快充和 10W 反向充电，新机兼容 uSmart 扩展接口。 IT之家附该系列机型定价如下： Armor 22 Pro：239.99 美元（IT之家注：现汇率约合 1,621 元人民币）起 Armor 24 Pro：359.99 美元（现汇率约合 2,432 元人民币）",
+      "url": "https://www.ithome.com/0/988/526.htm",
+      "time": "2026-08-11T15:03:04.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Razer Naga V3 Pro Review: Buttons Galore",
+      "description": "The PC gaming world has tried to move on from bulky, heavier mice, but the Naga V3 Pro proves that it still has its place.",
+      "url": "https://www.wired.com/review/razer-naga-v3-pro/",
+      "time": "2026-08-11T15:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Kyoto Fusioneering starts work on key fusion power plant device",
+      "description": "Fusion power startups are turning to Kyoto Fusioneering to supply components for future power pants. The Japan-based startup just received a grant to build a part of the fuel system.",
+      "url": "https://techcrunch.com/2026/08/11/kyoto-fusioneering-starts-work-on-key-fusion-power-plant-device/",
+      "time": "2026-08-11T15:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
     {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
@@ -102,6 +586,17 @@
       ]
     },
     {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "Cleaning costs, or, examining the OpenBSD -fret-clean flag",
+      "description": "Comments",
+      "url": "https://briancallahan.net/blog/20260811.html",
+      "time": "2026-08-11T14:44:05.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
       "title": "索尼推出《漫威金刚狼》限定版 PS5 主机手柄套装，9 月 15 日同步发售",
@@ -126,6 +621,17 @@
       ]
     },
     {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "Manus：将恢复以独立公司的形式运营，部分用户数据将被删除",
+      "description": "8月11日，Manus发布《致Manus用户的一封信》。Manus表示，即将恢复以独立公司的形式运营，作为恢复独立运营的一部分，同时为遵守特定司法辖区的监管要求，部分用户在2025年12月29日当天或之后产生的数据，将于2026年8月23日08:00起至8月24日期间（SGT）被删除。受影响的用户可以从现在起至2026年8月23日07:59（SGT）备份数据，并可从2026年8月25日08:00（SGT）起恢复数据。在此期间，未受影响的用户可以照常使用Manus，无需采取任何行动。 本文来源：界面新闻 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779203",
+      "time": "2026-08-11T14:40:57.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "The Accidental DDOS: How a Single React Bracket Triggered 100,000 API Requests and Melted Our Database",
@@ -136,6 +642,19 @@
         "人工智能",
         "芯片/半导体",
         "网络安全"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "台积电“CoWoS先生”：ABF基板未来几年短缺程度或仅次于存储",
+      "description": "台积电先进封装持续扩产，CoWoS供需缺口正在收窄，但供应链“卡点”正从存储转向基板材料。 台积电先进封装副总裁何军——业界称其为“CoWoS先生”——表示，未来几年ABF基板短缺程度可能仅次于存储，成为先进封装供应链的第二大瓶颈。与此同时，台积电CoWoS产能已连续三年翻倍，目前供给已“非常接近”市场需求，但仍未完全满足。 随着CoWoS产能逐步追上需求，先进封装的瓶颈正向上游材料转移。AI加速器尺寸和封装复杂度持续提升，进一步推高ABF基板需求，使其成为制约先进封装扩产的关键环节。 CoWoS供需缺口收窄，14倍光罩方案2029年前推出 何军表示，台积电CoWoS产能已连续三年实现年度翻倍，目前供给已非常接近市场需求。5.5倍光罩尺寸CoWoS已实现量产，在多个AI客户产品上的良率超过98%；按照技术路线图，14倍光罩尺寸CoWoS预计在2029年前推出。 随着封装尺寸扩大，供应链对材料和制造精度的要求也同步提高。何军指出，当封装尺寸超过3倍光罩后，所有组件的质量标准都需达到汽车级以上，以将失效率控制在可接受范围。 ABF基板接棒存储，成先进封装新瓶颈 在供应链端，何军预计，未来几年ABF基板短缺程度将仅次于存储，成为先进封装的第二大瓶颈。目前客户已开始从多家供应商采购基板以保障供给，但不同供应商在热学、机械性能等方面存在差异，也给制造一致性带来新的挑战。 与此同时，台积电正加速推进SoIC混合键合技术。该技术去年已实现6微米间距量产，计划在2029年前进一步缩小至4.5微米，并应用于A14芯片堆叠。何军称，SoIC互连密度可达到传统方案的50倍，能效提升约5倍。 Chiplet智能配对，先进封装迈向系统级协同 随着封装复杂度提升，台积电正通过Chiplet“智能配对”技术，将性能互补的芯片裸片重新组合，以减少因单颗芯片性能差异造成的浪费，提高整体良率和有效产出。 中介层的功能也在从单纯互连向集成化演进，未来有望进一步承载电压调节器、电容及硅光子器件。与此同时，台积电正推动客户、供应商与晶圆厂并行开发，在量产前六个季度提前发布系统规格指引，并要求供应商在晶圆厂附近配置研发团队，以加快热学、机械及功耗等问题的协同解决。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779199",
+      "time": "2026-08-11T14:40:24.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "汽车"
       ]
     },
     {
@@ -175,6 +694,17 @@
         "手机",
         "汽车",
         "电脑硬件"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "美财政部维持票息发行规模不变，中国住房消费政策加码，中国央行流动性宽松---0811宏观脱水",
+      "description": "美国财政部连续第三个季度维持票息拍卖规模不变，并将指引措辞由评估未来的增加改为评估未来的变化，提高了2027财年不增发的概率。财政部更依赖短期国库券而非增发中长期票息债来满足融资需求，推迟了长端供给压力，对长端利率偏利多。 8月7日北京印发房地产新政，非京籍家庭五环内购房社保或个税缴纳年限由2年调减为1年。成都、武汉、南京等多个热点城市正谋划出台住房消费提振举措。7月国务院批复的《扩大消费“十五五”规划》将住房消费纳入大宗耐用商品消费范畴并置于首位。 本周狭义流动性季节性宽松，买断式逆回购净投放2000亿元。央行7月工具操作表显示PSL延续净回笼1161亿元，其他结构性工具净投放1744亿元为二季度信贷投放滞后反映，国债净买入500亿元较上月增加400亿元配合政府债发行。",
+      "url": "https://wallstreetcn.com/member/articles/3779190",
+      "time": "2026-08-11T14:30:07.000Z",
+      "tags": [
+        "科技创投"
       ]
     },
     {
@@ -254,6 +784,15 @@
         "芯片/半导体",
         "汽车"
       ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "msword: Port of Microsoft Word 1.1a to x64",
+      "description": "Comments",
+      "url": "https://github.com/jmarshall23/msword",
+      "time": "2026-08-11T14:20:29.000Z",
+      "tags": []
     },
     {
       "source": "Dev.to",
@@ -614,6 +1153,19 @@
       ]
     },
     {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "但斌回应投资人质疑：长江东方港湾2号重仓AI，目前依旧保持满仓状态",
+      "description": "8月11日晚，东方港湾董事长但斌回应投资人质疑称，长江东方港湾2号目前依旧保持满仓状态，在7月本轮深度回调之前，该基金重仓AI产业链标的，一路坚持、未做大规模减仓，本轮跟随AI赛道出现了较大幅度回撤。 东方港湾在2023年把握了英伟达为代表的全球AI核心机会，对A股本土AI产业链的布局启动偏晚，直到2026年才全面全力以赴重仓。本轮7月大跌行情中，东方港湾没有恐慌割肉、没有大幅减仓，仅做了极小比例的结构性微调。 但斌微博贴出的截图显示，此前，有投资者认为长江东方港湾2号在7月跌了35.4%的点，但8月份首周才反弹7个点，质疑但斌有好几个股票都割在了最底部。该投资人称希望但斌言行一致，毕竟五年来，很多AI也涨了很多倍，口口声声说重仓AI，却是5年没回本。 本文来源：红星资本局 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779198",
+      "time": "2026-08-11T13:47:06.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
       "source": "机器之心",
       "sourceColor": "#512da8",
       "title": "openJiuwen协同昇腾打造智能体「算力亲和」技术，首token时延砍半，推理存储占用下降25%",
@@ -687,6 +1239,19 @@
       ]
     },
     {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "腾讯音乐一度跌约17%，公司公布了二季度财报",
+      "description": "腾讯音乐第二季度总收入为人民币89.3亿元（13.2亿美元），同比增长5.8%。音乐相关服务收入同比增长11.0%至人民币76.1亿元（11.2亿美元），音乐相关会员服务收入同比增长8.1%至人民币47.9亿元（7.06亿美元）。",
+      "url": "https://wallstreetcn.com/livenews/3148102",
+      "time": "2026-08-11T13:35:55.000Z",
+      "tags": [
+        "互联网",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
       "source": "爱范儿",
       "sourceColor": "#d4233a",
       "title": "9.99 万元起！新款海豹 06 上市，天神之眼 B、闪充和云辇-C 都来了",
@@ -707,6 +1272,19 @@
       "tags": [
         "游戏",
         "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "杠杆资金正在绑架AI行情？相关ETF敞口已升至58%，再平衡或加剧科技股震荡",
+      "description": "杠杆ETF正在成为AI行情中一股不可忽视的隐性力量。 彭博新闻的最新分析显示，看涨杠杆ETF对AI相关股票的敞口已从2022年的26%攀升至58%，其中仅10家公司便占据了该敞口的三分之二，高度集中于英伟达、SK海力士及美光科技等。 这一趋势的风险已不再局限于杠杆产品自身的投资者。韩国股市近期出现的剧烈震荡提供了一个警示案例——追踪SK海力士和三星电子的杠杆ETF在高峰期合并交易量一度占首尔市场全日成交的70%，基准指数Kospi的波动性甚至超过了比特币。摩根大通策略师Nikolaos Panigirtzoglou表示，鉴于这类产品对科技股的高度倾斜，\"杠杆股票ETF将持续产生大规模再平衡资金流，并推高科技股波动率。\" 目前，全球杠杆ETF总资产约为2500亿美元，虽然仅占全球逾22万亿美元ETF资产的一小部分，但其日均交易量却占全部ETF日成交的16%，远超其1%的资产占比。日均换手的高倍数放大了这类产品对市场收盘时段的潜在冲击——由于每日再平衡须以收盘价为基准，相关调仓操作集中在交易日最后数分钟完成，与指数再平衡、期权对冲及机构订单叠加共振。 AI敞口四年翻四倍，集中度风险陡升 彭博对约800只看涨杠杆股票ETF的分析显示，自2022年以来，其整体名义敞口已大约翻了四倍，且越来越向少数AI相关名称集中。截至2026年年中，AI相关敞口占比已达58%，其中存储芯片类别尤为突出。 在单股杠杆ETF领域，集中度更为惊人：SK海力士、三星电子、美光科技及闪迪四家存储芯片公司合计占据单股杠杆ETF敞口的近一半。自2025年中期以来，追踪主要存储芯片公司的单股杠杆ETF已累计吸引逾190亿美元净流入，其中SK海力士相关产品吸引资金约108亿美元，三星约43亿美元，美光科技约19亿美元，闪迪约26亿美元。 Asym Research创始人Rocky Fishman指出，近年来杠杆ETF市场的根本性变化，并非整体规模的扩张，而是\"向波动性更高的标的迁移，包括新兴的单股杠杆ETF品类\"。 再平衡机制：涨跌均可放大波动 杠杆ETF的运作机制决定了其具有内生的顺周期属性。当标的股票上涨时，看涨杠杆基金须增加敞口；当股票下跌时，则须减少敞口，以维持既定的杠杆倍数。而做空类反向ETF在标的股票上涨后，也可能被迫买入以恢复目标杠杆比例——这意味着看涨与看跌产品在同一标的上的再平衡操作，有时会朝同一方向运动。 野村估算，在今年6月规模峰值时，标的证券每波动1%，杠杆ETF就需要通过再平衡买卖约100亿美元的证券。RBC Capital Markets衍生品策略主管Amy Wu Silverman将这一机制类比于期权市场中的\"空头Gamma\"效应，\"标的资产的大幅波动会产生后续的放大效应。\"她同时警示，即便是对杠杆ETF毫无兴趣的投资者，也应意识到这类产品仍可能对其持仓产生冲击。 Fishman表示，他最担忧的情景是\"在临近收盘时，公司或市场层面突然发生重大事件，迫使当日再平衡活动在极短时间内集中完成\"。 韩国案例：极端震荡的现实预演 今年早些时候，韩国金融监管机构批准设立十余只追踪三星和SK海力士的杠杆ETF，其初衷是留住此前大量流向海外同类产品的本地资金。在香港挂牌的CSOP SK海力士杠杆ETF在高峰期资产规模接近170亿美元，一度成为全球最大的单股杠杆ETF，其体量相对于SK海力士日常自由流通股交易量而言过于庞大，引发投资者警告该ETF已开始反向驱动正股走势，而非单纯跟踪。 韩国本地杠杆ETF上市后短短两个月内即吸引逾90亿美元流入。随后，Kospi指数出现剧烈的盘中震荡，冲击蔓延至全球市场。韩国金融监管机构随即出手，提高了相关产品投资者的最低保证金要求，并临时暂停新产品上市。 分析人士指出，这些基金并非此次抛售的根本原因——芯片价格走弱、业绩不及预期以及借贷成本上升均有所影响，对冲基金平仓等隐性力量也可能同步发酵。但通过对两只已主导Kospi的股票叠加大规模杠杆敞口，这些产品被视为加剧极端波动的重要推手。Academy Securities宏观策略主管Peter Tchir将此类情形与2018年初VIX挂钩杠杆产品崩溃事件相提并论： \"这就是VIX ETF爆仓的过程，机械化的运作流程充满风险。\" 系统性威胁还是被过度担忧的风险？ 并非所有市场参与者都认同杠杆ETF已构成系统性威胁。Susquehanna International Group衍生品策略联席主管Chris Murphy表示，使用者理解这类产品的机械化交易规则固然重要，\"但相比市场中其他风险，我不会花太多时间担忧杠杆ETF。封装在透明且流动性良好的ETF中的杠杆敞口，比其他地方的隐性敞口更容易被理解和评估。\" Fishman也认为，外界对杠杆ETF的广泛担忧有所夸大。这类产品确实\"有可能产生反馈循环，但这是早已存在多年的效应\"，其潜在再平衡冲击\"在经济意义上并不比过去几年更高\"。他同时指出，\"理论上它们或许有朝一日会成长为系统重要性因素，但我们距离那一步还很远。\" 对于杠杆ETF投资者自身而言，风险则更为直接明确：这类产品的收益承诺仅在单日内成立。管理费用持续拖累净值，而\"波动率损耗\"效应意味着，一旦标的资产反复震荡，基金净值将随时间不断侵蚀——即便标的最终回到原点，持有人也可能已遭受实质性亏损。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779191",
+      "time": "2026-08-11T13:31:13.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ]
     },
     {
@@ -757,6 +1335,19 @@
       "tags": [
         "人工智能",
         "大公司"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "万亿参数！英伟达被曝正在开发新一代AI，目标直指全球顶尖开源模型",
+      "description": "英伟达正大力押注自研开源人工智能模型，试图以此扩大GPU需求——尽管这一策略同时将其推入与自身客户和投资对象正面竞争的微妙处境。 The Information 11日报道称，英伟达目标是将Nemotron 4最大版本的性能打造至与全球顶尖开源模型比肩的水准。多名员工透露，该模型参数量预计至少达到一万亿——约为其现有最大模型Nemotron 3 Ultra的两倍。英伟达生成式AI副总裁Kari Briski在一封邮件中表示，\"英伟达投资Nemotron，是因为我们相信每家企业、每个国家都需要可及的前沿开源模型。\" 英伟达当前的芯片需求高度集中于OpenAI、微软、SpaceX等少数前沿实验室和云服务商，而上述机构正日益布局自研AI芯片。Nemotron 4的推进旨在将需求基础拓展至更广泛的企业用户群体，从而降低英伟达对头部客户的依赖。AI模型评测机构Arena的首席执行官Anastasios Angelopoulos表示，\"无论哪家公司做出优秀的开源模型，英伟达都是赢家。\" 英伟达美股盘前涨近2%。 千亿参数目标，算力投入三倍跃升 据多名参与Nemotron项目的员工透露，英伟达计划开发的最大规模Nemotron 4模型参数量至少达到1万亿，约为其今年6月发布的现有最大模型Nemotron 3 Ultra的两倍。该模型参数规模仍将远低于中国头部开源模型，但英伟达同时强调其压缩技术可使较小模型实现超越性的性能表现。 在算力投入层面，英伟达的决心体现于其资金承诺的大幅扩张。据悉，该公司通过向购买其芯片的云服务商回租AI服务器获取算力。截至今年4月，英伟达多年期云服务承诺的总价值已增至2031年初的280亿美元，约为一年前披露金额的三倍。其中针对本财年（截至2028年1月）的相关支出约为70亿美元，虽远低于OpenAI和Anthropic的投入规模，但已超过绝大多数美国和中国领先开源实验室的历史融资总额。 在研发人员规模上，Nemotron项目同样持续扩张。英伟达上一个重要模型的研究论文署名作者多达570人，多名员工表示Nemotron 4的参与人数将更多。\"现在每个人都想参与进来，\"一位前员工说。 组建\"Nemotron联盟\"，广纳开源生态伙伴 为加速Nemotron 4的研发，英伟达构建了一个名为\"Nemotron联盟\"的合作网络，成员包括Reflection、Cursor、Thinking Machines和Mistral等开源开发商，各方在推进自身模型项目的同时，也向Nemotron 4贡献训练数据、评估支持和模型设计方案。 此外，据一位直接参与合作的人士透露，AI模型训练初创公司Prime Intellect已向该项目贡献了30万个模拟环境，用于辅助模型训练。AI编程工具初创公司Cognition也在联盟成员之列，据知情人士透露，该公司已就向英伟达提供代码训练数据展开讨论，但相关合作尚未正式对外公布。 联盟成员的参与动机各异。部分公司希望借助英伟达对开源生态的推动扩大市场份额；另一些则期望以较低成本影响一个可供自身使用的高质量模型的研发方向，从而规避自行承担训练算力成本的压力。Prime Intellect首席执行官Vincent Weisser将这一联盟定位为对抗单一\"神级\"模型垄断的集体行动，而非一场争夺最佳开源模型名号的零和博弈。 客户与竞争对手的边界趋于模糊 Nemotron 4的推进令英伟达陷入一种微妙的结构性张力之中。一方面，OpenAI长期以来是英伟达芯片需求的重要驱动方，英伟达已向其投资300亿美元；另一方面，Nemotron 4的定位恰恰是为企业提供成本更低的替代方案，与OpenAI等前沿实验室的商业模型形成竞争。与此同时，联盟中包含的Reflection AI和Thinking Machines等公司，也是英伟达已注资的开源创业企业。 不过，对英伟达而言，这一竞争逻辑并不必然是零和游戏。AI模型评估机构Arena的首席执行官Anastasios Angelopoulos表示：\"无论哪家公司做出优秀的开源模型，英伟达都是赢家。\"英伟达的核心逻辑在于：开源生态越繁荣、参与主体越多元，GPU的整体需求就越旺盛。 目前，Nemotron系列模型已获得一定市场采用，帕兰提尔（Palantir）于今年6月宣布与英伟达合作，将Nemotron模型用于美国政府客户。但据Arena和Artificial Analysis等机构的基准测试数据，英伟达现有最大模型Nemotron 3 Ultra在美国开源模型中仅排名第二，位列Thinking Machines新发布的Inkling模型之后，在全球模型整体排名中更位于前40名之外。 发布时间表仍不明朗 尽管项目规模宏大，Nemotron 4的发布时间仍存在较大不确定性。多名员工表示，英伟达已就预训练数据和架构做出若干决策，但尚未最终确定具体规格和发布日期，最终训练阶段亦尚未启动，预计耗时数月。两名员工认为模型最快可在今年秋末发布，另有员工认为时间可能更晚。 与此同时，英伟达本周已发布了Nemotron系列的一个较小版本——Nemotron 3.5 Lightning，该模型主打以尽可能快的速度和效率运行AI代理任务。英伟达同步发布了免费的模型路由软件，协助企业更便捷地构建自定义模型路由工具，将特定AI任务自动分配至最优、最经济的模型处理。 英伟达应用深度学习研究副总裁Bryan Catanzaro今年1月在一档播客中表示，投资Nemotron\"对我们公司的未来至关重要\"。英伟达首席执行官黄仁勋也在上月的一封邮件中公开表态支持开源，称开源模型\"促进安全、网络安全、科学进步和国家安全\"。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779195",
+      "time": "2026-08-11T13:24:05.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ]
     },
     {
@@ -855,6 +1446,19 @@
       ]
     },
     {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "米哈游AI陪伴产品上线29天即宣布停运，高好评为何没换来长期运营？",
+      "description": "8月11日，米哈游宣布AI互动陪伴产品《BSide：Olivia Lin》将停止运营。距离其7月13日在Steam开启免费抢先体验，仅过去29天。 根据官方公告，产品将在8月27日上线离线版本，同时关闭写信、上传MIDI等依赖在线服务的功能；8月31日从Steam下架并关闭服务器。离线版将保留演奏和桌面动态壁纸等本地功能。 林离不是近期唯一退场的二次元AI陪伴实验。 7月29日，米哈游联合创始人蔡浩宇创办的AI公司Anuttacon永久关闭AnuNeko。官方对外表示，团队规模较小，决定将资源投入其他方向，产品关闭后用户对话不再可访问。 两款产品在短期内先后退场，提示出AI陪伴产品可能面临的一些共同难题。 大模型首先让角色“活起来”。过去的游戏角色只能按照预先写好的剧情行动，生成式AI则可以记住用户、回应情绪，并根据不同经历生成不同反馈。 《BSide》选择写信而非即时聊天，本质上也是试图让交流更接近一段具体关系。 从Steam用户评价看，《BSide》的整体口碑仍较为正面。 截至8月11日，其Steam页面共有1549条评价，约82%为好评。用户认可林离写信、演奏和视频回复带来的真人感，也希望产品增加更多生活状态、桌面行为和自由互动。 但能够无限交流，并不等于拥有无限值得交流的内容。 人与人之间的关系会被共同经历不断更新。游戏也拥有一套持续制造事件的系统：任务、世界、探索和角色关系不断提供新的情境，玩家对角色的感情往往是共同经历这些事件后的结果。 纯陪伴产品则试图直接把“关系”变成内容。当主要行为长期停留在倾诉、回应和安慰，再聪明的模型也可能回到相似的对话循环。 用户真正需要的或许不只是一个能够陪自己聊天的人，而是一个能够陪自己做事、共同推动故事的人。 《BSide》面临的还有更具体的产品形态问题。陪伴需要高频、低摩擦和随时出现，但Steam和PC桌面更适合集中式体验，较难覆盖通勤、睡前等碎片化场景。 如何让一个设定高度完整的公共角色同时与不同用户建立具有独占感的私人关系，同样是尚未解决的产品难题。模型发挥太少，角色容易重复；发挥太多，又可能偏离统一人设。 此外，监管已经成为无法忽略的变量。 《人工智能拟人化互动服务管理暂行办法》于7月15日生效。新规禁止过度迎合用户、诱导情感依赖，要求产品建立年龄识别、未成年人模式、极端情境干预、过度依赖提醒和交互数据复制删除机制；上线拟人化互动服务还需开展安全评估。 《BSide》和AnuNeko的结束尚不足以否定AI陪伴需求，却显示“让角色活起来”只是产品的起点。一款长期陪伴产品还必须让关系能够发展、能够负担，并在平台变化甚至服务终止时得到安全保存。 AI已经可以让一个角色说话。接下来需要解决的，是如何让用户愿意与它共同生活得更久。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779196",
+      "time": "2026-08-11T13:09:30.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "专访"
+      ]
+    },
+    {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
       "title": "I tried Opera's new vertical tabs - and it might be the best implementation yet",
@@ -901,6 +1505,17 @@
       "tags": [
         "手机",
         "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "康师傅上半年收入微增1.1%，产品结构调整推高利润",
+      "description": "收入低增长背景下，康师傅正在更加依赖产品结构调整增厚利润。 8月11日，康师傅控股发布截至2026年6月30日止六个月的未经审核中期业绩。上半年，公司收入405.45亿元，同比增长1.1%；毛利145.07亿元，增长5%；股东应占利润24.33亿元，增长7.1%。 若剔除去年同期资产活化计划产生的一次性收益，股东应占经调整利润同比增长15.2%至24.33亿元。利润增速明显快于收入，主要由整体毛利率提升1.3个百分点至35.8%带动。 这一表现基本兑现了市场对利润端的预期，但收入更弱。 大和在7月的业绩前瞻中预计，康师傅上半年收入增长2%，实际收入增速比其预测低0.9个百分点。 分业务看，方便面收入137.33亿元，同比增长2%；毛利率提升2.5个百分点至30.3%。饮品收入265.41亿元，仅增长0.7%，毛利率提升0.7个百分点至38.4%。 康师傅均将毛利率改善归因于产品结构调整。 方便面继续覆盖多个价格带：“鲜Q面”主打非油炸，“合面”面向即时零售正餐场景，“特别特”和“御品盛宴”分别切入鲜泡面和高端“一人食”；中价产品则增加新口味和定制规格，向量贩零食等渠道延伸。 饮品业务的结构调整集中在无糖、低糖和功能化产品。冰红茶向能量饮料延伸，部分果茶配方降糖25%；“茉莉白茶”主打0糖、0代糖和0卡路里，“茶的传人”继续布局精品茶。星巴克即饮增加椰椰拿铁、果香美式等新品，植物饮料“神农养方”则切入轻养生需求。 从更长时间看，利润导向正在变得更明显。 按各年上半年相同口径，2023年至2026年，方便面毛利率由25.8%升至27.1%、27.8%和30.3%，累计提高4.5个百分点；饮品毛利率由32.7%升至35.2%、37.7%和38.4%，累计提高5.7个百分点。 直到2025年，原材料因素仍未完全退出康师傅的毛利率改善逻辑：当年饮品毛利率提升仍受益于原材料和管理效能，而方便面已转向产品升级调价。 券商对这种利润改善能否延续仍有分歧。中金7月预计，原材料涨价压力缓解后，下半年成本压力可能较为可控；麦格理此前则因原材料成本上升、市场竞争和促销增加，下调了康师傅未来三年的毛利率预测。 这也是康师傅下一阶段利润增长的约束。公司没有披露各款新品的收入、销量和利润贡献，尚无法量化高端化、健康化产品对毛利率的具体拉动。 若收入继续低增长，产品结构能否持续抵消PET等原材料价格和渠道促销压力，将决定利润增速能否继续快于收入。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779194",
+      "time": "2026-08-11T13:05:02.000Z",
+      "tags": [
         "科技创投"
       ]
     },
@@ -1655,8 +2270,21 @@
     {
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
+      "title": "Coding之后，AI下一块高价值市场在哪里？AI4S正在把科研变成一门“计算生意”",
+      "description": "Coding之后，AI下一个能够承接大规模付费的场景在哪里？近期AI4S重新成为资本市场焦点。科学模型正在与科研Agent、自动化实验室连接，AI从预测结构、筛选分子走向设计实验和读取结果；与此同时，医药领域的平台公司收入开始放量，DNA合成、蛋白表达和早研服务也出现增量需求。当科研的瓶颈从“设计太慢”转向“验证不够快”，AI4S会不会成为下一个真正改变行业成本曲线的AI应用？ 一、发生了什么？——AI4S为何突然从科研概念走向资本市场主线 1. Coding之后，市场需要寻找第二个能够算清ROI的AI场景： 过去两年，生成式AI的应用故事很多，但真正率先跑通商业模式的是Coding。代码任务高频发生，结果容易校验，工程师的时间价值又足够高，因此模型能力提升可以迅速转化为调用量、订阅和企业支出。 当这一逻辑逐渐成为共识之后，市场自然开始寻找下一个类似场景。办公Agent、多模态、机器人、FDE都在候选名单中，AI4S近期明显升温，本质上也是在回答同一个问题：还有什么工作既足够昂贵，又适合AI反复执行，并且结果可以被客观验证？ 科学研究恰好符合这些要求。药物、材料、化工、能源和芯片研发每年消耗巨额预算，其中大量工作本身就是搜索、计算、试错和验证；科研结果又不像文案好坏那样依赖主观判断，一个分子能否合成、一种材料是否达到性能要求，最终都能通过实验回答。政策层面对这一方向的定位也在提升，“人工智能+科学技术”被放在“人工智能+”六大重点行动的首位，覆盖科学发现、研发模式创新和未来产业突破。 因此，这轮行情与前几年AI制药行情并不完全相同。过去市场关注“AI能不能找到一个更好的分子”，现在的问题已经变成：AI能不能真正进入企业研发预算，成为持续使用的生产工具。 2. 技术拐点在于科研开始形成闭环： 早期AI4S更像高级计算工具。AlphaFold是最典型的例子：科学家提出问题，模型给出预测，实验仍主要由研究人员继续完成。 现在变化发生在模型和实验之间。 科研Agent开始负责理解目标、拆解任务、调用不同的专业模型和计算工具，机器人实验室则把数字世界里的方案变成真实反应和测试，再把实验数据送回模型。晶泰科技今年推出的XtalPi Science已经尝试把Agentic AI、Scientific AI和Physical AI放进同一系统，形成“数字假设—专业预测—物理验证—数据反馈”的连续过程。 这使科研过程第一次有机会被重新组织为一个不断循环的系统：设计—执行—观察—修正，再重新设计。 只要实验能够自动执行、结果能够机器读取，AI就不必每次等人重新发出指令，而可以在一定边界内连续运行。原来一天只能完成几轮的研究过程，理论上可以向更长时间、更高频率的迭代推进。AI4S因此从“给研究人员一个答案”，开始接近“参与完成一个研究任务”。 3. 更重要的是，技术故事开始出现收入和订单的落点： 部分上市公司已通过AI4S产生实质性的营业收入。以晶泰科技为例，其2026年上半年实现收入3.8-4.0亿元，剔除BD因素后收入不低于2.5亿元，同比增长超过65%；其中AI4S智慧解决方案收入超过1.8亿元，同比增长超过120%，机器人解决方案和智能服务亦维持较快增长。 ……",
+      "url": "https://wallstreetcn.com/member/articles/3779055",
+      "time": "2026-08-11T12:16:08.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
       "title": "明天美国CPI有“鸽派惊喜”？高盛称通胀或低于普遍预期 ，汇丰则押注“温和” 数据",
-      "description": "美国7月通胀数据将于周三公布，高盛预计核心CPI涨幅将略低于市场共识，能源价格下跌则将进一步压低整体通胀读数。若数据如期走软，市场对美联储的降息预期或将进一步升温。 据高盛最新报告，该行预计7月核心CPI环比上涨0.19%，低于市场共识的0.2%，对应同比涨幅为2.47%，同样低于市场预期的2.5%。整体CPI方面，受零售汽油价格下跌拖累，能源价格料环比下降2.0%，推动整体CPI环比仅上涨0.05%，低于市场共识的0.1%，同比涨幅预计为3.35%，低于6月的3.53%。 汇丰银行多资产策略师Duncan Toms亦指出，6月通胀数据已呈现\"意外的鸽派走势\"，其即时预测模型显示7月数据或将再度温和。他表示，若数据如期走软，将成为推动美联储加息预期降温的催化剂，届时美国国债收益率曲线可能出现牛市陡峭化走势。上述情景将营造出\"强劲的金发姑娘行情背景，几乎所有资产类别都将迎来普涨局面\"。 三大分项：汽车、住房与出行价格走势分化 高盛报告重点梳理了三个关键分项的预期走势。 汽车板块呈现分化格局。受二手车拍卖价格信号支撑，二手车价格预计环比上涨0.5%；新车价格因经销商促销力度基本持平，料上涨0.1%；汽车保险价格则预计下降0.5%，反映该行在线数据集所监测到的保费下降趋势。 住房分项预计维持温和。高盛预计业主等价租金（OER）环比上涨0.23%，主要租金分项上涨0.16%，均反映出住房通胀底层趋势的持续降温。住房分项在核心CPI中权重约占三分之一，其走势对整体读数具有举足轻重的影响。 出行服务方面同样冷热不均。受7月油价反弹带动航空燃油成本上升，高盛预计机票价格环比上涨2.0%；酒店价格则预计下跌1.0%，原因在于世界杯带动的住宿需求提振效应持续消退——该效应在上月CPI数据中已开始体现，因相关价格以预订时点计量。 核心PCE料高于CPI，方法论调整带来额外扰动 高盛指出，尽管核心CPI读数温和，但与之对应的7月核心PCE预计环比上涨0.26%，明显高于核心CPI涨幅，主要原因是投资组合管理分项将大幅上涨——该分项滞后反映二季度股市涨幅。 值得关注的是，核心PCE方法论将于9月底进行修订。高盛表示，新方法实施初期将使用与股价相关性较弱的薪资数据来估算投资组合管理分项，届时7月核心PCE初值或被下修至0.21%。待12月三季度季度服务业调查数据可得后，该分项将再度基于实际费用数据进行修订，届时7月通胀读数有望重新上修。上述方法论切换将给核心PCE读数带来阶段性波动，投资者需注意甄别。 后续通胀路径：0.2%基准预期，上行风险来自油市 展望未来数月，高盛预计核心CPI将维持每月约0.2%的增幅，主要支撑因素包括：住房分项通胀继续降温、关税相关价格涨价贡献逐步收窄，以及前期航油价格上涨对机票的推升压力随之消退。 不过，高盛同时提示上行风险。报告指出，若油市供应中断持续时间超出预期，进而带动油价持续走高，通胀路径可能明显偏离基准预测。从本次机票价格分项来看，油价波动向CPI的传导渠道已相当直接，这一风险因素不容忽视。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "美国7月通胀数据将于周三公布，高盛预计核心CPI涨幅将略低于市场共识，能源价格下跌则将进一步压低整体通胀读数。若数据如期走软，市场对美联储的加息预期或将进一步降温。 据高盛最新报告，该行预计7月核心CPI环比上涨0.19%，低于市场共识的0.2%，对应同比涨幅为2.47%，同样低于市场预期的2.5%。整体CPI方面，受零售汽油价格下跌拖累，能源价格料环比下降2.0%，推动整体CPI环比仅上涨0.05%，低于市场共识的0.1%，同比涨幅预计为3.35%，低于6月的3.53%。 汇丰银行多资产策略师Duncan Toms亦指出，6月通胀数据已呈现\"意外的鸽派走势\"，其即时预测模型显示7月数据或将再度温和。他表示，若数据如期走软，将成为推动美联储加息预期降温的催化剂，届时美国国债收益率曲线可能出现牛市陡峭化走势。上述情景将营造出\"强劲的金发姑娘行情背景，几乎所有资产类别都将迎来普涨局面\"。 三大分项：汽车、住房与出行价格走势分化 高盛报告重点梳理了三个关键分项的预期走势。 汽车板块呈现分化格局。受二手车拍卖价格信号支撑，二手车价格预计环比上涨0.5%；新车价格因经销商促销力度基本持平，料上涨0.1%；汽车保险价格则预计下降0.5%，反映该行在线数据集所监测到的保费下降趋势。 住房分项预计维持温和。高盛预计业主等价租金（OER）环比上涨0.23%，主要租金分项上涨0.16%，均反映出住房通胀底层趋势的持续降温。住房分项在核心CPI中权重约占三分之一，其走势对整体读数具有举足轻重的影响。 出行服务方面同样冷热不均。受7月油价反弹带动航空燃油成本上升，高盛预计机票价格环比上涨2.0%；酒店价格则预计下跌1.0%，原因在于世界杯带动的住宿需求提振效应持续消退——该效应在上月CPI数据中已开始体现，因相关价格以预订时点计量。 核心PCE料高于CPI，方法论调整带来额外扰动 高盛指出，尽管核心CPI读数温和，但与之对应的7月核心PCE预计环比上涨0.26%，明显高于核心CPI涨幅，主要原因是投资组合管理分项将大幅上涨——该分项滞后反映二季度股市涨幅。 值得关注的是，核心PCE方法论将于9月底进行修订。高盛表示，新方法实施初期将使用与股价相关性较弱的薪资数据来估算投资组合管理分项，届时7月核心PCE初值或被下修至0.21%。待12月三季度季度服务业调查数据可得后，该分项将再度基于实际费用数据进行修订，届时7月通胀读数有望重新上修。上述方法论切换将给核心PCE读数带来阶段性波动，投资者需注意甄别。 后续通胀路径：0.2%基准预期，上行风险来自油市 展望未来数月，高盛预计核心CPI将维持每月约0.2%的增幅，主要支撑因素包括：住房分项通胀继续降温、关税相关价格涨价贡献逐步收窄，以及前期航油价格上涨对机票的推升压力随之消退。 不过，高盛同时提示上行风险。报告指出，若油市供应中断持续时间超出预期，进而带动油价持续走高，通胀路径可能明显偏离基准预测。从本次机票价格分项来看，油价波动向CPI的传导渠道已相当直接，这一风险因素不容忽视。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3779188",
       "time": "2026-08-11T12:15:06.000Z",
       "tags": [
@@ -4189,23 +4817,23 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Seedless Blackberries and Cherries That Grow on Bushes Vie to Be the Future of Food",
-      "description": "Startups and Big Ag are using Crispr gene editing to create crops that taste better and grow on a hotter planet. But will they find a market?",
-      "url": "https://www.wired.com/story/seedless-blackberries-cherry-bushes-future-of-food/",
-      "time": "2026-08-11T10:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "AI Is Dead. Organoids Are Alive",
       "description": "Mini human brains are being grown in labs all over the world. Soon, they could outthink neural networks.",
       "url": "https://www.wired.com/story/organoids-lab-grown-brains-neural-networks/",
       "time": "2026-08-11T10:00:00.000Z",
       "tags": [
         "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Seedless Blackberries and Cherries That Grow on Bushes Vie to Be the Future of Food",
+      "description": "Startups and Big Ag are using Crispr gene editing to create crops that taste better and grow on a hotter planet. But will they find a market?",
+      "url": "https://www.wired.com/story/seedless-blackberries-cherry-bushes-future-of-food/",
+      "time": "2026-08-11T10:00:00.000Z",
+      "tags": [
         "智能硬件"
       ]
     },
@@ -10388,6 +11016,17 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Home Depot Promo Codes: 30% Off in August 2026",
+      "description": "Save up to 50% today with the latest Home Depot promo codes for appliances, power tools, and more this August.",
+      "url": "https://www.wired.com/story/home-depot-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "30% Off Canon Promo Codes | August 2026",
       "description": "Save an extra 10% or 30% with Canon coupon codes, plus up to $1,600 on cameras, printers, and more this August.",
       "url": "https://www.wired.com/story/canon-promo-code/",
@@ -10403,17 +11042,6 @@
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
         "人工智能"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Home Depot Promo Codes: 30% Off in August 2026",
-      "description": "Save up to 50% today with the latest Home Depot promo codes for appliances, power tools, and more this August.",
-      "url": "https://www.wired.com/story/home-depot-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "软件应用"
       ]
     },
     {
@@ -10495,20 +11123,55 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Skullcandy Discount Code: 30% Off | August 2026",
-      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
-      "url": "https://www.wired.com/story/skullcandy-discount-code/",
+      "title": "Petlibro Offers: 30% Off in August 2026",
+      "description": "Save on Petlibro essentials, including automatic feeders, water fountains, and accessories to keep cats and dogs fed, hydrated, and comfortable every day.",
+      "url": "https://www.wired.com/story/petlibro-discount-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Sealy Promo Codes: $100 Off",
+      "description": "Whether you’re switching from springs to memory foam or just want to sleep cooler this summer, these Sealy mattress deals will have you waking up refreshed—and with cash left in your wallet.",
+      "url": "https://www.wired.com/story/sealy-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "L.L.Bean Promo Codes and Coupons: 75% Off",
+      "description": "Find the best L.L.Bean promo codes and coupons for 10% off your first order, major sale discounts, free shipping on $75+, and extra savings for select groups.",
+      "url": "https://www.wired.com/story/ll-bean-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": []
     },
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Sony Coupons: 45% Off Sony Headphones, WF-1000XM6 Earbuds, and Sony Cameras for August 2026",
-      "description": "Upgrade your setup with Sony’s newest releases. Save on industry-leading noise-canceling audio, and pro-level Alpha cameras.",
-      "url": "https://www.wired.com/story/sony-promo-code/",
+      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
+      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
+      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
+      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
+      "url": "https://www.wired.com/story/playstation-discount-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "游戏",
         "智能硬件"
       ]
     },
@@ -10546,57 +11209,22 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
-      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
-      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
-      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
-      "url": "https://www.wired.com/story/playstation-discount-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "游戏",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Petlibro Offers: 30% Off in August 2026",
-      "description": "Save on Petlibro essentials, including automatic feeders, water fountains, and accessories to keep cats and dogs fed, hydrated, and comfortable every day.",
-      "url": "https://www.wired.com/story/petlibro-discount-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Sealy Promo Codes: $100 Off",
-      "description": "Whether you’re switching from springs to memory foam or just want to sleep cooler this summer, these Sealy mattress deals will have you waking up refreshed—and with cash left in your wallet.",
-      "url": "https://www.wired.com/story/sealy-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "L.L.Bean Promo Codes and Coupons: 75% Off",
-      "description": "Find the best L.L.Bean promo codes and coupons for 10% off your first order, major sale discounts, free shipping on $75+, and extra savings for select groups.",
-      "url": "https://www.wired.com/story/ll-bean-promo-code/",
+      "title": "Skullcandy Discount Code: 30% Off | August 2026",
+      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
+      "url": "https://www.wired.com/story/skullcandy-discount-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Sony Coupons: 45% Off Sony Headphones, WF-1000XM6 Earbuds, and Sony Cameras for August 2026",
+      "description": "Upgrade your setup with Sony’s newest releases. Save on industry-leading noise-canceling audio, and pro-level Alpha cameras.",
+      "url": "https://www.wired.com/story/sony-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "Wired",
@@ -12447,19 +13075,6 @@
         "人工智能",
         "芯片/半导体",
         "AI芯片"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "八次跳票后！特斯拉新款Roadster再承诺很快发布",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1142/1142812.htm",
-      "time": "2026-08-11T02:53:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
       ],
       "topic": true
     },
@@ -16389,6 +17004,18 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
+      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
+      "url": "https://www.donews.com/news/detail/3/6665925.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "大公司"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "REDMI K100 Pro 系列手机发布，售价3999元起",
       "description": "REDMI K100 Pro系列发布：全系双芯、185Hz屏、2亿主摄、9070mAh电池，首发CF手游185帧，售价3999元起。",
       "url": "https://www.donews.com/news/detail/5/6667206.html",
@@ -16447,18 +17074,6 @@
       ]
     },
     {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
-      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
-      "url": "https://www.donews.com/news/detail/3/6665925.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "大公司"
-      ]
-    },
-    {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
       "title": "汤臣倍健增收不增利，主动迎接阵痛",
@@ -16493,6 +17108,241 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "研发周期跟风砍半 合资车企也造速成车了",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimynse5635671.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "A股又现“超级大肉签” 中一签最高赚超22万元",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimynsc4027859.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Manus宣布脱离Meta恢复独立运营 部分用户账户将受到影响",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimynsc4024085.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "REDMI终极大招剧透！顶级游戏旗舰正在测试中：比Pro Max更强",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimynrz7250019.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "游戏"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "AI教母李飞飞：AI进入校园的最大风险 是可能削弱孩子的学习能力",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhiz0596354.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "汽车自媒体乱象被集中整治！央视：有公众号冒充记者 长期唱衰行业发展",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimyhiz0592281.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "【20260812早评】大盘年线遇阻 科创板揉搓蓄力",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7377732.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小鹏旗舰再添新成员！小鹏G9L全球首秀，预售价25.98万元",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7375424.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "「说 Harness 会被淘汰的，肯定没做过工程」，Kimi 前 CLI 负责人戳破了 AI 圈最大的误解",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhiz0587685.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "这些“984.5高校”，没理由不火 | 风向标工作室",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkh5751802.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "湖南一公交司机称开公交直达拉萨 路上招手即停免费坐！公司回应：我们不知情",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkh5741524.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "华侨大学国际新能源学院在厦门揭牌",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimyhkc7366149.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "赵一鸣4块牛肉干64元复称仅17元 老板：确实是系统出错了",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkf4140618.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "连续372天每日全马！B站运动博主\"堂主Lee\"获吉尼斯世界纪录",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkf4140636.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "当机器人有了统一的\"大脑\"：一个万亿级生态的雏形已经出现",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7365904.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "上线仅28天，米哈游的AI互动新作宣布停服",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhiz0586885.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "世嘉在中国：30年、7家公司，与一次新的归来",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkh5745654.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "闪充+激光智驾+云辇-C，2027款海豹06上市：9.99万元起",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkf4139420.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "8万级唯一激光雷达智驾！零跑A05上市售价6.39万起",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7367011.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "内存涨疯了！卢伟冰：大家一定会感觉REDMI K100 Pro越来越香",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7359811.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小鹏G9L全球发布 预售价25.98万元！ 以旗舰品质开启黄金大五座新时代",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhiz0566456.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "“潜在独角兽”不只是估值标签：从众安信科看企业级AI成长路径",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkc7359381.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "腾讯启动2027校园招聘，岗位设置、人才标准迭代更新",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/it/2026-08-11/doc-inimxvum4247015.shtml",
@@ -16512,6 +17362,131 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "Meta 扎克伯格：美国若想取得开源 AI 领先，就得减少政策障碍",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7973642.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "美国本土直播带货 长出一头200亿美元巨兽",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6246369.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "杰富瑞分析师：因良率不佳，苹果已砍掉 20 周年全玻璃 iPhone 机型",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7963044.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "扎克伯格呼吁美国放宽开源 AI 限制，以应对中国竞争",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmh6225641.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "消息称智谱 API 用户接近 700 万，已启用超 5 万块国产算力芯片",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmf4723788.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "苹果在iPhone和MacBook测试中国长鑫存储芯片：落地难度极大！",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6210880.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "朱雀三号遥二发射临时叫停延期：暂无最新发射窗口",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxvun5800673.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "腾讯CF IP首款3A叙事单机！《穿越火线：潜伏》开启预约：虚幻5打造",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwyqv4429135.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "八次跳票后！特斯拉新款Roadster再承诺很快发布",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxewt4385098.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "不满房东暴力涨租，于东来宣布关掉年赚1亿的胖东来老店，自掏65亿建商场当“包租公”",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimwyqv4388985.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "顾客驾车插队顶撞员工行驶！胖东来最新公布：补偿员工1万 肇事者行拘6日",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxewr7622356.shtml",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": []
     },
     {
       "source": "新浪科技",
@@ -17062,110 +18037,6 @@
       "tags": [
         "手机"
       ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "Meta 扎克伯格：美国若想取得开源 AI 领先，就得减少政策障碍",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7973642.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "美国本土直播带货 长出一头200亿美元巨兽",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6246369.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "互联网"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "杰富瑞分析师：因良率不佳，苹果已砍掉 20 周年全玻璃 iPhone 机型",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmc7963044.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "扎克伯格呼吁美国放宽开源 AI 限制，以应对中国竞争",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmh6225641.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "消息称智谱 API 用户接近 700 万，已启用超 5 万块国产算力芯片",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-11/doc-inimwcmf4723788.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "苹果在iPhone和MacBook测试中国长鑫存储芯片：落地难度极大！",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwcmh6210880.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "朱雀三号遥二发射临时叫停延期：暂无最新发射窗口",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimxvun5800673.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "腾讯CF IP首款3A叙事单机！《穿越火线：潜伏》开启预约：虚幻5打造",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-11/doc-inimwyqv4429135.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "不满房东暴力涨租，于东来宣布关掉年赚1亿的胖东来老店，自掏65亿建商场当“包租公”",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimwyqv4388985.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": []
     },
     {
       "source": "新浪科技",
@@ -23422,6 +24293,17 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
+      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
+      "url": "https://www.donews.com/news/detail/3/6664448.html",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "奕境X9座舱开箱：首搭鸿蒙座舱HarmonySpace 6实现代际跃迁",
       "description": "奕境X9首发鸿蒙座舱HarmonySpace 6，以小艺智能体、AMS感知、软硬生态打通实现智能跃迁，并打造电竞房、K歌房、影音房三大移动空间。",
       "url": "https://www.donews.com/news/detail/7/6665520.html",
@@ -23494,17 +24376,6 @@
       ]
     },
     {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
-      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
-      "url": "https://www.donews.com/news/detail/3/6664448.html",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
       "title": "最新「中产身份证」：《奥德赛》点映票",
@@ -23522,6 +24393,58 @@
       "time": "2026-08-09T16:00:00.000Z",
       "tags": [
         "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "必须限制电商平台权利！钟睒睒：电商“杀”了城市很多零售商 杨梅泡药农民无知又无辜",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimvhfp2842756.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "阿维塔高管：不认为和华为的合作模式是“必要项”",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimuzxp1298964.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "5万小车卖不动 微型代步车集体遇冷：国内市场40万元以上抢着买",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimuvrv4978122.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "又一次公开喊话痛批电商平台！钟睒睒：电商价格内卷已经伤害到中国的实体经济",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimuriv8279711.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "互联网"
       ]
     },
     {
@@ -23561,15 +24484,6 @@
       "title": "南航一航班因乘客可乐爆瓶折返：飞溅液体击伤空姐眼部",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimvxcf8037507.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
       "time": "2026-08-09T16:00:00.000Z",
       "tags": []
     },
@@ -25686,6 +26600,17 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
+      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
+      "url": "https://www.donews.com/news/detail/3/6663604.html",
+      "time": "2026-08-07T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "华为乾崑大六座强势打入十万级！星海V6开启预售10.49万元起",
       "description": "东风风行星海V6于8月8日在成都发布，搭载华为乾崑智驾，预售价8.99万起，主打10万级大六座智能家用车，以智驾、空间、续航三大王牌重塑市场。",
       "url": "https://www.donews.com/news/detail/7/6663707.html",
@@ -25704,17 +26629,6 @@
       "time": "2026-08-07T16:00:00.000Z",
       "tags": [
         "测评/新品"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
-      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
-      "url": "https://www.donews.com/news/detail/3/6663604.html",
-      "time": "2026-08-07T16:00:00.000Z",
-      "tags": [
-        "游戏"
       ]
     },
     {
@@ -57210,6 +58124,17 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
+      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
+      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
+      "url": "https://www.donews.com/news/detail/3/6660734.html",
+      "time": "2026-08-05T16:00:00.000Z",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
       "title": "美学升维，流畅突破：荣耀MagicOS11双架构重塑体验",
       "description": "荣耀在北京举办MagicOS11先锋品鉴会",
       "url": "https://www.donews.com/news/detail/5/6661438.html",
@@ -57260,17 +58185,6 @@
       "time": "2026-08-05T16:00:00.000Z",
       "tags": [
         "新能源/电动车"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
-      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
-      "url": "https://www.donews.com/news/detail/3/6660734.html",
-      "time": "2026-08-05T16:00:00.000Z",
-      "tags": [
-        "游戏"
       ]
     },
     {
@@ -96135,890 +97049,6 @@
         "手机",
         "大公司"
       ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "全行业第一款！华为阔直板手机9-10月登场：不能折叠的Pura X",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatx2266225.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "iPhone 18 Pro首次搭载可变光圈镜头：光圈参数与华为Pura 80 Pro保持一致",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcatr5810418.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "阔折叠鼻祖要更新了！华为Pura X2明年亮相：售价可能要涨",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxm5269686.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "搭载行业首个七年长寿万级大电池 OPPO发布新一代耐用传奇A7 Pro Max",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimctrf4120754.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "千万超跑送修竟被工作人员私自拍照打卡 品牌：所有相关视频已删除",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxm5286023.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "银行房贷利率重回2.7%，定价下探释放哪些信号？",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimctri5709934.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "一箱油跑368km！五羊本田NWT125平踏摩托上市：高配售价不过万",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxc4082527.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "汽车",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "贵州茅台24万股东等来了狂欢",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxp2074074.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "有星巴克员工被曝侮辱周杰伦，星巴克客服：已同步相关部门处理，员工个人行为不代表品牌立场",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-04/doc-inimchzm4172582.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "苹果2027开年新机：iPhone 18又是等等党的胜利",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimctrr2092207.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "银鹭食品，公关“折翅”",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcatr5806930.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "5499元 索尼FE 100-400mm F5.6-8 OSS镜头发布：平民也能打鸟",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimequx5514355.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "百度AI办公提速，百度全力以赴冲刺办公场景怎么看？",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimeqvc5056773.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "7月安卓性价比榜出炉：摩托罗拉称霸千元档 拿下TOP3",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimeqvf1829322.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "鸿蒙智行回应“竹知了”事件：投诉针对的是具体侵权内容，并非“竹知了”玩具",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimeqvc5056726.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "微软推出适用于 WSL 的 Azure Linux 4.0 Beta 版，支持 Win10/Win1 PC",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-04/doc-inimequx5490541.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "链家上海试点小区开放日，二手房新模式带来了怎样的变革？",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimequv3887593.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "你上次用座机是哪年？上半年固话通话暴跌超20%",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimeknx4014897.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "第十三届树兰医学奖被提名人名单公布",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimekpf5183211.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "福建师范大学原副校长汪征鲁辞世",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcpii4109833.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "卫星巨头：宣布破产！",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxp2090004.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "王腾回应新公司清一色红米显示器：性价比高",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimctri5757349.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "电脑硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "申通快递回应被立案调查：立行立改、全力配合各项调查",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimeefi5260335.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "博导称月之暗面 Kimi 创始人杨植麟有很多机会留在美国，但他毅然拒绝苹果、坚持回国创业",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-04/doc-inimchzm4118490.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "大公司",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "亚马逊员工让AI写代码误烧1215万元：超预算860%！",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimctri5741219.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026年最新广州AI搜索优化公司横评：6家谁更值得选？ - 邢台网",
-      "description": "",
-      "url": "http://www.xtrb.cn/syunf/2026-08/04/content_1257853.htm",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "MacRumors",
-      "sourceColor": "#1d4ed8",
-      "title": "India Moves to Extend Tax Break Apple Lobbied For",
-      "description": "India has proposed extending tax breaks until 2041 for foreign companies that supply machinery to their contract manufacturers, handing a win to Apple as it expands iPhone production in the country, Reuters reports. long since lobbied against being taxed on the high-end iPhone machinery it owns in India. The draft bill still has to be passed by both houses of parliament. Tag: India This article, \"India Moves to Extend Tax Break Apple Lobbied For\" first appeared on MacRumors.com Discuss this article in our forums",
-      "url": "https://www.macrumors.com/2026/08/03/india-moves-to-extend-apple-tax-break/",
-      "time": "2026-08-03T15:59:57.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "雷锋网",
-      "sourceColor": "#1890ff",
-      "title": "对话哈啰Robotaxi CTO于乾坤：Robotaxi入场窗口已经关闭",
-      "description": "目标今年下半年正式运营，优先单城大规模投放Robotaxi。",
-      "url": "https://www.leiphone.com/category/transportation/nauFXU2rTxrlpfKR.html",
-      "time": "2026-08-03 15:58",
-      "tags": [
-        "专访"
-      ]
-    },
-    {
-      "source": "机器之心",
-      "sourceColor": "#512da8",
-      "title": "机器人是具身大模型的「用户」：超维动力如何打通从人类经验到机器人行动？",
-      "description": "机器人是具身大模型的「用户」：超维动力如何打通从人类经验到机器人行动？,算法,机器人,大模型,kai,人类经验,超维动力",
-      "url": "https://www.163.com/dy/article/L3DTVIQE0511AQHO.html",
-      "time": "2026-08-03 15:57",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "This free Linux tool makes it easy to check your PC battery and disk usage - here's how - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/mission-center-makes-it-even-easier-for-you-to-check-battery-and-disk-usage/",
-      "time": "2026-08-03T15:53:00.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "This free Linux tool makes it easy to check your PC battery and disk usage - here's how - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/mission-center-makes-it-even-easier-for-you-to-check-battery-and-disk-usage/",
-      "time": "2026-08-03T15:53:00.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Apple will launch five new products next month, here’s what’s coming",
-      "description": "We’re only one month away from Apple’s biggest product launch event of the year: the September iPhone event. Here’s what rumors say is coming.",
-      "url": "https://9to5mac.com/2026/08/03/apple-will-launch-five-new-products-next-month-heres-whats-coming/",
-      "time": "2026-08-03T15:46:12.000Z",
-      "tags": [
-        "手机",
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Dark Reading",
-      "sourceColor": "#1a1a2e",
-      "title": "Chinese Actor Weaponizes Deepseek AI Agent to Attack Security Firm",
-      "description": "Researchers intercepted and investigated the model, which was attempting to compromise more than 1,200 hosts for proxyjacking to launch further attacks.",
-      "url": "https://www.darkreading.com/cyberattacks-data-breaches/chinese-actor-deepseek-ai-agent-attack-security-firm",
-      "time": "2026-08-03T15:42:18.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Rare Lenovo Idea Tab deal slashes the tablet price to just $149.99",
-      "description": "The study-friendly drops to just $149.99 on Amazon, marking a 33% discount on this 11-inch tablet with a 2.5K 90Hz display.",
-      "url": "https://www.androidauthority.com/lenovo-idea-tab-deal-3693949/",
-      "time": "2026-08-03T15:41:57.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Google Health can now sync to Apple Health",
-      "description": "Version 5.05 is out now.",
-      "url": "https://www.androidauthority.com/sync-google-health-apple-health-3693886/",
-      "time": "2026-08-03T15:39:56.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "“一块磁铁能让燃气表变慢99%”，是真的吗？",
-      "description": "记者咨询多个售卖“省气神器”的商家，客服均表示，磁铁让燃气表变慢的核心原理是磁场干扰内部磁性部件或电子传感计数，有商家特别提示“很隐秘不会被发现，可以放心使用”。 燃气安全技术专家许长亮告诉中国之声记者，这…",
-      "url": "https://www.sohu.com/a/1058209734_162758?scm=10001.344_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-03 15:35",
-      "tags": []
-    },
-    {
-      "source": "MacRumors",
-      "sourceColor": "#1d4ed8",
-      "title": "Apple Launches New Legal Challenge Against UK Backdoor Demand",
-      "description": "Apple last month filed a new legal complaint with the UK's Investigatory Powers Tribunal (IPT) over the British government's demand for access to encrypted iCloud backups belonging to UK users, according to an order issued by the court and reported by the Financial Times. The Home Office previously agreed to drop its original demand for a backdoor covering UK and U.S. customers alike, after a diplomatic row with Washington. The British government subsequently issued a new technical capability notice (TCN) to Apple last year, limited to users in the UK. Technical capability notices are issued under the UK's Investigatory Powers Act, which the government says is necessary to investigate terrorism and child sexual abuse. They can force companies to hand UK security services access to customer data, even when that data is encrypted. separate complaint against such notices at the IPT, with that case due to be heard in December. Tags: Financial Times, United Kingdom This article, \"Apple Launches New Legal Challenge Against UK Backdoor Demand\" first appeared on MacRumors.com Discuss this article in our forums",
-      "url": "https://www.macrumors.com/2026/08/03/apple-legal-challenge-against-uk-demand/",
-      "time": "2026-08-03T15:34:16.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "低价流量卡消失！三大运营商集体出手 价格战结束了？",
-      "description": "对此，网友自然是一片哀嚎，不过也有一些网友在关停前紧急囤卡，倒是抢到了一些卡（提醒一下，倒卖手机卡是违法的喔），但更多网友好奇的是：纵横互联网的流量卡，为何在一夜之间就被关停了？在三大运营商都暂停流量卡的销…",
-      "url": "https://www.sohu.com/a/1058209759_116157?scm=10001.344_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-03 15:33",
-      "tags": [
-        "手机",
-        "互联网"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Deals: Apple Watch Ultra 3 $100 off, Series 11 from $299, AirPods, Anker chargers, Best Buy back to school sale, more",
-      "description": "Summer deals are somehow still live on AirPods Pro 3 at $50 off alongside all-time low pricing on AirTag 2, but today we have some fresh discounts on Apple Watch Ultra 3. Amazon is now offering several configurations at nearly $100 off the list prices to join refreshed Series 11 offers from $299. We also have Anker’s more powerful 100W 3-port Smart Display Charger down at $50 on Amazon (nearly 30% off) and the Best Buy’s updated August Back to School sale – Apple gear, smart TVs from $80, dorm upgrades, and more. Scope it all out down below.",
-      "url": "https://9to5mac.com/2026/08/03/deals-apple-watch-ultra-3-100-off-airpods-anker-chargers/",
-      "time": "2026-08-03T15:31:22.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "MacRumors",
-      "sourceColor": "#1d4ed8",
-      "title": "Leagues Cup 2026 Kicking Off on Apple TV",
-      "description": "Apple today highlighted tomorrow's start for the Leagues Cup, an annual competition among teams from Major League Soccer and Liga MX, with all 62 matches available for Apple TV subscribers to watch at no additional charge in over 100 countries and regions. The tournament features 18 of the 30 MLS teams and all 18 Liga MX teams, with the top three finishing teams receiving spots in the 2027 Concacaf Champions Cup. The Leagues Cup champion will receive a direct berth into the Round of 16 at the Champions Cup as teams vie for qualification to the FIFA Club World Cup and other international tournaments. Phase One of the Leagues Cup runs from tomorrow through August 13, with the Quarterfinals scheduled for August 25–27 and the Semifinals to be played September 1–2. The final and third-place matches are scheduled for September 6. Apple Music, Maps Guides to every MLS stadium in Apple Maps, and a dedicated Leagues Cup hub in Apple News. Tag: Apple TV Service This article, \"Leagues Cup 2026 Kicking Off on Apple TV\" first appeared on MacRumors.com Discuss this article in our forums",
-      "url": "https://www.macrumors.com/2026/08/03/leagues-cup-2026-apple-tv/",
-      "time": "2026-08-03T15:27:58.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "软件从现实开始：知识驱动计算（KDC）的Reality First主张",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/article/JWP8LYvuoD0tmFelLRq4?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T15:22:05.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "New Pixel 11 Pro leak highlights camera upgrades and more",
-      "description": "Pixel 11 Pro gets laid bare in latest big imagery leak.",
-      "url": "https://www.androidauthority.com/pixel-11-pro-leak-3693900/",
-      "time": "2026-08-03T15:20:01.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "机器之心",
-      "sourceColor": "#512da8",
-      "title": "VLA动作预测必须经过LLM吗？TurboVLA仅0.2B参数，RTX 4090上跑出32Hz在线动作预测",
-      "description": "VLA动作预测必须经过LLM吗？TurboVLA仅0.2B参数，RTX 4090上跑出32Hz在线动作预测,动作,模态,视觉,rtx,turbovla",
-      "url": "https://www.163.com/dy/article/L3DSABHB0511AQHO.html",
-      "time": "2026-08-03 15:20",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "cnBeta",
-      "sourceColor": "#009a61",
-      "title": "万米高空“开讲”城市故事——临空经济区（廊坊）主题航班首飞创新推介模式",
-      "description": "临空经济区（廊坊）联合河北航空精心策划的“在云端遇见廊坊临空”主题航班完成首飞。本次活动以蓝天为幕、客舱为台，将临空经济区（廊坊）的文旅魅力、产业活力与城市形象带上万米高空，生动唱响“这么近，那么美，周末到河北”文旅品牌。据悉，本次主题航班...",
-      "url": "http://www.cn-beta.com/redian/52292.html",
-      "time": "2026-08-03 15:16",
-      "tags": []
-    },
-    {
-      "source": "雷锋网",
-      "sourceColor": "#1890ff",
-      "title": "横扫五大手游电竞赛事，骁龙的下一个游戏技术「突破口」在AI？",
-      "description": "职业选手的手感，正在成为芯片性能最真实的标尺。",
-      "url": "https://www.leiphone.com/category/chips/3VeAr0iNJfCrIF40.html",
-      "time": "2026-08-03 15:13",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "游戏"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Google Health adds two-way Apple Health syncing on iPhone for Fitbit",
-      "description": "Back in May, the Google Health app launched alongside the new line of affordable Google Fitbit Air health trackers. Google Health initially included one-way Apple Health integration. The app could read and import health data recorded by an iPhone, Apple Watch, and other HealthKit-connected apps, but it couldn’t write Fitbit data back to Apple Health. Today’s Google Health iOS app update adds the missing half of that connection.",
-      "url": "https://9to5mac.com/2026/08/03/google-health-adds-two-way-apple-health-syncing-on-iphone/",
-      "time": "2026-08-03T15:00:44.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.com.cn/stock/t/2026-08-03/doc-inimafqi2589610.shtml",
-      "time": "2026-08-03T15:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星在印度发布Galaxy F70 Pro，配6000mAh电池 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.com.cn/stock/t/2026-08-03/doc-inimafqi2589610.shtml",
-      "time": "2026-08-03T15:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy F70 Pro 手机海外发布：骁龙 6 Gen 3 芯片、6000mAh 电池，23,999 卢比起 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-03/doc-inimafpz6058945.shtml?from=pcsearch",
-      "time": "2026-08-03T14:51:00.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy F70 Pro 手机海外发布：骁龙 6 Gen 3 芯片、6000mAh 电池，23,999 卢比起 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-03/doc-inimafpz6058945.shtml?from=pcsearch",
-      "time": "2026-08-03T14:51:00.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "How to keep your conversations with ChatGPT, Gemini, Copilot or Claude as private as possible - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/how-to-keep-ai-conversations-private-chatgpt-gemini-copilot-claude/",
-      "time": "2026-08-03T14:45:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "How to keep your conversations with ChatGPT, Gemini, Copilot or Claude as private as possible - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/how-to-keep-ai-conversations-private-chatgpt-gemini-copilot-claude/",
-      "time": "2026-08-03T14:45:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Apple’s latest acquisition makes a lot of sense for product roadmap",
-      "description": "Apple recently agreed to acquire a company called PlasmaSolve, according to EU-required filings. Here’s why the new acquisition could make a lot of sense for Apple’s future product roadmap.",
-      "url": "https://9to5mac.com/2026/08/03/apples-latest-acquisition-makes-a-lot-of-sense-for-product-roadmap/",
-      "time": "2026-08-03T14:44:58.000Z",
-      "tags": [
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Solidot",
-      "sourceColor": "#546e7a",
-      "title": "科学家在深海热泉动物体内发现塑料颗粒",
-      "description": "塑料颗粒显然已经遍及地球的各个角落。根据发表在《Water Research》期刊上的一项研究，韩国研究人员检查了生活在水下 2000 米处深海热泉附近的蜗牛和贻贝，12 只受检动物 92%（11 只）体内都发现了微小的塑料碎片。海洋生物学家 Se-Joo Kim 说，深海热泉曾被认为是地球上最与世隔绝的环境之一。每只深海热泉动物体内平均发现了 3.42 个塑料碎片，最常见的是聚苯乙烯。研究人员还发现，摄食行为会影响微塑料在动物体内的积累位置。海床进食的蜗牛，塑料聚集在消化器官中；滤食性贻贝的塑料分布则更为均匀。",
-      "url": "https://www.solidot.org/story?sid=84995",
-      "time": "2026-08-03T14:43:54.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "SpaceX is set to acquire 130,000 acres of marshland in southern Louisiana",
-      "description": "A Louisiana launch site would offer several significant advantages.",
-      "url": "https://arstechnica.com/space/2026/08/spacex-is-set-to-acquire-130000-acres-of-marshland-in-southern-louisiana/",
-      "time": "2026-08-03T14:41:46.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "市值暴涨1300亿！阿里最强千问大模型登场，2.4万亿参数，自主连续编程16天破纪录 - 智东西",
-      "description": "",
-      "url": "https://zhidx.com/p/581677.html",
-      "time": "2026-08-03T14:41:22.000Z",
-      "tags": [
-        "人工智能",
-        "互联网",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Forget the Pixel 11: The Pixel 10a is now less than half the price in this Amazon deal",
-      "description": "The Pixel 10a drops to $424 on Amazon, with a bright 6.3-inch display, Tensor G4, and 7 years of updates.",
-      "url": "https://www.androidauthority.com/google-pixel-10a-amazon-deal-3693908/",
-      "time": "2026-08-03T14:38:08.000Z",
-      "tags": [
-        "手机",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Apple launches second legal challenge to UK iCloud backdoor order, per report",
-      "description": "Apple’s effort to fight back against a UK-mandated “backdoor” to encryption continues, according to a new Financial Times report. Tim Bradshaw reports that Apple filed a new legal challenge in July against an attempt by the UK government to force access to encrypted user data.",
-      "url": "https://9to5mac.com/2026/08/03/apple-launches-second-legal-challenge-to-uk-icloud-backdoor-order-per-report/",
-      "time": "2026-08-03T14:34:15.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Solidot",
-      "sourceColor": "#546e7a",
-      "title": "AI 开始大幅减少客服岗位",
-      "description": "澳大利亚联邦银行、微软、 Uber 和凯悦酒店等公司正用自动化聊天和电话系统去处理以前需要人工完成的工作。AI 系统开始大幅削减客服人数。呼叫中心行业在美国、印度和菲律宾等地雇佣了数百万从业者。随着 AI 技术的进步以及高管面临拥抱新技术的压力，企业日益用生成式 AI 工具取代客服。美国的客服务人数正在下降，未来这一趋势会继续下去。分析师估计到 2030 年近半客服岗位将受到影响。西方公司此前将客服外包到熟悉英语的菲律宾、印度等国，随着 AI 的普及，这些国家的客服人数预计会大量减少。澳大利亚最大银行——联邦银行（Commonwealth Bank of Australia）裁减了数百名客服，每年预计节省数千万美元。微软将其客服团队（其中包括合同工和全职员工）从约 5 万人缩减至 4 万人。微软销售和服务运营负责人 Judson Althoff 在 4 月曾表示，AI 每年为公司节省约 7.5 亿美元的客服成本。他表示，更复杂的问题仍需要人工支持，但公司正不断扩展自动化修复的范围。凯悦酒店去年裁掉了美洲地区三成的内部客服。Uber 裁减了 10% 的客服岗位以“拥抱 AI”。",
-      "url": "https://www.solidot.org/story?sid=84994",
-      "time": "2026-08-03T14:22:06.000Z",
-      "tags": [
-        "人工智能",
-        "大公司"
-      ]
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "help wanted",
-      "description": "Comments",
-      "url": "https://lake.computer/blog/help-wanted/",
-      "time": "2026-08-03T14:20:18.000Z",
-      "tags": []
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Amazon’s fight against data-scraping bots is hiding reviews from real users",
-      "description": "Unable to see more than a few reviews for a product on Amazon? You’re not alone.",
-      "url": "https://www.androidauthority.com/amazon-user-reviews-ai-bots-data-scraping-3693844/",
-      "time": "2026-08-03T14:20:13.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "爱范儿",
-      "sourceColor": "#d4233a",
-      "title": "实测千问办公：阿里这个 AI 专家，真的能帮你带货",
-      "description": "Agent 应用接下来比的，或许不只是模型有多聪明。 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
-      "url": "https://www.ifanr.com/1673793?utm_source=rss&utm_medium=rss&utm_campaign=",
-      "time": "2026-08-03T14:16:52.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "互联网"
-      ]
-    },
-    {
-      "source": "快科技",
-      "sourceColor": "#ff6600",
-      "title": "苹果、华为、小米等厂商9月预计发布20款旗舰手机",
-      "description": "麒麟2026对决高通/联通/苹果2nm新U！苹果、华为、小米等厂商9月预计发布20款旗舰手机",
-      "url": "https://news.mydrivers.com/1/1140/1140939.htm",
-      "time": "2026-08-03 14:14",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ]
-    },
-    {
-      "source": "Dark Reading",
-      "sourceColor": "#1a1a2e",
-      "title": "Is There Really a Fix for CISO Fatigue?",
-      "description": "Accountability without any real authority is driving CISO burnout, and organizations need to take notice.",
-      "url": "https://www.darkreading.com/cybersecurity-operations/fix-for-ciso-fatigue",
-      "time": "2026-08-03T14:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy F70 Pro正式发布，提供6年系统更新支持，配备6,000 mAh电池 - Notebookcheck CN",
-      "description": "",
-      "url": "https://www.notebookcheck-cn.com/Galaxy-F70-Pro-6-6-000-mAh.1358994.0.html",
-      "time": "2026-08-03T13:56:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "雷锋网",
-      "sourceColor": "#1890ff",
-      "title": "独家解读丨「余粮」只剩 7 亿，Meta 为何成了最失意的 AI 巨头？",
-      "description": "主业下滑、AI 烧钱但不见回报，这是资本最忌讳的组合。",
-      "url": "https://www.leiphone.com/category/industrynews/7Diei8PsqC81LWzx.html",
-      "time": "2026-08-03 13:53",
-      "tags": [
-        "人工智能",
-        "大公司"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "This free Google Drive alternative keeps your files private - and local - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/zimaos-is-for-those-who-want-to-go-local-with-cloud-storage/",
-      "time": "2026-08-03T13:50:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "This free Google Drive alternative keeps your files private - and local - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/zimaos-is-for-those-who-want-to-go-local-with-cloud-storage/",
-      "time": "2026-08-03T13:50:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "个人贷款明示综合融资成本规定实施，银行个贷利率上限分化明显",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4880366.html?type=text",
-      "time": "2026-08-03T13:41:49.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "个人贷款明示综合融资成本规定实施，银行个贷利率上限分化明显 - huxiu.com",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4880366.html?type=text",
-      "time": "2026-08-03T13:41:49.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Solidot",
-      "sourceColor": "#546e7a",
-      "title": "澳大利亚社媒禁令效果有限",
-      "description": "澳大利亚政府为 16 岁以下儿童的社交媒体禁令辩护，称禁令重塑了全国的舆论，极大改变了与家长之间的对话，关闭了数百万​​个儿童账户。政府从未指望禁令能得到 100% 的遵守，就像最低饮酒年龄法无法做到 100% 遵守一样，但法律的存在仍然是恰当的。此前的研究发现，禁令生效三个月后，逾八成澳大利亚青少年仍在继续使用社交媒体，10-15 岁儿童在 3 月使用社交媒体的频率与 12 月 10 日禁令生效前一样高。",
-      "url": "https://www.solidot.org/story?sid=84993",
-      "time": "2026-08-03T13:41:05.000Z",
-      "tags": [
-        "互联网",
-        "专访"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "80亿参数记性不如U盘：他算出了大模型记忆天花板 - 智源社区",
-      "description": "",
-      "url": "https://hub.baai.ac.cn/view/56847",
-      "time": "2026-08-03T13:40:00.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "80亿参数记性不如U盘：他算出了大模型记忆天花板 - hub.baai.ac.cn",
-      "description": "",
-      "url": "https://hub.baai.ac.cn/view/56847",
-      "time": "2026-08-03T13:40:00.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Google Messages tests a full-screen attachment view and customizable grid",
-      "description": "Beta users can now long-press to reorder shortcut pills and tap the new caret icon for an expanded view.",
-      "url": "https://www.androidauthority.com/google-messages-beta-rearrange-attachment-shortcuts-3693847/",
-      "time": "2026-08-03T13:39:37.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Here’s everything new Apple TV has coming in August",
-      "description": "Apple TV subscribers will get to enjoy the long-awaited return of Ted Lasso this week, alongside a new season of sci-fi series Dark Matter, more episodes of Silo, and several other returning August shows. Here’s everything new coming to Apple TV in August.",
-      "url": "https://9to5mac.com/2026/08/03/heres-everything-new-apple-tv-has-coming-in-august-2026/",
-      "time": "2026-08-03T13:37:07.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "The 7 tech travel hacks I swear by - after years of learning the hard way - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/tech-travel-hacks-i-swear-by-after-years-of-learning-the-hard-way/",
-      "time": "2026-08-03T13:36:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "Trump wants the power to stop the public from suing polluters",
-      "description": "Trump's DOJ says citizens should no longer be able to enforce environmental laws.",
-      "url": "https://arstechnica.com/tech-policy/2026/08/trump-wants-the-power-to-stop-the-public-from-suing-polluters/",
-      "time": "2026-08-03T13:33:56.000Z",
-      "tags": []
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "爆料显示三星Galaxy S26 FE将推出两种配色，并配备官方磁吸保护壳 - Notebookcheck CN",
-      "description": "",
-      "url": "https://www.notebookcheck-cn.com/Galaxy-S26-FE.1358953.0.html",
-      "time": "2026-08-03T13:33:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
     }
   ]
 }
