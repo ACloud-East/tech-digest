@@ -25,6 +25,11 @@ function cleanArticleText(text) {
     if (!text) return text;
     // 去掉原文自带的脚注标�? [1] [2]…，避免模型误当成引用编号输�?
     text = text.replace(/\s*\[\d+\]\s*/g, ' ');
+    // 去掉 CMS 图片占位符「图1 / 图 3 / 图12：」等图注标记，避免模型照抄成「新闻要点 - 图3」垃圾
+    text = text.replace(/图\s*\d+\s*[-—:：]?/g, ' ');
+    // 去掉分享/UI 噪声词（share、分享、收藏、上一篇、相关阅读…），这些不是正文内容。
+    // 注意：中文词不能用 \b 边界——JS 的 \b 只对 ASCII \w 生效，套上 \b 会永远匹配不到中文。
+    text = text.replace(/(?:share|分享|收藏|点赞|评论|上一篇|下一篇|相关阅读|热门推荐|返回顶部|加载更多|扫码|二维码|关注我们)/gi, ' ');
     // 去掉长篇星号/横线分隔符之后的页脚/声明
     text = text.replace(/\s*[*＊](?:\s*[*＊]){19,}[\s\S]*$/, '');
     text = text.replace(/\s*[-—](?:\s*[-—]){19,}[\s\S]*$/, '');
@@ -33,6 +38,8 @@ function cleanArticleText(text) {
     const re = new RegExp('\\s(' + footerMarkers.map(escapeRegExp).join('|') + ')\\s');
     const m = text.match(re);
     if (m) text = text.slice(0, m.index + 1).trim();
+    // 折叠 ≥15 字连续重复（原文英雄区/标题被重复嵌入正文导致的雷同片段），普通正文不会触发
+    text = text.replace(/(.{15,})\1+/g, '$1');
     return text.replace(/\s+/g, ' ').trim();
 }
 

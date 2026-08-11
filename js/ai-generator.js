@@ -313,7 +313,66 @@ const AIGenerator = {
      * Step 1: 深度解析原文
      * 提取：产品名、公司名、版本号、日期、核心功能、技术参数、背景
      */
+    // 本地模板模式的「提取层」清洗：与云端的 cleanArticleText 必须保持同步。
+    // 原文里的 CMS 图注（图3）、分享/UI 噪声词、英雄区被重复嵌入的雷同片段，
+    // 一旦进入 allFacts 就会被当成「事实」写进文章，必须在这里斩草除根。
+    _cleanParseText(text) {
+        if (!text) return text;
+        // 脚注标记 [1] [2]…，避免被当成引用编号输出
+        text = text.replace(/\s*\[\d+\]\s*/g, ' ');
+        // CMS 图片占位符「图1 / 图 3 / 图12：」——只是图片序号，必须清除
+        text = text.replace(/图\s*\d+\s*[-—:：]?/g, ' ');
+        // 分享/UI 噪声词（share、分享、收藏、上一篇、相关阅读…），这些不是正文。
+        // 注意：中文词不能用 \b 边界——JS 的 \b 只对 ASCII \w 生效，套上 \b 会永远匹配不到中文。
+        text = text.replace(/(?:share|分享|收藏|点赞|评论|上一篇|下一篇|相关阅读|热门推荐|返回顶部|加载更多|扫码|二维码|关注我们)/gi, ' ');
+        // 去掉常见页脚/版权/备案/联系信息及其后的所有内容（站点 boilerplate，不是新闻正文）
+        const footerMarkers = ['版权所有', 'ICP备', '京公网安备', '隐私政策', '责任声明', '联系我们',
+            '关于索尼集团公司', '若有合作意向', '相关联系方式', '索尼集团公司是一家'];
+        for (const m of footerMarkers) {
+            const i = text.indexOf(m);
+            if (i >= 0) { text = text.slice(0, i).trim(); break; }
+        }
+        // 折叠 ≥15 字连续重复（英雄区/标题被重复嵌入正文导致的雷同片段），普通正文不会触发
+        text = text.replace(/(.{15,})\1+/g, '$1');
+        // 清除 meta 拼接分隔符「 --> 」（来自页面 <title>/og:title 与正文被拼接的痕迹）
+        text = text.replace(/\s*-->\s*/g, ' ');
+        // 折叠被 meta 分隔后「非相邻」出现的长重复片段（如标题被日期隔开后又重复一次）
+        text = this._dedupeRepeats(text, 14);
+        return text.replace(/\s+/g, ' ').trim();
+    },
+
+    // 边界保护的非相邻去重：只在某段（≥minLen 字）两端都是空白/标点/起止、且再次出现时整段删除后续重复。
+    // 这样既能干掉「标题被日期隔开又重复」的污染，又不会误删只是前缀相同的正常句子。
+    _dedupeRepeats(text, minLen) {
+        const n = text.length;
+        if (n < minLen * 2) return text;
+        const isB = c => c === undefined || /[\s，。、；：!！?？\n\r]/.test(c);
+        let result = text;
+        for (let pass = 0; pass < 6; pass++) {
+            let bestSub = '', bestPos = -1, found = false;
+            const maxL = Math.min(50, Math.floor(result.length / 2));
+            for (let L = maxL; L >= minLen; L--) {
+                for (let i = 0; i + L <= result.length; i++) {
+                    const sub = result.slice(i, i + L);
+                    const j = result.indexOf(sub, i + L);
+                    if (j < 0) continue;
+                    if (!isB(result[i - 1]) || !isB(result[i + L]) ||
+                        !isB(result[j - 1]) || !isB(result[j + L])) continue;
+                    bestSub = sub; bestPos = i; found = true; break;
+                }
+                if (found) break;
+            }
+            if (!found) break;
+            const after = result.slice(bestPos + bestSub.length);
+            result = result.slice(0, bestPos + bestSub.length) + after.split(bestSub).join('');
+        }
+        return result;
+    },
+
     parseSource(text, typeConfig) {
+        // 第一步：先把原文噪声清掉，后续所有抽取都基于干净文本，避免污染进入 allFacts
+        text = this._cleanParseText(text);
+
         const result = {
             product: '', company: '', versions: [], date: '',
             features: [], specs: [], background: [], allFacts: [],
@@ -619,6 +678,8 @@ const AIGenerator = {
             '参评产品': () => this.sectionProducts({ main, secondary, style, audience, fact }),
             '新闻要点': () => this.sectionKeyPoints({ main, secondary, style, audience, fact }),
             '事件详情': () => this.sectionDetails({ main, secondary, style, audience, fact }),
+            '行业影响': () => this.sectionIndustryImpact({ main, secondary, style, audience, fact }),
+            '后续关注': () => this.sectionFollowUp({ main, secondary, style, audience, fact }),
             '技术解析': () => this.sectionTech({ main, secondary, style, audience, fact }),
             '市场格局': () => this.sectionMarketStructure({ main, secondary, style, audience, fact }),
             '竞争态势': () => this.sectionCompetition({ main, secondary, style, audience, fact }),
@@ -759,9 +820,29 @@ const AIGenerator = {
                `在这个格局中，头部玩家巩固优势，新进入者寻找缝隙，而${audience.label}则成为各方争夺的关键变量。${main}能否在这一格局中占据一席之地，取决于它能否持续创造差异化价值。`;
     },
 
+    sectionIndustryImpact({ main, secondary, style, audience, fact }) {
+        const lead = fact
+            ? `${main}带来的变化，并不会只停留在产品本身。${fact}。`
+            : `${main}的这次动向，其意义已经超出了单一产品的范畴。`;
+        return lead + `\n\n` +
+               `从产业链视角看，它对${secondary || '上下游供应商、渠道与竞品'}都会产生涟漪效应。对于${audience.label}来说，更值得关注的是这件事是否会成为某种趋势的起点——一旦头部厂商开始押注类似方向，行业节奏很可能随之调整。${style.howEvaluate}地说，短期影响或许有限，但中长期可能重塑相关赛道的竞争格局。`;
+    },
+
+    sectionFollowUp({ main, secondary, style, audience, fact }) {
+        const lead = fact
+            ? `事件仍在演进，有几个后续节点值得盯紧：${fact}。`
+            : `就目前掌握的信息看，这件事还远未尘埃落定。`;
+        return lead + `\n\n` +
+               `接下来需要观察${secondary || '官方后续公告、产能与供货节奏，以及竞品的应对动作'}。对${audience.label}而言，与其急于下结论，不如建立一份跟踪清单：何时放出更多细节、价格与上市时间是否落地、生态配套能否跟上。我们也会持续关注并第一时间同步关键进展。`;
+    },
+
     sectionGeneric({ sectionName, main, secondary, style, audience, fact, idx }) {
-        return `谈到${sectionName}，${main}的表现值得专门讨论。${fact ? '具体而言，' + fact + '。' : ''}\n\n` +
-               `这一部分的观察重点在于：${secondary || '产品体验'}是否与${audience.label}的预期匹配。${style.howEvaluate}来看，${main}在${sectionName}上的表现符合其定位，同时也留下了进一步优化的空间。`;
+        // 兜底段落：以「事实 + 本节主题」驱动，绝不再输出千篇一律的「观察重点是否符合预期」套话
+        const lead = fact
+            ? `谈到${sectionName}，${fact}。`
+            : `谈到${sectionName}，${main}在这方面的表现仍有不少可展开的空间。`;
+        return lead + `\n\n` +
+               `对${audience.label}来说，${sectionName}的权重取决于它与真实使用场景的契合度。${style.howEvaluate}地看，${main}在${sectionName}上的取舍，反映了团队对${secondary || '目标用户需求'}的理解——既有所坚持，也留出了后续迭代的余地。`;
     },
 
     writeConclusion({ typeConfig, style, audience, language, main, secondary, keywords, sourceFacts, extraInstructions }) {
@@ -821,6 +902,11 @@ const AIGenerator = {
     /** Step 4: 全文润色——清除所有残留模板变量和占位词 */
     polish(text, source) {
         let t = text;
+        // 终末防线：清除任何漏网的 CMS 图注（图3）与分享/UI 噪声词（相关阅读…），
+        // 即便上游抽取层漏过，也绝不让垃圾进入最终成稿。
+        // 中文词不能用 \b 边界（JS 的 \b 只对 ASCII \w 生效），否则匹配不到。
+        t = t.replace(/图\s*\d+\s*[-—:：]?/g, ' ')
+             .replace(/(?:share|分享|收藏|点赞|评论|上一篇|下一篇|相关阅读|热门推荐|返回顶部|加载更多|扫码|二维码|关注我们)/gi, ' ');
         // 清除所有未替换的 ${xxx} 模板变量
         t = t.replace(/\$\{[^}]+\}/g, '');
         // 清除孤立的 "undefined" 或 "null"
