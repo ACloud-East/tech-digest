@@ -1,7 +1,848 @@
 {
-  "updateTime": "2026-08-11T16:05:47.055Z",
+  "updateTime": "2026-08-11T17:57:31.021Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Every Roku TV ships with a documented REST API — here's how to use it from curl or JS",
+      "description": "Every Roku device — including the Roku TVs built by TCL, Hisense, and Sharp — exposes a small local HTTP API on port 8060 called ECP (External Control Protocol). It's Roku's own developer-facing interface: officially documented at developer.roku.com, used by their first-party mobile app, and enabled by default on every retail unit. There's no cloud dependency, no API key, no OAuth dance — just an HTTP endpoint on your LAN. It doesn't get much attention outside the Roku channel-developer community, which is a shame — it's a five-endpoint API that turns any Roku TV into a scriptable device. Here's the tour. If you already know the TV's IP (Settings → Network → About on the TV itself), skip ahead. Otherwise, Roku devices respond to SSDP discovery — the same protocol Chromecast, printers, and most smart-home gear use: # Broadcast an M-SEARCH and print any ECP responses printf 'M-SEARCH * HTTP/1.1\\r\\nHost: 239.255.255.250:1900\\r\\nMan: \"ssdp:discover\"\\r\\nST: roku:ecp\\r\\n\\r\\n' \\ | nc -u -w 2 239.255.255.250 1900 Each response carries a LOCATION: http://192.168.x.x:8060/ header. That's your base URL. TV=http://192.168.1.42:8060 # Device info — model, serial, network config curl $TV/query/device-info # List every installed channel with its numeric id curl $TV/query/apps # Press a button (POST with an empty body) curl -d '' $TV/keypress/Home curl -d '' $TV/keypress/VolumeUp curl -d '' $TV/keypress/PowerOff # Launch Netflix (id 12) directly curl -d '' $TV/launch/12 # Type text into a search field, one character at a time curl -d '' \"$TV/keypress/Lit_h\" curl -d '' \"$TV/keypress/Lit_e\" curl -d '' \"$TV/keypress/Lit_l\" curl -d '' \"$TV/keypress/Lit_l\" curl -d '' \"$TV/keypress/Lit_o\" keypress accepts the full physical-remote vocabulary: Up, Down, Left, Right, Select, Back, Play, Rev, Fwd, InstantReplay, Info, plus TV-only additions such as VolumeUp/Down/Mute and InputHDMI1/2/3. The complete key table is in Roku's ECP reference docs. The obvious next move is a web page with a button grid that fetch()es those endpoints. Two gotchas: 1. ECP responses carry no CORS headers. A cross-origin fetch from a normal page gets blocked — unless you don't need to read the response. Button presses are fire-and-forget, so no-cors mode works fine: const tv = \"http://192.168.1.42:8060\"; async function press(key) { await fetch(`${tv}/keypress/${key}`, { method: \"POST\", mode: \"no-cors\" }); } document.querySelectorAll(\"[data-key]\").forEach((btn) => btn.addEventListener(\"click\", () => press(btn.dataset.key)) ); The response comes back opaque, but the TV reacts instantly. Wire that to a grid of elements and you have a working remote in ~30 lines. Reading state (/query/apps, /query/device-info) from the browser is where you'll need a tiny local proxy or a native shell, since those responses you actually need to parse. 2. Mixed-content blocking. Pages served over HTTPS can't call plain-HTTP LAN addresses. Either serve your remote page over HTTP locally (fine on the same LAN), or route commands through a native layer. This is the main engineering reason most polished implementations — like this browser-based Roku TV remote for Hisense — pair the web UI with a native transport for HTTPS-served production rather than raw browser fetches. Great for: Home automation — an ECP PowerOff inside a \"goodnight\" scene is one HTTP call. Home Assistant, Homebridge, and Node-RED all have Roku integrations that use ECP under the hood. Accessibility — a phone-sized web page with large buttons beats a 40-button plastic remote for a lot of people. Same for high-contrast or dwell-click variants. Debugging smart-TV apps — curl scripts can drive reproducible UI walkthroughs, which is useful when you're figuring out why a Hisense Roku TV suddenly stops responding to its physical remote. Kiosk-style setups — spin up a bare of buttons on an old phone and mount it on the wall as a permanent remote. Not designed for: First-time TV setup. ECP requires the TV to be on your network — you can't use it to complete out-of-box Wi-Fi setup. Cross-network control. ECP is LAN-only by design. If you want to control the TV from outside your home, you're building a proxy. Content protection surfaces. DRM-gated content (Disney+, Prime) works fine when launched via ECP, but ECP itself only speaks the remote-key vocabulary. ECP has been part of the Roku OS since roughly 2011 and hasn't had a breaking change I've seen in the last five years. It's the transport Roku's own mobile apps rely on — meaning Roku has a strong incentive to keep the surface stable across firmware updates. If you build something fun with it, drop it in the comments. And if you have a Hisense Roku TV specifically, our team maintains a free browser Roku remote for Hisense models built on top of this exact protocol — try it side-by-side with your own implementation.",
+      "url": "https://dev.to/hisuperdev/every-roku-tv-ships-with-a-documented-rest-api-heres-how-to-use-it-from-curl-or-js-1jb1",
+      "time": "2026-08-11T17:54:15.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Typed Errors Weren't Enough, So I Built better-effect",
+      "description": "Typed Errors Weren't Enough, So I Built better-effect I had already moved an important part of my application code away from exceptions and into Result types. That felt like a real improvement. A function no longer returned User while quietly throwing five different exceptions. Its return type could describe both the successful value and the failures callers were expected to handle. With better-result, I could also compose those operations using generators without losing the error channel. But the application could still compile and fail at startup because I forgot to provide a dependency. The errors were typed. The application wiring wasn't. That gap became the starting point for better-effect. Imagine a method with this return type: Result It tells us quite a lot. We know what success looks like. We know which failures belong to the operation. We can make callers handle those failures without relying on documentation or hidden exceptions. But the type still doesn't answer a few other questions: Where does the database come from? Which Services does the operation need? Did the application provide all of them? Can this operation run in the current environment? Who owns the connection? When should that connection be released? Those questions usually move somewhere else. They may live in constructor parameters, framework modules, a dependency injection container, a bootstrap file or test setup. That separation is normal, but it also means the code describing what an operation does and the code describing what it needs can easily fall out of sync. In better-effect, a Service can be requested directly inside Effect.gen: import { Result } from \"better-result\" import { Effect, Service } from \"better-effect\" class Database extends Service () { findUser(id: string) { // ... } } class UserRepository extends Service () { findUser(id: string) { return Effect.gen(async function* () { const database = yield* Database return Result.ok(await database.findUser(id)) }) } } The syntax is small: const database = yield* Database But there are two things happening. At runtime, the Service is resolved from the current environment. At typecheck time, Database becomes part of the requirements carried by that Effect. The dependency comes from the code that actually uses it. There is no second list to maintain. A Layer describes an implementation that belongs to the application environment: const UserRepositoryLive = Layer.make( UserRepository, () => new UserRepository() ) This Layer provides UserRepository. But the methods of UserRepository use Database, so the Layer also carries that requirement. If we try to create a Runtime from this incomplete environment, TypeScript rejects it: await Runtime.make(UserRepositoryLive, backend) // ^^^^^^^^^^^^^^^^^^ // Database is required but not provided Nothing needs to boot before the problem appears. The DI backend doesn't need to throw. A request doesn't need to hit the affected code path. The environment is incomplete, so the application doesn't typecheck. Adding the missing implementation completes it: const DatabaseLive = Layer.make( Database, () => new Database() ) const AppLive = Layer.merge( DatabaseLive, UserRepositoryLive ) const runtime = await Runtime.make(AppLive, backend) I've been calling this relationship typechecked wiring. It connects three parts of the application: the Services the code uses; the implementations the Layers provide; the programs a Runtime can execute. yield* Database │ ▼ the program requires Database │ ▼ does the Layer provide Database? │ no ├──────────► TypeScript error │ yes ▼ the Runtime can execute the program The Runtime keeps the exact Service environment inferred from its Layer. That means the contract remains useful after startup: await runtime.run(() => Effect.gen(async function* () { const database = yield* Database return Result.ok(database) }) ) If the program asks for a Service that doesn't exist in that Runtime, TypeScript rejects the call. This matters in applications with more than one environment. A web server, a worker, a migration script and a test suite may all run different programs against different sets of Services. The Runtime type makes that distinction visible. Tests often need the same application structure with a different implementation. Layers can be overridden explicitly: const AppTest = Layer.override( AppLive, DatabaseTest ) The database implementation changes, but the environment doesn't become untyped. The resulting Layer still knows which Services it provides and which requirements remain. This makes test environments easier to reason about without forcing application code to depend directly on a specific container. Providing the correct object is only part of resource management. A database connection, transaction, file or session also needs an owner. Who is responsible for releasing it? Does it live for one request, one job or the whole application? better-effect uses Scope to make that ownership explicit. A resource acquired by a scoped Layer belongs to the Runtime: const DatabaseLive = Layer.scoped( Database, () => Database.connect(), (database) => database.close() ) It remains alive while the application Runtime is active. A resource acquired inside a program belongs to that execution: const connection = yield* Effect.acquireRelease( () => pool.reserve(), (connection, outcome) => connection.release(outcome) ) When the execution ends, the resource is released. This also allows cleanup logic to see whether the execution succeeded or failed, which is useful for cases such as commit and rollback. During shutdown, the Runtime stops accepting new executions, waits for active ones to finish, releases scoped resources and finally disposes the configured backend. Effect already has strong answers for dependencies, environments, resources, concurrency and many other application concerns. It also has a full runtime, fibers, structured concurrency, streams, schedules, queues and a broader ecosystem. For applications that want that complete model, using Effect directly makes sense. The question behind better-effect is slightly different: What if I want some of those architectural guarantees, but I want to keep better-result, Promises and the runtime my application already uses? That choice defines the limits of the project. better-effect doesn't provide: fibers; a custom scheduler; streams or queues; a public Effect type; its own complete dependency injection container; a second error model. Effect.gen delegates Result composition to better-result. Dependency resolution and caching stay behind a backend. The core library is concerned with the contract around Services, environments and lifetimes. The project is mainly aimed at TypeScript developers who already like Result-based code but are reaching the point where error handling is no longer the only architectural concern. It may be useful in projects that have: application Services and repositories; an explicit composition root; production and test environments; Clean Architecture or DDD boundaries; resources that need clear ownership; an existing DI container they don't want to replace. It won't be the right tool for every application. When Result types and generator composition are enough, better-result can be used on its own. When the application wants a complete effect system and runtime, Effect is the stronger choice. better-effect is exploring the smaller space between those two options. better-effect is open source and available under the MIT license. You can install it with: npm install better-effect better-result The project is still early, and I'm deliberately trying to keep the API small. At this stage, I'm especially interested in feedback about the model itself: Does the Service API feel natural? Are incomplete-environment errors understandable? Does “typechecked wiring” describe the benefit clearly? Which responsibilities should stay outside the library? Typed errors already make application code easier to understand. better-effect is an experiment in bringing the same kind of visibility to application wiring and resource ownership. Repository Package",
+      "url": "https://dev.to/nitoba/typed-errors-werent-enough-so-i-built-better-effect-cki",
+      "time": "2026-08-11T17:53:51.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Another OpenAI executive takes off",
+      "description": "Brad Lightcap, OpenAI's special projects lead and the company's former COO, announced his departure after an eight-year stint at the AI lab. In an internal memo he later posted to X, Lightcap told colleagues he'd be starting \"something new.\" \"Over the last few months, I've been focused on the next horizon and what would stand in the way of mission success,\" Lightcap wrote. \"I believe there are a few important new things the world will need to get right as we enter this next period. I … am excited to help you all advance the mission from a different vantage point.\" He added that he'd still be around for the next few weeks. Lightcap's role … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/978048/brad-lightcap-openai-executive-departure",
+      "time": "2026-08-11T17:50:01.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "代理技能 Ponytail 在贡献者提出质疑后修正了自身的基准测试结果",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/uHECxUzeafk9Nbzpxi25?utm_source=rss&utm_medium=article",
+      "time": "2026-08-11T17:48:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Bluesky’s active user base is shrinking as its focus expands beyond the app",
+      "description": "Over a year following its post-election surge, Bluesky’s mobile app is seeing a continued decline in active users, though its remaining community is still relatively engaged.",
+      "url": "https://techcrunch.com/2026/08/11/blueskys-active-user-base-is-shrinking-as-its-focus-expands-beyond-the-app/",
+      "time": "2026-08-11T17:46:14.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "揭示扩散语言模型扩展定律，人大高瓴团队与蚂蚁集团发布LLaDA MoE v2",
+      "description": "揭示扩散语言模型扩展定律，人大高瓴团队与蚂蚁集团发布LLaDA MoE v2,语言模型,蚂蚁集团,llada",
+      "url": "https://www.163.com/dy/article/L42NRAUC0511AQHO.html",
+      "time": "2026-08-11 17:46",
+      "tags": []
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "索尼与台积电将在日本成立先进图像传感器合资公",
+      "description": "索尼与台积电将在日本成立先进图像传感器合资公司，采用先进制程技术2029年量产,索尼,日本,台积电,制程技术,知名企业,图像传感器,全球半导体领域",
+      "url": "https://www.163.com/dy/article/L42NO3CO0534A4SC.html",
+      "time": "2026-08-11 17:44",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "马斯克母子强推中国游",
+      "description": "马斯克母子强推中国游",
+      "url": "https://www.163.com/dy/article/L42NML7F0534A4SC.html",
+      "time": "2026-08-11 17:44",
+      "tags": []
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "谷歌：Gemini月活用户数超过10亿",
+      "description": "谷歌公司CEO Pichai称，AI模型Gemini的月活用户数已经突破10亿，成为公司“历史上成长最快的产品”。",
+      "url": "https://wallstreetcn.com/livenews/3148199",
+      "time": "2026-08-11T17:42:21.000Z",
+      "tags": [
+        "人工智能",
+        "大公司"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "What’s Scaleup Europe, the $5.7B fund that just backed satellite company ICEYE?",
+      "description": "Scaleup Europe, a public-private fund with a $5.7 billion target, made its first investment by backing Finnish satellite company ICEYE.",
+      "url": "https://techcrunch.com/2026/08/11/whats-scaleup-europe-the-5-7b-fund-that-just-backed-satellite-company-iceye/",
+      "time": "2026-08-11T17:41:49.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Brad Lightcap, OpenAI’s longtime COO, is leaving to ‘start something new’",
+      "description": "One of OpenAI's longest serving executives is headed out the door, although the longtime COO told staff that he was \"excited to help you all advance the mission from a different vantage point.\"",
+      "url": "https://techcrunch.com/2026/08/11/brad-lightcap-openais-longtime-coo-is-leaving-to-start-something-new/",
+      "time": "2026-08-11T17:41:34.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Nuxt 4.5 SSR Streaming Is Kind Of A Big Deal",
+      "description": "Nuxt 4.5 launched last month and it's really neat. One of my most favorite features is the experimental SSR streaming. With one simple change in the Nuxt config I was able to reduce the Largest Contentful Paint (LCP) by over 2 seconds. I simply enabled the experimental SSR streaming, and the first byte arrived in 16 milliseconds. With out it, the server spent about 2.5 seconds rendering the page. Streaming changed what the browser could display during that wait. As a part of my testing I also tried out two other features: useLayout() and named views. Let's take a look at all of these now! This post walks through all three features using Nuxt 4.5.2. Let's take a look! If you rather watch check out my full video here Prerequisites You will need: Node.js 22 or another version supported by Nuxt 4.5 npm Basic experience with Nuxt pages, components, and layouts Chrome or another browser with document-request timing tools My sample app! https://github.com/ErikCH/nuxt-ssr-streaming After cloning down the repo, build it and run it in preview. npm ci npm run typecheck npm run build npm run preview The demo preview runs on port 3010. The streamed route is /, and /buffered uses the same components with streaming disabled by a route rule. Normal server-side rendering can buffer the document until every server-rendered component finishes. A slow database query or API request can leave the browser waiting even when the page shell is ready. Nuxt 4.5 added the experimental ssrStreaming option. It uses Vue's web-stream renderer to flush ready HTML while later boundaries continue rendering. I used a fixed delay so the delivery difference would be easy to see. The delay runs on the server, and useState serializes the result into the Nuxt payload for hydration. interface SlowResult { resolvedAt: string serverDurationMs: number renderMarker: string } const props = withDefaults( defineProps (), { delayMs: 2500, }, ) const route = useRoute() const result = useState (`slow-panel:${route.path}`, () => ({ resolvedAt: '', serverDurationMs: 0, renderMarker: '', })) if (import.meta.server) { const startedAt = Date.now() await new Promise(resolve => setTimeout(resolve, props.delayMs)) result.value = { resolvedAt: new Date().toISOString(), serverDurationMs: Date.now() - startedAt, renderMarker: Date.now().toString(36).slice(-6).toUpperCase(), } } Place the component inside a Vue Suspense boundary. The fallback becomes part of the shell that Nuxt can send before SlowPanel resolves. Nuxt 4.5 rendering test The shell is ready Shell received Waiting for the slow server boundary... The fallback needs to be useful. Navigation, page context, and a clear loading state give the visitor something to work with. Sending an empty shell earlier does little for the experience. The demo enables streaming outside development and keeps /buffered as a control route. const ssrStreamingEnabled = process.env.NODE_ENV !== 'development' export default defineNuxtConfig({ compatibilityDate: '2026-07-01', features: { devLogs: false, }, experimental: { ssrStreaming: ssrStreamingEnabled, }, runtimeConfig: { public: { ssrStreamingEnabled, }, }, routeRules: { '/buffered': { streaming: false }, }, }) The /buffered route uses the same slow component, delay, and shell. Its route rule changes the response mode without changing the work performed by the component. Open the streamed and buffered routes as full document requests. Disable the browser cache and use a hard reload. Client-side navigation does not create a new SSR document request. You can also measure the response chunks from a second terminal: npm run measure My local production preview produced this result: streamed: first byte 16 ms, complete 2562 ms, 14 chunks, 5.8 KB buffered: first byte 2518 ms, complete 2518 ms, 1 chunk, 5.8 KB Both routes performed the same delayed work and returned the same amount of HTML. The streamed route delivered the response in 14 chunks and gave the browser useful HTML much earlier. The buffered route delivered one chunk after the slow boundary finished. This was just a test, on a somewhat contrived setup. However, I would try this yourself in your own app and see how the results go. Make sure to try it in development first, before going to production. ssrStreaming is experimental and disabled by default. Nuxt can fall back to buffered rendering for: Bots and crawlers Cached routes Incremental Static Regeneration (ISR) Stale-while-revalidate (SWR) routes Redirects Routes using ssr: false Prerendered output Routes with streaming: false Streaming also changes when the HTTP response becomes committed. After the shell has been flushed, later component code may be too late to change the status, headers, or cookies. Test authentication redirects, cookie writes, cache headers, errors, and middleware before enabling streaming on a production route. I would start with a content-heavy page that has a useful shell and one isolated slow boundary. Measure the deployed route with its real adapter and route rules. Keep buffering where the application needs to finish response decisions before sending HTML. useLayout() Nuxt 4.5 added a stable useLayout() composable. It returns a read-only computed ref containing the layout Nuxt resolved for the current route. const layout = useLayout() useLayout() {{ layout === false ? 'disabled' : layout }} The value accounts for page metadata, route-rule layout selection, and the default layout. It also updates during navigation. In the demo, two child pages select different layouts: definePageMeta({ layout: 'default', }) definePageMeta({ layout: 'focus', }) The parent page stays mounted while navigation changes the child route. The computed layout updates from default to focus without requiring the parent to inspect route metadata itself. Reading route.meta.layout can miss layouts selected elsewhere in Nuxt's resolution chain. Use useLayout() when a component needs the layout Nuxt is actually rendering. Named views let one route render into multiple page outlets. Nuxt 4.5 uses a name@view.vue filename convention for the additional view files. The demo uses this structure: app/pages/ features.vue features/ index.vue overview.vue overview@sidebar.vue focus.vue focus@sidebar.vue The parent page creates a default outlet and a named sidebar outlet: When you visit /features/overview, overview.vue fills the default outlet and overview@sidebar.vue fills the sidebar. The focus files do the same work for /features/focus. Both outlets belong to one URL, and the parent does not need a manual component map. Keep route metadata in the default page file. Nuxt ignores definePageMeta in an @sidebar file. If a route has no matching named-view file, that outlet remains empty. I am really impressed by the incremental changes in Nuxt 4.5. SSR streaming is something I'll be using on all my future apps. And useLayout and named views are nice DX bonuses. Leave a comment and let me know which of these features you'll be using next! Nuxt 4.5 release notes Nuxt experimental features Nuxt useLayout() documentation Nuxt named views documentation Vue server-rendering API Watch the full Nuxt 4.5 video",
+      "url": "https://dev.to/erikch/nuxt-45-ssr-streaming-is-kind-of-a-big-deal-2i37",
+      "time": "2026-08-11T17:41:30.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "General Catalyst leads $1.1B round into 2-month-old River AI",
+      "description": "River AI, a startup founded by xAI co-founder Igor Babuschkin, has a fascinating vision for personal agents and secured $1.1 billion out of the gate.",
+      "url": "https://techcrunch.com/2026/08/11/general-catalyst-leads-1-1b-round-into-2-month-old-river-ai/",
+      "time": "2026-08-11T17:41:22.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "watchOS 27 will upgrade popular Apple Watch face with new options, per leak",
+      "description": "A new leak reveals that one of Apple Watch’s most popular watch faces—Modular—is set to gain a variety of new color customization options in watchOS 27. Here are the details.",
+      "url": "https://9to5mac.com/2026/08/11/watchos-27-will-upgrade-popular-apple-watch-face-with-new-options-per-leak/",
+      "time": "2026-08-11T17:39:10.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "三星SDI全资接管在美合资工厂 与通用汽车联合研",
+      "description": "三星SDI全资接管在美合资工厂 与通用汽车联合研发棱柱形电池,通用汽车,电动汽车,超级工厂,三星sdi,棱柱形电池",
+      "url": "https://www.163.com/dy/article/L42N9U3J05198CJN.html",
+      "time": "2026-08-11 17:37",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "16个月后Meta杀回开源，小扎力挺蒸馏",
+      "description": "16个月后Meta杀回开源，小扎力挺蒸馏,调用,小扎,蒸馏,meta,开源模型,马克·扎克伯格",
+      "url": "https://www.163.com/dy/article/L42N6Q5T0511AQHO.html",
+      "time": "2026-08-11 17:36",
+      "tags": [
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Refreshing a token I did not own logged our account out",
+      "description": "We run a monitoring job that checks a Bluesky account for replies. Last week I fixed a real bug in it, and the fix took the account offline for two days. The bug was worth fixing. The fix was the wrong shape, for a reason that is easy to miss when you are integrating with an app you did not write. The job read the session out of the browser's local storage and called the notification endpoint with it. Once the token expired, every call came back as: {\"error\":\"ExpiredToken\",\"message\":\"Token has expired\"} The job never checked. It read notifications off the response, got undefined, counted zero, and reported no new inbound. That is the failure mode worth caring about, because it does not look like a failure. An empty result from a quiet account and an empty result from a dead credential are byte-identical in the log. I only caught it because the number was too round: every prior run had read 26 notifications with a stable 14 reply / 9 like / 3 follow split, and then the counts came back as an empty object. The zero was the anomaly. So the check now asserts that the call succeeded instead of trusting the shape of the result: const res = await fetch(url, { headers }) if (!res.ok) throw new Error(`sweep failed: ${res.status}`) const { notifications } = await res.json() if (!Array.isArray(notifications)) throw new Error('sweep returned no array') That part was right and I would write it again. Having found an expired token, I made the job refresh it. One call to com.atproto.server.refreshSession, take the new access token, retry the sweep. It worked on the first run. Two runs later the account was signed out. Not expired, signed out, sitting on the create-account screen, with refreshSession now returning: {\"error\":\"ExpiredToken\",\"message\":\"Token has been revoked\"} Revoked is a different word from expired, and I had caused it. AT Protocol refresh tokens are single-use and rotating. Presenting one gets you a new pair and destroys the one you presented. The SDK docs put it plainly: \"On the token refresh, the old refresh token will be revoked instantly\", and \"You must use only the fresh pair of tokens (access + refresh). It's not possible to reuse the same refresh token multiple times.\" Access tokens last about two hours, refresh tokens about two months. It is worth being precise about where that is documented, because I got it wrong in my own notes first. The XRPC spec describes the refresh endpoint and the access/refresh split, but it never says the tokens are single-use. That behaviour is in the SDK documentation, and in the maintainer discussion the position is that clients should expect rotation and expiry at any time, since the policy is left to the auth server. Reasoning from the protocol spec alone will not get you there. Now add the part about ownership. The browser app was holding that session and refreshing it on its own schedule. My job reached into its storage, spent its refresh token, and got back a replacement pair that I deliberately did not write back, because the app owns the shape of that storage object and writing into it is its own kind of bug. The app was left holding a token that had already been consumed. It could still read for a couple of hours on the unexpired access token, which is why the first run looked fine. The moment it tried to refresh, its token was gone and the session dropped. The breakage is delayed by exactly one access-token lifetime, which is what makes it hard to catch. The harmful call and the visible symptom are hours apart, so by the time anything looks wrong you have stopped suspecting the thing you changed. Never spend a single-use credential that another program owns. Read its tokens if you have to, but do not rotate them. Rotation is a write, even though it looks like a read. Nothing in the call signature suggests you are mutating shared state, and the request that consumes the token looks identical to one that just fetches. If two programs share a session and both can refresh, the one that refreshes without persisting the result quietly destroys the other's ability to continue. None of this is specific to atproto. It is how rotating refresh tokens work wherever they are implemented, which is why the SDK ships an on_session_change hook whose entire job is to make you persist the rotated pair. Once you accept that, the recovery is to make the owner do the refresh. Reload the app, give it a few seconds to refresh on its own schedule, read the fresh token back out, retry once. If that still fails, it is a genuine block and a human needs to sign in. That is cheaper than the alternative and it cannot corrupt anything. While the account was signed out I went looking for how much of the job could still run, assuming the answer was none of it. Most of it, as it turned out. The reads I actually needed were public: GET /xrpc/com.atproto.repo.listRecords?repo= &collection=app.bsky.feed.post GET /xrpc/app.bsky.feed.getPostThread?uri= GET /xrpc/app.bsky.feed.getPosts?uris= No token on any of them. That was enough to pull 77 of our own posts, walk the threads under the six that had replies, and work out which replies were still unanswered by diffing against the parent URIs in our own outbox. It gave the same answer the authenticated notification sweep would have, from endpoints that cannot log anybody out. The engagement counts I use for measurement came back the same way. Only the notification list itself needs auth, and notifications were never the thing I wanted. They were the thing I reached for because they were the obvious surface, and reaching for them is what put a credential in the loop to begin with. So before you build refresh handling, check whether the data is public. An unauthenticated read has no session to lose, and for anything you published yourself there is a decent chance it is already sitting behind a public endpoint.",
+      "url": "https://dev.to/jacksonxly/refreshing-a-token-i-did-not-own-logged-our-account-out-3nah",
+      "time": "2026-08-11T17:34:25.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "How I coded an SSE streaming AI Copilot & 3D canvas entirely from my smartphone during factory line shifts",
+      "description": "Hey everyone, I’m a completely self-taught independent developer. For the past few months, I’ve been coding CoSpatial 3D (https://cospatial3d.xyz)—a mobile-optimized spatial studio and generative concept engine—entirely from my smartphone during my 15-minute breaks and lunch hours while working intensive manual labor shifts on a production line. I finally got our production deployment stable over our custom domain, but as an amateur coder, the biggest technical roadblock I hit was UI throttling. Whenever I asked our in-app AI Copilot to fix complex 3D math scripts or rewrite long files, the backend server would hit default HTTP timeout limits, buffer, and completely crash the mobile browser window. To fix this before launch so other self-taught builders can bypass roadblocks smoothly, I ripped out the standard request-response loops and hardcoded Server-Sent Events (SSE) streaming on my Python backend, using this fetch reader loop on my React frontend to consume the chunks token-by-token: const handleFetchStream = async (prompt) => { const response = await fetch('/api/copilot/stream', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt }) }); const reader = response.body.getReader(); const decoder = new TextDecoder(); let done = false; while (!done) { const { value, done: readingDone } = await reader.read(); done = readingDone; const chunk = decoder.decode(value, { stream: !done }); setChatHistory((prev) => prev + chunk); } }; The streaming typewriter effect completely fixed the timeouts, and the 3D viewport canvas is now executing raw trigonometry to draw accurate geometric shapes (like perfect 5-point stars) instead of blurry AI hallucinations. Here is my current business hurdle: I am completely bootstrapping this project out of my own pockets from my factory paychecks. Because running high-intensity image generators and cloud rendering machines hits external APIs that charge me credits out of pocket, I’ve had to strictly sandbox our free trials inside closed, solo workspaces to protect our baseline balances. Upgrading to our paid Pro tier ($10/mo) is what actually provisions our server lines to unlock our multi-user live pair-programming channels via WebSockets. I don't want to sound like a desperate corporate ad, but I also won't pretend I don't need your financial support to keep this project alive, pay our hosting bills, and secure our GPU tokens for next month. If you believe in backing raw, independent indie development over multi-million dollar corporations, skipping the trial and locking in a $10 subscription directly keeps our engine alive. For the senior engineers here: I’m wide open to brutal, honest feedback on our UI responsiveness, our data isolation rules, or our prompt expansion filters. Jump into the sandbox at https://cospatial3d.xyz on your mobile devices and let me know how the streaming text loads on your screen sizes!",
+      "url": "https://dev.to/cospatial3d/how-i-coded-an-sse-streaming-ai-copilot-3d-canvas-entirely-from-my-smartphone-during-factory-line-5c9a",
+      "time": "2026-08-11T17:34:10.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "没有一个真人员工！日本电气成立“全AI部门”",
+      "description": "没有一个真人员工！日本电气成立“全AI部门”,nec,智能体,日本电气,业务流程,全ai部门",
+      "url": "https://www.163.com/dy/article/L42N332N05198CJN.html",
+      "time": "2026-08-11 17:33",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "股价错杀？据称苹果玻璃机身iPhone仍在推进，但",
+      "description": "股价错杀？据称苹果玻璃机身iPhone仍在推进，但放弃全玻璃设计,股价,智能手机,苹果公司,长焦镜头,全玻璃设计,新款iphone",
+      "url": "https://www.163.com/dy/article/L42N2HUP05198CJN.html",
+      "time": "2026-08-11 17:33",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "上海：浦东张江重点发展智能芯片、具身智能、智",
+      "description": "上海：浦东张江重点发展智能芯片、具身智能、智算服务等底层硬核科技,滨江,徐汇,智能芯片,智算服务,浦东新区,上海地铁,核心技术,张江高科技园区",
+      "url": "https://www.163.com/dy/article/L42N2H9505198CJN.html",
+      "time": "2026-08-11 17:33",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "My Anti AI computer",
+      "description": "I made this computer to have a place where I can calm my mind, and to re-learn patience; the irony is that I used AI to write the OS and the drivers and everything, and now I do enjoy it, but surely not as much as if I would've written the code myself. Comments",
+      "url": "https://punkx.org/jackdoe/home.html",
+      "time": "2026-08-11T17:31:53.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "The budget-friendly Pixel Buds 2a are even cheaper right now",
+      "description": "The Google Pixel Buds 2a in hazel. | Image: The Verge Looking for great pair of earbuds that work particularly well with Android phones? The Google Pixel Buds 2a are currently discounted to $99 (usually $129) at various retailers, including Amazon, Best Buy, and directly from Google. These very capable Bluetooth earbuds come in four colors, with a lightweight fit that helps them disappear into your ears. With ANC and transparency mode support, and a close integration with Gemini, they’re a great choice for anyone with a Pixel or other Android device. Pixel Buds 2a Google’s latest pair of wireless earbuds feature crisp sound quality, a comfortable design, and solid active noise cancellation, which is great considering the budget-friendly price tag. They even offer built-in support for Gemini and, unlike the entry-level AirPods, a purple option! Read our review. Where to Buy: $129 $99 at Amazon $129 $99 at Google $129 $99 at Best Buy My colleague David Pierce reviewed the Pixel Buds 2a on their release in October of 2025, and was impressed by the excellent sound quality, impressive ANC and transparency modes, and comfortable fit, particularly at the price point. The biggest complaint we had about these earbuds is that they lack some of the advanced features when paired with an iPhone or iPad, similar to how AirPods don’t support their full feature suite with Android phones. Read our Pixel Buds 2a review. window.HYPE_DESK_CONFIG = { productImageUrl: \"https://platform.theverge.com/wp-content/uploads/sites/2/2026/08/06_pro_phone_16x9.png\", productImageAlt: \"iPhone 17 Pro Max Unlocked\", productTitle: \"iPhone 17 Pro Max Unlocked\", shortDescription: \"The flagship iPhone, without the flagship price tag.\", longDescription: \"The 17 Pro Max is Apple's best phone, and Back Market is where you get it for less without giving anything up. The A19 Pro chip handles everything you throw at it, the triple 48MP camera system shoots photos and 4K video that will genuinely impress you, and the 6.9-inch ProMotion display makes everything look better than it has any right to. Every unit is professionally refurbished, unlocked for any carrier, and backed by a one-year warranty and 30-day return policy through the Back Market Promise.\", purchaseUrl: \"https://www.awin1.com/cread.php?awinmid=18275&awinaffid=173843&campaign=VergeHypeDesk&clickref=AugustArticle1&platform=dl&ued=https%3A%2F%2Fwww.backmarket.com%2Fen-us%2Fp%2Fiphone-17-pro-max-256-gb-deep-blue-unlocked%2F04896795-8ba2-4187-8fb9-d32a631d0aa6\", purchaseLinkText: \"Buy at Back Market\" }; Other deals to consider Costco members can grab a discount on Star Fox for Nintendo Switch 2. Normally $49.99, digital codes for the game are only $42.99 and deliver via email so you can get playing right away. This reimagining of the classic Nintendo 64 game adds in cinematic new cutscenes and updates the graphics to modern day standards, showing off the improved power of the Switch 2. Read our review. Looking for a charging block with a little attitude? The Anker Nano Smart Display Charger is discounted to $25.99 (usually $39.99) at Amazon and supports up to 45W of power over USB-C. It has a tiny screen that can show charging and device info, or a cute little face in case you need some company while waiting for your phone to recharge. Read our hands-on. Amazon has the Philips SmartSleep Wake-up Light discounted to $76.29, a 30 percent discount from its usual price of $108.95, and just slightly above its all-time low price. In addition to slowly lighting up in the morning to help you wake up smoothly, it also functions as an FM radio for quiet music at bedtime, and a reading light with 20 different settings.",
+      "url": "https://www.theverge.com/gadgets/977929/pixel-buds-2a-starfox-switch-deal-sale",
+      "time": "2026-08-11T17:31:06.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "游戏"
+      ]
+    },
+    {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "FDA approves Samsung's Hearing Aid feature on Galaxy Buds",
+      "description": "Samsung has been improving its health-tracking features and the recent FDA approval for the Galaxy Buds' Hearing Aid feature adds another such feature to its toolbox. The US Food and Drug Administration cleared the Hearing Aid feature as an over-the-counter (OTC) solution for users aged 18 and above. It makes some Galaxy Buds models a convenient alternative to some expensive hearing aid devices for people with mild to moderate hearing loss. For example, people having trouble following a conversation in noisy environments fall in this category. According to WHO, hearing loss affects...",
+      "url": "https://www.gsmarena.com/fda_approves_samsungs_hearing_aid_feature_on_galaxy_buds-news-74121.php",
+      "time": "2026-08-11T17:31:02.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "System Design for Beginners: How to Design Scalable Systems",
+      "description": "Many beginners learn system design by memorizing technologies: Load balancers Redis Kafka Microservices Sharding Database replication But knowing these technologies is not enough. The real question is: What problem are we trying to solve? A system serving 1,000 users does not need the same architecture as one serving 10 million users. Good system design is about understanding requirements, scale, constraints, failures, and trade-offs before choosing technologies. A simple system-design thinking process is: Requirements ↓ Traffic ↓ API ↓ Database ↓ Bottlenecks ↓ Caching ↓ Scaling ↓ Reliability ↓ Monitoring Let's understand each step. System design is deciding how different software and infrastructure components work together to satisfy a system's requirements. For example, a chat application may need: APIs WebSockets Database Authentication Application servers The important part is not drawing these components. It is understanding why they are needed. First, understand what the system must do. These are the functional requirements. Send messages Receive messages View message history Submit a URL Generate a short URL Redirect to the original URL Then identify non-functional requirements: Scalability Availability Reliability Latency Throughput Security Durability These requirements influence your architecture. For example, a payment system may prioritize correctness and durability, while a real-time application may prioritize low latency. Before choosing infrastructure, estimate the workload. Ask: How many users? How many daily active users? Requests per second? Peak traffic? Read/write ratio? How much data will be generated? For example: 10 million users ↓ 20 requests/user/day ↓ 200 million requests/day ↓ ~2,315 requests/sec average Peak traffic may be several times higher. You don't need perfect numbers. You need estimates good enough to make architectural decisions. Define how clients interact with the system. For a chat application: GET /users/{id} POST /messages GET /messages?cursor=abc123 Keep endpoints focused on clear responsibilities. For large datasets, use pagination instead of returning everything at once: GET /messages?cursor=abc123&limit=50 Stateless APIs also make horizontal scaling easier because any application server can handle a request. Don't start with: \"Should I use PostgreSQL or MongoDB?\" Start with: \"How will the data be used?\" Consider: Data relationships Query patterns Read/write ratio Consistency requirements Dataset size Transaction requirements SQL databases are often useful for structured data, relationships, and transactions. NoSQL databases can be useful for specific distributed and high-throughput workloads. Neither is universally better. Database selection is a trade-off. A bottleneck is the component limiting the system's performance. For example: Users ↓ API Servers ↓ Database If the API can handle 10,000 requests/sec but the database can handle only 2,000 writes/sec, adding more API servers won't solve the problem. The database is the bottleneck. Possible solutions include: Better queries Indexing Caching Replication Partitioning Reducing unnecessary work Find the constraint before scaling everything. Caching reduces repeated expensive operations. A typical flow is: Client ↓ API ↓ Cache ↓ Database If the data exists in the cache, it's a cache hit. If not, it's a cache miss, and the application can retrieve the data from the database. Redis is commonly used for distributed caching. But caching introduces its own problems: Stale data Cache invalidation Memory usage Cache failures So don't add Redis because \"scalable systems use Redis.\" Add caching when you have a caching problem. There are two basic approaches. Increase the resources of one machine. 4 CPU + 8 GB RAM ↓ 16 CPU + 64 GB RAM Simple, but the machine has limits. Add more machines. Users ↓ Load Balancer ↓ Server 1 Server 2 Server 3 Horizontal scaling improves capacity and can improve availability. Stateless application servers make this much easier. Systems fail. Servers crash. Databases become unavailable. Networks timeout. External APIs stop responding. Ask: \"What happens when this component fails?\" Important concepts include: Redundancy Health checks Failover Replication Backups Timeouts Retries Also look for single points of failure. Availability: Is the system accessible? Reliability: Does the system consistently work correctly? A system can be available but still unreliable. A production system needs visibility. Three important areas are: Tell you what happened. Tell you how the system is behaving. Useful metrics include: Request volume Error rate Latency CPU Memory Database connections Help identify where a request spent its time. For example: API Request ↓ 10ms Application ↓ 20ms Database ↓ 400ms External API Without observability, debugging production problems becomes much harder. When solving a new system design problem, follow this order: Requirements ↓ Traffic Estimation ↓ API Design ↓ Database ↓ Bottlenecks ↓ Caching ↓ Scaling ↓ Reliability ↓ Monitoring Each step answers a simple question: Step Question Requirements What does the system need to do? Traffic How much load will it handle? API How will clients interact with it? Database How should data be stored? Bottlenecks What could limit performance? Caching What expensive work can be avoided? Scaling How will we handle more load? Reliability What happens when things fail? Monitoring How will we know the system is healthy? Let's see how architecture can evolve. Keep it simple: Users ↓ Application Server ↓ Database WebSockets can handle real-time communication. No need for Kafka, Kubernetes, microservices, or database sharding. Now a single server may become a bottleneck: Users ↓ Load Balancer ↓ App 1 | App 2 | App 3 ↓ Database A shared messaging or coordination layer may become useful for real-time communication. Now additional challenges appear: Concurrent connections Message throughput Database capacity Storage growth Network load Failure handling The architecture may evolve toward: Users ↓ Load Balancer ↓ Application Servers ↓ Message Queue ↓ Processing ↓ Database ├── Primary └── Replicas The important lesson is: Don't build the 10-million-user architecture for 100 users. Let the architecture evolve as the workload and requirements change. Don't start with: \"Let's use Kafka.\" Start with: \"What problem requires a message queue?\" A modular monolith may be perfectly suitable for a smaller system. Architecture depends heavily on workload. Always ask what happens when a component becomes unavailable. Choose based on data and access patterns. Caching solves specific problems and introduces complexity. A system that cannot be observed is difficult to operate. Not every application needs: Kafka Kubernetes Microservices Sharding Multiple databases Think about: What if the server fails? What if the database is slow? What if traffic suddenly spikes? Understand why a component exists instead of memorizing where to draw it. Before finalizing a design, ask: □ What does the system need to do? □ How many users are there? □ How much traffic will it receive? □ What is the read/write ratio? □ What latency is expected? □ Where could bottlenecks occur? □ Does caching solve a real problem? □ How will the application scale? □ How will the database scale? □ What happens when something fails? □ Are there single points of failure? □ How will the system be monitored? System design for beginners is not about memorizing Redis, Kafka, Kubernetes, or hundreds of architecture diagrams. It is about learning how to think. Start with requirements. Estimate the workload. Design the APIs. Choose the right storage. Find bottlenecks. Add caching when necessary. Scale when the workload demands it. Plan for failures. Monitor the system. There is no single perfect architecture. Good system design is about understanding constraints, making trade-offs, and building a system that can evolve as requirements and traffic change.",
+      "url": "https://dev.to/tanu_priya/system-design-for-beginners-how-to-design-scalable-systems-1n21",
+      "time": "2026-08-11T17:27:30.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Which is the fastest HTTP server in 2026?",
+      "description": "For thirteen years, if you wanted to know which web framework was fastest, you looked in one place. That place is gone. In March 2026 the TechEmpower Framework Benchmarks were sunset and the repository archived, read-only. It began in 2013 with 25 frameworks and ended with more than 330 implementations in Round 23. The maintainers gave the honest reasons: the cost of keeping two hundred frameworks building, and volunteers running out of appetite as the thing grew. The historic data is still online. It is just frozen, and every month that passes makes it a worse answer to the question in the title. So the question is open again. Something has moved in to answer it, and it is stricter than what it replaces. HttpArena. One machine. An AMD Ryzen Threadripper PRO 3995WX, 64 cores, 128 threads, 251 GB of RAM, Ubuntu 24.04, performance governor. Every entry runs on that same box, under the same conditions, run by the project rather than self-reported by the framework authors. Thirty test profiles, grouped into six boards: HTTP/1.1, HTTP/2, HTTP/3, gRPC, Gateway, WebSocket. The HTTP/1.1 board alone counts twelve scored profiles: Profile What it does baseline mixed GET/POST with query parsing, 512 and 4096 connections limited-conn connections closed after 10 requests, so the handshake counts json dataset processing and serialization json-comp the same, compressed, with Accept-Encoding: gzip, br json-tls the JSON workload over HTTP/1.1 + TLS upload 20 MB body ingestion static 20 static files off disk static-tls the same over TLS async-db async Postgres query with pooling crud a REST API with cache-aside reads, updates, list and upsert api-4 / api-16 mixed workloads pinned to 4 and 16 CPUs Each profile is normalised against the best result in the field: your average RPS divided by the leader's, times 100. Those per-profile scores are then summed across the profiles an entry runs. One profile does not use raw throughput. json-comp multiplies by the square of the compression ratio, rps × (minBpr / myBpr)², where bpr is bytes per response. Ship a body twice as large and you quarter your score. It is the only place in the benchmark where being smaller beats being faster, and it changes what you optimise for. Two profiles, pipelined and fortunes, are displayed but deliberately excluded from the ranking, because they measure a library rather than the server: HTTP/1.1 pipelining is dead in browsers, and Fortunes mostly measures a template engine. This is where HttpArena earns its numbers: No pre-computed responses. No pre-serialized caches, no pre-compressed bodies, no response lookup tables. The JSON has to be serialized per request and the compression has to run per request. Use the framework's own machinery. The template test requires a real template engine with a separate template file and HTML auto-escaping, not string concatenation in the handler. One seeded row contains a raw tag, and the rendered output has to escape it. Stock proxies only. The Gateway tests require a production-grade third-party proxy, nginx or Caddy or Envoy or HAProxy. No custom ones. Exactly two services, no extra caches or sidecars. Anti-cheat per protocol. The cleartext HTTP/2 profiles reject an entry that also serves HTTP/1.1 on the same port. Correctness first. A validation script checks response shapes, headers, escaping and sizes before any result is accepted. And two separations that matter more than any single rule: Frameworks and engines are ranked apart. A raw event-loop engine with no application layer does not compete against something you would actually build an app in. Standard and tuned entries are marked, so a default configuration is not silently compared against one that has been swept for a week. HTTP/1.1 board, framework entries: # Entry Score Language 1 genhttp-11-ioxide 968 C# 2 genhttp-11 868 C# 3 fulmine 823 JS 4 true-async-server 780 PHP 5 swoole 707 PHP 6 actix 702 Rust 7 aspnet-minimal-ioxide 697 C# The engine league, ranked separately: ioxide 966 (C#), vanilla-io_uring 864 (V), sark 846 (Rust). Two things are worth noticing. The top of the framework board is C#, not Rust, and the languages people assume are slow are not where you would expect them to be. PHP holds fourth and fifth. The composite is a sum, not an average, so it rewards breadth as much as speed. An entry running twelve profiles at 60 beats one running eight at 90. That is deliberate, so a one-trick entry cannot top the board, but it means the headline number answers two questions at once and you cannot tell them apart from the outside. So: open the per-profile columns before concluding anything. And remember the top entries sit within a few percent of each other, on a machine that is not yours, on workloads that are not your application. A benchmark tells you what is possible. It does not tell you what your bottleneck is.",
+      "url": "https://dev.to/nigrosimone/which-is-the-fastest-http-server-in-2026-eg5",
+      "time": "2026-08-11T17:26:54.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "What Does the `del` Statement Actually Do?",
+      "description": "This article assumes you're already comfortable writing simple Python programs and know the basics (if, for, functions, and lists). Here we're not learning how to use Python—we're learning why it behaves the way it does. Try to guess what this code prints. numbers = [1, 2, 3] other = numbers del numbers print(other) Many people expect this program to fail. After all, we just deleted the list. But Python happily prints: [1, 2, 3] That seems odd. We deleted the list... So why does it still exist? To answer that question, let's revisit one of the first ideas from this series. When we write: numbers = [1, 2, 3] the variable doesn't store the list itself. Python creates a list object. Then the name numbers is bound to that object. Later, we execute another line: other = numbers Now two names refer to the same object. Visually: numbers ─┐ │ ▼ [1, 2, 3] ▲ │ other ────┘ Now comes the interesting part. del numbers What actually happens? Many people imagine that Python destroys the object. But that's not what del does. In fact, del doesn't operate on objects at all. It operates on names. After this statement, the picture looks like this: [1, 2, 3] ▲ │ other ────┘ The name numbers is gone. The object is not. It still exists because the name other continues to refer to it. That's why the next line: print(other) prints the list without any problem. Now let's try a different example. numbers = [1, 2, 3] del numbers print(numbers) This time, the program really does fail. But it's important to understand why. The error doesn't occur because Python can't find the object. It occurs because the name numbers no longer exists. When Python executes: print(numbers) it tries to look up the name numbers. But there is no such name anymore. So Python raises: NameError Notice what the exception is telling us. It's complaining about the name. Not about the object. You can think of del as breaking the connection between a name and an object. Whether the object itself continues to exist is a separate question. And the answer depends on just one thing. Is there still at least one name referring to that object? Let's look at one more example. numbers = [1, 2, 3] other = numbers third = numbers del numbers del other print(third) What happens now? By this point, the answer should be obvious. The list continues to exist. Why? Because the name third still refers to it. You can delete ten different names if you like. As long as at least one name still points to the object, the object remains alive. This leads to an interesting question. What happens when the last name disappears? For example: numbers = [1, 2, 3] del numbers Now nothing in our program appears to refer to the object anymore. Does Python immediately remove it from memory? Or are there other rules involved? That's exactly what we'll explore in the next article.",
+      "url": "https://dev.to/storvus/what-does-the-del-statement-actually-do-36nf",
+      "time": "2026-08-11T17:26:53.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Apple rolls out macOS 27 Golden Gate public beta 3, here’s how to install it",
+      "description": "Users enrolled in Apple’s public beta program can now install macOS 27 Golden Gate public beta 3. Here’s what’s new in the system.",
+      "url": "https://9to5mac.com/2026/08/11/apple-rolls-out-macos-27-golden-gate-public-beta-3-heres-how-to-install-it/",
+      "time": "2026-08-11T17:25:20.000Z",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "How I Built a Fast Instagram Video and Reels Downloader with Next.js",
+      "description": "How I Built a Fast Instagram Video and Reels Downloader with Next.js I recently built InstaFetch, a browser-based tool for downloading supported public Instagram videos, Reels, and photos. The goal wasn't to build another complicated media application. I wanted a simple workflow: Paste a public Instagram URL → check the media → download it. You can try the live application here: https://www.instafetch.app A lot of existing downloader websites make a simple task unnecessarily complicated. Some require multiple pages, others use aggressive popups, and some ask users for credentials. I wanted to experiment with building a cleaner experience using Next.js. InstaFetch currently focuses on supported public Instagram content and does not require users to provide their Instagram login credentials. The application is built with: Next.js React TypeScript Tailwind CSS Vercel Next.js was useful because I could combine the application interface, API routes, metadata, sitemap, and SEO-focused pages in the same project. The basic workflow is straightforward. A user provides a public Instagram URL. The application validates the URL and sends it through the downloader backend. If supported media is available, the application returns the available download information to the user. The interface was designed around keeping this workflow as short as possible. One thing I wanted to experiment with was creating dedicated landing pages for different search intents. For example: https://www.instafetch.app/instagram-video-downloader https://www.instafetch.app/instagram-reels-downloader https://www.instafetch.app/instagram-photo-downloader Instead of putting every keyword on one page, each page focuses on a specific use case. I also added a generated sitemap using Next.js. The sitemap includes the homepage, dedicated downloader pages, blog posts, and important legal pages. I then submitted the sitemap to Google Search Console and tested the individual downloader URLs using Google's URL inspection tools. The important lesson here was that adding a sitemap isn't the same thing as getting pages indexed. The pages still need to be crawlable, accessible, and useful. The project is still early, so there are several things I'd like to improve: Better download reliability Better handling of unsupported URLs Improved mobile UX More useful download options More documentation More SEO content based on actual user questions I'm also interested in learning which features people actually find useful instead of adding features just because they sound interesting. If you work with public Instagram content and want to try the current version: https://www.instafetch.app I'd be interested in hearing what you would improve.",
+      "url": "https://dev.to/deepak_gahlyan_f3f9e6b657/how-i-built-a-fast-instagram-video-and-reels-downloader-with-nextjs-3bpp",
+      "time": "2026-08-11T17:25:04.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "Ling-3.0-tiny正式开源",
+      "description": "Ling-3.0-tiny正式开源,推理,百灵,总参,tiny,ling",
+      "url": "https://www.163.com/dy/article/L42MKQE40534A4SC.html",
+      "time": "2026-08-11 17:25",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Grok Bot by SpaceXAI",
+      "description": "Article URL: https://x.ai/news/introducing-grok-bot Comments URL: https://news.ycombinator.com/item?id=49261532 Points: 23 # Comments: 8",
+      "url": "https://x.ai/news/introducing-grok-bot",
+      "time": "2026-08-11T17:24:49.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "What’s the “best” game engine?",
+      "description": "I have seen loads of videos about game engines and how great each one is but each one has their own code language they specifically use. The main 2 I’m looking at is game maker and godot but does anyone have any other recommendations?",
+      "url": "https://dev.to/thedandev/whats-the-best-game-engine-59gk",
+      "time": "2026-08-11T17:23:35.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Dapper.TypedParameters: Making SQL Server Parameter Types Explicit in Dapper",
+      "description": "One of the things I like most about Dapper is that it stays out of the way. You write the SQL, pass the parameters, execute the query, and get your objects back. There is very little ceremony between your application and the database, which is exactly why Dapper works so well in many backend systems. But simplicity sometimes hides details. In this case, the detail that caught my attention was parameter metadata. A .NET string is just a string to our application. SQL Server, however, does not have a single generic “string” type. It has varchar, nvarchar, char, nchar, different sizes, and several other pieces of metadata that can be relevant when a parameter is materialized and sent to the database. That small gap between the CLR type we see in code and the SQL type that actually reaches SQL Server is what eventually led me to build Dapper.TypedParameters. The library has now reached its first stable version, 1.0.0, and its goal is intentionally narrow: Let developers explicitly describe SQL Server parameter metadata when the database contract is already known. Consider a typical Dapper query: var customer = await connection.QuerySingleOrDefaultAsync ( \"\"\" SELECT Id, Document, Name FROM dbo.Customers WHERE Document = @Document; \"\"\", new { Document = document }); There is nothing wrong with this code. In the application, document is a .NET string, and Dapper delegates parameter materialization to the underlying ADO.NET provider. Now imagine the database schema contains: Document varchar(11) At the call site, we know we have a string. But the database contract is more specific: varchar(11) That distinction may or may not matter for a given query, but the information exists. The question I started asking was simple: If the application already knows the database contract, should it be possible to express that contract explicitly? With Dapper.TypedParameters, the same query becomes: var customer = await connection.QuerySingleOrDefaultAsync ( \"\"\" SELECT Id, Document, Name FROM dbo.Customers WHERE Document = @Document; \"\"\", new { Document = SqlParam.VarChar(document, 11) }); Now the intent is visible. .NET string ↓ explicit SQL metadata ↓ varchar(11) That is essentially the whole idea behind the project. varchar is better than nvarchar This is an important distinction. The library does not assume that varchar is better than nvarchar, or that developers should replace inferred parameters everywhere. If your column is: Name nvarchar(150) then a corresponding parameter can be written as: Name = SqlParam.NVarChar(name, 150) The point is not to prefer one SQL type over another. The point is to make the expected database type explicit when you already know what it is. That keeps the decision where I think it belongs: in the hands of the developer who understands the schema and the query. The library does not inspect the database and decide for you. This is where I think technical discussions can become misleading very quickly. A mismatch between parameter metadata and column metadata can cause SQL Server to perform implicit conversions. Depending on the types involved, type precedence, collation, indexes, query shape, and the resulting execution plan, those conversions may affect query behavior or performance. But that does not mean: “Dapper parameter inference is slow.” And it certainly does not mean: “Using explicitly typed parameters automatically makes queries faster.” Neither statement is accurate. Dapper's normal parameter inference is perfectly appropriate for many applications. Dapper.TypedParameters simply gives you more control when that control matters. If performance is important, the usual rules still apply: inspect the execution plan, measure the workload, understand the query, and avoid optimizing based only on assumptions. I deliberately avoided turning this library into something that promises performance improvements it cannot universally guarantee. Its value is explicitness and control, not magic optimization. Strings were the easiest starting point, but the same concept applies naturally to other SQL Server types. For example, a decimal parameter can make precision and scale visible: Amount = SqlParam.Decimal( amount, precision: 18, scale: 2) That makes the intended contract clear: decimal(18, 2) Temporal parameters work the same way: CreatedAt = SqlParam.DateTime2(createdAt, scale: 7) And identifiers: CustomerId = SqlParam.UniqueIdentifier(customerId) The 1.0.0 release supports the most common families I wanted to cover before stabilizing the API: strings, numeric values, binary values, identifiers, and temporal values. It also supports output and input/output parameters, as well as Table-Valued Parameters. The important part is that all of them follow the same design philosophy: the API should expose SQL Server intent without changing the way developers normally work with Dapper. Stored procedures are still common in many enterprise systems, so output parameters were an important part of the stable release. A parameter can be declared as output: var result = SqlParam.Int(null).AsOutput(); await connection.ExecuteAsync( \"dbo.CalculateSomething\", new { Result = result }, commandType: CommandType.StoredProcedure); var value = result.GetValue (); There is also support for AsInputOutput() and direct access through OutputValue. One detail I wanted to keep explicit is the lifecycle. The output value only exists after the command has been executed. That sounds obvious, but abstractions sometimes try so hard to make things convenient that they end up hiding important behavior. I would rather keep the model understandable. Create the parameter, execute the command, then read the value. TVPs are another good example of knowing where a library should stop. Dapper.TypedParameters supports them using an explicit SQL Server type name and a caller-provided DataTable. Conceptually: var ids = SqlParam.TableValued( \"dbo.CustomerIds\", table); The resulting SQL parameter is configured as SqlDbType.Structured. What the library does not do is automatically map arbitrary POCO collections to SQL Server user-defined table types. It also does not create those types in the database. The caller remains responsible for making sure the DataTable shape matches the SQL Server type. Could the library do more? Of course. But then it would slowly stop being a typed-parameter library and start becoming a mapping framework. That is not the direction I want for it. A large part of designing the first stable version was deciding what should stay outside the project. Dapper.TypedParameters does not inspect schemas. It does not rewrite SQL. It does not analyze execution plans. It does not search for CONVERT_IMPLICIT. It does not automatically select SQL types. It does not query SQL Server to discover what a column looks like. If you write: SqlParam.VarChar(document, 11) the library assumes you know why the parameter should be varchar(11). That trust is intentional. Adding automatic discovery would introduce database access, metadata caching, permissions, connection lifecycle concerns, and many other responsibilities that have nothing to do with the original problem. Sometimes keeping a library small is harder than adding another feature. One of the most useful reminders from this project was that there is a big difference between: “The code works.” and: “Other people can safely depend on this package.” Once a library is on NuGet, public API decisions become contracts. Someone may compile an application against a property or method you casually added six months ago and expect it to keep working across future 1.x releases. That changed how I approached the path to 1.0.0. The library went through preview and release-candidate versions before the public API was frozen. The package targets .NET 8 and .NET 10, using Microsoft.Data.SqlClient. The repository includes unit tests and real SQL Server integration tests using Docker and Testcontainers. It also validates package contents, package consumption, public API compatibility, SourceLink, package validation, and SonarQube Cloud Quality Gates. NuGet publication uses Trusted Publishing through GitHub Actions rather than storing a long-lived NuGet API key. That may sound like a lot of infrastructure for a small library. But package size and maintenance responsibility are two very different things. The package is available on NuGet as: TypedParameters.Dapper.SqlServer Installation is straightforward: dotnet add package TypedParameters.Dapper.SqlServer Then import the namespace: using Dapper.TypedParameters.SqlServer; And use typed parameters inside the same anonymous objects you already use with Dapper: new { Document = SqlParam.VarChar(document, 11), Name = SqlParam.NVarChar(name, 150), Amount = SqlParam.Decimal(amount, 18, 2) } There is no new repository abstraction, query builder, or database context to adopt. That was important to me. Dapper.TypedParameters was not created because I think Dapper's parameter system is broken. Quite the opposite: I like Dapper because of how little it gets between the application and SQL. The library exists because sometimes explicitness is useful. Instead of: Document = document you can choose to write: Document = SqlParam.VarChar(document, 11) Those extra characters capture a decision that would otherwise remain implicit. That is the core idea behind the project: less inference when you want control, without stopping Dapper from being Dapper. The source code is available on GitHub: github.com/rodri-oliveira-dev/Dapper.TypedParameters And the stable package is available on NuGet: TypedParameters.Dapper.SqlServer Now that 1.0.0 is out, the part I am most interested in begins: seeing how the API behaves in real applications outside the scenarios I used while designing it. If you work with Dapper and SQL Server, feedback is very welcome — especially around API ergonomics, missing parameter scenarios, and cases where making SQL metadata explicit has proved useful.",
+      "url": "https://dev.to/rodri-oliveira-dev/dappertypedparameters-making-sql-server-parameter-types-explicit-in-dapper-3dm3",
+      "time": "2026-08-11T17:22:20.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Public beta 3 for iPadOS 27 and more available now, here’s what’s new",
+      "description": "One day after shipping beta 5 for developers, Apple has just released public beta 3 for iPadOS 27 and several other OS 27 updates.",
+      "url": "https://9to5mac.com/2026/08/11/public-beta-3-for-ipados-27-and-more-available-now-heres-whats-new/",
+      "time": "2026-08-11T17:22:19.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "iOS 27 public beta 3 is here with Siri AI, iPhone speed upgrades, and more",
+      "description": "The third iOS 27 public beta is now available for iPhone. It gives users an early chance to try Apple’s biggest software update of the year. Siri AI is the headline feature. The release also includes a redesigned Screen Time experience, Liquid Glass refinements, performance upgrades, and dozens of quality-of-life changes. Here’s how to install the beta, what’s new, and which features you should try first.",
+      "url": "https://9to5mac.com/2026/08/11/ios-27-public-beta-3/",
+      "time": "2026-08-11T17:22:17.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "让 Agent 读懂业务世界：Snowflake Cortex Agents 的本体驱动推理实践",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/2NsA9FT1uhjmdRrwzOo3?utm_source=rss&utm_medium=article",
+      "time": "2026-08-11T17:19:44.000Z",
+      "tags": []
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "为 Agentic Enterprise 实现 ROI：企业高管需要关注的 3 个关键因素",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/fe63sMOT127Pu7QpHP3a?utm_source=rss&utm_medium=article",
+      "time": "2026-08-11T17:19:14.000Z",
+      "tags": []
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "清华天眸芯团队再登Nature系列期刊封面，类脑互补视觉范式重塑AI感知世界的方式",
+      "description": "清华天眸芯团队再登Nature系列期刊封面，类脑互补视觉范式重塑AI感知世界的方式,视觉,算法,类脑,期刊封面,清华天眸芯,physical",
+      "url": "https://www.163.com/dy/article/L42KJ1NB0511AQHO.html",
+      "time": "2026-08-11 17:17",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "Anthropic冲刺秋季IPO，投资者先问了三道难题",
+      "description": "Anthropic冲刺秋季IPO，投资者先问了三道难题,ipo,特朗普,spacex,华尔街日报,anthropic,上市",
+      "url": "https://www.163.com/tech/article/L42M32BI00097U7T.html",
+      "time": "2026-08-11 17:15",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "The Death of Traditional DevOps: Platform Engineering & IDPs",
+      "description": "The Failure of \"You Build It, You Run It\" The original promise of DevOps was to break down the silos between developers and operations. The idea was simple: \"You build it, you run it.\" Developers would write the code, write the Dockerfile, write the Terraform, and manage the Kubernetes deployments. The result? Developers drowned in cognitive overload. Instead of shipping features, senior software engineers were spending 40% of their time debugging Helm charts and fighting IAM permissions. The DevOps model, as originally conceived, has failed at scale. Platform Engineering is the evolution of DevOps. Instead of forcing developers to become infrastructure experts, Platform Engineers treat developers as their customers. They build an Internal Developer Platform (IDP). - Golden Paths: Platform engineers define secure, highly-available infrastructure templates (Golden Paths). Self-Service: Developers use a portal (like Backstage or Port) to request a new microservice. The IDP automatically provisions the repo, CI/CD pipeline, database, and Kubernetes namespace in minutes, with zero ticketing required. Abstraction: Developers write code and push to main. The platform handles everything else. They don't need to know how the Ingress controller works. Building an IDP requires stitching together best-in-class tools into a cohesive product. This usually involves Backstage (for the UI), ArgoCD (for GitOps deployment), Crossplane (for provisioning cloud resources via Kubernetes), and strict OPA Gatekeeper policies (for security guardrails). DevOps is not a job title; it is a philosophy. Platform Engineering is the practical implementation of that philosophy at scale. By abstracting infrastructure complexity into a self-service platform, companies are finally achieving the deployment velocity they were promised a decade ago. Subscribe to the Newsletter Get the latest articles on DevOps, Linux, and Cloud Infrastructure delivered straight to your inbox. Subscribe Successfully subscribed! Is your AI agent's infrastructure secure and reliable? Book a Free 15-Min Technical Audit",
+      "url": "https://dev.to/mealiclay01/the-death-of-traditional-devops-platform-engineering-idps-18pf",
+      "time": "2026-08-11T17:14:03.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Sonos is planning Ace Ultra headphones with a big AI push, report says",
+      "description": "Two years ago, Sonos made the leap from wireless speakers to over-ear headphones. Now it sounds like Sonos is preparing a more premium, AI-infused encore.",
+      "url": "https://9to5mac.com/2026/08/11/sonos-is-planning-ace-ultra-headphones-with-a-big-ai-push-report-says/",
+      "time": "2026-08-11T17:12:20.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "上海：推动建设一批集算力调度、模型孵化、应用",
+      "description": "上海：推动建设一批集算力调度、模型孵化、应用适配于一体的综合性智算公共平台,算力,智算,综合性,上海市,公共平台,智能终端",
+      "url": "https://www.163.com/dy/article/L42LT5TE0534A4SC.html",
+      "time": "2026-08-11 17:12",
+      "tags": [
+        "软件应用",
+        "AI芯片"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Grok Bot is an all-new iPhone and Mac app from SpaceXAI and Cursor",
+      "description": "SpaceXAI and Cursor are in the process of becoming a single company, but first, the two firms are releasing an all-new iPhone and Mac app called Grok Bot.",
+      "url": "https://9to5mac.com/2026/08/11/grok-bot-is-an-all-new-iphone-and-mac-app-from-spacexai-and-cursor/",
+      "time": "2026-08-11T17:10:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "上海：推动自主芯片与主流大模型深度融合",
+      "description": "上海：推动自主芯片与主流大模型深度融合,量子,上海市,自主芯片,神经网络,超级计算机",
+      "url": "https://www.163.com/dy/article/L42LICIG0534A4SC.html",
+      "time": "2026-08-11 17:06",
+      "tags": [
+        "人工智能",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Woman Pulled over at Gunpoint Twice After Flock Camera Glitch",
+      "description": "Article URL: https://guessingheadlights.com/yall-failed-me-woman-pulled-over-at-gunpoint-twice-after-flock-camera-glitch/ Comments URL: https://news.ycombinator.com/item?id=49261218 Points: 6 # Comments: 3",
+      "url": "https://guessingheadlights.com/yall-failed-me-woman-pulled-over-at-gunpoint-twice-after-flock-camera-glitch/",
+      "time": "2026-08-11T17:02:59.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Here’s how Chrome is quietly tackling annoying website notification spam",
+      "description": "Chrome has several ways to stop abusive websites from flooding your phone.",
+      "url": "https://www.androidauthority.com/chrome-android-notification-spam-3696867/",
+      "time": "2026-08-11T17:00:33.000Z",
+      "tags": [
+        "软件应用"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Google’s upcoming Pixel phones are for the fans, even if its launch event isn’t",
+      "description": "The Pixel 11 Pro has a flashy new light on the back. | Image: Google Last year's Made by Google event for the Pixel 10 resembled a late night talk show, complete with Jimmy Fallon as host, and it aired an hour after the phones were revealed. Spec dives and executive appearances were replaced with celebrity cameos and awkward skits, to the confusion of many diehard Pixel fans. But it served its purpose in reaching a broader audience: Last year's stream racked up 8.4 million viewers on YouTube; the launch the year before only managed 1.4 million. This year, Google has only escalated matters. For tomorrow evening's livestream, Fallon has been replaced by Trevor Noah, who will lead a \"stacked\" lineup of celebrit … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/977844/made-by-google-pixel-11-launch-power-users-notification-led",
+      "time": "2026-08-11T17:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Made by Google 2026: all the Pixel news and announcements",
+      "description": "Google is gearing up to reveal a bunch of new Pixel devices on August 12th. A series of leaks leading up to the event suggest that the Pixel 11 lineup will come in an array of colors, with signs pointing to a built-in light coming to Pro models. Teasers from Google also indicate that it will show off a next-gen Pixel Fold alongside a Pixel Watch 5 in four different finishes. There might be a new Pixel Tag tracker as well. Google may take the wraps off the new devices well ahead of its Made by Google livestream. On Google’s website, the countdown for preorders ends on August 12th at 10AM ET — eight hours before its event at 6PM ET. Comedian Trevor Noah will host this year’s show, featuring notable guests like NBA star Stephen Curry, podcaster Alex Cooper, Indian cricketer Shubman Gill, and Japanese actress Ayami Nakajo. We’ll be live blogging the event, so stay tuned! Follow along for all the latest news about Google’s Pixel devices. Google’s upcoming Pixel phones are for the fans, even if its launch event isn’t What to expect from Google’s 2026 Pixel hardware launch event",
+      "url": "https://www.theverge.com/tech/977561/made-by-google-2026-pixel-11-news",
+      "time": "2026-08-11T17:00:00.000Z",
+      "tags": [
+        "手机",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "上海：实施多模态创作工具攻关计划，支持研发新",
+      "description": "上海：实施多模态创作工具攻关计划，支持研发新一代AIGC创作工具矩阵,模态,上海市,aigc,世界人工智能大会",
+      "url": "https://www.163.com/dy/article/L42L7MIQ0534A4SC.html",
+      "time": "2026-08-11 17:00",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "Mojo 1.0 is here",
+      "description": "Comments",
+      "url": "https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here",
+      "time": "2026-08-11T16:59:09.000Z",
+      "tags": []
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Why Go Is an Ideal Language for AI-Assisted Software Engineering",
+      "description": "Article URL: https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/ Comments URL: https://news.ycombinator.com/item?id=49261133 Points: 23 # Comments: 12",
+      "url": "https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/",
+      "time": "2026-08-11T16:57:09.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "逃跑计划｜北极，从来不按计划发生",
+      "description": "逃跑计划｜北极，从来不按计划发生,北极,冰川,冰盖,浮冰,苔原,逃跑计划",
+      "url": "https://www.163.com/dy/article/L42L1QB80534A4SC.html",
+      "time": "2026-08-11 16:57",
+      "tags": []
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Bose QuietComfort Ultra Earbuds (2nd Gen) are back at their Prime Day price",
+      "description": "Bose’s flagship wireless earbuds are $50 off right now, with stronger ANC, clearer calls, and up to 6 hours of battery life.",
+      "url": "https://www.androidauthority.com/bose-quietcomfort-ultra-earbuds-2nd-gen-deal-3697290/",
+      "time": "2026-08-11T16:56:11.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "A developer got Word 1.1a from 1990 to run on Windows 11 - try it yourself",
+      "description": "Longing for a plain, old-fashioned version of Microsoft Word without all the bells, whistles, and AI slop? One developer managed to coax Word 1.1a to run on today's Windows.",
+      "url": "https://www.zdnet.com/article/microsoft-word-1-1a-windows/",
+      "time": "2026-08-11T16:55:09.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "Kimi K3“越狱”，偷偷去GitHub“抄答案”！是",
+      "description": "Kimi K3“越狱”，偷偷去GitHub“抄答案”！是模型失控还是测试漏洞？机构评测显示中国AI网络安全性远高于美国,沙盒,虚拟机,智能体,kimi,网络安全性,github",
+      "url": "https://www.163.com/dy/article/L42KTEL30512B07B.html",
+      "time": "2026-08-11 16:55",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "霍尔木兹仍难“重启”？伊朗称不满足条件不开放，美军据称向涉伊船只开火",
+      "description": "霍尔木兹海峡何时恢复正常通航，仍没有明确答案。 美东时间11日周二，新华社援引伊朗官员的表态称，在伊方条件满足前霍尔木兹海峡不会开放。当天稍早，据新华社援引美媒报道，美官员称，美军向一艘与伊朗有关的船只开火，该船“试图突破美国对伊朗港口的封锁”，一架美国军用直升机向该船船舵开火。此后，该船“似乎试图将船员转移到另一艘民用船只上”。 美伊海上对峙继续的同时，外交斡旋也在发力。新华社援引伊朗媒体周二的报道称，巴基斯坦内政部长穆赫辛·纳克维当天抵达伊朗首都德黑兰，将与伊朗官员举行会谈。 以上消息意味着，尽管巴基斯坦方面周二释放了美伊接近达成某种协议的乐观信号，霍尔木兹海峡的实际重开仍面临明显障碍。伊朗此前已经明确提出多项前提，而美国目前不仅没有完全接受这些条件，甚至仍在执行针对伊朗港口的海上封锁。 伊朗强调重开海峡门槛 新华社援引伊朗方面消息称，伊朗最高领袖顾问穆赫贝尔8月11日在社交媒体表示，在伊朗的条件得到满足之前，霍尔木兹海峡不会开放。 同日，据伊朗媒体Tasnim报道，前伊朗伊斯兰革命卫队总司令、最近被任命为伊朗最高国家安全委员会秘书的穆赫辛·雷扎伊表示，除非美国“改变其行径并接受伊朗提出的条件”，否则霍尔木兹海峡“不会重新开放”。 雷扎伊指出，美国是波斯湾、霍尔木兹海峡及阿曼湾地区“不安全局势的根源”，并指责美国发动“非法战争”，使整个地区陷入危险之中。他表示，美国“必须结束战争”并解冻伊朗被扣押的资金，同时停止包括黎巴嫩和加沙在内的整个地区的冲突。 他还补充说，伊朗与阿曼之间关于霍尔木兹海峡航线的任何协议，都将与海峡关闭这一更广泛的问题保持“独立”。 以上伊朗官员回应海峡重开问题的表态与伊朗过去几天释放的信息基本一致。 据新华社此前援引伊朗媒体8日上周六的报道，伊朗最高国家安全委员会秘书佐勒加德尔表示，如果美国不改变其行为，霍尔木兹海峡将维持关闭状态，重开霍尔木兹海峡的前提是美国满足永久停止对伊军事行动等5个条件。 据上述报道，伊朗提出条件包括永久停止对伊朗及其地区盟友的军事行动，停止威胁或侮辱伊朗，解除对伊朗海上封锁和全部制裁，归还伊朗被冻结资产，赔偿相关军事行动给伊朗造成的损失。 伊朗外长阿拉格齐上周六还表示，伊朗与阿曼“接近”达成协议，但这并不意味着霍尔木兹海峡会随即重新开放，海峡开放还取决于其他条件，包括美国对违反相关谅解备忘录作出赔偿。 因此，目前伊朗与阿曼之间的沟通，与霍尔木兹海峡真正恢复全面通航，并不是同一个问题。 美媒传海上对峙升级迹象 就在外交渠道继续运作的同时，美伊海上摩擦却出现新的升级迹象。 《华尔街日报》援引美国官员报道称，一艘悬挂巴拿马国旗的“Vela Nova”号船只周二试图突破美国对伊朗港口实施的海上封锁。在美方人员发出警告后，该船没有停止行动，美国军用直升机随后向船只的船舵开火。美方官员称，事件发生在阿曼湾，暂时没有人员伤亡报告。 报道援引海事安全公司Vanguard称，这艘集装箱船在阿曼湾向西航行时遭直升机发射的导弹击中，起火后火势被扑灭，17名船员均已确认安全。 《华尔街日报》指出，此次事件发生之际，美伊围绕重新开放霍尔木兹海峡的谈判已经陷入停滞，而美国正在重新强化对伊朗的经济和海上压力。美方此前已经拦截、改道多艘商业船只，以执行对伊朗的海上封锁。 新华社还提到，一艘集装箱船在阿曼湾海域遇袭，船员紧急呼叫救援并准备弃船。被袭船只上的船员通过船舶间无线电公共频道通报，事发地点位于阿曼湾东部边缘，船上共17人，疑似被“直升机袭击”。 这使得霍尔木兹问题形成了一个颇为棘手的循环：伊朗把解除美国海上封锁作为海峡重开的重要条件，而美国又试图通过封锁伊朗的石油出口来迫使德黑兰接受谈判条件。 对航运市场而言，这也意味着，即使外交渠道没有完全关闭，商船通行面临的实际安全风险仍然存在。 巴基斯坦加紧斡旋，美伊谈判出现新信号 在军事压力持续之际，巴基斯坦正在加快外交斡旋。 据伊朗媒体法尔斯通讯社报道，巴基斯坦内政部长莫赫辛·纳克维8月11日前往德黑兰，与伊朗方面举行会谈。半岛电视台报道称，纳克维随后与伊朗外长阿拉格齐会面。 纳克维此次访问的时间点颇为关键。此前，巴基斯坦已经多次在美伊之间充当沟通渠道。随着霍尔木兹重新开放成为美伊关系中最核心的谈判议题之一，伊斯兰堡也试图推动双方重新建立更直接的谈判渠道。 巴基斯坦方面当天释放的信号也较为积极。 据央视新闻，当地时间8月11日，巴基斯坦国防部长阿西夫表示，美国与伊朗已接近达成“某种安排”。阿西夫补充说，持久和平符合该地区利益。阿西夫在接受采访时称，局势再次朝着有利于达成和平安排或协议的方向发展。“过去两三天传来的信号表明，我们已接近达成某种安排。” 不过，需要注意的是，接近达成“某种安排”目前主要来自巴基斯坦方面的判断，并非美伊双方共同确认的正式协议。 尤其是在伊朗8月11日再次强调“满足条件前不会开放海峡”、美国当天又向试图突破封锁的船只开火的情况下，双方距离真正形成可执行的协议仍有明显距离。 特朗普称美国对伊朗有三种“策略” 与此同时，美国方面并没有释放出已经准备全面让步的信号。 新华社援引卡塔尔半岛电视台11日的报道，美国总统特朗普在接受真实美国声音网采访时称，美国对伊朗有三种“策略”：一是监测其处境恶化程度，二是对其进行猛烈打击，三是经济施压。特朗普还称，美国掌控着伊朗大量资金和资产，“这些完全在我们的控制之下”。 这一表态意味着，即使美伊之间的外交接触正在增加，特朗普政府仍然把军事和经济压力作为谈判工具。 从目前的公开信息来看，局势因此呈现出一种明显的“外交与施压并行”状态：巴基斯坦在推动双方接触，伊朗与阿曼也在推进通航技术安排；但与此同时，美国仍在强化海上封锁，伊朗则继续坚持重开海峡的政治前提。 霍尔木兹海峡最终能否“重启”，因此仍取决于美伊能否跨越这一核心分歧——伊朗希望先解除美国压力，再恢复通航；美国则试图利用海上和经济压力，换取伊朗先作出让步。 在双方尚未打破这一逻辑之前，巴基斯坦方面所说的接近“达成某种安排”，距离真正让霍尔木兹海峡恢复稳定、持续的商业航运，仍有一段距离。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779209",
+      "time": "2026-08-11T16:52:59.000Z",
+      "tags": [
+        "互联网",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "IPO前再套现：OpenAI完成70亿美元员工股权交易",
+      "description": "OpenAI完成一轮约70亿美元的二级市场要约收购，允许现任及前任员工在8520亿美元估值下变现部分持股。这是公司上市前最新一轮流动性安排，也进一步巩固了其作为全球最具价值私营科技公司之一的地位。 据CNBC证实，本次要约收购早在今年3月OpenAI完成1220亿美元融资时便已筹划，具体规模由彭博率先披露。此次交易为员工提供了IPO前的退出渠道，也缓解了公司估值快速攀升后不断增加的股权流动性需求。 OpenAI已于今年6月秘密向美国证券交易委员会（SEC）提交招股说明书，但尚未公布具体上市时间表。随着员工股份出售持续推进，市场也将此视为公司逐步完善IPO前资本市场安排的信号。 二级出售持续加码，IPO准备同步推进 此次并非OpenAI首次通过要约收购安排员工变现。公司此前已于2024年完成两轮类似交易，规模分别约15亿美元，以及2024年10月的66亿美元要约收购。加上此次约70亿美元，三轮交易总规模已超过150亿美元。 对于尚未上市的OpenAI而言，此类交易既能满足员工流动性需求，也能在IPO前分阶段安排股份出售。与此同时，主要竞争对手Anthropic也处于上市前阶段，两家公司均尚未正式公布上市计划。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779208",
+      "time": "2026-08-11T16:52:41.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "报道：苹果20周年iPhone大改款计划未变，2027年将推全新玻璃设计",
+      "description": "苹果2027年iPhone重大设计升级计划并未取消。据彭博援引知情人士，苹果仍计划在iPhone问世20周年之际推出以玻璃为核心的新设计，2027年款iPhone Pro已进入后期测试阶段，整体方案基本敲定。这一说法直接反驳了Jefferies分析师Edison Lee本周发布的报告。 Lee此前援引供应链调查称，苹果已经取消“全玻璃iPhone”计划，并据此下调苹果股票评级，认为设计取消将削弱苹果推出更高价iPhone的能力。受该报告影响，苹果股价承压，而最新消息则为市场提供了相反信号。 iPhone贡献苹果约一半营收，上季度销售额同比增长22%，明显快于其他业务。对于苹果而言，20周年机型能否带来足够显著的设计创新，也关系到其旗舰产品的溢价能力。 2027款iPhone Pro已进入后期测试 报道援引知情人士称，苹果预计将在2027年推出采用全新玻璃设计的iPhone Pro，两款机型内部代号分别为V73和V74。 新机正面和背面均采用玻璃材质，玻璃将以曲面形式延伸至机身两侧，中间仍保留金属边框，在提升一体化视觉效果的同时兼顾结构强度和量产可行性。 苹果此前曾探索更加激进的设计方案，即进一步扩大玻璃覆盖范围、减少金属结构。但由于不同玻璃面板之间的连接存在技术难题，该方案在早期阶段被放弃。当前推进的版本则是在原有理念基础上的调整。 20周年节点，苹果仍押注设计创新 苹果通常会在新款iPhone发布前约一年完成核心设计定型。按照这一节奏，2027年iPhone目前已进入关键测试阶段。 知情人士表示，虽然整体设计方向已经基本确定，但如果后续出现此前未预见的技术或生产问题，方案仍可能调整。 2007年，史蒂夫·乔布斯发布初代iPhone；2017年，蒂姆·库克推出iPhone X纪念iPhone诞生十周年。2027年恰逢iPhone问世20周年，玻璃设计有望成为苹果为这一节点准备的又一重大产品升级。 在此之前，苹果还将依靠今年秋季的新机型延续iPhone增长势头。据报道，苹果下月将发布全新折叠屏iPhone，被视为iPhone迄今最大的一次外观设计变化之一；iPhone 18 Pro和18 Pro Max的摄像头也将迎来重大升级，同时新增深红色配色。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779207",
+      "time": "2026-08-11T16:52:25.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "You’ll soon be able to use Google Health to track your blood glucose in real time",
+      "description": "I assume 'personalized guidance' is legally distinct from medical advice.",
+      "url": "https://www.androidauthority.com/google-health-abbott-cgm-3697206/",
+      "time": "2026-08-11T16:46:17.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "7月全国乘用车市场零售销量146.1万辆 新能源渗",
+      "description": "7月全国乘用车市场零售销量146.1万辆 新能源渗透率首破65%,零售,渗透率,新能源车,乘用车市场,新能源市场",
+      "url": "https://www.163.com/dy/article/L42K91JV0512B07B.html",
+      "time": "2026-08-11 16:44",
+      "tags": [
+        "新能源/电动车",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "The fastest double-to-string algorithm you’ve never heard of",
+      "description": "Comments",
+      "url": "https://vitaut.net/posts/2026/yy-dtoa/",
+      "time": "2026-08-11T16:42:55.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Microsoft almost made a Surface phone we actually wanted",
+      "description": "Before the Duo, there was this.",
+      "url": "https://www.androidauthority.com/microsoft-surface-phone-prototype-3697157/",
+      "time": "2026-08-11T16:40:09.000Z",
+      "tags": []
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "V8+手动挡，「大黄蜂」科迈罗推出四门版，但我们再也见不到它了",
+      "description": "雪佛兰找不到自己的位置了。 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1674611?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-11T16:40:08.000Z",
+      "tags": []
+    },
+    {
+      "source": "InfoQ",
+      "sourceColor": "#0277bd",
+      "title": "OpenAI 代理群利用 Artifactory 零日漏洞逃离沙箱并入侵 Hugging Face",
+      "description": "点击查看原文>",
+      "url": "https://www.infoq.cn/article/gkzDEyCF5U4DtKAa1Eee?utm_source=rss&utm_medium=article",
+      "time": "2026-08-11T16:36:00.000Z",
+      "tags": [
+        "人工智能",
+        "网络安全",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "预售价 25.98 万元！小鹏 G9L 少了一排座椅，却要去往更大的全球市场",
+      "description": "大，不是 G9L 的唯一任务。 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1674751?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-11T16:27:53.000Z",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "6.39 万起！零跑 A05 要把纯电小车重新卷一遍",
+      "description": "10 万元以内的纯电小车，不必只谈便宜。 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1674769?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-11T16:25:47.000Z",
+      "tags": []
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "An unreleased Anthropic model made progress on one of math’s biggest unsolved problems",
+      "description": "For more than 150 years, the Riemann hypothesis has stood as one of the major unsolved problems in mathematics. Anthropic hasn't solved it — but the company's models made more progress than you might expect.",
+      "url": "https://techcrunch.com/2026/08/11/an-unreleased-anthropic-model-made-progress-on-one-of-maths-biggest-unsolved-problems/",
+      "time": "2026-08-11T16:25:20.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Feature-packed BOTSLAB 4K Starvis dash cam drops to $89.99 in all-time low deal",
+      "description": "Need more than a basic dash cam? The BOTSLAB G980H is $50 off with Starvis 4K video, GPS, app support, and parking mode.",
+      "url": "https://www.androidauthority.com/botslab-4k-starvis-dash-cam-3697271/",
+      "time": "2026-08-11T16:25:03.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Apple could help you prove your iPhone photos aren’t deepfakes",
+      "description": "Apple is seemingly developing an iOS feature that can verify when a photograph was taken using an iPhone camera. 9to5Mac reports that the iOS 27 beta 5 includes code references for an \"Apple Reference Image\" system that can embed provenance metadata into iPhone photographs at the point of capture - enabling users to prove where the photo originated, and that it isn't AI fakery. Apple Reference Image isn't currently live, but a privacy disclosure in the iOS beta notes that the feature will be off by default. When (or if) it does roll out, 9to5Mac says it can be enabled via Settings > Camera > Reference Image > Reference Mode, and that only p … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/977921/apple-reference-image-iphone-metadata",
+      "time": "2026-08-11T16:19:15.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "New report says Apple's all-glass 20th anniversary iPhone hasn't been cancelled",
+      "description": "Rumors about Apple's all-glass iPhone for the device's 20th anniversary have been circulating for months. However, a recent report claimed that the redesigned model had been cancelled. Bloomberg's Mark Gurman has now disputed that claim, saying the device remains on track. Citing people familiar with the matter, Bloomberg's Mark Gurman reports that Apple is still planning to introduce a glass-centric iPhone design to mark the device's 20th anniversary next year. According to Gurman, the 2027 Pro models, rumored to be called the iPhone 20 Pro and iPhone 20 Pro Max, will feature a...",
+      "url": "https://www.gsmarena.com/new_report_says_apples_allglass_20th_anniversary_iphone_hasnt_been_cancelled-news-74107.php",
+      "time": "2026-08-11T16:11:02.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Joby Aviation builds out defense business with $500M acquisition",
+      "description": "Joby Aviation reached an agreement to acquire Resonant Sciences, which will kick off its new defense business.",
+      "url": "https://techcrunch.com/2026/08/11/joby-aviation-builds-out-defense-business-with-500m-acquisition/",
+      "time": "2026-08-11T16:06:08.000Z",
+      "tags": []
+    },
     {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
@@ -13,6 +854,17 @@
         "人工智能",
         "芯片/半导体",
         "游戏"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "Performance impact of Alignment",
+      "description": "Comments",
+      "url": "https://eme64.github.io/blog/2026/01/12/Alignment-Performance.html",
+      "time": "2026-08-11T16:00:14.000Z",
+      "tags": [
+        "科技创投"
       ]
     },
     {
@@ -199,7 +1051,7 @@
       "source": "TechCrunch",
       "sourceColor": "#0f9d58",
       "title": "2025’s most downloaded game, Block Blast!, is going ad-free on Apple Arcade",
-      "description": "Block Blast!, the most downloaded mobile game of 2025, is coming to Apple Arcade in September where it will be ad-free.",
+      "description": "Block Blast!, the most downloaded mobile game of 2025, is coming to Apple Arcade in September, where it will be ad-free.",
       "url": "https://techcrunch.com/2026/08/11/2025s-most-downloaded-game-block-blast-is-going-ad-free-on-apple-arcade/",
       "time": "2026-08-11T15:33:59.000Z",
       "tags": [
@@ -314,6 +1166,18 @@
       ]
     },
     {
+      "source": "Solidot",
+      "sourceColor": "#546e7a",
+      "title": "科技公司高管称 AI 将会减少工作时间，实际上 AI 增加了工作时间",
+      "description": "四年前 Google 的一位工程总监宣称到 2025 年 AI 将推动企业实行四天工作制。OpenAI 今年早些时候也鼓励企业试行四天工作制，声称 AI 将能大幅提升人类劳动效率，业界应为此做好准备。OpenAI 的一位前员工称，该公司从未真正试行过四天工作制。前员工称 OpenAI 的工作文化令人精疲力竭，频繁举行危机会议，周末要加班，绩效考核残酷无情，同事会被突然解雇。科技公司员工称，他们的工作时长远超典型的每周五天 40 小时。前 OpenAI 员工表示，他们每周至少工作 70 小时。他现在在一家 AI 初创公司工作，每周工作时间接近 50-60 小时，在工作生活平衡上比 OpenAI 好点。OpenAI 和 Anthropic 员工称，公司的冲刺开发通常持续数周，一周的工作时长甚至超过 90 小时。前 Google 员工 Amin Shali 称在离职后其睡眠和整体健康状况都改善了。",
+      "url": "https://www.solidot.org/story?sid=85065",
+      "time": "2026-08-11T15:20:06.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
       "title": "微软确认上个月导致 XBOX 大规模宕机的问题已解决，本周推送固件更新",
@@ -415,6 +1279,18 @@
       ]
     },
     {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Show HN: Git-knife – edit commit messages, authors, and dates like a spreadsheet",
+      "description": "Article URL: https://github.com/TheRealYT/git-knife Comments URL: https://news.ycombinator.com/item?id=49259611 Points: 66 # Comments: 48",
+      "url": "https://github.com/TheRealYT/git-knife",
+      "time": "2026-08-11T15:09:34.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
       "source": "GSMArena",
       "sourceColor": "#d32f2f",
       "title": "Google Pixel 11 Pro XL appears on Geekbench as hands-on images of the Pro leak",
@@ -479,11 +1355,24 @@
       "source": "TechCrunch",
       "sourceColor": "#0f9d58",
       "title": "Kyoto Fusioneering starts work on key fusion power plant device",
-      "description": "Fusion power startups are turning to Kyoto Fusioneering to supply components for future power pants. The Japan-based startup just received a grant to build a part of the fuel system.",
+      "description": "Fusion power startups are turning to Kyoto Fusioneering to supply components for future power plants. The Japan-based startup just received a grant to build a part of the fuel system.",
       "url": "https://techcrunch.com/2026/08/11/kyoto-fusioneering-starts-work-on-key-fusion-power-plant-device/",
       "time": "2026-08-11T15:00:00.000Z",
       "tags": [
         "智能硬件"
+      ]
+    },
+    {
+      "source": "Solidot",
+      "sourceColor": "#546e7a",
+      "title": "微软大幅上涨 Windows 11 的 OEM 授权费",
+      "description": "微软据报道大幅上涨了 PC OEM 厂商的 Windows 11 授权费。价格上涨于 7 月生效，平均上涨了 7% 至 10%。过去 Windows OEM 授权费上涨通常是个位数，这次上涨幅度更大。具体涨幅将基于 PC 处理器而存在差异，高端 CPU 系统需要支付不同的价格。微软此举无疑是雪上加霜，PC 市场已因内存和存储器涨价而苦苦挣扎。",
+      "url": "https://www.solidot.org/story?sid=85064",
+      "time": "2026-08-11T14:59:41.000Z",
+      "tags": [
+        "芯片/半导体",
+        "电脑硬件",
+        "软件应用"
       ]
     },
     {
@@ -534,6 +1423,32 @@
       "tags": [
         "新能源/电动车",
         "汽车"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Apple Silicon and macOS VMs: 11–16× Faster LLM Inference with Llama.cpp",
+      "description": "Article URL: https://github.com/trycua/cua/blob/main/blog/gpu-passthrough-macos-vms.md Comments URL: https://news.ycombinator.com/item?id=49259339 Points: 162 # Comments: 28",
+      "url": "https://github.com/trycua/cua/blob/main/blog/gpu-passthrough-macos-vms.md",
+      "time": "2026-08-11T14:50:33.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Launch HN: Keet (YC S24) – An app to create video courses on anything",
+      "description": "Hi HN! We’re Zack and Tommy the Co-Founders of Keet (https://trykeet.com). We are building a mobile app that generates courses on any topic, with short videos for explanation and games for reinforcement. Courses mirror a real curriculum to help you learn over an extended period of time. Tommy and I met in linear algebra class in college and spent the next 4 years taking classes together. Our friendship was formed around learning new things. In school, someone else designs the curriculum, delivers the content, and writes the assessments. All you have to do is show up. Learning without this structure was frustrating, and there was a lot of friction to get started. Zack has a coffee obsession and struggled to assemble youtube videos, conversations with ChatGPT, and the books he was reading into a coherent understanding of all of the different variables that go into brewing a cup of coffee. His attempts gave him the freedom to follow his curiosity, but the instructional design was difficult. Every piece of content either presumed some prerequisite knowledge or none at all. Keet is our attempt at providing the autonomy to teach yourself anything while adding a structure conducive to learning. It finds a custom starting point and sequences lessons in a logical order. We have found Keet most useful in the following scenarios: - You have a subject matter interest that you enjoy passively learning about. (i.e. you really enjoy learning about medieval history and generate courses on medieval engineering) - You want to explore a niche topic of a subject area you already know a lot about. (i.e. You know a lot about biology but want to explore how migratory animals sense Earth’s magnetic field.) - You see a really niche topic get mentioned somewhere you want to explore more (i.e History of Penny Universities, Double Entry Book keeping or Robert Moses and the creation of the BQE) When you create a course we ask some questions about how difficult it should be, how much depth the course should go into, and a few optional intent questions to understand what content you want to learn about. In the future, we’d like to have a global prerequisite map so that we can understand what each user already knows, so we can generate tailored courses to someone’s prerequisite knowledge. If someone majored in Computer Science, for example, their course should look pretty different to someone who might have no background in STEM. After understanding your goals and intent, we categorize the course based on Biglan categories. Biglan categories have four quadrants: - Hard–Pure (e.g., mathematics, theoretical physics) - Hard-Applied (e.g., engineering, and applied sciences) - Soft–Pure (e.g., history, literature, philosophy) - Soft-Applied (e.g., policy, management, education, social work) We use these categories to adjust instructions to better suit the topic. One instance of this is when searching for examples. A hard-pure course will look for worked problems, proofs, and real world cases, whereas soft-pure courses use primary source narratives and contrasting perspectives. We tried building this as a website and then as a mobile app with just text. The website was bad because we couldn’t engage with the content from anywhere, and when we did engage, the text was boring and couldn’t add clarity to complex ideas. Vox and 3B1B videos made complex ideas accessible, which inspired us to move towards video based lessons. There was never one aha moment that made it work. Over the course of the past year, we’ve been using and iterating on the product until we enjoyed using it. We have two types of explainer videos that are built using Manim (https://www.manim.community/) and Remotion (https://www.remotion.dev/). Manim is used for videos that require math visualizations while the Remotion videos are intended to animate processes and show primary source material to mimic something like a Vox video. We are also building more engaging ways to complete assessments via custom activities. For example, in a genetics course, learners might interact with a Watson-Crick DNA model rather than answering a multiple choice question about base pairs. You can download the Test flight beta (https://testflight.apple.com/join/wkWW2enA) today. We are giving 3 free course generations to every user. You can use the code “KEETHN” on the waitlist screen. When you download the app, try to generate a course on a niche interest/something very specific. The coolest courses that we’ve seen are generated in those categories. [ Notes ] - Personalization is still early. Today, Keet mostly adapts around the topic and course goal; we want it to adapt much more around a learner’s background, pace, and weak spots. - Course generation is slow. We made a deliberate trade off to sacrifice generation time in order to gain higher quality courses, since users are going to be taking these courses for an extended period of time. - We are actively working to improve reinforcement quality. It is easy to generate quizzes, but much harder to generate interactions drive home the concept. [ Pricing ] We plan to have a monthly subscription that gives users credits they can use to generate courses. This will be a model similar to Suno (https://suno.com/). Comments URL: https://news.ycombinator.com/item?id=49259309 Points: 19 # Comments: 23",
+      "url": "https://www.trykeet.com/",
+      "time": "2026-08-11T14:48:37.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
       ]
     },
     {
@@ -681,6 +1596,17 @@
         "人工智能",
         "游戏",
         "软件应用"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Federal vendor with $50M in contracts leaves portal broken for a month",
+      "description": "Article URL: https://www.propublica.org/article/foia-requests-responses Comments URL: https://news.ycombinator.com/item?id=49259043 Points: 62 # Comments: 14",
+      "url": "https://www.propublica.org/article/foia-requests-responses",
+      "time": "2026-08-11T14:32:21.000Z",
+      "tags": [
+        "智能硬件"
       ]
     },
     {
@@ -853,6 +1779,18 @@
         "人工智能",
         "手机",
         "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Manus will return to operating as an independent company",
+      "description": "Article URL: https://manus.im/blog/a-note-to-our-users Comments URL: https://news.ycombinator.com/item?id=49258764 Points: 70 # Comments: 33",
+      "url": "https://manus.im/blog/a-note-to-our-users",
+      "time": "2026-08-11T14:14:53.000Z",
+      "tags": [
+        "科技创投",
+        "智能硬件"
       ]
     },
     {
@@ -1288,6 +2226,19 @@
       ]
     },
     {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Show HN: Write.md, a free, open-source, themeable Markdown editor for macOS",
+      "description": "Article URL: https://writemd.app/ Comments URL: https://news.ycombinator.com/item?id=49258011 Points: 22 # Comments: 25",
+      "url": "https://writemd.app/",
+      "time": "2026-08-11T13:30:39.000Z",
+      "tags": [
+        "软件应用",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
       "source": "The Verge",
       "sourceColor": "#e2127a",
       "title": "Why your Amazon order confirmation emails have become so unhelpful",
@@ -1304,7 +2255,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Nvidia Nemotron 3.5 Lightning",
-      "description": "Article URL: https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 Comments URL: https://news.ycombinator.com/item?id=49257947 Points: 30 # Comments: 8",
+      "description": "Article URL: https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 Comments URL: https://news.ycombinator.com/item?id=49257947 Points: 86 # Comments: 21",
       "url": "https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4",
       "time": "2026-08-11T13:26:02.000Z",
       "tags": [
@@ -1348,6 +2299,18 @@
         "人工智能",
         "手机",
         "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Hacker News",
+      "sourceColor": "#ff6600",
+      "title": "Stealing Reasoning Traces from Proprietary LLM APIs",
+      "description": "Article URL: https://stolen-thoughts.com/ Comments URL: https://news.ycombinator.com/item?id=49257876 Points: 237 # Comments: 85",
+      "url": "https://stolen-thoughts.com/",
+      "time": "2026-08-11T13:22:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
       ]
     },
     {
@@ -1493,6 +2456,19 @@
         "手机",
         "新能源/电动车",
         "互联网"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "英伟达盘前涨近2%，报道：公司正在研发新的自有AI模型",
+      "description": "英伟达正大力押注自研开源人工智能模型，试图以此扩大GPU需求，但这一战略也使其与部分重要客户和投资对象形成竞争关系。 The Information 11日报道称，英伟达正在开发其Nemotron 4系列中规模最大的模型，目标是使其性能与全球最优秀的开源AI模型比肩。与此同时，英伟达已大幅增加用于训练自有模型的算力支出——截至今年4月，其多年期云服务承诺金额已升至280亿美元，约为一年前的三倍。 随着高质量开源模型的普及，更广泛的企业用户将被引导使用并构建AI应用，从而带动对英伟达硬件的需求增长。AI模型评测机构Arena的首席执行官Anastasios Angelopoulos表示，\"无论哪家公司做出优秀的开源模型，英伟达都是赢家。\" 英伟达美股盘前涨近2%。 千亿参数目标，算力投入三倍跃升 据多名参与Nemotron项目的员工透露，英伟达计划开发的最大规模Nemotron 4模型参数量至少达到1万亿，约为其今年6月发布的现有最大模型Nemotron 3 Ultra的两倍。该模型参数规模仍将远低于中国头部开源模型，但英伟达同时强调其压缩技术可使较小模型实现超越性的性能表现。 在算力投入方面，英伟达通过向购买其芯片的云运营商租回AI服务器获取计算资源。截至今年4月，英伟达多年期云服务承诺金额已增至280亿美元，覆盖至2031年初，远高于一年前的水平。其中，相当部分算力将专门用于Nemotron模型训练。 据悉，英伟达已就Nemotron 4最大模型的预训练数据和架构做出部分决策，但尚未确定最终规格和发布日期，最终训练运行也尚未启动，该过程可能耗时数月。多名员工预计该模型最早将于今年秋季末发布，另有员工认为时间可能更晚。 开源战略背后：分散客户集中风险 英伟达当前的芯片需求高度依赖少数几家前沿AI实验室和云运营商，包括OpenAI、微软和SpaceX，而这些客户中部分正在自研AI芯片。英伟达推进Nemotron的核心逻辑，在于通过培育开源生态，吸引从初创企业到大型传统企业的更广泛用户群体，从而降低对少数大客户的依赖。 英伟达生成式AI副总裁Kari Briski在一封邮件中表示，\"英伟达投资Nemotron，是因为我们相信每家公司、每个国家都需要可获取的前沿开源模型，以强化安全保障、加速创新，并提供可跨代际依赖的基础。\" 英伟达应用深度学习研究副总裁Bryan Catanzaro今年1月在一档播客中也表示，投资Nemotron\"对我们公司的未来至关重要\"。 在商业落地方面，Nemotron模型已获得部分企业采用，其中包括Palantir——该公司今年6月宣布与英伟达合作，将Nemotron模型用于美国政府客户。不过，目前Nemotron 3 Ultra在Arena及Artificial Analysis等机构的多项性能基准测试中，在美国开源模型中仅排名第二，在全球所有模型中排名落在前40名之外。 与客户竞争的两难处境 英伟达的开源押注使其陷入微妙处境：一方面与自身已投资的开源初创企业形成竞争，另一方面也对其最大客户构成潜在威胁。 英伟达已向OpenAI投资300亿美元，后者是其芯片需求的最重要驱动力之一。与此同时，英伟达还对多家美国开源公司进行了大额投资，包括Reflection AI和Thinking Machines Lab，这些公司本身也在争取企业客户使用自有模型。 尽管如此，英伟达仍通过构建\"Nemotron联盟\"寻求协同效应。该联盟成员包括Reflection、Cursor、Thinking Machines和Mistral，这些公司在开发自有开源项目的同时，也为Nemotron 4贡献训练数据、评估支持和模型设计建议。初创公司Prime Intellect为模型训练贡献了30万个模拟环境；AI编程工具初创公司Cognition已就向英伟达提供编码训练数据进行了讨论，但其参与情况尚未正式公布。 Prime Intellect首席执行官Vincent Weisser将这一联盟定位为抵抗\"单一'神'模型\"垄断格局的集体行动，而非争夺最佳开源模型头衔的竞赛。 地缘博弈加剧，开源成国家利益议题 英伟达的开源转型也折射出AI竞争的地缘政治维度。据两名员工透露，英伟达去年初意识到美国开源模型已大幅落后，出于对自身商业价值的判断，决定推动弥合这一差距。 在资金规模上，英伟达2028财年的云服务承诺金额约为70亿美元，与OpenAI和Anthropic的支出规模相比仍有差距，但已超过大多数头部开源实验室的历史累计融资总额。一名员工透露，英伟达正在努力争取为Nemotron项目获取更多算力。 持续更新中…… 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779195",
+      "time": "2026-08-11T13:07:30.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ]
     },
     {
@@ -1955,7 +2931,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "England set to be one of the first countries to eliminate hepatitis C",
-      "description": "Article URL: https://www.bbc.com/news/articles/c75gk620r22o Comments URL: https://news.ycombinator.com/item?id=49257377 Points: 146 # Comments: 72",
+      "description": "Article URL: https://www.bbc.com/news/articles/c75gk620r22o Comments URL: https://news.ycombinator.com/item?id=49257377 Points: 356 # Comments: 262",
       "url": "https://www.bbc.com/news/articles/c75gk620r22o",
       "time": "2026-08-11T12:41:59.000Z",
       "tags": [
@@ -2102,7 +3078,7 @@
       "source": "TechCrunch",
       "sourceColor": "#0f9d58",
       "title": "What comes after the smartphone? Amazon’s Panos Panay will make his case at TechCrunch Disrupt 2026",
-      "description": "At Disrupt 2026, Amazon's Panos Panay will provide an exclusive vision for what's in store for us beyond the smartphone.",
+      "description": "At Disrupt 2026, Amazon's Panos Panay will provide his vision for what's in store for us beyond the smartphone.",
       "url": "https://techcrunch.com/2026/08/11/what-comes-after-the-smartphone-amazons-panos-panay-will-make-his-case-at-techcrunch-disrupt-2026/",
       "time": "2026-08-11T12:30:00.000Z",
       "tags": [
@@ -3490,19 +4466,6 @@
       ]
     },
     {
-      "source": "The Verge",
-      "sourceColor": "#e2127a",
-      "title": "The AI takeover of mathematics has begun",
-      "description": "Mathematician James Maynard has spent a lot of time this past year \"soul searching.\" A professor at the University of Oxford and winner of the prestigious Fields Medal, Maynard told The Verge he's been grappling with the future of his field as the traditionally slow-moving discipline hurries to adapt to AI. Days before we spoke, OpenAI revealed it had produced the solutions to 10 long-standing mathematics problems, some of which had confounded academics for decades. Like generative AI used to produce text and images or propose ideas in science and medicine, the technology learns patterns and connections from the vast amount of material it' … Read the full story at The Verge.",
-      "url": "https://www.theverge.com/ai-artificial-intelligence/977273/the-ai-takeover-of-mathematics-has-begun",
-      "time": "2026-08-11T11:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "网络安全"
-      ]
-    },
-    {
       "source": "机器之心",
       "sourceColor": "#512da8",
       "title": "刚刚，黄仁勋发长文：AI算力要变成一种「资产」",
@@ -3513,6 +4476,19 @@
         "人工智能",
         "芯片/半导体",
         "AI芯片"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "The AI takeover of mathematics has begun",
+      "description": "Mathematician James Maynard has spent a lot of time this past year \"soul searching.\" A professor at the University of Oxford and winner of the prestigious Fields Medal, Maynard told The Verge he's been grappling with the future of his field as the traditionally slow-moving discipline hurries to adapt to AI. Days before we spoke, OpenAI revealed it had produced the solutions to 10 long-standing mathematics problems, some of which had confounded academics for decades. Like generative AI used to produce text and images or propose ideas in science and medicine, the technology learns patterns and connections from the vast amount of material it' … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/977273/the-ai-takeover-of-mathematics-has-begun",
+      "time": "2026-08-11T11:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
       ]
     },
     {
@@ -3850,7 +4826,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "What I learned by putting GitHub Copilot behind a MitM proxy",
-      "description": "Article URL: https://www.lighthousenewsletter.com/p/i-put-github-copilot-behind-a-mitm Comments URL: https://news.ycombinator.com/item?id=49256057 Points: 36 # Comments: 4",
+      "description": "Article URL: https://www.lighthousenewsletter.com/p/i-put-github-copilot-behind-a-mitm Comments URL: https://news.ycombinator.com/item?id=49256057 Points: 90 # Comments: 12",
       "url": "https://www.lighthousenewsletter.com/p/i-put-github-copilot-behind-a-mitm",
       "time": "2026-08-11T10:40:47.000Z",
       "tags": [
@@ -4721,7 +5697,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Nvidia's Risky Business",
-      "description": "Article URL: https://stratechery.com/2026/nvidias-risky-business/ Comments URL: https://news.ycombinator.com/item?id=49255710 Points: 68 # Comments: 13",
+      "description": "Article URL: https://stratechery.com/2026/nvidias-risky-business/ Comments URL: https://news.ycombinator.com/item?id=49255710 Points: 179 # Comments: 64",
       "url": "https://stratechery.com/2026/nvidias-risky-business/",
       "time": "2026-08-11T10:02:00.000Z",
       "tags": [
@@ -7214,7 +8190,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "France to ban unsolicited telemarketing calls",
-      "description": "Article URL: https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html Comments URL: https://news.ycombinator.com/item?id=49254880 Points: 657 # Comments: 347",
+      "description": "Article URL: https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html Comments URL: https://news.ycombinator.com/item?id=49254880 Points: 894 # Comments: 428",
       "url": "https://www.lemonde.fr/en/france/article/2026/08/06/france-to-ban-unsolicited-telemarketing-calls-from-august-11_6756208_7.html",
       "time": "2026-08-11T08:15:46.000Z",
       "tags": [
@@ -11005,17 +11981,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Chewy Promo Codes: $20 Off August 2026",
-      "description": "Explore Chewy coupon codes for $30 off, $20 off your first order $49, 50% off pet food, and more August 2026 discounts.",
-      "url": "https://www.wired.com/story/chewy-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Home Depot Promo Codes: 30% Off in August 2026",
       "description": "Save up to 50% today with the latest Home Depot promo codes for appliances, power tools, and more this August.",
       "url": "https://www.wired.com/story/home-depot-promo-code/",
@@ -11027,15 +11992,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "30% Off Canon Promo Codes | August 2026",
-      "description": "Save an extra 10% or 30% with Canon coupon codes, plus up to $1,600 on cameras, printers, and more this August.",
-      "url": "https://www.wired.com/story/canon-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Valvoline Coupons and Promo Codes for August 2026",
       "description": "We've gathered all the top Valvoline coupons and promo codes for August 2026, including deals on full synthetic oil changes and other essential maintenance.",
       "url": "https://www.wired.com/story/valvoline-coupons/",
@@ -11043,6 +11999,15 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "30% Off Canon Promo Codes | August 2026",
+      "description": "Save an extra 10% or 30% with Canon coupon codes, plus up to $1,600 on cameras, printers, and more this August.",
+      "url": "https://www.wired.com/story/canon-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": []
     },
     {
       "source": "Wired",
@@ -11117,6 +12082,17 @@
       "tags": [
         "人工智能",
         "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Chewy Promo Codes: $20 Off August 2026",
+      "description": "Explore Chewy coupon codes for $30 off, $20 off your first order $49, 50% off pet food, and more August 2026 discounts.",
+      "url": "https://www.wired.com/story/chewy-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
         "科技创投"
       ]
     },
@@ -14228,7 +15204,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "H3-metal – Native MiniMax-H3 inference for Apple Silicon",
-      "description": "Article URL: https://github.com/antirez/h3.c Comments URL: https://news.ycombinator.com/item?id=49252179 Points: 363 # Comments: 77",
+      "description": "Article URL: https://github.com/antirez/h3.c Comments URL: https://news.ycombinator.com/item?id=49252179 Points: 395 # Comments: 92",
       "url": "https://github.com/antirez/h3.c",
       "time": "2026-08-11T01:22:09.000Z",
       "tags": [
@@ -14664,7 +15640,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Chicken Scheme 6.0",
-      "description": "Article URL: https://code.call-cc.org/releases/6.0.0/NEWS Comments URL: https://news.ycombinator.com/item?id=49251702 Points: 244 # Comments: 35",
+      "description": "Article URL: https://code.call-cc.org/releases/6.0.0/NEWS Comments URL: https://news.ycombinator.com/item?id=49251702 Points: 272 # Comments: 43",
       "url": "https://code.call-cc.org/releases/6.0.0/NEWS",
       "time": "2026-08-11T00:24:15.000Z",
       "tags": [
@@ -15091,7 +16067,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Show HN: Scroll through all 43252003274489856000 Rubik's Cube states",
-      "description": "Article URL: https://everycube.alen.is/ Comments URL: https://news.ycombinator.com/item?id=49251179 Points: 243 # Comments: 89",
+      "description": "Article URL: https://everycube.alen.is/ Comments URL: https://news.ycombinator.com/item?id=49251179 Points: 270 # Comments: 98",
       "url": "https://everycube.alen.is/",
       "time": "2026-08-10T23:16:25.000Z",
       "tags": [
@@ -15230,7 +16206,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "As AI eats the web, the internet’s collective memory is disappearing",
-      "description": "Article URL: https://thewalrus.ca/google-search-is-dying/ Comments URL: https://news.ycombinator.com/item?id=49250836 Points: 558 # Comments: 644",
+      "description": "Article URL: https://thewalrus.ca/google-search-is-dying/ Comments URL: https://news.ycombinator.com/item?id=49250836 Points: 729 # Comments: 767",
       "url": "https://thewalrus.ca/google-search-is-dying/",
       "time": "2026-08-10T22:36:30.000Z",
       "tags": [
@@ -15504,7 +16480,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Claude marks AI-generated content",
-      "description": "Article URL: https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content Comments URL: https://news.ycombinator.com/item?id=49250109 Points: 299 # Comments: 262",
+      "description": "Article URL: https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content Comments URL: https://news.ycombinator.com/item?id=49250109 Points: 363 # Comments: 331",
       "url": "https://support.claude.com/en/articles/16266773-how-claude-marks-ai-generated-content",
       "time": "2026-08-10T21:36:56.000Z",
       "tags": [
@@ -17004,18 +17980,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
-      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
-      "url": "https://www.donews.com/news/detail/3/6665925.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "大公司"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "REDMI K100 Pro 系列手机发布，售价3999元起",
       "description": "REDMI K100 Pro系列发布：全系双芯、185Hz屏、2亿主摄、9070mAh电池，首发CF手游185帧，售价3999元起。",
       "url": "https://www.donews.com/news/detail/5/6667206.html",
@@ -17071,6 +18035,18 @@
       "time": "2026-08-10T16:00:00.000Z",
       "tags": [
         "新能源/电动车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
+      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
+      "url": "https://www.donews.com/news/detail/3/6665925.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "大公司"
       ]
     },
     {
@@ -18603,18 +19579,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxvuf0615032.shtml",
       "time": "2026-08-10T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "16个月后Meta杀回开源，小扎力挺蒸馏",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimxrnp4321432.shtml",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "大公司"
-      ]
     },
     {
       "source": "新浪科技",
@@ -24293,17 +25257,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
-      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
-      "url": "https://www.donews.com/news/detail/3/6664448.html",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "奕境X9座舱开箱：首搭鸿蒙座舱HarmonySpace 6实现代际跃迁",
       "description": "奕境X9首发鸿蒙座舱HarmonySpace 6，以小艺智能体、AMS感知、软硬生态打通实现智能跃迁，并打造电竞房、K歌房、影音房三大移动空间。",
       "url": "https://www.donews.com/news/detail/7/6665520.html",
@@ -24373,6 +25326,17 @@
         "手机",
         "汽车",
         "科技创投"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
+      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
+      "url": "https://www.donews.com/news/detail/3/6664448.html",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -26600,17 +27564,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
-      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
-      "url": "https://www.donews.com/news/detail/3/6663604.html",
-      "time": "2026-08-07T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "华为乾崑大六座强势打入十万级！星海V6开启预售10.49万元起",
       "description": "东风风行星海V6于8月8日在成都发布，搭载华为乾崑智驾，预售价8.99万起，主打10万级大六座智能家用车，以智驾、空间、续航三大王牌重塑市场。",
       "url": "https://www.donews.com/news/detail/7/6663707.html",
@@ -26629,6 +27582,17 @@
       "time": "2026-08-07T16:00:00.000Z",
       "tags": [
         "测评/新品"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
+      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
+      "url": "https://www.donews.com/news/detail/3/6663604.html",
+      "time": "2026-08-07T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -58124,17 +59088,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
-      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
-      "url": "https://www.donews.com/news/detail/3/6660734.html",
-      "time": "2026-08-05T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "美学升维，流畅突破：荣耀MagicOS11双架构重塑体验",
       "description": "荣耀在北京举办MagicOS11先锋品鉴会",
       "url": "https://www.donews.com/news/detail/5/6661438.html",
@@ -58185,6 +59138,17 @@
       "time": "2026-08-05T16:00:00.000Z",
       "tags": [
         "新能源/电动车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
+      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
+      "url": "https://www.donews.com/news/detail/3/6660734.html",
+      "time": "2026-08-05T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -96115,939 +97079,6 @@
       "tags": [
         "芯片/半导体",
         "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "T-Mobile will give you the new Samsung Galaxy Z Flip for practically nothing if you preorder now",
-      "description": "New and existing T-Mobile customers can save up to $1,100 on Samsung's latest flip phone now (including the pink color). Here's how.",
-      "url": "https://www.zdnet.com/article/t-mobile-samsung-galaxy-z-flip-deal/",
-      "time": "2026-08-03T19:31:01.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "Lego deploys Hubble Space Telescope as detailed desktop model",
-      "description": "The orbiting observatory in minifigure scale.",
-      "url": "https://arstechnica.com/space/2026/08/lego-deploys-hubble-space-telescope-as-detailed-desktop-model/",
-      "time": "2026-08-03T19:21:16.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "GSMArena",
-      "sourceColor": "#d32f2f",
-      "title": "Google kills unreleased AI app",
-      "description": "Google is rather notorious for killing apps and services left and right, even quite successful ones. This time, however, the company has gone further than it usually does and killed an app that was never released to begin with. It was called Google AI Studio and it was supposed to become available on both Android and iOS. The app was listed in the Google Play Store and the App Store as a pre-order, and about 800,000 people actually pre-ordered it, so clearly there was some interest for it out there. Still, Google's AI Studio team decided to \"take an entirely different approach\",...",
-      "url": "https://www.gsmarena.com/google_kills_unreleased_ai_app-news-73978.php",
-      "time": "2026-08-03T19:21:02.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "MacRumors",
-      "sourceColor": "#1d4ed8",
-      "title": "Apple Pay Launches in the Philippines",
-      "description": "Apple Pay expanded to the Philippines today, which means iPhone and Apple Watch owners in the country can add supported debit and credit cards to the Wallet app for contactless payments. Credit and debit cards can be added by opening the Wallet app and tapping on the \"+\" button. According to users on Reddit, supported banks include UnionBank, GoTyme, Metrobank, and Chinabank. Cards are verified using SMS or phone call. Once an eligible card is added to the Wallet app, it can be used at retail locations that support ‌Apple Pay‌. Reddit users have been able to add their cards to Apple Wallet and make ‌Apple Pay‌ purchases at stores like Starbucks and 7-Eleven. long list of countries around the world, with details on supported banks. The Philippines hasn't been added to Apple's site yet, but Apple should soon have a full list of participating banks. Related Roundup: Apple Pay Related Forum: Apple Music, Apple Pay/Card, iCloud, Fitness+ This article, \"Apple Pay Launches in the Philippines\" first appeared on MacRumors.com Discuss this article in our forums",
-      "url": "https://www.macrumors.com/2026/08/03/apple-pay-philippines/",
-      "time": "2026-08-03T19:14:49.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "An AI-supervised remote exam went so badly that 58,000 students must retake it",
-      "description": "Top scores increased by 5x.",
-      "url": "https://arstechnica.com/culture/2026/08/an-ai-supervised-remote-exam-went-so-badly-that-58000-students-must-retake-it/",
-      "time": "2026-08-03T19:00:50.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "集成电路创新博览会将至，半导体产业链持续火热，这些股频获机构调研 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608043831294972.html",
-      "time": "2026-08-03T18:54:32.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Google drops Pixel 11 Pro Fold teaser to hype you up for official launch",
-      "description": "Get an eyeful of the Pixel 11 Pro Fold.",
-      "url": "https://www.androidauthority.com/google-teases-pixel-11-pro-fold-3694007/",
-      "time": "2026-08-03T18:51:26.000Z",
-      "tags": [
-        "手机",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "MagSafe Monday: The LISEN Qi2.2 MagSafe battery brings the most unique lanyard on the market",
-      "description": "The new LISEN Qi2.2 MagSafe battery strikes a nice balance between size and design, bringing some very interesting features to the lanyard. On the spec side, the key feature is supporting the Qi2.2 standard for much faster MagSafe charging. To me, the most unique feature is a really clever lanyard system for the included cable.",
-      "url": "https://9to5mac.com/2026/08/03/lisen-qi2-2-magsafe-battery/",
-      "time": "2026-08-03T18:51:00.000Z",
-      "tags": [
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "I tried buying a MacBook Air from Apple today - shipping was delayed by over a month - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/apple-macbook-air-limited-supply-price-hike/",
-      "time": "2026-08-03T18:50:00.000Z",
-      "tags": [
-        "人工智能",
-        "电脑硬件",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "I tried buying a MacBook Air from Apple today - shipping was delayed by over a month",
-      "description": "Apple is starting to feel the global memory shortage, with MacBook Air shipments delayed by a month or more.",
-      "url": "https://www.zdnet.com/article/apple-macbook-air-limited-supply-price-hike/",
-      "time": "2026-08-03T18:50:00.000Z",
-      "tags": [
-        "人工智能",
-        "电脑硬件",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "I tried buying a MacBook Air from Apple today - shipping was delayed by over a month - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/apple-macbook-air-limited-supply-price-hike/",
-      "time": "2026-08-03T18:50:00.000Z",
-      "tags": [
-        "人工智能",
-        "电脑硬件",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "9to5Mac Daily: August 3, 2026 – Apple’s Q3 earnings",
-      "description": "Listen to a recap of the top stories of the day from 9to5Mac. 9to5Mac Daily is available on iTunes and Apple’s Podcasts app, Stitcher, TuneIn, Google Play, or through our dedicated RSS feed for Overcast and other podcast players. Sponsored by Backblaze: Backup you can rely on. Save 20% with code 9to5daily.",
-      "url": "https://9to5mac.com/2026/08/03/daily-august-3-2026/",
-      "time": "2026-08-03T18:47:40.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Wikipedia for iOS just added a fun, new app widget for your Home Screen",
-      "description": "If you’re anything like me, you can relate to spending way too much time going down the rabbit hole of random articles on Wikipedia. Now there’s officially an app, err, widget for that.",
-      "url": "https://9to5mac.com/2026/08/03/wikipedia-for-ios-just-added-a-fun-new-app-widget-for-your-home-screen/",
-      "time": "2026-08-03T18:38:47.000Z",
-      "tags": [
-        "手机",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Pixel 11 Pro XL joins the rest of the family with Google image leak",
-      "description": "Google Pixel 11 Pro XL pictures complete the set.",
-      "url": "https://www.androidauthority.com/pixel-11-pro-xl-image-leak-3694004/",
-      "time": "2026-08-03T18:37:05.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E4%B9%89%E4%B9%8C%E5%A4%96%E5%9B%B4%E5%85%BC%E8%81%8C%E5%85%A8%E5%A5%97%EF%BC%88%E9%AA%8C%E8%AF%81%E4%BF%9D%E7%9C%9F%EF%BC%89%EF%BC%88%E8%81%94%E7%BB%9CV%E5%8A%A0%EF%BC%9A%E2%91%A0%E2%91%A0778593%EF%BC%89%E8%A7%81%E9%9D%A2%E4%BB%98%E6%AC%BE%E7%9C%9F%E4%BA%BA%E9%AA%8C%E8%AF%81%E5%AF%B9%E6%AF%94%E6%97%A0%E5%A5%97%E8%B7%AFB5zfWreu7GAJMvHaD0214&vt=4",
-      "time": "2026-08-03T18:27:02.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "雷锋网",
-      "sourceColor": "#1890ff",
-      "title": "B300半年涨三倍；大厂集体绕开算力中转站；Infra公司多名核心高管离职；Token成本击穿圈人再变现丨算力情报局Vol.13",
-      "description": "B300半年内涨三倍，某华东大厂要求供应商二选一。",
-      "url": "https://www.leiphone.com/category/chips/VSDxFDJBROODRhhk.html",
-      "time": "2026-08-03 18:15",
-      "tags": [
-        "AI芯片"
-      ]
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "WAIC趋势复盘：AI 的下半场，到底拼什么？",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/article/sHcr52JDQidMuKcDHYGB?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T18:15:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy F70 Pro 手机海外发布：骁龙 6 Gen 3 芯片、6000mAh 电池，23,999 卢比起 - 17173",
-      "description": "",
-      "url": "https://news.17173.com/content/08042026/020705812.shtml",
-      "time": "2026-08-03T18:07:05.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星 Galaxy F70 Pro 手机海外发布：骁龙 6 Gen 3 芯片、6000mAh 电池，23,999 卢比起 - news.17173.com",
-      "description": "",
-      "url": "https://news.17173.com/content/08042026/020705812.shtml",
-      "time": "2026-08-03T18:07:05.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "机器之心",
-      "sourceColor": "#512da8",
-      "title": "AI首次拿下IMO官方满分金牌，背后藏着一套自我纠错机制",
-      "description": "AI首次拿下IMO官方满分金牌，背后藏着一套自我纠错机制,数学,推理,imo,归纳法",
-      "url": "https://www.163.com/dy/article/L3E52GIF0511AQHO.html",
-      "time": "2026-08-03 18:06",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼保证：取消实体光盘不会让PlayStation沦为PC - 17173",
-      "description": "",
-      "url": "http://news.17173.com/content/08042026/020054255.shtml",
-      "time": "2026-08-03T18:00:54.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼保证：取消实体光盘不会让PlayStation沦为PC - news.17173.com",
-      "description": "",
-      "url": "http://news.17173.com/content/08042026/020054255.shtml",
-      "time": "2026-08-03T18:00:54.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "谈黄金分割与摄影构图",
-      "description": "",
-      "url": "https://image.fengniao.com/91/pic_914702_1.html",
-      "time": "2026-08-03T18:00:15.000Z",
-      "tags": []
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "GitHub Copilot CLI在重新设计的终端UI中新增选项卡与免配置文件的工具设置",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/article/wybFeXucFGaobN7wQjev?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T18:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Disney+ might soon launch free tier for users, per report",
-      "description": "Hollywood increasingly sees YouTube as its major competition, and per a new report, free tiers from streamers like Disney+ and Paramount+ might be the answer.",
-      "url": "https://9to5mac.com/2026/08/03/disney-might-soon-launch-free-tier-for-users-per-report/",
-      "time": "2026-08-03T17:56:07.000Z",
-      "tags": [
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AI is both a cyber weapon and a massive target, CrowdStrike warns",
-      "description": "The same AI tools triggering suspicious alerts are being attacked by cybercriminals in droves.",
-      "url": "https://www.zdnet.com/article/ai-is-cyber-weapon-and-massive-target-crowdstrike-warns/",
-      "time": "2026-08-03T17:52:06.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AI is both a cyber weapon and a massive target, CrowdStrike warns - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/ai-is-cyber-weapon-and-massive-target-crowdstrike-warns/",
-      "time": "2026-08-03T17:52:00.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AI is both a cyber weapon and a massive target, CrowdStrike warns - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/ai-is-cyber-weapon-and-massive-target-crowdstrike-warns/",
-      "time": "2026-08-03T17:52:00.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "科沃斯还离不开钱东奇",
-      "description": "真正意义上和具身智能相关的机器人，是今年3月，上海AWE2026开幕当天首秀的，行业首款能“养龙虾”的管家机器人——“八界”。 在国内市场，2021年时，科沃斯国内扫地机器人线上销售额市占率为38.66%，…",
-      "url": "https://www.sohu.com/a/1058275856_99970452?scm=10001.340_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-03 17:50",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "MacRumors",
-      "sourceColor": "#1d4ed8",
-      "title": "Apple's iCloud File Sharing Left Ex-Employees With Access to Secret Documents",
-      "description": "The way Apple combines work and personal iCloud accounts left some employees able to access confidential documents after departing the company, reports The Information. The site spoke to more than half a dozen former Apple employees who were unknowingly left with access to sensitive content. The former employees said many Apple files they had been shared on over their careers at the company—including planning documents for product launch events—continued to sync to their personal devices through the iCloud storage service after they left Apple. In some cases, they even received notifications about fresh updates to the documents. Some former employees said they were petrified to delete the files for fear that doing so would attract Apple's attention. Apple files get mixed in with employees' accounts because the company encourages them to use their personal Apple Accounts with their work ‌iCloud‌ account. Employees are given a 2TB ‌iCloud‌ plan and are able to merge the storage with their existing Apple Account or create a new account. Since only one primary account can be signed in at a time, most opt to use their existing account to avoid having to carry two iPhones. Apple has a managed folder for workplace files that it revokes access to when an employee leaves, but some internal documents aren't saved there automatically and shared files end up mixed in with personal content. Employees can also retain access to iMessage chats and files shared via the Messages app. In its filing, Apple alleged that former employee Chang Liu breached Apple's systems using a \"rare, previously unknown authentication bug\" to download files while he was working at OpenAI. The Information that the OpenAI lawsuit is unrelated to any files left available on ‌iCloud‌ and that it does not pursue legal claims against former employees who accidentally have Apple documents in their personal ‌iCloud‌ accounts. This case is about OpenAI employees wrongfully taking Apple's secret and confidential information regarding our unreleased technologies, processes, and products. Nothing in the filing relates to documents shared by, or stored in, iCloud. Former employees say Apple does not do a thorough enough job going through personal devices to remove sensitive files that have been stored in ‌iCloud‌. In a now-settled legal dispute, chip company Rivos claimed Apple intentionally lets former employees retain access to files \"as part of a planned effort to generate a pretextual basis to sue the employees and their new employer for 'stealing' Apple material.\" In the Rivos case, an employee was targeted for keeping work files in his personal ‌iCloud‌ account. Another former Apple employee sued by Apple, Gerard Williams, countersued and accused the company of using intimidation tactics to scare people thinking of leaving. Apple sued Williams for breach of contract after he started processor company Nuvia, presenting extensive phone and text records of his communications. The court rejected Williams' claim, and Apple dropped the case in 2023. also accused former Vision Pro engineer Di Liu of downloading thousands of corporate documents to his personal cloud storage shortly before leaving the company for Snap. The Information does not outright suggest Apple is purposefully allowing former employees to retain access to ‌iCloud‌ files, but points out that Apple's use of ‌iCloud‌ for file sharing and its incomplete wiping of employee accounts are at odds with its heavy focus on privacy and security. Tag: Apple Lawsuits This article, \"Apple's iCloud File Sharing Left Ex-Employees With Access to Secret Documents\" first appeared on MacRumors.com Discuss this article in our forums",
-      "url": "https://www.macrumors.com/2026/08/03/apple-icloud-sharing-ex-employees/",
-      "time": "2026-08-03T17:48:41.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Windows is testing a new way to preview Android phone notifications",
-      "description": "Microsoft is testing out a new helpful trick for Phone Link.",
-      "url": "https://www.androidauthority.com/windows-phone-link-notification-preview-3693965/",
-      "time": "2026-08-03T17:44:26.000Z",
-      "tags": [
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "9to5Mac",
-      "sourceColor": "#0a84ff",
-      "title": "Apple launches revamped ‘Apple Accessories’ shopping experience",
-      "description": "Apple has rolled out a new experience for browsing and buying accessories on the Apple Online Store and in the App Store app. The changes make it easier to browse accessories by categories, view editorial curations, and more.",
-      "url": "https://9to5mac.com/2026/08/03/apple-launches-revamped-apple-accessories-shopping-experience/",
-      "time": "2026-08-03T17:30:37.000Z",
-      "tags": [
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "机器之心",
-      "sourceColor": "#512da8",
-      "title": "两个小时，10美元，Karpathy做了一个《指环王》3D游戏",
-      "description": "两个小时，10美元，Karpathy做了一个《指环王》3D游戏,动画,指环王,gta,3d游戏,生化危机",
-      "url": "https://www.163.com/dy/article/L3E3MK2O0511AQHO.html",
-      "time": "2026-08-03 17:29",
-      "tags": [
-        "游戏",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "Huxiu AI Lab",
-      "description": "",
-      "url": "https://api-ms-form.huxiu.com/",
-      "time": "2026-08-03T17:19:01.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "Huxiu AI Lab - api-ms-form.huxiu.com",
-      "description": "",
-      "url": "https://api-ms-form.huxiu.com/",
-      "time": "2026-08-03T17:19:01.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "The Future of GNOME Boxes",
-      "description": "Comments",
-      "url": "https://blogs.gnome.org/feborges/future-of-boxes/",
-      "time": "2026-08-03T17:16:40.000Z",
-      "tags": []
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "TCL’s latest tablet with a paper-like display tempts with its budget price tag",
-      "description": "TCL’s Tab A1 Plus NXTPAPER is here with a paper-like 12.2-inch display and a larger battery than its sibling.",
-      "url": "https://www.androidauthority.com/tcl-tab-a1-plus-nxtpaper-launch-3693912/",
-      "time": "2026-08-03T17:10:40.000Z",
-      "tags": [
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Tab S12 Ultra平板Geekbench跑分曝光|IT之家|三星Galaxy S26|芯片|设备|像素_手机新浪网 - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-08-03/detail-inikzqsp5983232.d.html?oid=%E5%A4%A7%E8%BF%9E%E2%80%8C%E6%B2%99%E6%B2%B3%E5%8F%A3%E5%8C%BA%E2%80%8C%E2%80%8C%E2%80%8C%E9%AB%98%E7%AB%AF%E5%A4%96%E5%9B%B4%E5%93%81%E8%8C%B6%EF%BC%88%E6%9E%81%E9%99%90%E5%AE%9A%E5%88%B6%EF%BC%89(%E9%9D%A0%E8%B0%B1%E7%BB%B4%E8%8A%AF%20884174%E2%91%A1%E2%91%A0)%E5%A4%9A%E4%BD%8D%E5%A4%A7%E5%92%96%E8%AE%A4%E8%AF%81%E7%BB%8F%E7%BA%AA%E4%BA%BAb4LoQmtO9C8Y1RZ0214&vt=4",
-      "time": "2026-08-03T17:03:37.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "电脑硬件"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "正听 | 听说中国开源大模型或遭限制，美国企业为何急了？ - 中国科技网",
-      "description": "",
-      "url": "https://www.stdaily.com/web/gjxw/2026-08/03/content_558463.html",
-      "time": "2026-08-03T17:01:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "正听 | 听说中国开源大模型或遭限制，美国企业为何急了？ - stdaily.com",
-      "description": "",
-      "url": "https://www.stdaily.com/web/gjxw/2026-08/03/content_558463.html",
-      "time": "2026-08-03T17:01:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Score a record 50% discount on the Samsung 32-inch M8 smart monitor!",
-      "description": "Samsung’s 32-inch M8 Smart Monitor drops to $349.99 at Amazon, a record-low price for this 4K screen with smart TV features.",
-      "url": "https://www.androidauthority.com/samsung-32-inch-m8-smart-monitor-deal-3693976/",
-      "time": "2026-08-03T16:59:05.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "小米汽车：澎程系列支持应急浮水脱困 3分钟内座舱无明显进水",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1141/1141115.htm",
-      "time": "2026-08-03T16:57:00.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "SQLite Critical CVEs or LLM Slop?",
-      "description": "Comments",
-      "url": "https://research.jfrog.com/post/sqlite-critical-cves-or-llm-slops/",
-      "time": "2026-08-03T16:51:22.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "已选择： 数码后背 松下(Panasonic) 1/1.7英寸 720p高清视频 电子取景器 Wi-Fi连接 清空",
-      "description": "",
-      "url": "https://product.fengniao.com/1053/84_0_4_0_3_2_0_1.html",
-      "time": "2026-08-03T16:37:32.000Z",
-      "tags": []
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Galaxy S27 Ultra may get a slimmer camera thanks to this hidden upgrade",
-      "description": "Samsung's clever manufacturing trick may bring thinner modules and cleaner shots to the Galaxy S27 Ultra.",
-      "url": "https://www.androidauthority.com/galaxy-s27-thinner-camera-3693968/",
-      "time": "2026-08-03T16:35:34.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "用DeepSeek-TUI+玩转+Vibe+Coding",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/video/PPO5ZN9pTtS5WCqgohgz?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T16:35:13.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "WorkBuddy精选高价值场景全解析",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/video/VA74X3wdGNzrCE6cVk1J?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T16:35:04.000Z",
-      "tags": []
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "Reliability Lessons From SQLite",
-      "description": "Comments",
-      "url": "https://www.youtube.com/watch?v=V_qzqY1bb7I",
-      "time": "2026-08-03T16:27:45.000Z",
-      "tags": []
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "“像魔法一样”的AI，只卖几分钱",
-      "description": "DeepSeek V4 Flash刷屏海外，“像魔法一样”的AI，只卖几分钱,智能体,deepseek,马斯克,flash,调用,工作流",
-      "url": "https://www.163.com/tech/article/L3DVVFJ500097U7T.html",
-      "time": "2026-08-03 16:24",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Anker 100W Max charger drops to $49.99 with 3 ports and a smart display",
-      "description": "This Anker 100W GaN charger is 29% off on Amazon, with dual 100W USB-C ports, a USB-A port, and a built-in display.",
-      "url": "https://www.androidauthority.com/anker-100w-max-charger-3693961/",
-      "time": "2026-08-03T16:15:16.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": ":fire: JS 区块支持注册前端 AI 工具：开源无代码 / 低代码平台 NocoBase",
-      "description": "汇总一周产品更新日志，最新发布可前往我们的博客查看。 NocoBase 目前更新包括三个分支：main、next 和 develop。 version.png main：截至目前最稳定的版本，推荐安装此版本。 next：包含即将发布的新功能，经过初步测试的版本，可能存在部分已知或未知问题。主要面向测试用户，用于收集反馈和进一步优化功能。适合愿意...",
-      "url": "https://www.oschina.net/news/486612",
-      "time": "2026-08-03T16:13:32.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "今夜 直线拉升！美股大涨 费城半导体大逆转 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608043830141729.html",
-      "time": "2026-08-03T16:13:11.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AI shopping searches surged 200% in one year - and it's a top priority for commerce leaders now - ZDNET",
-      "description": "",
-      "url": "https://www.zdnet.com/article/ai-shopping-searches-surging-commerce-leaders-top-priority/",
-      "time": "2026-08-03T16:12:00.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AI shopping searches surged 200% in one year - and it's a top priority for commerce leaders now - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/article/ai-shopping-searches-surging-commerce-leaders-top-priority/",
-      "time": "2026-08-03T16:12:00.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "2026 Volkswagen Jetta Sport: The cheap car isn't completely extinct yet",
-      "description": "At $25,305, you won't find many new cars for less. But you get what you pay for.",
-      "url": "https://arstechnica.com/cars/2026/08/2026-volkswagen-jetta-sport-the-cheap-car-isnt-completely-extinct-yet/",
-      "time": "2026-08-03T16:10:22.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "InfoQ",
-      "sourceColor": "#0277bd",
-      "title": "Amazon EKS 新增升级后 7 天内回滚 Kubernetes 版本的功能",
-      "description": "点击查看原文>",
-      "url": "https://www.infoq.cn/article/5si5hgXIKQjbwFwyJ5aC?utm_source=rss&utm_medium=article",
-      "time": "2026-08-03T16:09:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "嫦娥六号月壤新发现:月球背面更凶险,太阳风比正面强劲",
-      "description": "团队通过分析月壤里稀有气体的“化学指纹”，证实了困扰科学界数十年的猜想： 地球庞大的磁层会给太阳风减速，造成月球正面、背面遭受的宇宙粒子轰击强度天差地别，月壤这份天然宇宙档案，第一次完整记录下地月空间环境的…",
-      "url": "https://www.sohu.com/a/1058230948_135814?scm=10001.344_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-03 16:08",
-      "tags": []
-    },
-    {
-      "source": "Solidot",
-      "sourceColor": "#546e7a",
-      "title": "微软表示正致力于优化 Windows 11 在 8GB 内存下的运行效率",
-      "description": "微软 Windows 和设备执行副总裁 Pavan Davuluri 通过官方博客谈论了该公司在 Windows 11 上持续展开的改进工作，虽然大部分工作尚未推送给用户。他透露接下来的一项工作是优化 Windows 11 在 8GB 内存以上配置下的运行效率。由于目前的内存供应危机，PC 厂商又开始提供 8GB 内存配置的电脑，然而 Windows 11 在 8GB 内存下只能勉强运行，运行其它程序面临很大的局限性。Davuluri 表示该公司将减少 Windows 的内存占用，在用户日常使用的 PC 上提供快速响应的 Windows 体验。",
-      "url": "https://www.solidot.org/story?sid=84996",
-      "time": "2026-08-03T16:03:05.000Z",
-      "tags": [
-        "电脑硬件",
-        "软件应用",
-        "大公司"
-      ]
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Sony WH-1000XM6 gets a gorgeous new color option",
-      "description": "Sony just proved gray doesn't have to be boring after all.",
-      "url": "https://www.androidauthority.com/sony-wh-1000xm6-new-color-variant-3693875/",
-      "time": "2026-08-03T16:00:40.000Z",
-      "tags": []
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "四十年游戏与AI同行，\"可以玩的游戏史\"互动展在沪举行",
-      "description": "中国音数协游戏博物馆举办“可以玩的游戏史：游戏赋能AI”展，回顾游戏与AI四十年共生历程，通过互动体验展现AI技术演进。",
-      "url": "https://www.donews.com/news/detail/3/6657872.html",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "\"可以玩的游戏史：游戏赋能AI\"互动展落地上海，两天吸引超400名观众上手体验",
-      "description": "“可以玩的游戏史：游戏赋能AI”互动展在上海举办，两天吸引400余人体验，通过试玩经典游戏展现AI与游戏四十年互促发展。",
-      "url": "https://www.donews.com/news/detail/3/6657870.html",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏",
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "瑞幸二季度营收159亿，健康专业化产品创新拉动高复购",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/it/2026-08-04/doc-inimeefm2001357.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "OPPO A7 Pro Max发布：搭载行业首个七年长寿万级大电池，售价2199元起",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/it/2026-08-04/doc-inimcxxp2094825.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "美图业绩预告超预期 瑞银、高盛给予“买入”评级",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/it/2026-08-04/doc-inimcxxm5320701.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "百度AI办公再落一子：dodo并入百度搭子，Agent矩阵火力全开",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/2026-08-04/doc-inimcxxf5721910.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "工程师变免费水军？上汽大众换帅时刻，《置身众内》全文传出",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcxxc4068242.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "OPPO正式发布A7 Pro Max：售价2199元起，搭载行业首个七年长寿万级大电池",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-04/doc-inimctri5715829.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "2026年度江苏省卓越博士后计划拟资助对象名单公示",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimeknz5591891.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "直击《功夫女足》珠海主创见面会，VLED厅里看真功夫",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-04/doc-inimctrp5341273.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "连破产费都给不起了！美兰宣告破产，旗下老牌国货上海雪花膏退场",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimcpit2182269.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "OPPO A7 Pro Max 体验，一万毫安时大电池，耐用科技的扎实答案",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-04/doc-inimchzv2268485.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "启动独立融资后，苏宁帮客宣布再招10万人",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-04/doc-inimchzm4211311.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "传Eclix手机业务负责人俞雷拟离职，上任不足半年",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/shenji/2026-08-04/doc-inimchzt5485727.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "与Pura X比例近似 华为首款阔直板形态手机有望秋冬季问世",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-04/doc-inimeefm1996426.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "消息称希音 SHEIN 最早 8 月在香港 IPO，目标估值 300 亿至 400 亿美元",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-04/doc-inimcxxm5332831.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "国内App用户规模TOP30榜单公布！微信第一 抖音第二",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimcxxp2069391.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "软件应用",
-        "互联网"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "中止 3 年后，日本再次推进国产客机研发计划",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-04/doc-inimcxxp2043230.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "比亚迪攻入本田、日产老家！首款k-car海獭日本订单已破700台",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimctrr2163866.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "华为6大新品明日集体登场 余承东：阵容强大",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimchzv2223426.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "大涨21.4%无敌手！京东成中国第五个10亿用户互联网公司",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimctrr2163824.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "华为nova 16系列销量突破120万台 连续3周单周新增超11万台",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-04/doc-inimctrr2122957.shtml",
-      "time": "2026-08-03T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
       ]
     }
   ]
