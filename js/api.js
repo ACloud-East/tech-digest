@@ -47,7 +47,7 @@ const API = {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), timeout);
         try {
-            const r = await fetch(url, { signal: ctrl.signal });
+            const r = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return await r.json();
         } finally { clearTimeout(t); }
@@ -70,6 +70,10 @@ const API = {
     async streamFetchJSON(url, timeoutMs, onProgress, expectedSize = 0, useExpected = false) {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), timeoutMs);
+        // stall 检测：普通窗口复用旧的 keep-alive 连接，若该连接已被服务端关闭，
+        // reader.read() 会永远挂起（Chromium 已知问题）——用「8s 无新数据即中止」来兜底，
+        // 让卡死的连接快速失败并换新连接，绝不无限等待。
+        const STALL_MS = 8000;
         try {
             const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -81,7 +85,20 @@ const API = {
             const chunks = [];
             let loaded = 0;
             for (;;) {
-                const { done, value } = await reader.read();
+                let stallTimer;
+                let readRes;
+                try {
+                    readRes = await Promise.race([
+                        reader.read(),
+                        new Promise((_, rej) => { stallTimer = setTimeout(() => rej(new Error('stream-stall')), STALL_MS); }),
+                    ]);
+                } catch (e) {
+                    ctrl.abort(); // 立即掐断底层连接，让浏览器清理坏连接，下次请求走新连接
+                    throw e;
+                } finally {
+                    clearTimeout(stallTimer);
+                }
+                const { done, value } = readRes;
                 if (done) break;
                 chunks.push(value);
                 loaded += value.length;
@@ -238,7 +255,7 @@ const API = {
         //   改走「单连接整文件」——慢网下分片并发会把带宽切成 6 份互相拖死，单连接反而最快。
         // - 整文件 60s：单连接独占带宽，~1Mbps 也能在 60s 内完成 3.5MB(gzip)。
         const ARCHIVE_SHARD_MS = 10000; // 分片快路径：好网络 <1s/片；10s 没凑齐即放弃
-        const ARCHIVE_WHOLE_MS = 60000; // 整文件：单连接独占带宽，慢网可靠路径
+        const ARCHIVE_WHOLE_MS = 40000; // 整文件：单连接独占带宽；40s 内到不了就放弃（stall 时 8s 即中止）
         const PART_MS = 10000;          // 备用分片
         const WHOLE_MS = 30000;         // 静态整文件兜底
 
@@ -418,7 +435,7 @@ const API = {
             // 3a) 分片再来一轮（Function 通路 + 更长超时重试）
             try {
                 const again = await loadShards(
-                    (name) => `/api/archive?part=${encodeURIComponent(name)}`, 4, 20000, 1, updateDisplay
+                    (name) => `/api/archive?part=${encodeURIComponent(name)}`, 4, 15000, 1, updateDisplay
                 );
                 if (enough(again.length)) return { articles: again, updateTime: (manifest && manifest.updateTime) || '' };
                 if (again.length > shardsResult.length) shardsResult = again;
