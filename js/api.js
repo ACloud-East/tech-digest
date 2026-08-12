@@ -326,26 +326,29 @@ const API = {
         //    60s）——慢网下分片并发会把带宽切成 6 份互相拖死（Edge 卡 0B 的根因），
         //    单连接反而能最快下载完 3.5MB(gzip)。进度用 MAX 聚合：任何时刻只升不降，
         //    彻底消除「重试清零 / 进度倒转归零」。最后再走静态整文件等极端兜底。
-        // 3) 历史语料库（极简设计：整文件单连接，流式字节进度，stall 保护）。
-        //    不再使用分片并发——分片在慢网下会把带宽切成 N 份互相拖死，
-        //    实测 3 窗口同时开只有 1/3 拿到 8000。整文件单连接是跨浏览器最稳路径。
-        // 3) 历史语料库（稳如磐石设计）。
-        //    关键发现：Edge/慢网下 reader.read() 流式读取会在 ~2.3MB 处确定性 stall（CF gzip
-        //    分块传输 + Chromium keep-alive 复用的已知问题），而标准 resp.json() 不会卡死。
-        //    因此归档全部走 fetchJSON（浏览器原生 JSON 解析，最稳），进度用「期望大小 + 时间
-        //    线性模拟」——从 meta 拿到 expectedSize 后按时间平滑推进，拿到数据后直接跳 100%。
-        //    双路并行赛跑（Function + 静态），谁先回谁赢，确保任意一条路通就能出 8000。
-        // 3) 历史语料库（稳如磐石设计 v3）。
-        //    Edge 普通窗口 vs 无痕窗口差异的根因：普通窗口复用旧连接/缓存，
-        //    CF 或中间网络层可能对旧连接做半关闭（连接 reset），导致大文件传输被截断。
-        //    无痕窗口每次新建连接，不存在此问题 → 8000 稳定。
-        //
-        //    策略：
-        //    - 全部走 fetchJSON（resp.json()，不用 reader.read()）
-        //    - 双路并行赛跑（Function + 静态），谁先回谁赢
-        //    - 如果结果 < 7000（被截断），自动重试一次（cache bust + 新连接）
-        //    - 进度：时间线性模拟（每 200ms 更新，60s 到 95%）
+        // 3) 历史语料库（缓存优先 + 稳如磐石下载 v4）。
+        //    【缓存优先】这是根治"多窗口/频繁刷新只剩几百篇"的关键：
+        //    实测用户常同时开 3-4 个窗口，每个都重下 9.4MB 归档、互相抢带宽——
+        //    最先开的窗口抢到带宽拿 8000，后开的全被拖死只剩几百篇。
+        //    而 localStorage 缓存里明明躺着完整归档。归档 cron 每小时才更新一次，
+        //    缓存 TTL 1h 与之匹配；实时流仍每次拉，新内容不漏。
+        //    因此：缓存有效（≥7000 篇）→ 直接当 base，跳过下载，秒开。
+        //    【下载兜底】缓存失效才下载：fetchJSON 双路赛跑（Function + 静态），
+        //    结果 <7000 自动重试一次（cache bust 强制新连接）。
         const archiveTask = (async () => {
+            // ── 缓存命中：秒开路径 ──
+            if (cached && cached.articles && cached.articles.length >= 7000) {
+                prog.archStarted = true;
+                prog.archIsParts = false;
+                prog.archIsByte = true;
+                prog.archKnown = true;
+                prog.archTotal = cached.articles.length;
+                prog.archLoaded = cached.articles.length;
+                emit();
+                console.warn('[archive] 使用本地缓存 ' + cached.articles.length + ' 篇（1h 内有效），跳过下载');
+                return { articles: cached.articles, updateTime: cached.updateTime || '' };
+            }
+            // ── 缓存无效：下载路径 ──
             // 等 meta（最多 500ms，不阻塞首屏）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
@@ -389,12 +392,18 @@ const API = {
                 // 首次尝试
                 let result = await attempt(0);
 
-                // 如果结果不完整（< 7000），等 2s 后重试（让坏连接冷却，浏览器开新连接）
-                if (result && result.articles.length < 7000) {
-                    console.warn(`[archive] 首次只拿到 ${result.articles.length} 篇（来自 ${result.src}），2s 后重试...`);
+                // 结果不完整（< 7000）或完全失败（null）→ 等 2s 后重试（让坏连接冷却，浏览器开新连接）
+                if (!result || result.articles.length < 7000) {
+                    console.warn(result
+                        ? `[archive] 首次只拿到 ${result.articles.length} 篇（来自 ${result.src}），2s 后重试...`
+                        : '[archive] 首次双路均失败，2s 后重试...');
                     await new Promise(r => setTimeout(r, 2000));
-                    result = await attempt(1);
-                    if (result) console.warn(`[archive] 重试拿到 ${result.articles.length} 篇（来自 ${result.src}）`);
+                    const retry = await attempt(1);
+                    if (retry && retry.articles.length) {
+                        console.warn(`[archive] 重试拿到 ${retry.articles.length} 篇（来自 ${retry.src}）`);
+                        // 重试更多则用重试的；否则保留首次的（有总比没有强）
+                        if (!result || retry.articles.length > result.articles.length) result = retry;
+                    }
                 }
 
                 clearInterval(simTimer);
