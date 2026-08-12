@@ -329,11 +329,17 @@ const API = {
         // 3) 历史语料库（极简设计：整文件单连接，流式字节进度，stall 保护）。
         //    不再使用分片并发——分片在慢网下会把带宽切成 N 份互相拖死，
         //    实测 3 窗口同时开只有 1/3 拿到 8000。整文件单连接是跨浏览器最稳路径。
+        // 3) 历史语料库（稳如磐石设计）。
+        //    关键发现：Edge/慢网下 reader.read() 流式读取会在 ~2.3MB 处确定性 stall（CF gzip
+        //    分块传输 + Chromium keep-alive 复用的已知问题），而标准 resp.json() 不会卡死。
+        //    因此归档全部走 fetchJSON（浏览器原生 JSON 解析，最稳），进度用「期望大小 + 时间
+        //    线性模拟」——从 meta 拿到 expectedSize 后按时间平滑推进，拿到数据后直接跳 100%。
+        //    双路并行赛跑（Function + 静态），谁先回谁赢，确保任意一条路通就能出 8000。
         const archiveTask = (async () => {
             // 等 meta（最多 500ms，不阻塞首屏）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
-            // 进度初始化
+            // 进度初始化（模拟模式：按时间线性推进）
             prog.archStarted = true;
             prog.archIsParts = false;
             prog.archIsByte = true;
@@ -342,30 +348,68 @@ const API = {
             prog.archTotal = expectedSize || 1;
             emit();
 
-            const bumpWhole = (loaded, total) => {
-                if (total && total > prog.archTotal) prog.archTotal = total;
-                if (loaded > prog.archLoaded) prog.archLoaded = loaded; // 只升不降
+            // 模拟进度：每 200ms 更新一次，线性推进到 95%（留 5% 给解析/合并）
+            const estTotal = expectedSize || 9360000; // meta 拿不到时用默认 ~9.4MB
+            const simStart = Date.now();
+            // 大文件预估下载时间：好网络 5s、慢网 60s；用 45s 作为"满进度"基准
+            const SIM_MS = 45000;
+            const simTimer = setInterval(() => {
+                const elapsed = Date.now() - simStart;
+                const frac = Math.min(elapsed / SIM_MS, 0.95);
+                prog.archLoaded = Math.round(estTotal * frac);
+                prog.archTotal = estTotal;
                 emit();
-            };
+            }, 200);
 
-            // ── 主路径：/api/archive 整文件（单连接、流式、90s、stall 8s 保护）──
             try {
-                const data = await this.streamFetchJSON('/api/archive', ARCHIVE_WHOLE_MS, bumpWhole, expectedSize);
+                // 双路并行：Function 整文件 + 静态整文件，谁先回谁赢
+                const data = await Promise.race([
+                    this.fetchJSON('/api/archive', ARCHIVE_WHOLE_MS).then(d => {
+                        if (d && d.articles) return d; throw new Error('no articles');
+                    }).catch(e => { console.warn('Function 整文件失败:', e.message); return null; }),
+                    this.fetchJSON('data/news.json', FALLBACK_MS).then(d => {
+                        if (d && d.articles) return d; throw new Error('no articles');
+                    }).catch(e => { console.warn('静态整文件失败:', e.message); return null; }),
+                ]);
+
+                clearInterval(simTimer);
+
                 if (data && Array.isArray(data.articles) && data.articles.length) {
+                    // 进度直接跳 100%
+                    prog.archLoaded = estTotal;
+                    prog.archTotal = estTotal;
+                    emit();
                     return { articles: data.articles, updateTime: data.updateTime || '' };
                 }
-            } catch (e) { console.warn('整文件 Function 读取失败:', e.message); }
 
-            // ── 兜底：静态整文件 data/news.json（30s）──
-            prog.archIsParts = false; emit();
-            try {
-                const data = await this.streamFetchJSON('data/news.json', FALLBACK_MS, bumpWhole, expectedSize);
-                if (data && Array.isArray(data.articles) && data.articles.length) {
-                    return { articles: data.articles, updateTime: data.updateTime || '' };
+                // 赛跑都没拿到：尝试另一条路（可能那条还没返回）
+                clearInterval(simTimer);
+                let fallback = null;
+
+                // 如果 Function 先失败了，试静态
+                try {
+                    const fb = await this.fetchJSON('data/news.json', FALLBACK_MS);
+                    if (fb && fb.articles) fallback = fb;
+                } catch (e) { console.warn('静态兜底也失败:', e.message); }
+
+                // 如果静态先失败了，试 Function
+                if (!fallback) {
+                    try {
+                        const fb = await this.fetchJSON('/api/archive', ARCHIVE_WHOLE_MS);
+                        if (fb && fb.articles) fallback = fb;
+                    } catch (e) { console.warn('Function 兜底也失败:', e.message); }
                 }
-            } catch (e) { console.warn('静态整文件失败:', e.message); }
 
-            return null;
+                prog.archLoaded = estTotal; prog.archTotal = estTotal; emit();
+                if (fallback && fallback.articles.length) {
+                    return { articles: fallback.articles, updateTime: fallback.updateTime || '' };
+                }
+                return null;
+            } catch (e) {
+                clearInterval(simTimer);
+                console.warn('归档加载异常:', e.message);
+                return null;
+            }
         })();
 
         let [live, base] = await Promise.all([liveTask, archiveTask]);
