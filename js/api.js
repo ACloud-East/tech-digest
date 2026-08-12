@@ -269,7 +269,7 @@ const API = {
                 percent = prog.liveDone ? 12 : 4;
                 label = prog.liveDone ? '实时资讯已就绪，正在准备历史归档…' : '正在抓取实时科技资讯…';
             }
-            onProgress({ stage: prog.merging ? 'merge' : (prog.archStarted ? 'archive' : 'live'), label, percent, indeterminate, loaded: prog.archLoaded, total: prog.archTotal });
+            onProgress({ stage: prog.merging ? 'merge' : (prog.archStarted ? 'archive' : 'live'), label, percent, indeterminate, loaded: prog.archLoaded, total: prog.archTotal, byteMode: !!prog.archIsByte });
         };
         emit();
 

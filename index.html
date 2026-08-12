@@ -160,7 +160,7 @@
                                         <span class="progress-label">{{ techLoadProgress.label || '正在加载科技资讯...' }}</span>
                                         <span class="progress-percent" v-if="techLoadProgress.percent >= 0">{{ techLoadProgress.percent }}%</span>
                                     </div>
-                                    <div class="progress-bytes" v-if="techLoadProgress.loaded">
+                                    <div class="progress-bytes" v-if="techLoadProgress.loaded && techLoadProgress.byteMode !== false">
                                         {{ formatMB(techLoadProgress.loaded) }}<template v-if="techLoadProgress.total"> / {{ formatMB(techLoadProgress.total) }}</template>
                                     </div>
                                 </div>
