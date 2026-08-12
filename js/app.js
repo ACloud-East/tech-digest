@@ -1182,9 +1182,9 @@ const app = createApp({
             techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
             // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
-            // 必须晚于 api.js 中归档链路最坏总耗时（Function 60s + 分片 20s + 整文件 50s ≈ 140s），
-            // 否则会在归档还在传输时提前把转圈关掉，导致白屏/「暂无资讯」。故设为 150s。
-            const watchdog = setTimeout(() => { techLoading.value = false; }, 150000);
+            // 必须晚于 api.js 归档链路最坏耗时（下载 60s + 重试 60s + 等领袖窗口 ≈ 130s），
+            // 否则会在归档还在传输时提前把转圈关掉，导致白屏/「暂无资讯」。故设为 240s。
+            const watchdog = setTimeout(() => { techLoading.value = false; }, 240000);
             try {
                 const res = await API.fetchAllTechNews((p) => { techLoadProgress.value = p; });
                 techNews.value = res.articles || [];

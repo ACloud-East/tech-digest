@@ -37,10 +37,36 @@ const API = {
     },
     setCache(key, data, ttl) {
         try { localStorage.setItem(this.cachePrefix + key, JSON.stringify({ data, ts: Date.now(), ttl })); }
-        catch { this.clearOldCache(); }
+        catch {
+            this.clearOldCache();
+            // 清理后再试一次（8000 篇归档 JSON ~10MB，极易顶到 localStorage 配额上限）
+            try { localStorage.setItem(this.cachePrefix + key, JSON.stringify({ data, ts: Date.now(), ttl })); } catch (_) {}
+        }
     },
     clearOldCache() {
         Object.keys(localStorage).filter(k => k.startsWith(this.cachePrefix)).forEach(k => localStorage.removeItem(k));
+    },
+
+    // ---- 归档大缓存：Cache Storage（配额数百 MB，localStorage 只有 ~10MB 存不下 8000 篇）----
+    // 同一浏览器配置的所有窗口共享；无痕窗口各自独立（这正是无痕测试互不影响的原因）。
+    async getArchiveCache(ttl) {
+        try {
+            if (typeof caches === 'undefined') return null;
+            const cs = await caches.open('td-archive-v1');
+            const r = await cs.match('/__archive__');
+            if (!r) return null;
+            const { data, ts } = await r.json();
+            if (Date.now() - ts > ttl) return null;
+            return data;
+        } catch (_) { return null; }
+    },
+    async setArchiveCache(data) {
+        try {
+            if (typeof caches === 'undefined') return;
+            const cs = await caches.open('td-archive-v1');
+            await cs.put('/__archive__', new Response(JSON.stringify({ data, ts: Date.now() }),
+                { headers: { 'Content-Type': 'application/json' } }));
+        } catch (_) {}
     },
 
     async fetchJSON(url, timeout = 15000) {
@@ -326,62 +352,62 @@ const API = {
         //    60s）——慢网下分片并发会把带宽切成 6 份互相拖死（Edge 卡 0B 的根因），
         //    单连接反而能最快下载完 3.5MB(gzip)。进度用 MAX 聚合：任何时刻只升不降，
         //    彻底消除「重试清零 / 进度倒转归零」。最后再走静态整文件等极端兜底。
-        // 3) 历史语料库（缓存优先 + 稳如磐石下载 v4）。
-        //    【缓存优先】这是根治"多窗口/频繁刷新只剩几百篇"的关键：
-        //    实测用户常同时开 3-4 个窗口，每个都重下 9.4MB 归档、互相抢带宽——
-        //    最先开的窗口抢到带宽拿 8000，后开的全被拖死只剩几百篇。
-        //    而 localStorage 缓存里明明躺着完整归档。归档 cron 每小时才更新一次，
-        //    缓存 TTL 1h 与之匹配；实时流仍每次拉，新内容不漏。
-        //    因此：缓存有效（≥7000 篇）→ 直接当 base，跳过下载，秒开。
-        //    【下载兜底】缓存失效才下载：fetchJSON 双路赛跑（Function + 静态），
-        //    结果 <7000 自动重试一次（cache bust 强制新连接）。
-        const archiveTask = (async () => {
-            // ── 缓存命中：秒开路径 ──
-            if (cached && cached.articles && cached.articles.length >= 7000) {
-                prog.archStarted = true;
-                prog.archIsParts = false;
-                prog.archIsByte = true;
-                prog.archKnown = true;
-                prog.archTotal = cached.articles.length;
-                prog.archLoaded = cached.articles.length;
-                emit();
-                console.warn('[archive] 使用本地缓存 ' + cached.articles.length + ' 篇（1h 内有效），跳过下载');
-                return { articles: cached.articles, updateTime: cached.updateTime || '' };
-            }
-            // ── 缓存无效：下载路径 ──
+        // 3) 历史语料库（v5：修正赛跑语义 + 多窗口领袖选举 + Cache Storage 大缓存）。
+        //    【Bug 修复】v4 的 Promise.race 语义错误：谁"先结束"谁赢——包括先失败！
+        //    静态路 30s 超时先败 → race 立即返回 null，Function 路本来能成功却被抛弃。
+        //    慢网窗口因此永远拿不到归档（实测只剩实时流 637~874 篇）。
+        //    修正为 firstSuccess：第一个"成功（≥7000）"的赢；全部结束才宣判失败。
+        //    【多窗口协作】实测多窗口同时下载 9.4MB 互相抢带宽、只有最先开的窗口能成功。
+        //    用 Web Locks 选领袖：同浏览器配置下只许一个窗口下载，其余等锁后读共享缓存。
+        //    【Cache Storage】localStorage 配额 ~10MB 存不下 8000 篇归档（之前缓存一直
+        //    静默写入失败！），改用 Cache Storage（配额数百 MB），同配置窗口共享。
+        const readGoodArchive = async () => {
+            const c = await this.getArchiveCache(ARCHIVE_TTL);
+            if (c && c.articles && c.articles.length >= 7000) return c;
+            if (cached && cached.articles && cached.articles.length >= 7000) return cached;
+            return null;
+        };
+        const useCachedArchive = (c) => {
+            prog.archStarted = true; prog.archIsParts = false; prog.archIsByte = true;
+            prog.archKnown = true; prog.archTotal = c.articles.length; prog.archLoaded = c.articles.length;
+            emit();
+            return { articles: c.articles, updateTime: c.updateTime || '' };
+        };
+        const downloadArchive = async () => {
             // 等 meta（最多 500ms，不阻塞首屏）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
 
-            // 进度初始化
-            prog.archStarted = true;
-            prog.archIsParts = false;
-            prog.archIsByte = true;
-            prog.archKnown = !!expectedSize;
-            prog.archLoaded = 0;
-            prog.archTotal = expectedSize || 1;
+            prog.archStarted = true; prog.archIsParts = false; prog.archIsByte = true;
+            prog.archKnown = !!expectedSize; prog.archLoaded = 0; prog.archTotal = expectedSize || 1;
             emit();
 
-            // 模拟进度
+            // 模拟进度（fetchJSON 无法读真实字节）：时间线性推进，60s 到 95%
             const estTotal = expectedSize || 9360000;
             const simStart = Date.now();
-            const SIM_MS = 60000; // 60s 基准（慢网可能需要 30-50s）
             const simTimer = setInterval(() => {
-                const elapsed = Date.now() - simStart;
-                const frac = Math.min(elapsed / SIM_MS, 0.95);
+                const frac = Math.min((Date.now() - simStart) / 60000, 0.95);
                 prog.archLoaded = Math.round(estTotal * frac);
                 prog.archTotal = estTotal;
                 emit();
             }, 200);
 
-            // 单次尝试：双路并行，返回 { articles, source } 或 null
-            const attempt = async (retryNum) => {
-                const cacheBust = retryNum > 0 ? '?_t=' + Date.now() : '';
-                return Promise.race([
-                    this.fetchJSON('/api/archive' + cacheBust, ARCHIVE_WHOLE_MS).then(d => {
+            // firstSuccess：第一个"成功"的赢；全部 settle 后取最多者；绝不因一路先失败而提前宣判
+            const firstSuccess = (tasks) => new Promise((resolve) => {
+                let pending = tasks.length, best = null;
+                tasks.forEach(p => p.then(r => {
+                    if (r && r.articles && r.articles.length >= 7000) { resolve(r); return; }
+                    if (r && r.articles && r.articles.length && (!best || r.articles.length > best.articles.length)) best = r;
+                    if (--pending === 0) resolve(best);
+                }));
+            });
+            const attempt = (retryNum) => {
+                const cb = retryNum > 0 ? '?_t=' + Date.now() : '';
+                return firstSuccess([
+                    this.fetchJSON('/api/archive' + cb, 60000).then(d => {
                         if (d && d.articles) return { articles: d.articles, updateTime: d.updateTime || '', src: 'func' };
                         throw new Error('no articles');
                     }).catch(e => { console.warn(`[attempt${retryNum}] Function 失败:`, e.message); return null; }),
-                    this.fetchJSON('data/news.json' + cacheBust, FALLBACK_MS).then(d => {
+                    this.fetchJSON('data/news.json' + cb, 40000).then(d => {
                         if (d && d.articles) return { articles: d.articles, updateTime: d.updateTime || '', src: 'static' };
                         throw new Error('no articles');
                     }).catch(e => { console.warn(`[attempt${retryNum}] 静态失败:`, e.message); return null; }),
@@ -389,10 +415,7 @@ const API = {
             };
 
             try {
-                // 首次尝试
                 let result = await attempt(0);
-
-                // 结果不完整（< 7000）或完全失败（null）→ 等 2s 后重试（让坏连接冷却，浏览器开新连接）
                 if (!result || result.articles.length < 7000) {
                     console.warn(result
                         ? `[archive] 首次只拿到 ${result.articles.length} 篇（来自 ${result.src}），2s 后重试...`
@@ -401,15 +424,17 @@ const API = {
                     const retry = await attempt(1);
                     if (retry && retry.articles.length) {
                         console.warn(`[archive] 重试拿到 ${retry.articles.length} 篇（来自 ${retry.src}）`);
-                        // 重试更多则用重试的；否则保留首次的（有总比没有强）
                         if (!result || retry.articles.length > result.articles.length) result = retry;
                     }
                 }
-
                 clearInterval(simTimer);
                 prog.archLoaded = estTotal; prog.archTotal = estTotal; emit();
 
                 if (result && result.articles.length) {
+                    // 下载成功立即写共享大缓存：其他窗口拿到锁后直接读，不必重复下载
+                    if (result.articles.length >= 7000) {
+                        await this.setArchiveCache({ articles: result.articles, updateTime: result.updateTime || '' });
+                    }
                     return { articles: result.articles, updateTime: result.updateTime || '' };
                 }
                 return null;
@@ -418,6 +443,32 @@ const API = {
                 console.warn('归档加载异常:', e.message);
                 return null;
             }
+        };
+        const archiveTask = (async () => {
+            // ── 缓存命中：秒开 ──
+            const hit = await readGoodArchive();
+            if (hit) {
+                console.warn(`[archive] 使用共享缓存 ${hit.articles.length} 篇，跳过下载`);
+                return useCachedArchive(hit);
+            }
+            // ── 多窗口协作：Web Locks 选领袖，只许一个窗口下载 9.4MB ──
+            if (typeof navigator !== 'undefined' && navigator.locks && navigator.locks.request) {
+                // 等待领袖期间显示不确定进度
+                prog.archStarted = true; prog.archKnown = false; prog.archIsParts = false; prog.archIsByte = true;
+                emit();
+                try {
+                    return await navigator.locks.request('td_archive_download', async () => {
+                        // 拿到锁再查一次：领袖可能刚下载完并写好缓存
+                        const hit2 = await readGoodArchive();
+                        if (hit2) {
+                            console.warn(`[archive] 领袖窗口已下载，直接读共享缓存 ${hit2.articles.length} 篇`);
+                            return useCachedArchive(hit2);
+                        }
+                        return await downloadArchive();
+                    });
+                } catch (e) { console.warn('[archive] 锁内下载异常:', e.message); return null; }
+            }
+            return await downloadArchive();
         })();
 
         let [live, base] = await Promise.all([liveTask, archiveTask]);
