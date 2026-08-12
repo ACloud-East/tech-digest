@@ -1,7 +1,93 @@
 {
-  "updateTime": "2026-08-12T06:06:31.940Z",
+  "updateTime": "2026-08-12T06:14:58.433Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "夜景视频好的手机有哪些？三星S26 Ultra和vivo X300 Ultra双雄对决+FAQ - 新浪网",
+      "description": "",
+      "url": "https://k.sina.com.cn/article_7879848900_1d5acf3c4068039vv2.html?from=digit",
+      "time": "2026-08-12T06:13:11.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "4.75mm 厚度 1.8mm 键程：EMO 公布全球最薄量产机械键盘 Altar II",
+      "description": "IT之家 8 月 12 日消息，Electronic Materials Office (EMO) 当地时间本月 6 日宣布将推出号称“全球最薄量产机械键盘”的 Altar II。这一产品厚度仅有 4.75mm，能提供 1.8mm 键程。 Altar II 采用原生 macOS 适配的 75% 配列设计，拥有由铝合金 CNC 精加工而成的一体式机身，右侧集成扬声器，右上角配备 M-Dial 磁吸式可更换旋钮，独家 ESPtype 键帽在不同区域应用不同高度以方便盲打。 其内部包含 2 层阻尼填充，配备可根据环境光调节亮度的长波红色 LED 背光，而 Harmonic Synthesiser 系统可通过谐振致动器提供明确的段落反馈。此外，该键盘拥有 30 天无线续航，充电 2 分钟即可使用 2 天。 同时，Altar II 也是一款环保产品：其键帽采用至少 50% 来自回收塑料的 REGEN 聚合物，机身则由一整块可回收铝材加工而成。 EMO 现已开始接受 Altar II 的 1 美元预定。该产品将于 11 月 10 日上线 Kickstarter 众筹平台，预定价、早鸟价、众筹价、零售价分别为 249 / 279 / 299 / 349 美元（IT之家注：现汇率约合 1,683 / 1,886 / 2,021 / 2,359 元人民币）。此键盘预计 2027 年初夏启动发货。",
+      "url": "https://www.ithome.com/0/988/736.htm",
+      "time": "2026-08-12T06:12:35.000Z",
+      "tags": [
+        "芯片/半导体",
+        "新能源/电动车",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "开源中国",
+      "sourceColor": "#43a047",
+      "title": "梁文锋身价一年暴涨 3850%，登顶全球亿万富豪增速榜首",
+      "description": "10亿美元变成395亿美元，只用了一年。 海外金融研究机构 BestBrokers 基于福布斯实时富豪榜数据（2025年7月27日至2026年7月27日）发布了一份全球亿万富翁财富涨幅排名。DeepSeek 创始人梁文锋以 3850% 的年度财富增长率拿下全球第一，把第二名甩开了三倍多。 梁文锋 2025 年净资产为 10 亿美元，截至 2026 年统计节点已暴...",
+      "url": "https://www.oschina.net/news/501895",
+      "time": "2026-08-12T06:12:32.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Android Authority",
+      "sourceColor": "#a4c639",
+      "title": "Google fixes Photos bug that removed the handy drag-to-select feature",
+      "description": "It took a few days, but Google has finally fixed it.",
+      "url": "https://www.androidauthority.com/google-photos-drag-to-select-fixed-3697467/",
+      "time": "2026-08-12T06:11:40.000Z",
+      "tags": []
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "冲击印度外包：AI 智能体不仅活干得好，而且成本更低",
+      "description": "IT之家 8 月 12 日消息，硅谷私人风险投资公司 Andreessen Horowitz（简称 a16z）合伙人法布里齐奥 · 塞拉菲尼（Fabrizio Serafini）于 8 月 10 日发布博文，报告称 AI 智能体成本已低于印度离岸外包劳动力。 塞拉菲尼观点认为，AI 智能体正在从演示阶段进入可部署阶段，其核心能力包括读取屏幕截图、点击界面、输入文本、恢复错误，并在没有清晰 API（应用程序编程接口）的软件系统中完成重复性工作。 文章引用 OSWorld-Verified 基准数据称，该测试评估智能体在真实桌面环境中操作 Ubuntu、Windows 和 macOS 工作流的表现，按完成任务比例计分。 2025 年初，最强计算机使用型模型得分为 42%；到 2026 年 6 月，当前领先模型 Claude Fable 5 得分达到 85%（意味着在 100 个日常任务中，AI 智能体可以胜任其中 85 项任务），高于人类测试者约 72% 的水平。 文章称，当前 Computer Use 智能体最适合遵循明确协议的任务。典型场景包括更新 CRM 记录、质量检查、登录政府和保险门户、从数据库和监管网页提取数据、零售订单处理、合同处理，以及 ServiceNow 中的 IT 工单处理。 受访团队提供了多个生产案例：1 家 CPG（消费品）数据平台每月运行约 1500 万至 2000 万次自动化门户交互，将智能体作为手写爬虫的自愈备用方案。 当零售商门户界面变化后，智能体诊断故障、修复自动化流程，并在工程师介入前保持数据流动。该公司称，部署后，其专门维护爬虫的工程团队规模减少一半，从而重新分配人员能力到其他工作流。 另一个案例来自全球系统集成商。该机构已有 27 条使用计算机智能体的上线工作流，每天处理约 1500 至 2100 张 IT 工单，最终目标是在低利润托管服务合同中重新部署 20-25% 的人力。 还有 1 家机构称，其将招聘流程端到端自动化，在候选人面试结束后立即向申请人跟踪平台填充数据。 AI 智能体日益满足企业办公技能需求外，在成本方面也有明显优势，Computer Use 智能体完全成本约为每小时 6-8 美元（IT之家注：现汇率约合 40.6 - 54.1 元人民币），而离岸印度 BPO 工人的完全成本约为每小时 10 美元（现汇率约合 67.6 元人民币）；美国后台员工在计入福利和管理费用后，成本为每小时 30 至 45 美元（现汇率约合 202.8 至 304.1 元人民币）。 美国成本以 BLS 客服代表每小时 20.59 美元（现汇率约合 139.2 元人民币）的中位工资为起点，并加入福利和管理开销，其中福利约占总薪酬 30%。 塞拉菲尼提醒，上述数据应视为数量级估算。构建良好的系统会将昂贵的模型调用保留给需要判断力的任务，而将可重复步骤交由低成本的确定性代码处理，从而在工作流的整个生命周期内进一步摊低综合成本。",
+      "url": "https://www.ithome.com/0/988/735.htm",
+      "time": "2026-08-12T06:11:28.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "新品发布",
+      "sourceColor": "#ad1457",
+      "title": "小鹏G9L首发预售25.98万起 纯电/增程双动力布局 - 汽车之家",
+      "description": "",
+      "url": "https://chejiahao.autohome.com.cn/info/26177634",
+      "time": "2026-08-12T06:10:19.000Z",
+      "tags": [
+        "新能源/电动车",
+        "汽车",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "马斯克：SpaceX的AI收入，下个月就将超过其他所有业务",
+      "description": "马斯克在最新内部全员会议上表示paceX的人工智能收入预计下个月就将超过公司所有其他业务收入的总和。 AI已成为SpaceX未来极为重要的组成部分。SpaceX必须在AI硬件和软件两个方向上都取得成功，因为未来从根本上属于AI与机器人。 同时必须打造关爱人类、助人走向星际的AI，SpaceX优秀人才正孕育此AI，并将用全部信息训练。",
+      "url": "https://wallstreetcn.com/charts/41959567",
+      "time": "2026-08-12T06:09:46.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
     {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
@@ -107,6 +193,18 @@
       ]
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "$台积电 (TSM.US)$ 我持有的唯一一只从不卖空的股票！ - Moomoo",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/community/feed/taiwan-semiconductor-tsm-us-the-only-stock-i-hold-that-117080997036038",
+      "time": "2026-08-12T05:57:17.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "Thermite SIMD Update Faces Testing Challenges Due to Hardware Limitations for Advanced SIMD Backends",
@@ -118,6 +216,19 @@
         "芯片/半导体",
         "软件应用"
       ]
+    },
+    {
+      "source": "新品发布",
+      "sourceColor": "#ad1457",
+      "title": "全球首发！刚发布的这红米新旗舰，我是真想买 - Sohu",
+      "description": "",
+      "url": "https://m.sohu.com/a/1061861436_99943945?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-12T05:56:58.000Z",
+      "tags": [
+        "手机",
+        "测评/新品"
+      ],
+      "topic": true
     },
     {
       "source": "IT之家",
@@ -538,13 +649,13 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "首次直投韩股！韩媒称淡马锡拟“抄底”三星、海力士",
-      "description": "据媒体报道称，淡马锡计划通过内部投资团队直接投资SK海力士和三星电子，目前正在考虑入场时机。 三星电子和SK海力士股价盘中均大涨逾8%。 更多消息，持续更新中…… 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "新加坡主权财富基金淡马锡计划首次直接投资韩国股市，目标直指三星电子与SK海力士，将这两家全球内存芯片巨头视为AI价值链中被严重低估的标的。 据韩国《亚洲经济》报道，淡马锡近期已就三星电子与SK海力士的投资事宜与韩国政府接触，正在评估入场时机。韩国金融监管部门一名官员表示，当前两家公司股价因韩国政府近期允许单一股票杠杆ETF上市而出现剧烈波动，淡马锡正是在此背景下寻求确认资金执行窗口。这将是淡马锡首次直接投资韩国证券市场。 此次入市采用内部人员直接投资方式，而非委托外部资产管理公司运营。投行业界人士对此解读称，这一安排体现了淡马锡对相关判断的高度确信，其一贯风格是从长远视角向引领市场的产业投入大规模资本。 三星电子和SK海力士股价盘中均大涨逾8%。 看多内存芯片，瞄准AI低估洼地 据报道，淡马锡认为，在AI整体价值链中，内存半导体板块估值最为低估。上述投行业界人士指出，三星电子和SK海力士的股价较去年低点最高已累计上涨逾880%，但淡马锡仍对其后续上行空间抱有坚定信心。 淡马锡将AI半导体定性为推动产业结构变革的长期成长领域，而非短期热潮。在AI投资过热担忧升温、市场情绪有所降温之际，该基金反而持续加大对AI价值链的整体押注。 今年第二季度，淡马锡集中布局半导体、数据中心、云计算、AI模型开发商及软件基础设施等领域。其目标是在未来五年内，将AI相关投资占整体投资组合的比例从当前6%大幅提升至最高15%。 已持英伟达、台积电及ASML仓位 淡马锡于7日向美国证券交易委员会（SEC）提交的13F持仓报告显示，截至今年6月末，该基金持有英伟达、台积电及荷兰半导体光刻设备巨头ASML的股份，同时也是生成式AI开发商OpenAI与Anthropic的主要机构投资方之一。 此次若完成对三星电子与SK海力士的直接投资，将使淡马锡的半导体持仓版图延伸至内存芯片领域，进一步完善其AI价值链布局。 淡马锡为新加坡财政部全资持有的国有投资公司，截至今年3月末，其管理资产规模达5180亿新加坡元（约合人民币572万亿元）。 更多消息，持续更新中…… 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3779256",
       "time": "2026-08-12T05:14:29.000Z",
       "tags": [
+        "人工智能",
         "手机",
-        "大公司",
-        "科技创投"
+        "芯片/半导体"
       ]
     },
     {
@@ -1038,9 +1149,21 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "llama.cpp",
-      "description": "Article URL: https://llama.app Comments URL: https://news.ycombinator.com/item?id=49267928 Points: 19 # Comments: 4",
+      "description": "Article URL: https://llama.app Comments URL: https://news.ycombinator.com/item?id=49267928 Points: 45 # Comments: 8",
       "url": "https://llama.app",
       "time": "2026-08-12T04:51:59.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "Obfusk8, c++ Obsfucation Library for Windows Binaries",
+      "description": "Comments",
+      "url": "https://github.com/x86byte/Obfusk8",
+      "time": "2026-08-12T04:51:20.000Z",
       "tags": [
         "软件应用",
         "智能硬件"
@@ -1444,16 +1567,6 @@
         "AI芯片",
         "大公司"
       ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "新浪网· - 新浪网",
-      "description": "",
-      "url": "https://www.sina.cn/news/detail/5331067485817069.html",
-      "time": "2026-08-12T04:29:00.000Z",
-      "tags": [],
       "topic": true
     },
     {
@@ -1961,6 +2074,16 @@
       "topic": true
     },
     {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "新浪网· - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/detail/5331059478893609.html",
+      "time": "2026-08-12T03:58:00.000Z",
+      "tags": [],
+      "topic": true
+    },
+    {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
       "title": "CFO称投资多家大模型公司或致利润波动 金蝶国际大跌超9% - 搜狐网",
@@ -2167,6 +2290,18 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "科莱威新能源车涉水能力在微型纯电代步车中处于什么水平？ - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/article/nimzqcv4077337.html",
+      "time": "2026-08-12T03:49:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "小米汽车：澎程系列涉水模式仅用于应急场景，不建议车主长时间涉水行驶 - 新浪网",
       "description": "",
       "url": "https://www.sina.cn/news/article/nimzqcp6930271.html",
@@ -2175,18 +2310,6 @@
         "手机",
         "汽车",
         "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "科莱威新能源车涉水能力在微型纯电代步车中处于什么水平？ - 新浪网",
-      "description": "",
-      "url": "https://www.sina.cn/news/article/nimzqcv4077337.html",
-      "time": "2026-08-12T03:49:00.000Z",
-      "tags": [
-        "新能源/电动车"
       ],
       "topic": true
     },
@@ -2366,6 +2489,19 @@
       "tags": [
         "互联网",
         "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
+      "source": "新品发布",
+      "sourceColor": "#ad1457",
+      "title": "尊界V800发布会用AI对还是不对 开头给大家标注出来，雪人转向了… - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/article/nimzqcv4074531.html",
+      "time": "2026-08-12T03:44:00.000Z",
+      "tags": [
+        "人工智能",
         "测评/新品"
       ],
       "topic": true
@@ -4595,7 +4731,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The Human Is the Loop",
-      "description": "Article URL: https://brentfitzgerald.com/posts/the-human-is-the-loop/ Comments URL: https://news.ycombinator.com/item?id=49267108 Points: 43 # Comments: 20",
+      "description": "Article URL: https://brentfitzgerald.com/posts/the-human-is-the-loop/ Comments URL: https://news.ycombinator.com/item?id=49267108 Points: 47 # Comments: 21",
       "url": "https://brentfitzgerald.com/posts/the-human-is-the-loop/",
       "time": "2026-08-12T02:15:01.000Z",
       "tags": [
@@ -4784,7 +4920,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Company Offering '100% Human-Written, Never AI' Medical Research Is 100% AI",
-      "description": "Article URL: https://www.404media.co/company-offering-100-human-written-never-ai-peer-review-is-entirely-ai/ Comments URL: https://news.ycombinator.com/item?id=49267057 Points: 122 # Comments: 27",
+      "description": "Article URL: https://www.404media.co/company-offering-100-human-written-never-ai-peer-review-is-entirely-ai/ Comments URL: https://news.ycombinator.com/item?id=49267057 Points: 132 # Comments: 31",
       "url": "https://www.404media.co/company-offering-100-human-written-never-ai-peer-review-is-entirely-ai/",
       "time": "2026-08-12T02:05:42.000Z",
       "tags": [
@@ -5351,7 +5487,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "The lifesaving secret hidden inside a horseshoe crab's blue blood",
-      "description": "Article URL: https://whdh.com/news/the-lifesaving-secret-hidden-inside-a-horseshoe-crabs-blue-blood-and-the-race-to-protect-the-species/ Comments URL: https://news.ycombinator.com/item?id=49266921 Points: 54 # Comments: 12",
+      "description": "Article URL: https://whdh.com/news/the-lifesaving-secret-hidden-inside-a-horseshoe-crabs-blue-blood-and-the-race-to-protect-the-species/ Comments URL: https://news.ycombinator.com/item?id=49266921 Points: 59 # Comments: 12",
       "url": "https://whdh.com/news/the-lifesaving-secret-hidden-inside-a-horseshoe-crabs-blue-blood-and-the-race-to-protect-the-species/",
       "time": "2026-08-12T01:45:51.000Z",
       "tags": [
@@ -5403,7 +5539,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "New Bedford police officer accused of using Flock cameras to track ex-partner",
-      "description": "Article URL: https://newbedfordlight.org/new-bedford-police-officer-accused-of-using-flock-cameras-to-track-and-follow-ex-romantic-partner/ Comments URL: https://news.ycombinator.com/item?id=49266899 Points: 135 # Comments: 72",
+      "description": "Article URL: https://newbedfordlight.org/new-bedford-police-officer-accused-of-using-flock-cameras-to-track-and-follow-ex-romantic-partner/ Comments URL: https://news.ycombinator.com/item?id=49266899 Points: 147 # Comments: 74",
       "url": "https://newbedfordlight.org/new-bedford-police-officer-accused-of-using-flock-cameras-to-track-and-follow-ex-romantic-partner/",
       "time": "2026-08-12T01:42:46.000Z",
       "tags": [
@@ -5886,24 +6022,24 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "新能源车ETF博时（159824）开盘跌0.36%，重仓股宁德时代跌0.50%，比亚迪跌0.13% - Sohu",
-      "description": "",
-      "url": "https://m.sohu.com/a/1061736698_122014422?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-12T01:31:01.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
       "title": "智能汽车ETF富国（515250）开盘跌0.31%，重仓股芯原股份跌0.71%，北京君正涨1.01% - Sohu",
       "description": "",
       "url": "https://m.sohu.com/a/1061737053_122014422?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
       "time": "2026-08-12T01:31:01.000Z",
       "tags": [
         "汽车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "新能源车ETF博时（159824）开盘跌0.36%，重仓股宁德时代跌0.50%，比亚迪跌0.13% - Sohu",
+      "description": "",
+      "url": "https://m.sohu.com/a/1061736698_122014422?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
+      "time": "2026-08-12T01:31:01.000Z",
+      "tags": [
+        "新能源/电动车"
       ],
       "topic": true
     },
@@ -7089,6 +7225,18 @@
         "人工智能",
         "芯片/半导体",
         "软件应用"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "ChatGPT不只是聊天，它正在吞下整个商业世界 - 信息化观察网",
+      "description": "",
+      "url": "https://www.infoobs.com/article/20260812/71770.html",
+      "time": "2026-08-12T00:54:23.000Z",
+      "tags": [
+        "人工智能"
       ],
       "topic": true
     },
@@ -9619,7 +9767,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "WorldClaw Agentic 3D open-world generation at scale",
-      "description": "Article URL: https://tencent-hunyuan.github.io/Hunyuan3D-WorldClaw/ Comments URL: https://news.ycombinator.com/item?id=49265051 Points: 182 # Comments: 55",
+      "description": "Article URL: https://tencent-hunyuan.github.io/Hunyuan3D-WorldClaw/ Comments URL: https://news.ycombinator.com/item?id=49265051 Points: 185 # Comments: 57",
       "url": "https://tencent-hunyuan.github.io/Hunyuan3D-WorldClaw/",
       "time": "2026-08-11T21:56:18.000Z",
       "tags": [
@@ -9632,7 +9780,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "pg_clickhouse v0.10: Subquery pushdown and 1000x faster TPC-H queries",
-      "description": "Article URL: https://clickhouse.com/blog/pg_clickhouse-whats-new-july-2026 Comments URL: https://news.ycombinator.com/item?id=49265031 Points: 49 # Comments: 4",
+      "description": "Article URL: https://clickhouse.com/blog/pg_clickhouse-whats-new-july-2026 Comments URL: https://news.ycombinator.com/item?id=49265031 Points: 52 # Comments: 4",
       "url": "https://clickhouse.com/blog/pg_clickhouse-whats-new-july-2026",
       "time": "2026-08-11T21:54:25.000Z",
       "tags": [
@@ -10163,7 +10311,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Emergent Introspective Awareness in Large Language Models",
-      "description": "Article URL: https://arxiv.org/abs/2601.01828 Comments URL: https://news.ycombinator.com/item?id=49264583 Points: 47 # Comments: 25",
+      "description": "Article URL: https://arxiv.org/abs/2601.01828 Comments URL: https://news.ycombinator.com/item?id=49264583 Points: 48 # Comments: 25",
       "url": "https://arxiv.org/abs/2601.01828",
       "time": "2026-08-11T21:14:10.000Z",
       "tags": [
@@ -11082,7 +11230,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Compression is prediction",
-      "description": "Article URL: https://ngrok.com/blog/compression-is-prediction Comments URL: https://news.ycombinator.com/item?id=49263497 Points: 423 # Comments: 170",
+      "description": "Article URL: https://ngrok.com/blog/compression-is-prediction Comments URL: https://news.ycombinator.com/item?id=49263497 Points: 429 # Comments: 172",
       "url": "https://ngrok.com/blog/compression-is-prediction",
       "time": "2026-08-11T19:49:44.000Z",
       "tags": [
@@ -11179,7 +11327,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Nvidia Nemotron 3.5 Lightning and NeMo Switchyard",
-      "description": "Article URL: https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/ Comments URL: https://news.ycombinator.com/item?id=49263340 Points: 207 # Comments: 110",
+      "description": "Article URL: https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/ Comments URL: https://news.ycombinator.com/item?id=49263340 Points: 208 # Comments: 110",
       "url": "https://blogs.nvidia.com/blog/nemotron-lightning-switchyard-rtx-dgx/",
       "time": "2026-08-11T19:35:52.000Z",
       "tags": [
@@ -11646,7 +11794,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Making holograms with a pen plotter",
-      "description": "Article URL: https://blog.jordan.matelsky.com/Penplotter-holography/ Comments URL: https://news.ycombinator.com/item?id=49262811 Points: 138 # Comments: 14",
+      "description": "Article URL: https://blog.jordan.matelsky.com/Penplotter-holography/ Comments URL: https://news.ycombinator.com/item?id=49262811 Points: 143 # Comments: 14",
       "url": "https://blog.jordan.matelsky.com/Penplotter-holography/",
       "time": "2026-08-11T18:51:35.000Z",
       "tags": [
@@ -12880,7 +13028,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Grok Bot",
-      "description": "Article URL: https://x.ai/bot Comments URL: https://news.ycombinator.com/item?id=49261514 Points: 228 # Comments: 179",
+      "description": "Article URL: https://x.ai/bot Comments URL: https://news.ycombinator.com/item?id=49261514 Points: 235 # Comments: 185",
       "url": "https://x.ai/bot",
       "time": "2026-08-11T17:23:09.000Z",
       "tags": [
@@ -13004,7 +13152,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "CSS properties you should know for better text designs",
-      "description": "Article URL: https://master.dev/blog/typographic-css-tricks/ Comments URL: https://news.ycombinator.com/item?id=49261417 Points: 99 # Comments: 11",
+      "description": "Article URL: https://master.dev/blog/typographic-css-tricks/ Comments URL: https://news.ycombinator.com/item?id=49261417 Points: 100 # Comments: 11",
       "url": "https://master.dev/blog/typographic-css-tricks/",
       "time": "2026-08-11T17:16:06.000Z",
       "tags": [
@@ -13319,7 +13467,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Go is an ideal language for AI-assisted software engineering",
-      "description": "Article URL: https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/ Comments URL: https://news.ycombinator.com/item?id=49261133 Points: 326 # Comments: 381",
+      "description": "Article URL: https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/ Comments URL: https://news.ycombinator.com/item?id=49261133 Points: 327 # Comments: 382",
       "url": "https://developers.googleblog.com/why-go-is-an-ideal-language-for-ai-assisted-software-engineering/",
       "time": "2026-08-11T16:57:09.000Z",
       "tags": [
@@ -13354,7 +13502,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Mojo 1.0",
-      "description": "Article URL: https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here Comments URL: https://news.ycombinator.com/item?id=49261128 Points: 352 # Comments: 163",
+      "description": "Article URL: https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here Comments URL: https://news.ycombinator.com/item?id=49261128 Points: 355 # Comments: 163",
       "url": "https://www.modular.com/blog/modular-26-5-mojo-1-0-is-here",
       "time": "2026-08-11T16:56:46.000Z",
       "tags": [
@@ -14115,6 +14263,47 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "一次通过EMI合规性测试——第1部分：相关物理知识",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzump3646986.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "2026年上半年线上增速15.51%，汤臣倍健多品牌协同效应显现",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzump3648360.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "红熊AI\"记忆型\"原生Agent，让AI带着记忆走进千行百业",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4031812.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小米为台风受损用户免费维修！覆盖手机、家电等 江苏浙江上海可享",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumq5298473.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "Cloudera 最新报告：基础设施瓶颈推动“AI 时代的数据架构大重构”，95%的企业曾推迟 AI 项目",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4021014.shtml",
@@ -14137,6 +14326,17 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "王祖蓝：在香港已经到处都可以看到小鹏了！期待之后在港买G9L",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumq5301911.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "OpenAI和Anthropic费尽心机加密的思维链，竟然能被轻松提取？",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4025426.shtml",
@@ -14150,9 +14350,31 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "苹果2026返校季优惠延长至9月24日 买Mac/iPad白拿AirTag",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumq5303096.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "电脑硬件",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "星巴克中国否认纸杯、吸管由蜜雪冰城代工",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumq5291260.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "破解核心困境！艾滋病治疗领域又有新进展",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4030342.shtml",
       "time": "2026-08-11T16:00:00.000Z",
       "tags": []
     },
@@ -14168,9 +14390,36 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "一日任命六名军事高官，伊朗最高领袖的微言大义| 京酿馆",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumm6870540.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "北京疾控：强降雨天气，雨浸皮肤要清洗",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4026491.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "独家！宁夏电信迎来新任总经理罗锐 是从北京调回来的 十分年轻有为",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumq5284304.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "东城区开放12处应急避险停车场，市民可就近停放",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumm6870925.shtml",
       "time": "2026-08-11T16:00:00.000Z",
       "tags": []
     },
@@ -14197,6 +14446,15 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "高地堡垒里蚊香、花露水也备好了，昌平超1.2万人值守防汛一线",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumm6870899.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "彻底告别英伦客厅风！量产版捷豹Type 01内饰亮相：3.3秒破百卖108万",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4014106.shtml",
@@ -14204,6 +14462,19 @@
       "tags": [
         "测评/新品",
         "科技创投"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "中一签或赚20万 宇树科技中签结果公布！股民：计划全款买小米汽车",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4014020.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
       ]
     },
     {
@@ -14242,6 +14513,17 @@
       "time": "2026-08-11T16:00:00.000Z",
       "tags": [
         "电脑硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "2026十大高返利app：按使用场景选适合自己的返利APP？",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzumt4028063.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "软件应用"
       ]
     },
     {
@@ -14301,6 +14583,18 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
+      "title": "历史性突破65%！7月全国乘用车市场继续承压 新能源渗透率再创新高",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzqcs5399088.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
       "title": "Microchip推出第二代PolarFire FPGA以太网传感器桥接平台，升级边缘AI传感器连接方案",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzqcs5390576.shtml",
@@ -14332,6 +14626,78 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "消息称英伟达开发万亿参数开源 AI 模型 Nemotron 4，目标挑战全球顶级",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyhkc7371975.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "小米汽车：澎程全系均配备涉水模式，但切勿长时间、长距离涉水",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyhkc7359681.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "消息称 SK 海力士大连 NAND 闪存二厂重启建设，将令当地产能提高五成",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyaak5781264.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "鸿蒙智行新款智界 R7 轿跑 SUV 内饰谍照曝光，有望换装全新连屏设计",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyaac0613552.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "汽车"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "华为最强阔折叠！Pura X2系列开案测试：7.6+6.3双尺寸同步落地",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-12/doc-inimxrnq5895049.shtml",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "港股通重塑AI资产估值中枢大模型从价格战迈向价值战 - 新浪网",
+      "description": "",
+      "url": "https://cj.sina.cn/articles/view/7517400647/1c0126e47059090vk0",
+      "time": "2026-08-11T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ],
+      "topic": true
     },
     {
       "source": "新浪科技",
@@ -14423,65 +14789,6 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "消息称英伟达开发万亿参数开源 AI 模型 Nemotron 4，目标挑战全球顶级",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyhkc7371975.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "小米汽车：澎程全系均配备涉水模式，但切勿长时间、长距离涉水",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyhkc7359681.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "消息称 SK 海力士大连 NAND 闪存二厂重启建设，将令当地产能提高五成",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyaak5781264.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "鸿蒙智行新款智界 R7 轿跑 SUV 内饰谍照曝光，有望换装全新连屏设计",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/digi/2026-08-12/doc-inimyaac0613552.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "华为最强阔折叠！Pura X2系列开案测试：7.6+6.3双尺寸同步落地",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-12/doc-inimxrnq5895049.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "岚图高管：华为乾崑智驾在当前是行业TOP1、是必选项！",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/discovery/2026-08-12/doc-inimxrnm7528828.shtml",
@@ -14522,19 +14829,6 @@
       "url": "https://finance.sina.com.cn/tech/discovery/2026-08-12/doc-inimzqcs5319049.shtml",
       "time": "2026-08-11T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "港股通重塑AI资产估值中枢大模型从价格战迈向价值战 - 新浪网",
-      "description": "",
-      "url": "https://cj.sina.cn/articles/view/7517400647/1c0126e47059090vk0",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ],
-      "topic": true
     },
     {
       "source": "新浪科技",
@@ -18527,7 +18821,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Stealing Reasoning Traces from Proprietary LLM APIs",
-      "description": "Article URL: https://stolen-thoughts.com/ Comments URL: https://news.ycombinator.com/item?id=49257876 Points: 574 # Comments: 256",
+      "description": "Article URL: https://stolen-thoughts.com/ Comments URL: https://news.ycombinator.com/item?id=49257876 Points: 581 # Comments: 260",
       "url": "https://stolen-thoughts.com/",
       "time": "2026-08-11T13:22:00.000Z",
       "tags": [
@@ -18586,7 +18880,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Neutrinos from Deep Inside Earth Provide a New Picture of the Mantle",
-      "description": "Article URL: https://www.quantamagazine.org/neutrinos-from-deep-inside-earth-provide-a-new-picture-of-the-mantle-20260807/ Comments URL: https://news.ycombinator.com/item?id=49257853 Points: 25 # Comments: 2",
+      "description": "Article URL: https://www.quantamagazine.org/neutrinos-from-deep-inside-earth-provide-a-new-picture-of-the-mantle-20260807/ Comments URL: https://news.ycombinator.com/item?id=49257853 Points: 27 # Comments: 2",
       "url": "https://www.quantamagazine.org/neutrinos-from-deep-inside-earth-provide-a-new-picture-of-the-mantle-20260807/",
       "time": "2026-08-11T13:20:44.000Z",
       "tags": [
@@ -19371,7 +19665,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "England set to be one of the first countries to eliminate hepatitis C",
-      "description": "Article URL: https://www.bbc.com/news/articles/c75gk620r22o Comments URL: https://news.ycombinator.com/item?id=49257377 Points: 500 # Comments: 360",
+      "description": "Article URL: https://www.bbc.com/news/articles/c75gk620r22o Comments URL: https://news.ycombinator.com/item?id=49257377 Points: 513 # Comments: 375",
       "url": "https://www.bbc.com/news/articles/c75gk620r22o",
       "time": "2026-08-11T12:41:59.000Z",
       "tags": [
@@ -33483,6 +33777,20 @@
       "topic": true
     },
     {
+      "source": "数码测评",
+      "sourceColor": "#e65100",
+      "title": "谷歌Pixel 11 Pro XL手机跑分曝光，Tensor G6性能提升有限 - 新浪网",
+      "description": "",
+      "url": "https://finance.sina.cn/stock/jdts/2026-08-11/detail-inimwuhx4502239.d.html?vt=4",
+      "time": "2026-08-11T01:13:30.000Z",
+      "tags": [
+        "手机",
+        "大公司",
+        "测评/新品"
+      ],
+      "topic": true
+    },
+    {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "逆势大涨！科技压制因素缓和，半导体设备或酝酿新一轮主升浪 - 新浪财经",
@@ -33524,7 +33832,7 @@
       "sourceColor": "#0d47a1",
       "title": "通讯｜中国自动驾驶出租车“驶入”阿联酋 - 新华网",
       "description": "",
-      "url": "http://www.xinhuanet.com/tech/20260811/cb66934806c7444a961f5512c9aaedbb/c.html",
+      "url": "http://www.news.cn/tech/20260811/cb66934806c7444a961f5512c9aaedbb/c.html",
       "time": "2026-08-11T01:04:46.000Z",
       "tags": [
         "新能源/电动车"
@@ -34394,20 +34702,6 @@
       "tags": [
         "手机",
         "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "谷歌Pixel 11 Pro XL手机跑分曝光，Tensor G6性能提升有限 - 新浪网",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1826017320/6cd6d02802001uw30",
-      "time": "2026-08-10T23:06:26.000Z",
-      "tags": [
-        "手机",
-        "大公司",
-        "测评/新品"
       ],
       "topic": true
     },
@@ -36406,18 +36700,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
-      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
-      "url": "https://www.donews.com/news/detail/3/6665925.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "大公司"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "REDMI K100 Pro 系列手机发布，售价3999元起",
       "description": "REDMI K100 Pro系列发布：全系双芯、185Hz屏、2亿主摄、9070mAh电池，首发CF手游185帧，售价3999元起。",
       "url": "https://www.donews.com/news/detail/5/6667206.html",
@@ -36592,6 +36874,18 @@
       "time": "2026-08-10T16:00:00.000Z",
       "tags": [
         "电脑硬件",
+        "大公司"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
+      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
+      "url": "https://www.donews.com/news/detail/3/6665925.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
         "大公司"
       ]
     },
@@ -43489,6 +43783,18 @@
       ]
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "昨日股票ETF净流出超78亿元，上证50ETF、半导体设备ETF“吸金”居前 - 证券时报",
+      "description": "",
+      "url": "https://www.stcn.com/article/detail/4071249.html",
+      "time": "2026-08-10T03:27:00.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
+    },
+    {
       "source": "数码测评",
       "sourceColor": "#e65100",
       "title": "美女沉浸式开箱日产GT-R50，720马力限量不到20辆 - sina.cn",
@@ -44734,17 +45040,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
-      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
-      "url": "https://www.donews.com/news/detail/3/6664448.html",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "奕境X9座舱开箱：首搭鸿蒙座舱HarmonySpace 6实现代际跃迁",
       "description": "奕境X9首发鸿蒙座舱HarmonySpace 6，以小艺智能体、AMS感知、软硬生态打通实现智能跃迁，并打造电竞房、K歌房、影音房三大移动空间。",
       "url": "https://www.donews.com/news/detail/7/6665520.html",
@@ -44825,6 +45120,17 @@
       "time": "2026-08-09T16:00:00.000Z",
       "tags": [
         "智能硬件"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
+      "description": "《逃离塔科夫》前首席设计师Jean加入Nomion Games任《Rush is Real》创意总监，新作主打原创机制，强调观众参与游戏内事件。",
+      "url": "https://www.donews.com/news/detail/3/6664448.html",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -47460,17 +47766,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
-      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
-      "url": "https://www.donews.com/news/detail/3/6663604.html",
-      "time": "2026-08-07T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "华为乾崑大六座强势打入十万级！星海V6开启预售10.49万元起",
       "description": "东风风行星海V6于8月8日在成都发布，搭载华为乾崑智驾，预售价8.99万起，主打10万级大六座智能家用车，以智驾、空间、续航三大王牌重塑市场。",
       "url": "https://www.donews.com/news/detail/7/6663707.html",
@@ -47489,6 +47784,17 @@
       "time": "2026-08-07T16:00:00.000Z",
       "tags": [
         "测评/新品"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "《尘白禁区》发行制作人木木（林增鸿）从金山离职",
+      "description": "《尘白禁区》发行负责人木木6月离职西山居；游戏经历爆发后因停服整改、产能收缩致收入骤降，西山居业务持续承压。",
+      "url": "https://www.donews.com/news/detail/3/6663604.html",
+      "time": "2026-08-07T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -79240,17 +79546,6 @@
     {
       "source": "DoNews",
       "sourceColor": "#00a971",
-      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
-      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
-      "url": "https://www.donews.com/news/detail/3/6660734.html",
-      "time": "2026-08-05T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
       "title": "美学升维，流畅突破：荣耀MagicOS11双架构重塑体验",
       "description": "荣耀在北京举办MagicOS11先锋品鉴会",
       "url": "https://www.donews.com/news/detail/5/6661438.html",
@@ -79301,6 +79596,17 @@
       "time": "2026-08-05T16:00:00.000Z",
       "tags": [
         "新能源/电动车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "消息称 16 年老将巴普蒂扎特将重返育碧，操盘《刺客信条》系列游戏",
+      "description": "育碧拟重聘资深开发者埃里克·巴普蒂扎特出任《刺客信条》系列总监，其曾参与多部作品开发，后主导《死亡空间》重制版。",
+      "url": "https://www.donews.com/news/detail/3/6660734.html",
+      "time": "2026-08-05T16:00:00.000Z",
+      "tags": [
+        "游戏"
       ]
     },
     {
@@ -86005,6 +86311,20 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "在华芯片工厂被曝测试中国设备，三星急否认-观察者网 - guancha.cn",
+      "description": "",
+      "url": "https://www.guancha.cn/economy/2026_08_05_826277.shtml",
+      "time": "2026-08-05T10:13:00.000Z",
+      "tags": [
+        "手机",
+        "芯片/半导体",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "在华芯片工厂被曝测试中国设备，三星急否认-观察者网 - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/economy/2026_08_05_826277.shtml",
@@ -86020,20 +86340,6 @@
       "source": "芯片半导体",
       "sourceColor": "#004d40",
       "title": "在华芯片工厂被曝测试中国设备，三星急否认 - 观察者",
-      "description": "",
-      "url": "https://www.guancha.cn/economy/2026_08_05_826277.shtml",
-      "time": "2026-08-05T10:13:00.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "在华芯片工厂被曝测试中国设备，三星急否认-观察者网 - guancha.cn",
       "description": "",
       "url": "https://www.guancha.cn/economy/2026_08_05_826277.shtml",
       "time": "2026-08-05T10:13:00.000Z",
@@ -97559,349 +97865,6 @@
         "软件应用",
         "网络安全"
       ]
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "小米米家无线洗地机 5 Pro 泡沫版发售：26000Pa 吸力、支持“活性泡沫抑菌洗”，2351 元",
-      "description": "IT之家 8 月 5 日消息，小米旗下米家无线洗地机 5 Pro 泡沫版现已在京东发售，首发价 2351 元，部分地区国补后低至 1798.51 元。 京东小米米家洗地机 5Pro 泡沫版首发价 2351 元点此访问 据官方介绍，米家无线洗地机 5 Pro 整体延续家族式设计，拥有 26000Pa 吸力，对地压力达 60.3N，支持活性泡沫抑菌渗透洗、160℃ 蒸汽稳定直喷，每秒可覆盖 125 平方厘米空间，同时带有蓝光地刷灯以显示暗处环境。 该洗地机升级 PPA 尖密梳齿，提供 170 度大吸污口，还支持 100℃ 沸水自清洁，内置 1000ml 清水箱和 700ml 污水箱，续航可达 40 分钟。 IT之家附产品参数：",
-      "url": "https://www.ithome.com/0/985/849.htm",
-      "time": "2026-08-05T02:51:19.000Z",
-      "tags": [
-        "手机",
-        "互联网",
-        "网络安全"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "中国AI大模型惊艳华尔街？高盛盘点五大趋势 点名这些投资机会 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608053832307410.html",
-      "time": "2026-08-05T02:51:15.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "半导体设备国产化进程有望持续加速，半导体设备ETF易方达（159558）近一月获超65亿元净流入 - 证券之星",
-      "description": "",
-      "url": "https://fund.stockstar.com/SS2026080500015326.shtml",
-      "time": "2026-08-05T02:50:34.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "马斯克谈存储“供给1年涨20%，需求涨200%，价格当然涨”！高盛韩国交易员：市场定价明年三星亏钱吗？",
-      "description": "马斯克在SpaceX 2026年第二季度财报电话会上罕见点评存储市场。他表示，存储供给每年增长约20%，但需求增速高达200%甚至更高，供需严重失衡，价格上涨是经济学基本规律。 高盛首尔分部交易员Justin Park随即在8月5日发布简报，引用马斯克原话，并将其与三星电子当前估值直接挂钩。与此同时，汇丰8月3日发布的报告则从另一个角度揭示：韩国存储股的市场定价，已经悲观到了令人意外的程度。 马斯克怎么说：供需剪刀差，价格没有理由跌 据SpaceX财报电话会记录，马斯克在会上就当前AI基础设施的核心瓶颈发表看法： 看看逻辑芯片和存储的产出增速。你必须始终关注限制性因素。当前的限制性因素就是存储。存储产出每年增长约20%。对于任何一个大型成熟行业来说，这已经是极快的速度了。但你要问自己：需求也只增长20%吗？不，需求每年增长200%，甚至更高。需求增速远超供给，经济学101会告诉你：价格会涨，不会跌。 供给是天花板，需求是火箭。两者之间的剪刀差，决定了价格方向。 高盛Justin Park：三星跌到哪里才算底？ 高盛首尔分部Justin Park在引用马斯克观点后，直接把问题抛向市场：三星电子现在的股价，究竟隐含了什么预期？ 他的结论是：除非市场认为三星2027年将亏损，否则当前股价的下行空间有限。 Justin Park强调，他持续关注三星电子的每股净资产（BVPS）作为估值支撑。逻辑在于：BVPS代表公司账面价值的底线，当股价逼近甚至跌破这一水平，意味着市场已经在为公司\"清算\"定价，而非正常经营。 换句话说，如果你不相信三星会亏钱，那么当前价格本身就是一道防线。 汇丰：市场把AI从三星身上“完全抹掉”了 汇丰的分析从另一个维度印证了这种极端悲观。 据追风交易台，汇丰8月3日报告并未讨论\"市盈率是否便宜\"，而是反向推演：当前股价究竟隐含了怎样的长期盈利预期？ 模型基于未来三年一致预期盈利，经10万次蒙特卡洛模拟，筛选出与当前股价匹配的15年盈利轨迹。 结果触目惊心： 三星电子股价隐含的长期趋势EPS，已从约2024年水平的2倍骤降至0.8倍。 这意味着市场认为，AI不仅没有给三星带来永久性盈利提升，甚至连AI出现之前的盈利水平都难以维持。 自6月初高点以来，三星股价累计下跌约25%，市场隐含盈利周期从约3.5年压缩至2.5年，第3至第9年EPS复合增速跌至约-35%，创历史最低。 用一句话概括：市场定价三星，就好像AI从来没有发生过。 资金面：最猛烈的抛压或已接近尾声 汇丰还指出，资金面出现积极变化。 今年以来，外资累计净卖出三星、SK海力士和台积电合计约1500亿美元，仅6月以来就达约600亿美元。此前放大波动的单一股票2倍杠杆ETF正在快速去杠杆，相关产品管理规模已由6月底约370亿美元降至120亿美元，在个股剧烈波动日中的成交占比也明显下降。 汇丰认为，最具破坏力的机械性抛压正在减弱。 但问题的核心已经转移：不是AI需求是否存在，而是当前股价是否已经把AI周期压缩得过于悲观。如果AI需求继续维持韧性，韩国存储股当前隐含的长期盈利假设，或许存在重新修正的空间。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778717",
-      "time": "2026-08-05T02:49:07.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "芯片/半导体"
-      ]
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "ID-COOLING 七热管双 140mm 扇风冷 FROZN A720 BLACK 上市，329 元",
-      "description": "IT之家 8 月 5 日消息，ID-COOLING（酷凛）现已在国行渠道推出霜格 A720 处理器风冷散热器，售价 329 元。这一型号也就是IT之家早有报道的 FROZN A720 BLACK，标称解热能力可达 300W，享受 3 年质保。 FROZN A720 BLACK 采用双塔双风扇结构，搭载 7 根 6mm 直径热管、2 颗 14025 外形规格风扇，拥有锯齿鳍片和同心圆纹理铜质底座。其在标准模式下高度为 163mm，兼容 28mm 内存；可配置为全高 170mm 兼容 34mm 内存模式。 这款风冷散热器原装风扇采用 FDB 轴承，转速区间 500~1800 RPM，最大风量 98.6 CFM，最大静压 2.26 mmAq，最大噪声 33.5dB(A)。",
-      "url": "https://www.ithome.com/0/985/848.htm",
-      "time": "2026-08-05T02:46:14.000Z",
-      "tags": [
-        "电脑硬件",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "报告：2026年二季度全球DRAM市场格局重塑 三星重回榜首 - 太平洋科技",
-      "description": "",
-      "url": "https://notebook.pconline.com.cn/2179/21797780.html",
-      "time": "2026-08-05T02:46:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "美商海盗船VANGUARD PRO 96上市：磁轴游戏键盘，内置LCD屏，售价1699元",
-      "description": "去年美商海盗船（Corsair）推出了VANGUARD PRO 96，这是一款磁轴游戏键盘，之前已经在海外上市。其继承了K70系列键盘开创性的创新传统，集成了Elgato Virtual Stream Deck、内置LCD屏幕、8000Hz轮询率、以及基于Web的实用程序等功能，用于自定义和调整所有内容。目前新产品已登陆到国内的电商平台，并开启了预约抢购，显示价格为1699元。 美商海盗船 VANGUARD PRO 96 磁轴游戏键盘，京东地址：点此前往>>> VANGUARD PRO 96采用了96%配列布局，基于纤薄铝制框架，内含四层阻尼；VANGUARD PRO 96配备美商海盗船MGX系列霍尔效应磁轴，支持双段触发，出厂预润滑，触发行程可在0.1mm至4.0mm之间调节，出厂预润滑；支持兼容轴体热插拔；支持海盗船极速触发 (RT) 技术；借助多段触发功能，单颗按键可设置至多四项操作指令；支持AXON技术，拥有8000Hz轮询率；提供了FlashTap选项，这是一个SOCD系统，为竞技游戏玩家提供了快速扫射和镜像等熟练动作的优势，使每个动作都更快、更容易掌握；配有一块1.9英寸IPS LCD彩屏，分辨率为320×170；带有多媒体转盘滚轮，左侧还提供了6个可编程宏键。 键盘仅支持有线连接，需要USB 3.0或3.1 Gen1 Type-A接口，另外还配有腕托。VANGUARD 96系列要求操作系统为Windows 10或macOS 10.15及以上，除了PC和Mac外，还能用于Xbox One。",
-      "url": "http://www.expreview.com/107405.html",
-      "time": "2026-08-05T02:45:00.000Z",
-      "tags": [
-        "人工智能",
-        "游戏",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "马斯克：SpaceX卫星明年用上英伟达芯片，或提前至2029年实现万亿美元营收目标 - thepaper.cn",
-      "description": "",
-      "url": "https://m.thepaper.cn/newsDetail_forward_33718391",
-      "time": "2026-08-05T02:45:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "马斯克宣布SpaceX独家采用英伟达GPU：它们是最好的 - 搜狐网",
-      "description": "",
-      "url": "https://m.sohu.com/a/1058972671_115831?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-05T02:45:00.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "四种新能源车 ··· - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7879924057_m1d5ae195903301h6sg.html?from=auto",
-      "time": "2026-08-05T02:43:29.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "沐曦联合创始人离职创业，成立芯片公司！ - 搜狐网",
-      "description": "",
-      "url": "https://m.sohu.com/a/1058963820_546816?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-05T02:43:16.000Z",
-      "tags": [
-        "芯片/半导体",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "36氪",
-      "sourceColor": "#0066ff",
-      "title": "小米申请注册澎程N70商标",
-      "description": "36氪获悉，天眼查知识产权信息显示，近日，小米科技有限责任公司申请注册“SKYNOMAD N90 MAX LUXE”“澎程 N70”“SKYNOMAD N90 MAX STUDIO”“SKYNOMAD N70”商标，国际分类涉及健身器材、地毯席垫等，当前状态均为等待实质审查。",
-      "url": "https://36kr.com/newsflashes/3926029000013956?f=rss",
-      "time": "2026-08-05T02:43:13.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ]
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "利民TR-APFX系列SFX电源开售：白金全模组，最高可选1000W，到手价769元起",
-      "description": "近日，利民TR-APFX系列电源正式开售，其采用体积相对较小的SFX规格设计，且为ATX3.1白金全模组，目前提供了850W和1000W两种额定功率以及黑白双配色，售价849元起，8月8日前可享受每满99元减10元优惠，实际到手价769元起，厂商提供十年质保。 TR-APFX 850（黑色），到手价769元，京东地址：点此前往>>> TR-APFX 1000（黑色），到手价899元，京东地址：点此前往>>> TR-APFX 850（黑色），到手价809元，京东地址：点此前往>>> TR-APFX 1000（白色），到手价939元，京东地址：点此前往>>> TR-APFX系列有着紧凑的外形，整体尺寸为125 x 100 x 64 mm，采用半桥LLC谐振+DC to DC架构，115V半载转换效率超92%，获得80PLUS白金牌效能认证，符合ATX 3.1/PCIe 5.1规范（带有原生12V-2x6显卡供电接口，对应线材线径16AWG，支持600W输出），使用耐温105℃全日系电容+日系大厂固态电容，并提供了多项保护机制，包括过压保护（OVP）、短路保护（SCP）、过功率保护（OPP）、欠压保护（UVP）、过流保护（OCP）、以及过温保护（OTP），确保了高要求工作负载下的性能和稳定性。电源+12V输出采用大单路设计，支持100~240V宽幅电压输入，内置智能温控92mm FDB风扇。 该系列电源全模组接口采用小巧化设计，更省空间，方便用户插线，配套柔软压纹线材，颜色与电源本体保持一致，另外附送ATX电源转接板。",
-      "url": "http://www.expreview.com/107402.html",
-      "time": "2026-08-05T02:42:00.000Z",
-      "tags": [
-        "电脑硬件",
-        "互联网",
-        "大公司"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "Cloudflare推出AI Agent支付基础设施",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316190",
-      "time": "2026-08-05T02:41:52.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "Cloudflare推出AI Agent支付基础设施 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316190",
-      "time": "2026-08-05T02:41:52.000Z",
-      "tags": [
-        "人工智能",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "SpaceX首份财报超预期，携手英伟达打造Starmind轨道AI算力卫星 - eet-china.com",
-      "description": "",
-      "url": "https://www.eet-china.com/news/202608058204.html",
-      "time": "2026-08-05T02:39:37.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "AI芯片"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "SpaceX首份财报超预期，携手英伟达打造Starmind轨道AI算力卫星 - 电子工程专辑",
-      "description": "",
-      "url": "https://www.eet-china.com/news/202608058204.html",
-      "time": "2026-08-05T02:39:37.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "AI芯片"
-      ],
-      "topic": true
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "Firefox 153.0.3 发布",
-      "description": "Firefox 153.0.3 现已发布，具体更新内容如下： New Smart Window 包含多项增强功能： 现在建议列表会显示更多结果，方便用户查找历史记录和切换到已打开的标签页。（Bug 2019042） 现在，助手可以直接使用 Exa 的网络搜索结果回答问题，而无需将问题转交给搜索引擎。（Bug 2046183，Bug 2044385） Fixed 修复了从 Blob...",
-      "url": "https://www.oschina.net/news/487769/firefox-153-0-3-released",
-      "time": "2026-08-05T02:39:35.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "全球存储芯片短缺加剧：消费电子产品从“买不起”转向“买不到”",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4880726.html?type=text",
-      "time": "2026-08-05T02:38:44.000Z",
-      "tags": [
-        "芯片/半导体"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "全球存储芯片短缺加剧：消费电子产品从“买不起”转向“买不到” - huxiu.com",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4880726.html?type=text",
-      "time": "2026-08-05T02:38:44.000Z",
-      "tags": [
-        "芯片/半导体"
-      ]
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "Cloudflare Computer 开源：你的 Agent 需要一台电脑，而不是一个容器",
-      "description": "Cloudflare 开源了名为 @cloudflare/computer 的 npm 包。项目的核心论点是：容器不适合 Agent 计算。真正适合的，是 Isolate。 Cloudflare 工程师在这件事上没什么可谦虚的——他们用 Workers 跑了十年 Isolate。用 CEO Matthew Prince 的话说：「我们一生都在用 Isolate 运行代码，而 AI Agent 不需要容器，它们需要的...",
-      "url": "https://www.oschina.net/news/487766/cloudflare-computer",
-      "time": "2026-08-05T02:38:30.000Z",
-      "tags": [
-        "人工智能",
-        "电脑硬件",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "英伟达Alpamayo 2 Super开放商用 推动自动驾驶技术革新 - 中华网",
-      "description": "",
-      "url": "https://news.china.com/socialgd/10000169/20260805/49655233.html",
-      "time": "2026-08-05T02:36:58.000Z",
-      "tags": [
-        "芯片/半导体",
-        "新能源/电动车",
-        "AI芯片"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "中国AI大模型惊艳华尔街？高盛盘点五大趋势 点名这些投资机会 - 财联社",
-      "description": "",
-      "url": "https://www.cls.cn/detail/2445969",
-      "time": "2026-08-05T02:36:48.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "中国AI大模型惊艳华尔街？高盛盘点五大趋势 点名这些投资机会 - cls.cn",
-      "description": "",
-      "url": "https://www.cls.cn/detail/2445969",
-      "time": "2026-08-05T02:36:48.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "IT之家",
-      "sourceColor": "#e13b3f",
-      "title": "三星 One UI 9.5 横幅设计曝光：配方形 / 宽幅 / 宽高 3 种方案",
-      "description": "IT之家 8 月 5 日消息，科技媒体 sammyguru 昨日（8 月 4 日）发布博文，报道称伴随着 One UI 9 的开发工作接近尾声，三星的研发重心开始转向 One UI 9.5 系统。 消息源在博文中分享了一张 One UI 9.5 的横幅设计图片，称三星设计了 3 种尺寸： 方形（square）：主要适用于常规手机屏幕 宽幅（wide）：适用于 Galaxy Z Fold8 阔折叠手机以及平板电脑 宽高（wide tall）：适用于 Galaxy Tab S11 Ultra 等更大屏幕平板电脑。 图案使用青绿色、蓝色和亮粉色 3 种主题色。色彩沿着 3 个图形的边缘分布，3 个图形的圆角半径依次增大。 对于颜色与图形的含义，原文仅作推测。报道称，青绿色和蓝色可能与三星现有的 Galaxy AI（盖乐世人工智能）功能相关；亮粉色的含义则不明确。 IT之家查询公开资料，适用于三星 Galaxy S27 Ultra 旗舰手机的 One UI 9.5 固件已经曝光:",
-      "url": "https://www.ithome.com/0/985/845.htm",
-      "time": "2026-08-05T02:35:50.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "电脑硬件"
-      ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "“速成车”正在被叫停，新能源车标准必须对齐燃油车 - 汽车之家",
-      "description": "",
-      "url": "https://chejiahao.autohome.com.cn/info/26127320",
-      "time": "2026-08-05T02:34:42.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "海外存储巨头亮出下一代存储技术，半导体设备ETF易方达（159558）标的指数盘初涨超5% - 搜狐网",
-      "description": "",
-      "url": "https://m.sohu.com/a/1058958945_115377?scm=10001.325_13-325_13.0.0-0-0-0-0.5_1334",
-      "time": "2026-08-05T02:32:51.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     }
   ]
 }
