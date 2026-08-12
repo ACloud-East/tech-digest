@@ -85,11 +85,11 @@ const API = {
         } catch (_) {}
     },
 
-    async fetchJSON(url, timeout = 15000) {
+    async fetchJSON(url, timeout = 15000, cache = 'no-store') {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), timeout);
         try {
-            const r = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+            const r = await fetch(url, { cache, signal: ctrl.signal });
             if (!r.ok) throw new Error(`HTTP ${r.status}`);
             return await r.json();
         } finally { clearTimeout(t); }
@@ -402,7 +402,7 @@ const API = {
             const touch = () => { prog.archLoaded = loadedBytes; emit(); };
 
             const collected = new Array(names.length).fill(null);
-            const concurrency = 3;
+            const concurrency = 2;
             let cursor = 0;
             const workers = Array.from({ length: concurrency }, async () => {
                 while (true) {
@@ -411,7 +411,7 @@ const API = {
                     let ok = false;
                     for (let at = 0; at < 3 && !ok; at++) {
                         try {
-                            const arr = await this.fetchJSON('data/news-chunks/' + names[i], 20000);
+                            const arr = await this.fetchJSON('data/news-chunks/' + names[i], 45000, 'default');
                             if (arr && Array.isArray(arr.articles)) {
                                 collected[i] = arr.articles; await this.setChunkCache(i, arr);
                                 done[i] = true; loadedBytes += sizes[i]; touch(); ok = true;
