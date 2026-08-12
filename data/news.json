@@ -1,20 +1,7 @@
 {
-  "updateTime": "2026-08-12T04:13:22.080Z",
+  "updateTime": "2026-08-12T04:14:42.286Z",
   "total": 8000,
   "articles": [
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉变天了，中国车企跟得上吗？ - 新浪网",
-      "description": "",
-      "url": "https://k.sina.com.cn/article_7811096179_m1d193de730330363pg.html?from=auto",
-      "time": "2026-08-12T04:09:57.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
@@ -26,6 +13,20 @@
         "人工智能",
         "芯片/半导体",
         "软件应用"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "《大行》美银证券重申英伟达「买入」评级 5,000亿美元融资计划料分散风险 - moomoo.com",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/74532462",
+      "time": "2026-08-12T04:06:17.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
       ],
       "topic": true
     },
@@ -54,6 +55,17 @@
         "芯片/半导体"
       ],
       "topic": true
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
+      "title": "Why recovery readiness has become the new standard for cyber resilience - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/paid-content/article/why-recovery-readiness-has-become-the-new-standard-for-cyber-resilience/",
+      "time": "2026-08-12T04:03:06.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "ZDNet",
@@ -174,6 +186,20 @@
       "tags": [
         "芯片/半导体",
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "李迅雷：英伟达市值超5万亿美元，但只带来了3.5万人就业 - mp.cnfol.com",
+      "description": "",
+      "url": "http://mp.cnfol.com/51257/article/1786505456-142632635.html",
+      "time": "2026-08-12T03:55:59.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
       ],
       "topic": true
     },
@@ -355,6 +381,17 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "美联社、雅虎财经等关注《财富》专访康波 赛力斯ESG实践登上全球舞台",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316358",
+      "time": "2026-08-12T03:48:13.000Z",
+      "tags": [
+        "专访"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "美联社、雅虎财经等关注《财富》专访康波 赛力斯ESG实践登上全球舞台 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316358",
@@ -485,6 +522,28 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "美的小美AI智能体接入千问开放平台，打造家电行业首个全链路智能服务入口",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316370",
+      "time": "2026-08-12T03:43:10.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "动码印章携全系列AI智能印控解决方案登陆全球商业创新大会",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316368",
+      "time": "2026-08-12T03:43:10.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "美的小美AI智能体接入千问开放平台，打造家电行业首个全链路智能服务入口 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316370",
@@ -546,6 +605,20 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
+      "title": "为什么要做车内办公场景 有哪些配套设施？小米汽车详细回应",
+      "description": "",
+      "url": "https://news.mydrivers.com/1/1143/1143110.htm",
+      "time": "2026-08-12T03:42:00.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
       "title": "为什么要做车内办公场景 有哪些配套设施？小米汽车详细回应 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1143/1143110.htm",
@@ -560,7 +633,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Rippling与Runlayer围绕AI网关产品陷入专利互诉 - pingwest.com",
+      "title": "Rippling与Runlayer围绕AI网关产品陷入专利互诉",
       "description": "",
       "url": "https://www.pingwest.com/w/316371",
       "time": "2026-08-12T03:41:10.000Z",
@@ -579,6 +652,17 @@
         "芯片/半导体"
       ],
       "topic": true
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "Rippling与Runlayer围绕AI网关产品陷入专利互诉 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316371",
+      "time": "2026-08-12T03:41:10.000Z",
+      "tags": [
+        "人工智能"
+      ]
     },
     {
       "source": "三星",
@@ -616,6 +700,19 @@
       "tags": [
         "测评/新品",
         "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "特斯拉变天了，中国车企跟得上吗？ - 新浪网",
+      "description": "",
+      "url": "https://www.sina.cn/news/article/nimzqcv4068788.html",
+      "time": "2026-08-12T03:38:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
       ],
       "topic": true
     },
@@ -758,6 +855,18 @@
         "科技创投"
       ],
       "topic": true
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "miHoYo宣布AI陪伴软件BSide: Olivia Lin将于8月31日停止服务",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316369",
+      "time": "2026-08-12T03:32:09.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
     },
     {
       "source": "品玩",
@@ -1702,6 +1811,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "阿里云灵骏真武 M890 超节点实例正式上线 首批在乌兰察布开服",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316367",
+      "time": "2026-08-12T02:38:54.000Z",
+      "tags": [
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "阿里云灵骏真武 M890 超节点实例正式上线 首批在乌兰察布开服 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316367",
@@ -1727,6 +1848,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "Gemini应用月活跃用户突破10亿",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316366",
+      "time": "2026-08-12T02:37:54.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "Gemini应用月活跃用户突破10亿 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316366",
@@ -1746,6 +1879,19 @@
       "tags": [
         "科技创投"
       ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "金蝶国际CFO林波：金蝶今年投资了多家大模型公司 - guandian.cn",
+      "description": "",
+      "url": "https://www.guandian.cn/m/show/583824",
+      "time": "2026-08-12T02:33:36.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ],
+      "topic": true
     },
     {
       "source": "AI大模型",
@@ -1918,6 +2064,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "Meta发布AI战略声明 推进开放模型路线",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316364",
+      "time": "2026-08-12T02:22:54.000Z",
+      "tags": [
+        "人工智能",
+        "大公司"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "Meta发布AI战略声明 推进开放模型路线 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316364",
@@ -1954,6 +2112,20 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "英伟达拉华尔街巨头组团筹5000亿美元支持AI基建 信用市场暂获安抚 - moomoo.com",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/74527001",
+      "time": "2026-08-12T02:17:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "AI芯片"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "英伟达拉华尔街巨头组团筹5000亿美元支持AI基建 信用市场暂获安抚 - Moomoo",
       "description": "",
       "url": "https://www.moomoo.com/hans/news/post/74527001",
@@ -1977,6 +2149,19 @@
         "软件应用",
         "大公司"
       ]
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "港股异动 | AI行业暴力拉升算力股 大模型崛起催动国产算力需求 粤港湾智算(01396)上扬涨超7% - moomoo.com",
+      "description": "",
+      "url": "https://www.moomoo.com/hans/news/post/74528661/hong-kong-stock-market-movement-ai-sector-surge-drives-up",
+      "time": "2026-08-12T02:16:42.000Z",
+      "tags": [
+        "人工智能",
+        "AI芯片"
+      ],
+      "topic": true
     },
     {
       "source": "AI大模型",
@@ -2221,6 +2406,17 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "前千问负责人林俊旸创立 AI 公司",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316360",
+      "time": "2026-08-12T02:02:46.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "前千问负责人林俊旸创立 AI 公司 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316360",
@@ -2376,6 +2572,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
+      "title": "River AI完成11亿美元融资 加速个人AI研发",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316359",
+      "time": "2026-08-12T01:57:45.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
       "title": "River AI完成11亿美元融资 加速个人AI研发 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316359",
@@ -2388,7 +2596,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "理研NPR——第一季度营收增长，半导体及电子相关业务实现两位数增收增利。 - Moomoo",
+      "title": "理研NPR——第一季度营收增长，半导体及电子相关业务实现两位数增收增利。 - moomoo.com",
       "description": "",
       "url": "https://www.moomoo.com/hans/news/post/74522342/riken-npr-revenue-rose-in-the-first-quarter-with-the",
       "time": "2026-08-12T01:55:56.000Z",
@@ -2401,7 +2609,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "理研NPR——第一季度营收增长，半导体及电子相关业务实现两位数增收增利。 - moomoo.com",
+      "title": "理研NPR——第一季度营收增长，半导体及电子相关业务实现两位数增收增利。 - Moomoo",
       "description": "",
       "url": "https://www.moomoo.com/hans/news/post/74522342/riken-npr-revenue-rose-in-the-first-quarter-with-the",
       "time": "2026-08-12T01:55:56.000Z",
@@ -2681,6 +2889,20 @@
         "人工智能",
         "芯片/半导体",
         "软件应用"
+      ],
+      "topic": true
+    },
+    {
+      "source": "智能汽车",
+      "sourceColor": "#0d47a1",
+      "title": "小米汽车7月SU7销量21044辆 - 36kr.com",
+      "description": "",
+      "url": "https://www.36kr.com/newsflashes/3935846942424454",
+      "time": "2026-08-12T01:41:39.000Z",
+      "tags": [
+        "手机",
+        "汽车",
+        "大公司"
       ],
       "topic": true
     },
@@ -3262,7 +3484,7 @@
       "source": "华尔街见闻",
       "sourceColor": "#d32f2f",
       "title": "马斯克押注AI代理赛道，SpaceX AI推出Grok Bot，对标Anthropic与OpenAI",
-      "description": "马斯克旗下SpaceXAI正式入局AI代理市场，推出可像真实同事一样处理工作的产品Grok Bot。 8月11日，SpaceXAI发布AI代理产品Grok Bot，目前处于早期测试阶段。这是马斯克旗下AI业务追赶Anthropic和OpenAI的最新举措，也是SpaceXAI与Cursor深度合作的阶段性成果。 马斯克随即在X平台表示：“我们将在修复早期测试的基本问题、并于本周晚些时候发布Grok 4.6之后，扩大Grok Bot的测试规模。” Grok Bot是什么：像雇了一个永不下班的团队 Grok Bot的核心定位是“永远在线的AI队友”。 与市面上多数AI工具不同，Grok Bot拥有独立的云端计算机。它可以直接登录用户现有的工具和应用——包括没有API接口的平台——像真人一样操作，任务完成后才返回汇报。 SpaceXAI官网描述其能力： Bot拥有自己的电脑。它们登录你已经在用的工具，跨应用、收件箱等场景工作。它们从头到尾完成任务，只在需要你审批时才回来找你。 用户可以像发消息给同事一样给Bot分配任务，Bot会记住对话、学习用户的工作习惯，并随时间变得更精准。 多个Bot还可以并行运作，互相传递任务、共享上下文，用户无需充当中间人。SpaceXAI将这种模式比作\"一个小团队\"——一个\"首席Bot\"统筹，下设各专项Bot分别负责收件箱管理、费用报销、招聘、Bug修复等。 据彭博报道，Grok Bot的发布标志着SpaceXAI在快速增长的AI代理市场加速布局。此前，SpaceXAI已于今年5月推出首款编程代理，并发布了基于Cursor构建的Grok 4.5模型。 内部已跑通：从销售到工程全覆盖 Grok Bot并非从零发布，而是先在SpaceXAI内部大规模使用后才对外开放。 据SpaceXAI官网披露，内部使用场景包括： 销售团队：Bot夜间自动生成销售线索、起草邮件，早上留下待审批清单 财务团队：从Gmail中提取收据、自动归档报销报告 运营团队：处理新员工入职、发票审核 工程团队：复现Bug、提交工单、将修复任务移交调试Bot 据The Information报道，该产品此前以代号\"Sand\"在Cursor内部测试，于6月下旬开始内测。 SpaceXAI内部员工对产品的评价直接： 我展示了一次工作流，现在我完全信任它自己运行。我感觉效率提升了2到3倍，因为它不需要我反复确认和审查。——Bennett，销售团队 感觉不像是在给代理下指令，更像是把工作交给一个能力很强的队友。 ——早期测试用户评价（来自SpaceXAI官网） 和Grok Bot一起工作，感觉像长了八条手臂，每条手臂都在协调配合，各自完成任务。——Vincent，增长团队 当前可用范围与用户反馈 Grok Bot目前以早期测试版本发布，支持桌面端（Windows）和iOS，可供以下用户使用： SuperGrok Heavy订阅用户 Cursor Ultra订阅用户 Cursor Teams Premium订阅用户 企业用户可加入候补名单等待后续开放。 产品发布后，X平台相关帖子获得超过900万次浏览。用户反应不一： 有用户表示期待：“我今天还在想这个什么时候会出现。我现在用Codex，但我一直知道，xAI迟早会做出更好的东西。” 也有用户遇到访问问题：“我已经有Grok Superheavy订阅，但系统无法识别，用它来验证身份时出了问题。” 还有用户对定价表示不满，@shento256 写道：“感觉你们减少了Grok的使用额度（token），但价格没变，说实话体验不好。” 另有用户直接发问：“这和ChatGPT Work还是Claude Co-work是一个东西吗？”——折射出市场对AI代理产品同质化的普遍疑虑。 Instagram上，科技博主rpn在使用数周后评价： 我认为这可能是让AI代理真正走向主流的产品。 他列出的核心亮点包括：无需API或MCP连接即可使用任何工具；可在手机和电脑上像联系同事一样发消息；支持Bot之间建立群聊、互相分配任务；只需录制一次工作流即可保存为可复用的例程。 Cursor收购：600亿美元押注的落地 Grok Bot的发布，与SpaceX收购Cursor直接相关。 据彭博报道，SpaceX于今年6月达成以600亿美元收购Cursor的协议。Cursor是AI编程工具领域的头部玩家，在\"氛围编程\"（vibe coding）浪潮中迅速崛起。 据报道，SpaceX在本周四的全员会议上告知员工，该交易最快本周完成交割。Cursor同时向员工透露了Grok Bot的品牌命名，并表示未来更多产品可能纳入Grok品牌体系。 这意味着Cursor的能力边界正在从编程工具向通用AI代理扩展，而Grok Bot正是这一转型的第一个公开产品。 竞争格局：追赶Anthropic与OpenAI 据彭博报道，AI代理市场正成为各大AI公司的核心战场。 OpenAI的Sam Altman近期赴华盛顿与议员会面，讨论内容之一正是AI代理协同工作的演进方向。Anthropic此前已在企业级AI代理领域建立先发优势。 SpaceXAI此前以xAI为名，一直致力于说服银行、投资机构和企业采用Grok系列产品，以支撑马斯克将SpaceX打造成AI公司的战略目标。 Grok Bot的发布，是SpaceXAI今年以来在AI代理赛道的第三步棋：5月推出编程代理，随后发布Grok 4.5，如今推出面向通用工作场景的Grok Bot。 马斯克上周在SpaceX财报电话会议上表示，公司在AI方面正取得进展，并预告将于本周发布下一代模型Grok 4.6。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "description": "马斯克旗下SpaceXAI正式入局AI代理市场，推出可像真实同事一样处理工作的产品Grok Bot。 8月11日，SpaceXAI发布AI代理产品Grok Bot，目前处于早期测试阶段。这是马斯克旗下AI业务追赶Anthropic和OpenAI的最新举措，也是SpaceXAI与Cursor深度合作的阶段性成果。 马斯克随即在X平台表示：“我们将在修复早期测试的基本问题、并于本周晚些时候发布Grok 4.6之后，扩大Grok Bot的测试规模。” Grok Bot是什么：像雇了一个永不下班的团队 Grok Bot的核心定位是“永远在线的AI队友”。 与市面上多数AI工具不同，Grok Bot拥有独立的云端计算机。它可以直接登录用户现有的工具和应用——包括没有API接口的平台——像真人一样操作，任务完成后才返回汇报。 SpaceXAI官网描述其能力： Bot拥有自己的电脑。它们登录你已经在用的工具，跨应用、收件箱等场景工作。它们从头到尾完成任务，只在需要你审批时才回来找你。 用户可以像发消息给同事一样给Bot分配任务，Bot会记住对话、学习用户的工作习惯，并随时间变得更精准。 多个Bot还可以并行运作，互相传递任务、共享上下文，用户无需充当中间人。SpaceXAI将这种模式比作\"一个小团队\"——一个\"首席Bot\"统筹，下设各专项Bot分别负责收件箱管理、费用报销、招聘、Bug修复等。 据彭博报道，Grok Bot的发布标志着SpaceXAI在快速增长的AI代理市场加速布局。此前，SpaceXAI已于今年5月推出首款编程代理，并发布了基于Cursor构建的Grok 4.5模型。 内部已跑通：从销售到工程全覆盖 Grok Bot并非从零发布，而是先在SpaceXAI内部大规模使用后才对外开放。 据SpaceXAI官网披露，内部使用场景包括： 销售团队：Bot夜间自动生成销售线索、起草邮件，早上留下待审批清单 财务团队：从Gmail中提取收据、自动归档报销报告 运营团队：处理新员工入职、发票审核 工程团队：复现Bug、提交工单、将修复任务移交调试Bot 据The Information报道，该产品此前以代号\"Sand\"在Cursor内部测试，于6月下旬开始内测。 SpaceXAI内部员工对产品的评价直接： 我展示了一次工作流，现在我完全信任它自己运行。我感觉效率提升了2到3倍，因为它不需要我反复确认和审查。\"——Bennett，销售团队 感觉不像是在给代理下指令，更像是把工作交给一个能力很强的队友。 ——早期测试用户评价（来自SpaceXAI官网） 和Grok Bot一起工作，感觉像长了八条手臂，每条手臂都在协调配合，各自完成任务。\"——Vincent，增长团队 Cursor收购：600亿美元押注的落地 Grok Bot的发布，与SpaceX收购Cursor直接相关。 据彭博报道，SpaceX于今年6月达成以600亿美元收购Cursor的协议。Cursor是AI编程工具领域的头部玩家，在\"氛围编程\"（vibe coding）浪潮中迅速崛起。 据报道，SpaceX在本周四的全员会议上告知员工，该交易最快本周完成交割。Cursor同时向员工透露了Grok Bot的品牌命名，并表示未来更多产品可能纳入Grok品牌体系。 这意味着Cursor的能力边界正在从编程工具向通用AI代理扩展，而Grok Bot正是这一转型的第一个公开产品。 当前可用范围与用户反馈 Grok Bot目前以早期测试版本发布，支持桌面端（Windows）和iOS，可供以下用户使用： SuperGrok Heavy订阅用户 Cursor Ultra订阅用户 Cursor Teams Premium订阅用户 企业用户可加入候补名单等待后续开放。 产品发布后，X平台相关帖子获得超过900万次浏览。用户反应不一： 有用户表示期待：“我今天还在想这个什么时候会出现。我现在用Codex，但我一直知道，xAI迟早会做出更好的东西。” 也有用户遇到访问问题：“我已经有Grok Superheavy订阅，但系统无法识别，用它来验证身份时出了问题。” 还有用户对定价表示不满，@shento256 写道：“感觉你们减少了Grok的使用额度（token），但价格没变，说实话体验不好。” 另有用户直接发问：“这和ChatGPT Work还是Claude Co-work是一个东西吗？”——折射出市场对AI代理产品同质化的普遍疑虑。 Instagram上，科技博主rpn在使用数周后评价： 我认为这可能是让AI代理真正走向主流的产品。 他列出的核心亮点包括：无需API或MCP连接即可使用任何工具；可在手机和电脑上像联系同事一样发消息；支持Bot之间建立群聊、互相分配任务；只需录制一次工作流即可保存为可复用的例程。 竞争格局：追赶Anthropic与OpenAI 据彭博报道，AI代理市场正成为各大AI公司的核心战场。 OpenAI的Sam Altman近期赴华盛顿与议员会面，讨论内容之一正是AI代理协同工作的演进方向。Anthropic此前已在企业级AI代理领域建立先发优势。 SpaceXAI此前以xAI为名，一直致力于说服银行、投资机构和企业采用Grok系列产品，以支撑马斯克将SpaceX打造成AI公司的战略目标。 Grok Bot的发布，是SpaceXAI今年以来在AI代理赛道的第三步棋：5月推出编程代理，随后发布Grok 4.5，如今推出面向通用工作场景的Grok Bot。 马斯克上周在SpaceX财报电话会议上表示，公司在AI方面正取得进展，并预告将于本周发布下一代模型Grok 4.6。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
       "url": "https://wallstreetcn.com/articles/3779240",
       "time": "2026-08-12T01:20:31.000Z",
       "tags": [
@@ -4243,7 +4465,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "四款H2芯片AirPods喜迎公测固件 解锁iOS 27全新功能 - news.mydrivers.com",
+      "title": "四款H2芯片AirPods喜迎公测固件 解锁iOS 27全新功能",
       "description": "",
       "url": "https://news.mydrivers.com/1/1143/1143061.htm",
       "time": "2026-08-12T00:35:00.000Z",
@@ -4276,6 +4498,20 @@
       "time": "2026-08-12T00:35:00.000Z",
       "tags": [
         "新能源/电动车"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "四款H2芯片AirPods喜迎公测固件 解锁iOS 27全新功能 - news.mydrivers.com",
+      "description": "",
+      "url": "https://news.mydrivers.com/1/1143/1143061.htm",
+      "time": "2026-08-12T00:35:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
       ],
       "topic": true
     },
@@ -6832,6 +7068,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "Why software factories are back - and how they work in the age of AI - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/why-software-factories-are-back-ai/",
+      "time": "2026-08-11T21:23:00.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Why software factories are back - and how they work in the age of AI - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/why-software-factories-are-back-ai/",
@@ -7234,6 +7482,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "How to create flyers with AI that people won't hate: 8 tips (and prompts) that really work - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/how-to-make-generate-ai-flyer-tips-prompts-that-work/",
+      "time": "2026-08-11T20:53:00.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "How to create flyers with AI that people won't hate: 8 tips (and prompts) that really work - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/how-to-make-generate-ai-flyer-tips-prompts-that-work/",
@@ -7454,7 +7714,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "特斯拉期权聚焦：8月11日成交146.23万张，未平仓合约577.74万张 - Moomoo",
+      "title": "特斯拉期权聚焦：8月11日成交146.23万张，未平仓合约577.74万张 - moomoo.com",
       "description": "",
       "url": "https://www.moomoo.com/hans/news/post/74512749/tesla-options-spot-on-on-august-11th-1-46-million",
       "time": "2026-08-11T20:30:00.000Z",
@@ -7467,7 +7727,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "特斯拉期权聚焦：8月11日成交146.23万张，未平仓合约577.74万张 - moomoo.com",
+      "title": "特斯拉期权聚焦：8月11日成交146.23万张，未平仓合约577.74万张 - Moomoo",
       "description": "",
       "url": "https://www.moomoo.com/hans/news/post/74512749/tesla-options-spot-on-on-august-11th-1-46-million",
       "time": "2026-08-11T20:30:00.000Z",
@@ -9023,6 +9283,20 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "英伟达CDS狂飙！5000亿美元表外“债务幽灵”引爆 华尔街吓坏了？ - 东方财富",
+      "description": "",
+      "url": "https://wap.eastmoney.com/a/202608113837342258.html",
+      "time": "2026-08-11T17:57:12.000Z",
+      "tags": [
+        "芯片/半导体",
+        "AI芯片",
+        "大公司"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "英伟达CDS狂飙！5000亿美元表外“债务幽灵”引爆 华尔街吓坏了？ - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608113837342258.html",
@@ -10166,6 +10440,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "A developer got Word 1.1a from 1990 to run on Windows 11 - try it yourself - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/microsoft-word-1-1a-windows/",
+      "time": "2026-08-11T16:55:00.000Z",
+      "tags": [
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "A developer got Word 1.1a from 1990 to run on Windows 11 - try it yourself - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/microsoft-word-1-1a-windows/",
@@ -10857,19 +11143,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzqcr3699201.shtml",
       "time": "2026-08-11T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "为什么要做车内办公场景 有哪些配套设施？小米汽车详细回应",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-12/doc-inimzqcp6928946.shtml",
-      "time": "2026-08-11T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "汽车",
-        "大公司"
-      ]
     },
     {
       "source": "新浪科技",
@@ -11933,6 +12206,20 @@
       "topic": true
     },
     {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "英伟达据悉正开发开源AI模型Nemotron 4，参数规模或超1万亿 港美股资讯 - hstong.com",
+      "description": "",
+      "url": "https://www.hstong.com/news/detail/26081200000160151",
+      "time": "2026-08-11T15:55:00.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ],
+      "topic": true
+    },
+    {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
       "title": "特斯拉回应Cybertruck三连问：供应商扣押模具、PCS故障、安全争议，还能不能买？+FAQ - sina.cn",
@@ -12265,6 +12552,18 @@
         "科技创投",
         "智能硬件"
       ]
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
+      "title": "澳大利亚与越南深化全面战略伙伴关系 加强关键矿产半导体清洁能源合作 - rfi.fr",
+      "description": "",
+      "url": "https://www.rfi.fr/cn/%E5%9B%BD%E9%99%85/20260811-%E6%BE%B3%E5%A4%A7%E5%88%A9%E4%BA%9A%E4%B8%8E%E8%B6%8A%E5%8D%97%E6%B7%B1%E5%8C%96%E5%85%A8%E9%9D%A2%E6%88%98%E7%95%A5%E4%BC%99%E4%BC%B4%E5%85%B3%E7%B3%BB-%E5%8A%A0%E5%BC%BA%E5%85%B3%E9%94%AE%E7%9F%BF%E4%BA%A7%E5%8D%8A%E5%AF%BC%E4%BD%93%E6%B8%85%E6%B4%81%E8%83%BD%E6%BA%90%E5%90%88%E4%BD%9C",
+      "time": "2026-08-11T15:29:58.000Z",
+      "tags": [
+        "芯片/半导体"
+      ],
+      "topic": true
     },
     {
       "source": "芯片半导体",
@@ -14093,6 +14392,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "Linux desktop use surged to 22% on one workday, Cloudflare data shows - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/article/linux-desktop-use-surged-on-one-workday-cloudflare-data-shows/",
+      "time": "2026-08-11T13:55:00.000Z",
+      "tags": [
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Linux desktop use surged to 22% on one workday, Cloudflare data shows - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/linux-desktop-use-surged-on-one-workday-cloudflare-data-shows/",
@@ -14840,6 +15151,17 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "I tried Opera's new vertical tabs - and it might be the best implementation yet - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/work-life/i-tried-operas-new-vertical-tabs/",
+      "time": "2026-08-11T13:09:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "I tried Opera's new vertical tabs - and it might be the best implementation yet - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/work-life/i-tried-operas-new-vertical-tabs/",
@@ -15317,6 +15639,15 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "This $50 power bank is safer than my lithium-ion battery - and it's coming on my next flight - zdnet.com",
+      "description": "",
+      "url": "https://www.zdnet.com/home-and-office/energy/reelcharge-5000mah-semi-solid-state-power-bank-review/",
+      "time": "2026-08-11T12:53:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "This $50 power bank is safer than my lithium-ion battery - and it's coming on my next flight - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/energy/reelcharge-5000mah-semi-solid-state-power-bank-review/",
@@ -15502,6 +15833,18 @@
     {
       "source": "AI大模型",
       "sourceColor": "#6a1b9a",
+      "title": "未来之城的创新交响丨一个大模型的产线赋能 - news.huanbohainews.com.cn",
+      "description": "",
+      "url": "https://news.huanbohainews.com.cn/2026-08/11/content_50543716.html",
+      "time": "2026-08-11T12:38:19.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
       "title": "未来之城的创新交响丨一个大模型的产线赋能 - 环渤海新闻网",
       "description": "",
       "url": "https://news.huanbohainews.com.cn/2026-08/11/content_50543716.html",
@@ -15514,7 +15857,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "浙江人形携 NAVIAI 亮相 2026WRC，展示多场景人形机器人落地方案 - pingwest.com",
+      "title": "浙江人形携 NAVIAI 亮相 2026WRC，展示多场景人形机器人落地方案",
       "description": "",
       "url": "https://www.pingwest.com/a/316355",
       "time": "2026-08-11T12:38:11.000Z",
@@ -15527,7 +15870,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "浙江人形携 NAVIAI 亮相 2026WRC，展示多场景人形机器人落地方案",
+      "title": "浙江人形携 NAVIAI 亮相 2026WRC，展示多场景人形机器人落地方案 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316355",
       "time": "2026-08-11T12:38:11.000Z",
@@ -16095,7 +16438,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "把185Hz塞进6.59英寸机身！REDMI K100 Pro手机评测：行业独一份的中尺寸电竞旗舰 - news.mydrivers.com",
+      "title": "把185Hz塞进6.59英寸机身！REDMI K100 Pro手机评测：行业独一份的中尺寸电竞旗舰",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142994.htm",
       "time": "2026-08-11T12:00:00.000Z",
@@ -16109,7 +16452,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "把185Hz塞进6.59英寸机身！REDMI K100 Pro手机评测：行业独一份的中尺寸电竞旗舰",
+      "title": "把185Hz塞进6.59英寸机身！REDMI K100 Pro手机评测：行业独一份的中尺寸电竞旗舰 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142994.htm",
       "time": "2026-08-11T12:00:00.000Z",
@@ -18544,7 +18887,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "今年国产AI芯片的国内份额有望接近90% - 观察者",
+      "title": "今年国产AI芯片的国内份额有望接近90%-观察者网 - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/economy/2026_08_11_826943.shtml",
       "time": "2026-08-11T10:06:00.000Z",
@@ -18558,7 +18901,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "今年国产AI芯片的国内份额有望接近90%-观察者网 - 观察者",
+      "title": "今年国产AI芯片的国内份额有望接近90% - 观察者",
       "description": "",
       "url": "https://www.guancha.cn/economy/2026_08_11_826943.shtml",
       "time": "2026-08-11T10:06:00.000Z",
@@ -18633,17 +18976,6 @@
         "大公司"
       ],
       "topic": true
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "Why recovery readiness has become the new standard for cyber resilience - zdnet.com",
-      "description": "",
-      "url": "https://www.zdnet.com/paid-content/article/why-recovery-readiness-has-become-the-new-standard-for-cyber-resilience/",
-      "time": "2026-08-11T10:03:03.000Z",
-      "tags": [
-        "智能硬件"
-      ]
     },
     {
       "source": "9to5Mac",
@@ -18758,23 +19090,23 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Seedless Blackberries and Cherries That Grow on Bushes Vie to Be the Future of Food",
-      "description": "Startups and Big Ag are using Crispr gene editing to create crops that taste better and grow on a hotter planet. But will they find a market?",
-      "url": "https://www.wired.com/story/seedless-blackberries-cherry-bushes-future-of-food/",
-      "time": "2026-08-11T10:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "AI Is Dead. Organoids Are Alive",
       "description": "Mini human brains are being grown in labs all over the world. Soon, they could outthink neural networks.",
       "url": "https://www.wired.com/story/organoids-lab-grown-brains-neural-networks/",
       "time": "2026-08-11T10:00:00.000Z",
       "tags": [
         "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Seedless Blackberries and Cherries That Grow on Bushes Vie to Be the Future of Food",
+      "description": "Startups and Big Ag are using Crispr gene editing to create crops that taste better and grow on a hotter planet. But will they find a market?",
+      "url": "https://www.wired.com/story/seedless-blackberries-cherry-bushes-future-of-food/",
+      "time": "2026-08-11T10:00:00.000Z",
+      "tags": [
         "智能硬件"
       ]
     },
@@ -18936,7 +19268,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "腾讯2027校园招聘启动，AI浪潮中迎来两大更新一项坚守 - pingwest.com",
+      "title": "腾讯2027校园招聘启动，AI浪潮中迎来两大更新一项坚守",
       "description": "",
       "url": "https://www.pingwest.com/w/316352",
       "time": "2026-08-11T09:53:43.000Z",
@@ -18949,7 +19281,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "腾讯2027校园招聘启动，AI浪潮中迎来两大更新一项坚守",
+      "title": "腾讯2027校园招聘启动，AI浪潮中迎来两大更新一项坚守 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316352",
       "time": "2026-08-11T09:53:43.000Z",
@@ -19139,7 +19471,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI AI伦理负责人Chloé Bakalar离职 - pingwest.com",
+      "title": "OpenAI AI伦理负责人Chloé Bakalar离职",
       "description": "",
       "url": "https://www.pingwest.com/w/316350",
       "time": "2026-08-11T09:42:38.000Z",
@@ -19152,7 +19484,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI AI伦理负责人Chloé Bakalar离职",
+      "title": "OpenAI AI伦理负责人Chloé Bakalar离职 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316350",
       "time": "2026-08-11T09:42:38.000Z",
@@ -19265,7 +19597,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "AI把硬盘价格炒上天？致态反手一波福利，等等终于笑了！ - pingwest.com",
+      "title": "AI把硬盘价格炒上天？致态反手一波福利，等等终于笑了！",
       "description": "",
       "url": "https://www.pingwest.com/a/316349",
       "time": "2026-08-11T09:37:51.000Z",
@@ -19276,7 +19608,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "AI把硬盘价格炒上天？致态反手一波福利，等等终于笑了！",
+      "title": "AI把硬盘价格炒上天？致态反手一波福利，等等终于笑了！ - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316349",
       "time": "2026-08-11T09:37:51.000Z",
@@ -19734,7 +20066,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "7 simple gadgets that can make your home smarter for under $100 - ZDNET",
+      "title": "7 simple gadgets that can make your home smarter for under $100 - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/smart-home/simple-smart-home-gadgets-under-100/",
       "time": "2026-08-11T09:30:00.000Z",
@@ -19745,7 +20077,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "7 simple gadgets that can make your home smarter for under $100 - zdnet.com",
+      "title": "7 simple gadgets that can make your home smarter for under $100 - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/smart-home/simple-smart-home-gadgets-under-100/",
       "time": "2026-08-11T09:30:00.000Z",
@@ -20174,7 +20506,7 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼PS中国官网更新：2028年停售实体游戏光盘！ - news.mydrivers.com",
+      "title": "索尼PS中国官网更新：2028年停售实体游戏光盘！",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142937.htm",
       "time": "2026-08-11T09:12:00.000Z",
@@ -20186,7 +20518,7 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "索尼PS中国官网更新：2028年停售实体游戏光盘！",
+      "title": "索尼PS中国官网更新：2028年停售实体游戏光盘！ - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142937.htm",
       "time": "2026-08-11T09:12:00.000Z",
@@ -22298,7 +22630,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "承包终身养车！京东养车七夕限定A12尊享卡重磅上线 - pingwest.com",
+      "title": "承包终身养车！京东养车七夕限定A12尊享卡重磅上线",
       "description": "",
       "url": "https://www.pingwest.com/a/316345",
       "time": "2026-08-11T07:47:34.000Z",
@@ -22310,7 +22642,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "承包终身养车！京东养车七夕限定A12尊享卡重磅上线",
+      "title": "承包终身养车！京东养车七夕限定A12尊享卡重磅上线 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316345",
       "time": "2026-08-11T07:47:34.000Z",
@@ -22336,7 +22668,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8为何是用户探索喜爱内容的理想之选 原因都在这里 - news.mydrivers.com",
+      "title": "三星Galaxy Z Fold8为何是用户探索喜爱内容的理想之选 原因都在这里",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142903.htm",
       "time": "2026-08-11T07:47:00.000Z",
@@ -22350,7 +22682,7 @@
     {
       "source": "三星",
       "sourceColor": "#0d47a1",
-      "title": "三星Galaxy Z Fold8为何是用户探索喜爱内容的理想之选 原因都在这里",
+      "title": "三星Galaxy Z Fold8为何是用户探索喜爱内容的理想之选 原因都在这里 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142903.htm",
       "time": "2026-08-11T07:47:00.000Z",
@@ -22377,7 +22709,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "近光灯太亮也违规！特斯拉超2万辆Model 3/Y被召回 这次OTA不管用了 - news.mydrivers.com",
+      "title": "近光灯太亮也违规！特斯拉超2万辆Model 3/Y被召回 这次OTA不管用了",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142896.htm",
       "time": "2026-08-11T07:46:00.000Z",
@@ -22390,7 +22722,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "近光灯太亮也违规！特斯拉超2万辆Model 3/Y被召回 这次OTA不管用了",
+      "title": "近光灯太亮也违规！特斯拉超2万辆Model 3/Y被召回 这次OTA不管用了 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142896.htm",
       "time": "2026-08-11T07:46:00.000Z",
@@ -22925,7 +23257,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "从存不下到随便存：用了四年华为家庭存储，告别存储焦虑与隐私顾虑 - pingwest.com",
+      "title": "从存不下到随便存：用了四年华为家庭存储，告别存储焦虑与隐私顾虑",
       "description": "",
       "url": "https://www.pingwest.com/a/316341",
       "time": "2026-08-11T07:27:25.000Z",
@@ -22937,7 +23269,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "从存不下到随便存：用了四年华为家庭存储，告别存储焦虑与隐私顾虑",
+      "title": "从存不下到随便存：用了四年华为家庭存储，告别存储焦虑与隐私顾虑 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316341",
       "time": "2026-08-11T07:27:25.000Z",
@@ -23887,7 +24219,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Riot Platforms与AI公司签署91亿美元数据中心租赁协议 - pingwest.com",
+      "title": "Riot Platforms与AI公司签署91亿美元数据中心租赁协议",
       "description": "",
       "url": "https://www.pingwest.com/w/316343",
       "time": "2026-08-11T06:47:19.000Z",
@@ -23899,7 +24231,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Riot Platforms与AI公司签署91亿美元数据中心租赁协议",
+      "title": "Riot Platforms与AI公司签署91亿美元数据中心租赁协议 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316343",
       "time": "2026-08-11T06:47:19.000Z",
@@ -24161,7 +24493,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "ZCode迎来重大升级 四大功能助力复杂编程任务自主交付 - pingwest.com",
+      "title": "ZCode迎来重大升级 四大功能助力复杂编程任务自主交付",
       "description": "",
       "url": "https://www.pingwest.com/w/316342",
       "time": "2026-08-11T06:37:17.000Z",
@@ -24170,7 +24502,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "ZCode迎来重大升级 四大功能助力复杂编程任务自主交付",
+      "title": "ZCode迎来重大升级 四大功能助力复杂编程任务自主交付 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316342",
       "time": "2026-08-11T06:37:17.000Z",
@@ -24179,7 +24511,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "8000mAh+主动散热风扇！OPPO K15手机评测：2K档真正实用的那一台 - news.mydrivers.com",
+      "title": "8000mAh+主动散热风扇！OPPO K15手机评测：2K档真正实用的那一台",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142867.htm",
       "time": "2026-08-11T06:37:00.000Z",
@@ -24192,7 +24524,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "8000mAh+主动散热风扇！OPPO K15手机评测：2K档真正实用的那一台",
+      "title": "8000mAh+主动散热风扇！OPPO K15手机评测：2K档真正实用的那一台 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142867.htm",
       "time": "2026-08-11T06:37:00.000Z",
@@ -25732,22 +26064,13 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Chewy Promo Codes: $20 Off August 2026",
-      "description": "Explore Chewy coupon codes for $30 off, $20 off your first order $49, 50% off pet food, and more August 2026 discounts.",
-      "url": "https://www.wired.com/story/chewy-promo-code/",
+      "title": "Home Depot Promo Codes: 30% Off in August 2026",
+      "description": "Save up to 50% today with the latest Home Depot promo codes for appliances, power tools, and more this August.",
+      "url": "https://www.wired.com/story/home-depot-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
-        "科技创投"
+        "软件应用"
       ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "30% Off Canon Promo Codes | August 2026",
-      "description": "Save an extra 10% or 30% with Canon coupon codes, plus up to $1,600 on cameras, printers, and more this August.",
-      "url": "https://www.wired.com/story/canon-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": []
     },
     {
       "source": "Wired",
@@ -25763,13 +26086,11 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Home Depot Promo Codes: 30% Off in August 2026",
-      "description": "Save up to 50% today with the latest Home Depot promo codes for appliances, power tools, and more this August.",
-      "url": "https://www.wired.com/story/home-depot-promo-code/",
+      "title": "30% Off Canon Promo Codes | August 2026",
+      "description": "Save an extra 10% or 30% with Canon coupon codes, plus up to $1,600 on cameras, printers, and more this August.",
+      "url": "https://www.wired.com/story/canon-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "软件应用"
-      ]
+      "tags": []
     },
     {
       "source": "Wired",
@@ -25850,11 +26171,13 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Skullcandy Discount Code: 30% Off | August 2026",
-      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
-      "url": "https://www.wired.com/story/skullcandy-discount-code/",
+      "title": "Chewy Promo Codes: $20 Off August 2026",
+      "description": "Explore Chewy coupon codes for $30 off, $20 off your first order $49, 50% off pet food, and more August 2026 discounts.",
+      "url": "https://www.wired.com/story/chewy-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
-      "tags": []
+      "tags": [
+        "科技创投"
+      ]
     },
     {
       "source": "Wired",
@@ -25864,49 +26187,6 @@
       "url": "https://www.wired.com/story/sony-promo-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "AT&T Promo Codes: $50 Off This August 2026",
-      "description": "Whether you’re looking to upgrade your internet or get the latest phone, we’ve got you covered with our selection of AT&T coupons and deals.",
-      "url": "https://www.wired.com/story/att-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Squarespace Promo Codes: 20% Off in August 2026",
-      "description": "Get 20% off your next website, 10% off with exclusive Squarespace discount code, 50% off plans, and more top coupons from WIRED.",
-      "url": "https://www.wired.com/story/squarespace-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
-      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
-      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
-      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
-      "url": "https://www.wired.com/story/playstation-discount-code/",
-      "time": "2026-08-11T05:00:00.000Z",
-      "tags": [
-        "游戏",
         "智能硬件"
       ]
     },
@@ -25939,6 +26219,58 @@
       "title": "L.L.Bean Promo Codes and Coupons: 75% Off",
       "description": "Find the best L.L.Bean promo codes and coupons for 10% off your first order, major sale discounts, free shipping on $75+, and extra savings for select groups.",
       "url": "https://www.wired.com/story/ll-bean-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "30% Off Tempur-Pedic Promo Codes | August 2026",
+      "description": "Whether you’re looking to upgrade your mattress or swap out your bedding, browse our Tempur-Pedic coupons for up to $300 off and the best sleep of your life.",
+      "url": "https://www.wired.com/story/tempur-pedic-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "AT&T Promo Codes: $50 Off This August 2026",
+      "description": "Whether you’re looking to upgrade your internet or get the latest phone, we’ve got you covered with our selection of AT&T coupons and deals.",
+      "url": "https://www.wired.com/story/att-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Squarespace Promo Codes: 20% Off in August 2026",
+      "description": "Get 20% off your next website, 10% off with exclusive Squarespace discount code, 50% off plans, and more top coupons from WIRED.",
+      "url": "https://www.wired.com/story/squarespace-promo-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "PlayStation Discount Code: Save on PS5 Games August 2026",
+      "description": "Want to stretch your gaming budget? Learn how to unlock massive savings on PS5 games, DualSense controllers, and PlayStation Plus memberships using gift cards and exclusive promotional codes.",
+      "url": "https://www.wired.com/story/playstation-discount-code/",
+      "time": "2026-08-11T05:00:00.000Z",
+      "tags": [
+        "游戏",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Skullcandy Discount Code: 30% Off | August 2026",
+      "description": "Save on today’s top Skullcandy Promo Codes for Crusher Evo headphones, 36% off Crusher ANC 2 noise-canceling headphones, and more with amazing deals.",
+      "url": "https://www.wired.com/story/skullcandy-discount-code/",
       "time": "2026-08-11T05:00:00.000Z",
       "tags": []
     },
@@ -26113,7 +26445,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "雷军定下今年55万辆小米汽车目标稳了！机构：澎程年底销量近10万台 - news.mydrivers.com",
+      "title": "雷军定下今年55万辆小米汽车目标稳了！机构：澎程年底销量近10万台",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142851.htm",
       "time": "2026-08-11T04:52:00.000Z",
@@ -26127,7 +26459,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "雷军定下今年55万辆小米汽车目标稳了！机构：澎程年底销量近10万台",
+      "title": "雷军定下今年55万辆小米汽车目标稳了！机构：澎程年底销量近10万台 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142851.htm",
       "time": "2026-08-11T04:52:00.000Z",
@@ -26903,7 +27235,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "新房装修除醛 各品牌旗舰机型横评 - news.mydrivers.com",
+      "title": "新房装修除醛 各品牌旗舰机型横评",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142838.htm",
       "time": "2026-08-11T03:52:00.000Z",
@@ -26916,7 +27248,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "新房装修除醛 各品牌旗舰机型横评",
+      "title": "新房装修除醛 各品牌旗舰机型横评 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142838.htm",
       "time": "2026-08-11T03:52:00.000Z",
@@ -26936,6 +27268,19 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星Galaxy S26 FE手机配置曝光，预计9月发布 - qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260811A04UWF00?ptag=ima",
+      "time": "2026-08-11T03:51:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
     },
     {
       "source": "三星",
@@ -27506,7 +27851,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿里Qwen拿下“美国版小红书”，Pinterest CEO：成本不到OpenAI的8% - pingwest.com",
+      "title": "阿里Qwen拿下“美国版小红书”，Pinterest CEO：成本不到OpenAI的8%",
       "description": "",
       "url": "https://www.pingwest.com/w/316334",
       "time": "2026-08-11T03:17:04.000Z",
@@ -27519,7 +27864,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿里Qwen拿下“美国版小红书”，Pinterest CEO：成本不到OpenAI的8%",
+      "title": "阿里Qwen拿下“美国版小红书”，Pinterest CEO：成本不到OpenAI的8% - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316334",
       "time": "2026-08-11T03:17:04.000Z",
@@ -27611,26 +27956,6 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "20期、130多个产品后，我们把「每周AI项目推荐」做成了「Builder Hub」 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316294",
-      "time": "2026-08-11T03:11:53.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "硅谷模型厂正在比谁的 Agent 更能闯祸，背后全是营销剧本 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316305",
-      "time": "2026-08-11T03:11:53.000Z",
-      "tags": []
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
       "title": "硅谷模型厂正在比谁的 Agent 更能闯祸，背后全是营销剧本",
       "description": "",
       "url": "https://www.pingwest.com/a/316305",
@@ -27647,6 +27972,26 @@
       "tags": [
         "人工智能"
       ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "20期、130多个产品后，我们把「每周AI项目推荐」做成了「Builder Hub」 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316294",
+      "time": "2026-08-11T03:11:53.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "硅谷模型厂正在比谁的 Agent 更能闯祸，背后全是营销剧本 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316305",
+      "time": "2026-08-11T03:11:53.000Z",
+      "tags": []
     },
     {
       "source": "智能汽车",
@@ -27722,7 +28067,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "江行智能“一脑多体”落地，工业机器人进入自主决策时代 - pingwest.com",
+      "title": "江行智能“一脑多体”落地，工业机器人进入自主决策时代",
       "description": "",
       "url": "https://www.pingwest.com/a/316330",
       "time": "2026-08-11T03:07:01.000Z",
@@ -27733,7 +28078,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "江行智能“一脑多体”落地，工业机器人进入自主决策时代",
+      "title": "江行智能“一脑多体”落地，工业机器人进入自主决策时代 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316330",
       "time": "2026-08-11T03:07:01.000Z",
@@ -28195,7 +28540,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Microsoft计划明年量产下一代AI芯片Maia 300 - pingwest.com",
+      "title": "Microsoft计划明年量产下一代AI芯片Maia 300",
       "description": "",
       "url": "https://www.pingwest.com/w/316332",
       "time": "2026-08-11T02:31:55.000Z",
@@ -28208,7 +28553,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Microsoft计划明年量产下一代AI芯片Maia 300",
+      "title": "Microsoft计划明年量产下一代AI芯片Maia 300 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316332",
       "time": "2026-08-11T02:31:55.000Z",
@@ -28224,7 +28569,7 @@
       "title": "七夕送什么才能既显心意又不落俗套？华为nova 16解锁高段位浪漫",
       "description": "",
       "url": "https://www.pingwest.com/w/316333",
-      "time": "2026-08-11T02:31:55.000Z",
+      "time": "2026-08-11T02:31:49.000Z",
       "tags": [
         "手机",
         "大公司"
@@ -28530,7 +28875,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Meta发布开源模型Muse Glimmer 支持消费级硬件本地运行 - pingwest.com",
+      "title": "Meta发布开源模型Muse Glimmer 支持消费级硬件本地运行",
       "description": "",
       "url": "https://www.pingwest.com/w/316331",
       "time": "2026-08-11T02:16:53.000Z",
@@ -28542,7 +28887,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Meta发布开源模型Muse Glimmer 支持消费级硬件本地运行",
+      "title": "Meta发布开源模型Muse Glimmer 支持消费级硬件本地运行 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316331",
       "time": "2026-08-11T02:16:53.000Z",
@@ -28554,7 +28899,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "停车难、对马路危害大！新能源车越造越大：揭秘背后原因 - news.mydrivers.com",
+      "title": "停车难、对马路危害大！新能源车越造越大：揭秘背后原因",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142802.htm",
       "time": "2026-08-11T02:16:00.000Z",
@@ -28566,7 +28911,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "停车难、对马路危害大！新能源车越造越大：揭秘背后原因",
+      "title": "停车难、对马路危害大！新能源车越造越大：揭秘背后原因 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142802.htm",
       "time": "2026-08-11T02:16:00.000Z",
@@ -28782,7 +29127,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Apple正在开发照片溯源系统Apple Reference Image - pingwest.com",
+      "title": "Apple正在开发照片溯源系统Apple Reference Image",
       "description": "",
       "url": "https://www.pingwest.com/w/316329",
       "time": "2026-08-11T02:06:52.000Z",
@@ -28793,7 +29138,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Apple正在开发照片溯源系统Apple Reference Image",
+      "title": "Apple正在开发照片溯源系统Apple Reference Image - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316329",
       "time": "2026-08-11T02:06:52.000Z",
@@ -29359,20 +29704,6 @@
         "大公司",
         "智能硬件"
       ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "英伟达CDS狂飙！5000亿美元表外“债务幽灵”引爆 华尔街吓坏了？ - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608113837342258.html",
-      "time": "2026-08-11T01:21:28.000Z",
-      "tags": [
-        "芯片/半导体",
-        "AI芯片",
-        "大公司"
-      ],
-      "topic": true
     },
     {
       "source": "钛媒体",
@@ -30647,7 +30978,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - ZDNET",
+      "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/article/i-tried-google-wallets-new-allowance-feature/",
       "time": "2026-08-10T21:57:00.000Z",
@@ -30658,7 +30989,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - zdnet.com",
+      "title": "I tried Google Wallet's new allowance feature, and my kid already ditched their debit card - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/i-tried-google-wallets-new-allowance-feature/",
       "time": "2026-08-10T21:57:00.000Z",
@@ -30991,7 +31322,7 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "最新数码相机划算榜从千元入门到旗舰级全场景覆盖-中关村在线 - 同花顺",
+      "title": "最新数码相机划算榜从千元入门到旗舰级全场景覆盖-中关村在线 - 10jqka.com.cn",
       "description": "",
       "url": "https://m.10jqka.com.cn/20260811/c678839713.shtml",
       "time": "2026-08-10T20:36:16.000Z",
@@ -31003,7 +31334,7 @@
     {
       "source": "索尼",
       "sourceColor": "#1a1a2e",
-      "title": "最新数码相机划算榜从千元入门到旗舰级全场景覆盖-中关村在线 - 10jqka.com.cn",
+      "title": "最新数码相机划算榜从千元入门到旗舰级全场景覆盖-中关村在线 - 同花顺",
       "description": "",
       "url": "https://m.10jqka.com.cn/20260811/c678839713.shtml",
       "time": "2026-08-10T20:36:16.000Z",
@@ -32017,7 +32348,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "杜比视界第二代开始落地：海信先升级，爱奇艺补齐内容端 - pingwest.com",
+      "title": "杜比视界第二代开始落地：海信先升级，爱奇艺补齐内容端",
       "description": "",
       "url": "https://www.pingwest.com/w/316327",
       "time": "2026-08-10T16:41:29.000Z",
@@ -32026,7 +32357,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "杜比视界第二代开始落地：海信先升级，爱奇艺补齐内容端",
+      "title": "杜比视界第二代开始落地：海信先升级，爱奇艺补齐内容端 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316327",
       "time": "2026-08-10T16:41:29.000Z",
@@ -32221,7 +32552,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - ZDNET",
+      "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/article/managers-biggest-ransomware-targets-ways-to-stay-safe/",
       "time": "2026-08-10T16:08:00.000Z",
@@ -32232,7 +32563,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - zdnet.com",
+      "title": "Why managers are ransomware's top targets now - and 6 ways to stay safe - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/managers-biggest-ransomware-targets-ways-to-stay-safe/",
       "time": "2026-08-10T16:08:00.000Z",
@@ -32275,78 +32606,6 @@
         "人工智能",
         "游戏",
         "智能硬件"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
-      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
-      "url": "https://www.donews.com/news/detail/3/6665925.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "游戏",
-        "大公司"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "REDMI K100 Pro 系列手机发布，售价3999元起",
-      "description": "REDMI K100 Pro系列发布：全系双芯、185Hz屏、2亿主摄、9070mAh电池，首发CF手游185帧，售价3999元起。",
-      "url": "https://www.donews.com/news/detail/5/6667206.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "手机",
-        "新能源/电动车",
-        "测评/新品"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "小鹏G9L全球首秀，预售价25.98万元",
-      "description": "小鹏G9L正式亮相，预售价25.98万元，纯电/超级增程双动力，搭载AI零重力座椅、智能四电机中岛、全域安全及6.3.0智驾系统。",
-      "url": "https://www.donews.com/news/detail/7/6667285.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "新能源/电动车",
-        "汽车"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "2027款比亚迪海豹06上市，售价9.99万元起",
-      "description": "2027款海豹06上市，售价9.99万-15.59万元，纯电续航630km，搭载闪充、天神之眼B智驾、云辇-C底盘，全系满配。",
-      "url": "https://www.donews.com/news/detail/7/6667241.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "精品小车零跑A05今日上市，售价6.39万元起",
-      "description": "零跑A05于2026年8月11日在杭州上市，定位智能灵动精品轿车，售价6.39万起，主打颜值、智能、驾控、安全四维越级体验。",
-      "url": "https://www.donews.com/news/detail/7/6667138.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
-    },
-    {
-      "source": "DoNews",
-      "sourceColor": "#00a971",
-      "title": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
-      "description": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
-      "url": "https://www.donews.com/news/detail/7/6666955.html",
-      "time": "2026-08-10T16:00:00.000Z",
-      "tags": [
-        "新能源/电动车"
       ]
     },
     {
@@ -32509,6 +32768,78 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-11/doc-inimyhkh5713106.shtml",
       "time": "2026-08-10T16:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "微软回应XBOX Live宕机：底层许可服务更新引发连锁故障",
+      "description": "XBOX Live 近期大规模故障因许可服务更新及客户端Bug叠加所致，微软已移交服务所有权并推送修复补丁，8月17日强制更新。",
+      "url": "https://www.donews.com/news/detail/3/6665925.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "游戏",
+        "大公司"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "REDMI K100 Pro 系列手机发布，售价3999元起",
+      "description": "REDMI K100 Pro系列发布：全系双芯、185Hz屏、2亿主摄、9070mAh电池，首发CF手游185帧，售价3999元起。",
+      "url": "https://www.donews.com/news/detail/5/6667206.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "手机",
+        "新能源/电动车",
+        "测评/新品"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "小鹏G9L全球首秀，预售价25.98万元",
+      "description": "小鹏G9L正式亮相，预售价25.98万元，纯电/超级增程双动力，搭载AI零重力座椅、智能四电机中岛、全域安全及6.3.0智驾系统。",
+      "url": "https://www.donews.com/news/detail/7/6667285.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "人工智能",
+        "新能源/电动车",
+        "汽车"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "2027款比亚迪海豹06上市，售价9.99万元起",
+      "description": "2027款海豹06上市，售价9.99万-15.59万元，纯电续航630km，搭载闪充、天神之眼B智驾、云辇-C底盘，全系满配。",
+      "url": "https://www.donews.com/news/detail/7/6667241.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "精品小车零跑A05今日上市，售价6.39万元起",
+      "description": "零跑A05于2026年8月11日在杭州上市，定位智能灵动精品轿车，售价6.39万起，主打颜值、智能、驾控、安全四维越级体验。",
+      "url": "https://www.donews.com/news/detail/7/6667138.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "DoNews",
+      "sourceColor": "#00a971",
+      "title": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
+      "description": "突破历史！德国重量级创新大奖首次花落中国企业 比亚迪闪充技术获欧洲权威认证",
+      "url": "https://www.donews.com/news/detail/7/6666955.html",
+      "time": "2026-08-10T16:00:00.000Z",
+      "tags": [
+        "新能源/电动车"
+      ]
     },
     {
       "source": "InfoQ",
@@ -34631,7 +34962,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "This blazing-fast, super-private browser delivers a brand new beta - try it for free - ZDNET",
+      "title": "This blazing-fast, super-private browser delivers a brand new beta - try it for free - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/article/orion-browser-linux-beta/",
       "time": "2026-08-10T15:56:00.000Z",
@@ -34642,7 +34973,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "This blazing-fast, super-private browser delivers a brand new beta - try it for free - zdnet.com",
+      "title": "This blazing-fast, super-private browser delivers a brand new beta - try it for free - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/orion-browser-linux-beta/",
       "time": "2026-08-10T15:56:00.000Z",
@@ -35371,7 +35702,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - ZDNET",
+      "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/ugreen-finder-pro-solar-powered-finder-tag-review/",
       "time": "2026-08-10T14:25:00.000Z",
@@ -35384,7 +35715,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - zdnet.com",
+      "title": "I tried a solar-powered AirTag alternative that lasts 2 years - and looks like my Apple Watch - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/ugreen-finder-pro-solar-powered-finder-tag-review/",
       "time": "2026-08-10T14:25:00.000Z",
@@ -35444,7 +35775,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "This Mac dock gives me lag-free dual displays with no sketchy drivers - for $150 - ZDNET",
+      "title": "This Mac dock gives me lag-free dual displays with no sketchy drivers - for $150 - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/startech-driverless-dual-display-universal-mac-docking-station-review/",
       "time": "2026-08-10T14:24:00.000Z",
@@ -35453,7 +35784,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "This Mac dock gives me lag-free dual displays with no sketchy drivers - for $150 - zdnet.com",
+      "title": "This Mac dock gives me lag-free dual displays with no sketchy drivers - for $150 - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/startech-driverless-dual-display-universal-mac-docking-station-review/",
       "time": "2026-08-10T14:24:00.000Z",
@@ -35909,7 +36240,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "We lab-tested Ecovac's next-gen robot mop - here's where it shines (and struggles) - ZDNET",
+      "title": "We lab-tested Ecovac's next-gen robot mop - here's where it shines (and struggles) - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/kitchen-household/deebot-x12-omnicyclone-review-ecovacs-robot-vacuum/",
       "time": "2026-08-10T13:45:00.000Z",
@@ -35918,7 +36249,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "We lab-tested Ecovac's next-gen robot mop - here's where it shines (and struggles) - zdnet.com",
+      "title": "We lab-tested Ecovac's next-gen robot mop - here's where it shines (and struggles) - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/home-and-office/kitchen-household/deebot-x12-omnicyclone-review-ecovacs-robot-vacuum/",
       "time": "2026-08-10T13:45:00.000Z",
@@ -35982,6 +36313,19 @@
         "人工智能",
         "软件应用"
       ]
+    },
+    {
+      "source": "三星",
+      "sourceColor": "#0d47a1",
+      "title": "三星详解Galaxy Z Fold8新屏幕：折痕终于几乎看不见了 - qq.com",
+      "description": "",
+      "url": "https://news.qq.com/rain/a/20260810A0CQHH00",
+      "time": "2026-08-10T13:30:00.000Z",
+      "tags": [
+        "手机",
+        "大公司"
+      ],
+      "topic": true
     },
     {
       "source": "三星",
@@ -36393,7 +36737,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - ZDNET",
+      "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/article/how-i-use-claude-cowork-record-a-skill-for-automated-research/",
       "time": "2026-08-10T12:26:00.000Z",
@@ -36405,7 +36749,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - zdnet.com",
+      "title": "Claude's Record-a-Skill cut my research from hours to 30 minutes - but the magic has limits - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/how-i-use-claude-cowork-record-a-skill-for-automated-research/",
       "time": "2026-08-10T12:26:00.000Z",
@@ -37237,7 +37581,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "纳米Work首批通过中国信通院办公智能体能力评估 - pingwest.com",
+      "title": "纳米Work首批通过中国信通院办公智能体能力评估",
       "description": "",
       "url": "https://www.pingwest.com/w/316326",
       "time": "2026-08-10T10:20:54.000Z",
@@ -37246,7 +37590,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "纳米Work首批通过中国信通院办公智能体能力评估",
+      "title": "纳米Work首批通过中国信通院办公智能体能力评估 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316326",
       "time": "2026-08-10T10:20:54.000Z",
@@ -37699,6 +38043,19 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
+      "title": "韩国将设立5万亿韩元半导体基金，并提供同等规模贸易融资 - es.tradingview.com",
+      "description": "",
+      "url": "https://es.tradingview.com/news/panews:6b33a0965acdf:0/",
+      "time": "2026-08-10T09:31:00.000Z",
+      "tags": [
+        "芯片/半导体",
+        "科技创投"
+      ],
+      "topic": true
+    },
+    {
+      "source": "芯片半导体",
+      "sourceColor": "#004d40",
       "title": "韩国将设立5万亿韩元半导体基金，并提供同等规模贸易融资 - TradingView",
       "description": "",
       "url": "https://es.tradingview.com/news/panews:6b33a0965acdf:0/",
@@ -38032,7 +38389,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "家用按摩椅选购攻略：警惕伪性价比陷阱，万元档靠谱机型深度盘点 - pingwest.com",
+      "title": "家用按摩椅选购攻略：警惕伪性价比陷阱，万元档靠谱机型深度盘点",
       "description": "",
       "url": "https://www.pingwest.com/a/316321",
       "time": "2026-08-10T08:25:44.000Z",
@@ -38041,7 +38398,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "家用按摩椅选购攻略：警惕伪性价比陷阱，万元档靠谱机型深度盘点",
+      "title": "家用按摩椅选购攻略：警惕伪性价比陷阱，万元档靠谱机型深度盘点 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316321",
       "time": "2026-08-10T08:25:44.000Z",
@@ -38240,7 +38597,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿里AI应用创作平Meoo上线团队版 - pingwest.com",
+      "title": "阿里AI应用创作平Meoo上线团队版",
       "description": "",
       "url": "https://www.pingwest.com/w/316319",
       "time": "2026-08-10T08:00:47.000Z",
@@ -38253,7 +38610,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿里AI应用创作平Meoo上线团队版",
+      "title": "阿里AI应用创作平Meoo上线团队版 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316319",
       "time": "2026-08-10T08:00:47.000Z",
@@ -38287,7 +38644,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "NVIDIA发布开源全双工语音模型NemotronLabs VoiceChat 11B - pingwest.com",
+      "title": "NVIDIA发布开源全双工语音模型NemotronLabs VoiceChat 11B",
       "description": "",
       "url": "https://www.pingwest.com/w/316318",
       "time": "2026-08-10T07:55:42.000Z",
@@ -38299,7 +38656,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "NVIDIA发布开源全双工语音模型NemotronLabs VoiceChat 11B",
+      "title": "NVIDIA发布开源全双工语音模型NemotronLabs VoiceChat 11B - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316318",
       "time": "2026-08-10T07:55:42.000Z",
@@ -38562,17 +38919,6 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "2026世界斯诺克中国公开赛开幕，吴宜泽与洒拖擦窗机器人上演诗意互赠名场面 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316307",
-      "time": "2026-08-10T06:45:44.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
       "title": "2026世界斯诺克中国公开赛开幕，吴宜泽与洒拖擦窗机器人上演诗意互赠名场面",
       "description": "",
       "url": "https://www.pingwest.com/a/316307",
@@ -38584,7 +38930,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "哈啰租车首家入驻千问开放平台，开启“对话即租车”AI新体验 - pingwest.com",
+      "title": "2026世界斯诺克中国公开赛开幕，吴宜泽与洒拖擦窗机器人上演诗意互赠名场面 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316307",
+      "time": "2026-08-10T06:45:44.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "哈啰租车首家入驻千问开放平台，开启“对话即租车”AI新体验",
       "description": "",
       "url": "https://www.pingwest.com/a/316315",
       "time": "2026-08-10T06:45:43.000Z",
@@ -38596,7 +38953,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "哈啰租车首家入驻千问开放平台，开启“对话即租车”AI新体验",
+      "title": "哈啰租车首家入驻千问开放平台，开启“对话即租车”AI新体验 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316315",
       "time": "2026-08-10T06:45:43.000Z",
@@ -38643,17 +39000,6 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "索尼115英寸天幕之镜Max现货开售，超旗舰True RGB巨幕降临 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316314",
-      "time": "2026-08-10T06:40:40.000Z",
-      "tags": [
-        "手机"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
       "title": "索尼115英寸天幕之镜Max现货开售，超旗舰True RGB巨幕降临",
       "description": "",
       "url": "https://www.pingwest.com/a/316314",
@@ -38665,7 +39011,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI收购演示文稿初创公司NextSlide 团队并入ChatGPT - pingwest.com",
+      "title": "索尼115英寸天幕之镜Max现货开售，超旗舰True RGB巨幕降临 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/a/316314",
+      "time": "2026-08-10T06:40:40.000Z",
+      "tags": [
+        "手机"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "OpenAI收购演示文稿初创公司NextSlide 团队并入ChatGPT",
       "description": "",
       "url": "https://www.pingwest.com/w/316316",
       "time": "2026-08-10T06:40:38.000Z",
@@ -38677,7 +39034,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI收购演示文稿初创公司NextSlide 团队并入ChatGPT",
+      "title": "OpenAI收购演示文稿初创公司NextSlide 团队并入ChatGPT - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316316",
       "time": "2026-08-10T06:40:38.000Z",
@@ -38725,7 +39082,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "xAI发布Imagine Image 2.0 图像生成模型 - pingwest.com",
+      "title": "xAI发布Imagine Image 2.0 图像生成模型",
       "description": "",
       "url": "https://www.pingwest.com/w/316313",
       "time": "2026-08-10T06:30:31.000Z",
@@ -38736,7 +39093,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "xAI发布Imagine Image 2.0 图像生成模型",
+      "title": "xAI发布Imagine Image 2.0 图像生成模型 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316313",
       "time": "2026-08-10T06:30:31.000Z",
@@ -38760,7 +39117,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI取消ChatGPT文本对话限制 全面升级至GPT-5.6模型 - pingwest.com",
+      "title": "OpenAI取消ChatGPT文本对话限制 全面升级至GPT-5.6模型",
       "description": "",
       "url": "https://www.pingwest.com/w/316312",
       "time": "2026-08-10T06:20:31.000Z",
@@ -38773,7 +39130,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI取消ChatGPT文本对话限制 全面升级至GPT-5.6模型",
+      "title": "OpenAI取消ChatGPT文本对话限制 全面升级至GPT-5.6模型 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316312",
       "time": "2026-08-10T06:20:31.000Z",
@@ -38798,7 +39155,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "天猫成为ALO中国独家电商平台，官方旗舰店已上线 - pingwest.com",
+      "title": "天猫成为ALO中国独家电商平台，官方旗舰店已上线",
       "description": "",
       "url": "https://www.pingwest.com/w/316311",
       "time": "2026-08-10T06:15:37.000Z",
@@ -38810,7 +39167,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "天猫成为ALO中国独家电商平台，官方旗舰店已上线",
+      "title": "天猫成为ALO中国独家电商平台，官方旗舰店已上线 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316311",
       "time": "2026-08-10T06:15:37.000Z",
@@ -39120,7 +39477,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Cloudflare发布面向AI智能体的云端浏览器Kitesurf - pingwest.com",
+      "title": "Cloudflare发布面向AI智能体的云端浏览器Kitesurf",
       "description": "",
       "url": "https://www.pingwest.com/w/316306",
       "time": "2026-08-10T03:41:48.000Z",
@@ -39133,7 +39490,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Cloudflare发布面向AI智能体的云端浏览器Kitesurf",
+      "title": "Cloudflare发布面向AI智能体的云端浏览器Kitesurf - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316306",
       "time": "2026-08-10T03:41:48.000Z",
@@ -39268,7 +39625,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "第一时间实测千问Agent：让AI链接服务有了初始态 - pingwest.com",
+      "title": "第一时间实测千问Agent：让AI链接服务有了初始态",
       "description": "",
       "url": "https://www.pingwest.com/a/316296",
       "time": "2026-08-10T03:15:24.000Z",
@@ -39279,7 +39636,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "第一时间实测千问Agent：让AI链接服务有了初始态",
+      "title": "第一时间实测千问Agent：让AI链接服务有了初始态 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316296",
       "time": "2026-08-10T03:15:24.000Z",
@@ -39334,17 +39691,6 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "Anthropic宣布Claude Code将于8月14日默认启用自动模式 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316303",
-      "time": "2026-08-10T02:55:16.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
       "title": "Anthropic宣布Claude Code将于8月14日默认启用自动模式",
       "description": "",
       "url": "https://www.pingwest.com/w/316303",
@@ -39356,7 +39702,18 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙” - pingwest.com",
+      "title": "Anthropic宣布Claude Code将于8月14日默认启用自动模式 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316303",
+      "time": "2026-08-10T02:55:16.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙”",
       "description": "",
       "url": "https://www.pingwest.com/a/316301",
       "time": "2026-08-10T02:50:18.000Z",
@@ -39368,7 +39725,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙”",
+      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙” - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316301",
       "time": "2026-08-10T02:50:18.000Z",
@@ -39470,18 +39827,6 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "OpenAI暂停下一代模型Astra部分研发工作 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316299",
-      "time": "2026-08-10T02:15:26.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
       "title": "OpenAI暂停下一代模型Astra部分研发工作",
       "description": "",
       "url": "https://www.pingwest.com/w/316299",
@@ -39494,7 +39839,19 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入 - pingwest.com",
+      "title": "OpenAI暂停下一代模型Astra部分研发工作 - pingwest.com",
+      "description": "",
+      "url": "https://www.pingwest.com/w/316299",
+      "time": "2026-08-10T02:15:26.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "品玩",
+      "sourceColor": "#ff5722",
+      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入",
       "description": "",
       "url": "https://www.pingwest.com/w/316300",
       "time": "2026-08-10T02:15:25.000Z",
@@ -39506,7 +39863,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入",
+      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316300",
       "time": "2026-08-10T02:15:25.000Z",
@@ -39615,7 +39972,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎 - pingwest.com",
+      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎",
       "description": "",
       "url": "https://www.pingwest.com/a/316304",
       "time": "2026-08-10T02:00:19.000Z",
@@ -39627,7 +39984,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎",
+      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/a/316304",
       "time": "2026-08-10T02:00:19.000Z",
@@ -39701,7 +40058,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - eastmoney.com",
+      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608103836065564.html",
       "time": "2026-08-10T01:46:09.000Z",
@@ -39713,7 +40070,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - 东方财富",
+      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608103836065564.html",
       "time": "2026-08-10T01:46:09.000Z",
@@ -40395,6 +40752,46 @@
       ]
     },
     {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "九号发布E3 GO电动滑板车 3公里生活圈有它就够了",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpi1237369.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "传智谱ARR今年将达20亿美元，七月来新增200万API用户",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/it/2026-08-10/doc-inimwcmh6217453.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "新浪科技",
+      "sourceColor": "#e6162d",
+      "title": "又一次公开喊话痛批电商平台！钟睒睒：电商价格内卷已经伤害到中国的实体经济",
+      "description": "",
+      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimuriv8279711.shtml",
+      "time": "2026-08-09T16:00:00.000Z",
+      "tags": [
+        "互联网"
+      ]
+    },
+    {
       "source": "DoNews",
       "sourceColor": "#00a971",
       "title": "前塔科夫首席设计师加盟新工作室Nomion Games",
@@ -40477,46 +40874,6 @@
         "手机",
         "汽车",
         "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "九号发布E3 GO电动滑板车 3公里生活圈有它就够了",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/mobile/n/n/2026-08-10/doc-inimvnpi1237369.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "传智谱ARR今年将达20亿美元，七月来新增200万API用户",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/it/2026-08-10/doc-inimwcmh6217453.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "长征七号改运载火箭发射任务失利 中星4B卫星未能入轨",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-10/doc-inimwcmh6238556.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "又一次公开喊话痛批电商平台！钟睒睒：电商价格内卷已经伤害到中国的实体经济",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-10/doc-inimuriv8279711.shtml",
-      "time": "2026-08-09T16:00:00.000Z",
-      "tags": [
-        "互联网"
       ]
     },
     {
@@ -40901,7 +41258,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿维塔07L正式上市：搭载华为乾崑智驾ADS™ 5，开启家庭智慧出行新体验 - pingwest.com",
+      "title": "阿维塔07L正式上市：搭载华为乾崑智驾ADS™ 5，开启家庭智慧出行新体验",
       "description": "",
       "url": "https://www.pingwest.com/w/316295",
       "time": "2026-08-09T12:57:22.000Z",
@@ -40914,7 +41271,7 @@
     {
       "source": "品玩",
       "sourceColor": "#ff5722",
-      "title": "阿维塔07L正式上市：搭载华为乾崑智驾ADS™ 5，开启家庭智慧出行新体验",
+      "title": "阿维塔07L正式上市：搭载华为乾崑智驾ADS™ 5，开启家庭智慧出行新体验 - pingwest.com",
       "description": "",
       "url": "https://www.pingwest.com/w/316295",
       "time": "2026-08-09T12:57:22.000Z",
@@ -40927,7 +41284,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "NVIDIA首款Windows CPU最新跑分！甩开AMD、Intel：却依然落后苹果 - news.mydrivers.com",
+      "title": "NVIDIA首款Windows CPU最新跑分！甩开AMD、Intel：却依然落后苹果",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142469.htm",
       "time": "2026-08-09T12:39:00.000Z",
@@ -40941,7 +41298,7 @@
     {
       "source": "数码测评",
       "sourceColor": "#e65100",
-      "title": "NVIDIA首款Windows CPU最新跑分！甩开AMD、Intel：却依然落后苹果",
+      "title": "NVIDIA首款Windows CPU最新跑分！甩开AMD、Intel：却依然落后苹果 - news.mydrivers.com",
       "description": "",
       "url": "https://news.mydrivers.com/1/1142/1142469.htm",
       "time": "2026-08-09T12:39:00.000Z",
@@ -41227,7 +41584,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event - ZDNET",
+      "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/article/what-to-expect-rumors-made-by-google-2026/",
       "time": "2026-08-09T10:15:00.000Z",
@@ -41239,7 +41596,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event - zdnet.com",
+      "title": "Made by Google 2026: How to watch and what to expect from the Pixel 11 event - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/article/what-to-expect-rumors-made-by-google-2026/",
       "time": "2026-08-09T10:15:00.000Z",
@@ -41548,7 +41905,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Google spoiled its own Pixel 11 event - Video - ZDNET",
+      "title": "Google spoiled its own Pixel 11 event - Video - zdnet.com",
       "description": "",
       "url": "https://www.zdnet.com/video/google-spoiled-its-own-pixel-11-event/",
       "time": "2026-08-09T06:02:03.000Z",
@@ -41559,7 +41916,7 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
-      "title": "Google spoiled its own Pixel 11 event - Video - zdnet.com",
+      "title": "Google spoiled its own Pixel 11 event - Video - ZDNET",
       "description": "",
       "url": "https://www.zdnet.com/video/google-spoiled-its-own-pixel-11-event/",
       "time": "2026-08-09T06:02:03.000Z",
@@ -41610,7 +41967,7 @@
     {
       "source": "尼康",
       "sourceColor": "#34495e",
-      "title": "平行剧场主题开启2026 尼康创意营杭州站正式开展_活动_资讯 - ea360.com",
+      "title": "平行剧场主题开启2026 尼康创意营杭州站正式开展_活动_资讯 - 东方摄影",
       "description": "",
       "url": "https://www.ea360.com/contents/23/40326.html",
       "time": "2026-08-09T04:36:50.000Z",
@@ -41620,7 +41977,7 @@
     {
       "source": "尼康",
       "sourceColor": "#34495e",
-      "title": "平行剧场主题开启2026 尼康创意营杭州站正式开展_活动_资讯 - 东方摄影",
+      "title": "平行剧场主题开启2026 尼康创意营杭州站正式开展_活动_资讯 - ea360.com",
       "description": "",
       "url": "https://www.ea360.com/contents/23/40326.html",
       "time": "2026-08-09T04:36:50.000Z",
@@ -41775,8 +42132,8 @@
       "sourceColor": "#6a1b9a",
       "title": "DeepSeek涨价是割韭菜？便宜，不是国产大模型的唯一优势丨财经时评 - 东方财富",
       "description": "",
-      "url": "https://finance.eastmoney.com/a/202608093835879970.html",
-      "time": "2026-08-08T22:36:21.000Z",
+      "url": "https://wap.eastmoney.com/a/202608093835879970.html",
+      "time": "2026-08-08T22:36:07.000Z",
       "tags": [
         "人工智能"
       ],
@@ -42661,7 +43018,7 @@
     {
       "source": "尼康",
       "sourceColor": "#34495e",
-      "title": "订单量超出产能尼康Z 600mm f/6.3 VR S 日本市场暂停接单_业界_资讯 - ea360.com",
+      "title": "订单量超出产能尼康Z 600mm f/6.3 VR S 日本市场暂停接单_业界_资讯 - 东方摄影",
       "description": "",
       "url": "https://www.ea360.com/contents/22/40324.html",
       "time": "2026-08-08T08:56:35.000Z",
@@ -42673,7 +43030,7 @@
     {
       "source": "尼康",
       "sourceColor": "#34495e",
-      "title": "订单量超出产能尼康Z 600mm f/6.3 VR S 日本市场暂停接单_业界_资讯 - 东方摄影",
+      "title": "订单量超出产能尼康Z 600mm f/6.3 VR S 日本市场暂停接单_业界_资讯 - ea360.com",
       "description": "",
       "url": "https://www.ea360.com/contents/22/40324.html",
       "time": "2026-08-08T08:56:35.000Z",
@@ -43069,6 +43426,16 @@
         "大公司",
         "测评/新品"
       ],
+      "topic": true
+    },
+    {
+      "source": "索尼",
+      "sourceColor": "#1a1a2e",
+      "title": "索尼准备在PlayStation上更频繁地投入广告 - 3dmgame.com",
+      "description": "",
+      "url": "https://www.3dmgame.com/news/202608/3950121.html",
+      "time": "2026-08-07T12:02:34.000Z",
+      "tags": [],
       "topic": true
     },
     {
@@ -52788,7 +53155,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "英伟达考虑下调Rubin Ultra芯片显存容量 以应对先进高带宽内存芯片短缺问题 - eastmoney.com",
+      "title": "英伟达考虑下调Rubin Ultra芯片显存容量 以应对先进高带宽内存芯片短缺问题 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608073834225349.html",
       "time": "2026-08-06T16:26:07.000Z",
@@ -52802,7 +53169,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "英伟达考虑下调Rubin Ultra芯片显存容量 以应对先进高带宽内存芯片短缺问题 - 东方财富",
+      "title": "英伟达考虑下调Rubin Ultra芯片显存容量 以应对先进高带宽内存芯片短缺问题 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608073834225349.html",
       "time": "2026-08-06T16:26:07.000Z",
@@ -54231,7 +54598,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "深圳佳贤通信独家回应：英伟达AI-RAN技术团队曾到访公司 双方已成立技术工作组 - eastmoney.com",
+      "title": "深圳佳贤通信独家回应：英伟达AI-RAN技术团队曾到访公司 双方已成立技术工作组 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608063834112023.html",
       "time": "2026-08-06T15:55:52.000Z",
@@ -54245,7 +54612,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "深圳佳贤通信独家回应：英伟达AI-RAN技术团队曾到访公司 双方已成立技术工作组 - 东方财富",
+      "title": "深圳佳贤通信独家回应：英伟达AI-RAN技术团队曾到访公司 双方已成立技术工作组 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608063834112023.html",
       "time": "2026-08-06T15:55:52.000Z",
@@ -57125,6 +57492,18 @@
       "url": "https://wallstreetcn.com/livenews/3146039",
       "time": "2026-08-06T12:03:03.000Z",
       "tags": []
+    },
+    {
+      "source": "AI大模型",
+      "sourceColor": "#6a1b9a",
+      "title": "字节CEO梁汝波：坚持自研AI大语言模型并非因外部压力 - bjnews.com.cn",
+      "description": "",
+      "url": "https://www.bjnews.com.cn/detail/1786016755129302.html",
+      "time": "2026-08-06T12:02:00.000Z",
+      "tags": [
+        "人工智能"
+      ],
+      "topic": true
     },
     {
       "source": "AI大模型",
@@ -69542,7 +69921,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "英伟达急寻中国AI基站供应商 明后年启动端侧算力组网 - eastmoney.com",
+      "title": "英伟达急寻中国AI基站供应商 明后年启动端侧算力组网 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608063833314468.html",
       "time": "2026-08-06T01:17:34.000Z",
@@ -69556,7 +69935,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "英伟达急寻中国AI基站供应商 明后年启动端侧算力组网 - 东方财富",
+      "title": "英伟达急寻中国AI基站供应商 明后年启动端侧算力组网 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608063833314468.html",
       "time": "2026-08-06T01:17:34.000Z",
@@ -82102,7 +82481,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - eastmoney.com",
+      "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832680484.html",
       "time": "2026-08-05T09:50:02.000Z",
@@ -82114,7 +82493,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - 东方财富",
+      "title": "告别“L2.999级”宣传！首部L3/L4自动驾驶强制国标发布，车企将面临合规大考 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832680484.html",
       "time": "2026-08-05T09:50:02.000Z",
@@ -82307,7 +82686,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "沪指涨1.47% 科创50指数大涨4.78% 半导体板块爆发 - eastmoney.com",
+      "title": "沪指涨1.47% 科创50指数大涨4.78% 半导体板块爆发 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832529810.html",
       "time": "2026-08-05T09:44:21.000Z",
@@ -82319,7 +82698,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "沪指涨1.47% 科创50指数大涨4.78% 半导体板块爆发 - 东方财富",
+      "title": "沪指涨1.47% 科创50指数大涨4.78% 半导体板块爆发 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832529810.html",
       "time": "2026-08-05T09:44:21.000Z",
@@ -86068,7 +86447,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "均胜电子：公司在L3/L4级自动驾驶方向已有布局 - eastmoney.com",
+      "title": "均胜电子：公司在L3/L4级自动驾驶方向已有布局 - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832551188.html",
       "time": "2026-08-05T07:41:12.000Z",
@@ -86080,7 +86459,7 @@
     {
       "source": "智能汽车",
       "sourceColor": "#0d47a1",
-      "title": "均胜电子：公司在L3/L4级自动驾驶方向已有布局 - 东方财富",
+      "title": "均胜电子：公司在L3/L4级自动驾驶方向已有布局 - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053832551188.html",
       "time": "2026-08-05T07:41:12.000Z",
@@ -95508,7 +95887,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "马斯克向科技界“投下炸弹”：SpaceX只用英伟达GPU 因为性能最佳！ - eastmoney.com",
+      "title": "马斯克向科技界“投下炸弹”：SpaceX只用英伟达GPU 因为性能最佳！ - 东方财富",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053831804722.html",
       "time": "2026-08-05T00:48:20.000Z",
@@ -95522,7 +95901,7 @@
     {
       "source": "芯片半导体",
       "sourceColor": "#004d40",
-      "title": "马斯克向科技界“投下炸弹”：SpaceX只用英伟达GPU 因为性能最佳！ - 东方财富",
+      "title": "马斯克向科技界“投下炸弹”：SpaceX只用英伟达GPU 因为性能最佳！ - eastmoney.com",
       "description": "",
       "url": "https://wap.eastmoney.com/a/202608053831804722.html",
       "time": "2026-08-05T00:48:20.000Z",
@@ -97559,386 +97938,6 @@
       "url": "https://bal-e.org/speed/krabby/2026/query-system-design/",
       "time": "2026-08-04T21:40:22.000Z",
       "tags": []
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "These Motorola phones are next in line for the Android 17 beta",
-      "description": "Even some cheaper Moto G phones are joining the beta party.",
-      "url": "https://www.androidauthority.com/motorola-android-17-beta-expands-razr-moto-g-3694611/",
-      "time": "2026-08-04T21:38:00.000Z",
-      "tags": [
-        "手机",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Hacker News",
-      "sourceColor": "#ff6600",
-      "title": "Cloudflare Wallets: the programmable wallet for the agentic Internet",
-      "description": "Article URL: https://blog.cloudflare.com/wallets/ Comments URL: https://news.ycombinator.com/item?id=49175461 Points: 29 # Comments: 7",
-      "url": "https://blog.cloudflare.com/wallets/",
-      "time": "2026-08-04T21:31:02.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "Trump killed the Digital Equity Act but US was forced to bring part of it back",
-      "description": "$1.25 billion program restored, but judge ruled race provision unconstitutional.",
-      "url": "https://arstechnica.com/tech-policy/2026/08/trump-forced-to-reinstate-broadband-grants-but-court-lets-us-scrap-race-criteria/",
-      "time": "2026-08-04T21:27:05.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "ArsTechnica",
-      "sourceColor": "#ff4e00",
-      "title": "Trump killed the Digital Equity Act, but US was forced to bring part of it back",
-      "description": "$1.25 billion program restored, but judge ruled race provision unconstitutional.",
-      "url": "https://arstechnica.com/tech-policy/2026/08/trump-forced-to-reinstate-broadband-grants-but-court-lets-us-scrap-race-criteria/",
-      "time": "2026-08-04T21:27:05.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "半导体设备ETF涨幅居前；8月ETF新发降温丨ETF晚报 - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608053832728258.html",
-      "time": "2026-08-04T21:23:18.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "自动驾驶系统安全要求国标发布 - 天津日报",
-      "description": "",
-      "url": "https://epaper.tianjinwe.com/tjrb/html/2026-08/05/content_143082_3706015.htm",
-      "time": "2026-08-04T21:18:31.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "自动驾驶系统安全要求国标发布 - epaper.tianjinwe.com",
-      "description": "",
-      "url": "https://epaper.tianjinwe.com/tjrb/html/2026-08/05/content_143082_3706015.htm",
-      "time": "2026-08-04T21:18:31.000Z",
-      "tags": [
-        "新能源/电动车",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Android Authority",
-      "sourceColor": "#a4c639",
-      "title": "Spider-Man movie fans say Samsung’s Galaxy product placement goes too far",
-      "description": "Fans are not happy about Spider-Man's newfound obsession with Galaxy devices.",
-      "url": "https://www.androidauthority.com/spider-man-galaxy-product-placement-3694591/",
-      "time": "2026-08-04T21:16:28.000Z",
-      "tags": [
-        "手机",
-        "软件应用",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "分析师电话会：AMD的CEO苏姿丰预计，数据中心销售将在2027年翻倍",
-      "description": "分析师电话会：AMD的CEO苏姿丰预计，数据中心销售将在2027年翻倍。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778695",
-      "time": "2026-08-04T21:14:13.000Z",
-      "tags": [
-        "芯片/半导体",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "SpaceX IPO後首份財報出爐 營收超預期 - 大纪元",
-      "description": "",
-      "url": "https://www.epochtimes.com/gb/26/8/4/n14823420.htm",
-      "time": "2026-08-04T21:09:00.000Z",
-      "tags": [
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "正式发布！自动驾驶强制国标落地！自动驾驶产品安全准入基线明确 - finance.sina.com.cn",
-      "description": "",
-      "url": "https://finance.sina.cn/2026-08-04/detail-inimcxxp2110270.d.html?vt=4&pos=108&his=0",
-      "time": "2026-08-04T21:08:05.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "TechCrunch",
-      "sourceColor": "#0f9d58",
-      "title": "SpaceX has bought $329M worth of Tesla Megapacks so far this year",
-      "description": "The purchase illustrates just how interconnected Elon Musk's universe of companies are.",
-      "url": "https://techcrunch.com/2026/08/04/spacex-has-bought-329m-worth-of-tesla-megapacks-so-far-this-year/",
-      "time": "2026-08-04T21:07:26.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "The Verge",
-      "sourceColor": "#e2127a",
-      "title": "AMD&#8217;s data center business is booming while gaming takes a backseat",
-      "description": "Driven by demand for AI capacity, AMD's data center revenue more than doubled year-over-year in its latest earnings report, reaching $6.7 billion. That's up from $5.8 billion in Q1, and jumping 107 percent from the $3.2 billion it reported for the same period a year ago. During Tuesday's earnings call, AMD CEO Lisa Su said the company expects \"data center segment revenue to more than double year-over-year in 2027,\" as well. At the same time, AMD's gaming revenue fell 31 percent compared to last year, to $779 million, as price hikes and component shortages slowed sales for the Xbox Series X / S, PS5, and Valve's Steam Deck. On a call after … Read the full story at The Verge.",
-      "url": "https://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen",
-      "time": "2026-08-04T20:57:49.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "游戏"
-      ]
-    },
-    {
-      "source": "The Verge",
-      "sourceColor": "#e2127a",
-      "title": "AMD&#8217;s datacenter business is booming while gaming takes a backseat",
-      "description": "Driven by demand for AI capacity, AMD's data center revenue more than doubled year-over-year in its latest earnings report, reaching $6.7 billion. That's up from $5.8 billion in Q1, and jumping 107 percent from the $3.2 billion it reported for the same period a year ago. At the same time, AMD's gaming revenue fell 31 percent compared to last year, to $779 million, as price hikes and component shortages slowed sales for the Xbox Series X / S, PS5, and Valve's Steam Deck. \"Revenue increased 50 percent year-over-year to a record $11.5 billion, driven by continued strength in our Data Center business, which represented 58% of company revenue i … Read the full story at The Verge.",
-      "url": "https://www.theverge.com/tech/975381/amd-q2-2026-earnings-ai-gaming-ryzen",
-      "time": "2026-08-04T20:57:49.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "游戏"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "【杂志微阅读】数智员工：大模型智能体赋能对公授信审计作业全流程的研究与实践 - 53AI",
-      "description": "",
-      "url": "https://www.53ai.com/news/shuziyuangong/2026080531504.html",
-      "time": "2026-08-04T20:55:18.000Z",
-      "tags": [
-        "人工智能",
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "消息称三星将为欧版、韩版 Galaxy Z Flip8 小折叠手机配备 Exynos 2600 芯片 - 新浪网",
-      "description": "",
-      "url": "https://tech.sina.cn/mobile/xp/2026-06-08/detail-iniaswmk8667514.d.html?oid=%EA%B5%AC%EA%B8%80%20%EB%B3%B4%EA%B8%89%20%EC%9C%A0%EB%8F%84(TG:e10838).pre&vt=4",
-      "time": "2026-08-04T20:53:53.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "消息称三星将为欧版、韩版 Galaxy Z Flip8 小折叠手机配备 Exynos 2600 芯片 - tech.sina.cn",
-      "description": "",
-      "url": "https://tech.sina.cn/mobile/xp/2026-06-08/detail-iniaswmk8667514.d.html?oid=%EA%B5%AC%EA%B8%80%20%EB%B3%B4%EA%B8%89%20%EC%9C%A0%EB%8F%84(TG:e10838).pre&vt=4",
-      "time": "2026-08-04T20:53:53.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "消息称三星将为欧版、韩版 Galaxy Z Flip8 小折叠手机配备 Exynos 2600 芯片 - 手机新浪网",
-      "description": "",
-      "url": "https://tech.sina.cn/mobile/xp/2026-06-08/detail-iniaswmk8667514.d.html?oid=%EA%B5%AC%EA%B8%80%20%EB%B3%B4%EA%B8%89%20%EC%9C%A0%EB%8F%84(TG:e10838).pre&vt=4",
-      "time": "2026-08-04T20:53:53.000Z",
-      "tags": [
-        "手机",
-        "芯片/半导体",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "快科技",
-      "sourceColor": "#ff6600",
-      "title": "90万亿Token才花了92万美元 DeepSeek V4 Flash火到掉线",
-      "description": "90万亿Token才花了92万美元 DeepSeek V4 Flash火到掉线：官方建议用别家的",
-      "url": "https://news.mydrivers.com/1/1141/1141384.htm",
-      "time": "2026-08-04 20:52",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "借助面向学术研究人员的 ChatGPT 加速科学发现 - OpenAI",
-      "description": "",
-      "url": "https://openai.com/zh-Hans-CN/index/chatgpt-for-academic-researchers/",
-      "time": "2026-08-04T20:51:55.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ],
-      "topic": true
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "Feature Engineering Trade-offs & Multi-Metric",
-      "description": "Adding manual signal features (Impact Severity, Energy Ratios) boosted Class 2 F1 score but caused metric drop in Class 0 & 1, decreasing total leaderboard performance. Root Causes Multicollinearity: Re-creating Peak-to-RMS ratio when** Crest Factor** was already present. - Dimensional Mismatch: Direct summation of unscaled velocity (mm/s) and acceleration (g). -** Outlier Explosion**: Division by small RMS values creating extreme data spikes. Metric Trade-off: Optimizing Key Learnings & Fixes Outlier Suppression: Apply logarithmic transformation (np.log1p) on raw ratio features to normalize distributions. Feature Stacking: Isolate noisy Class 2 features into a binary sub-model, injecting only its output probability (prob_class2) into the main classifier. Multi-Threshold Post-Processing: Use scipy.optimize.minimize (Nelder-Mead) on prediction probabilities to optimize overall multi-metric leaderboard score instead of manual feature hacking. Competition vs Engineering: Recognized that high leaderboard scores often rely on prior distribution alignment and post-processing hacks rather than pure signal domain analysis.",
-      "url": "https://dev.to/h4dis/feature-engineering-trade-offs-multi-metric-5473",
-      "time": "2026-08-04T20:49:58.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Hacker News",
-      "sourceColor": "#ff6600",
-      "title": "I am retiring from fulltime writing (& pseudonymity) to launch Guardian Angel",
-      "description": "https://twitter.com/willdepue/status/2084750925013434768, https://xcancel.com/willdepue/status/2084750925013434768 https://gwern.net/guardian-angel Comments URL: https://news.ycombinator.com/item?id=49174900 Points: 273 # Comments: 176",
-      "url": "https://twitter.com/gwern/status/2084739205071343837",
-      "time": "2026-08-04T20:48:17.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "海外研选 | 大摩：开放权重模型降低AI成本 杰文",
-      "description": "海外研选 | 大摩：开放权重模型降低AI成本 杰文斯悖论或令算力需求持续增长,推理,大摩,可靠性,杰文斯悖论,大语言模型",
-      "url": "https://www.163.com/dy/article/L3H1F8UL05198CJN.html",
-      "time": "2026-08-04 20:48",
-      "tags": [
-        "人工智能",
-        "AI芯片"
-      ]
-    },
-    {
-      "source": "The Verge",
-      "sourceColor": "#e2127a",
-      "title": "SpaceX made more revenue as an AI company than a space company",
-      "description": "SpaceX's AI revenue grew more than three times to $2.6 billion from the year before, mostly because of deals that the company made to provide compute to other AI companies, according to SpaceX's quarterly earnings. The AI division, which the company said in its documents to go public was the source of most of its value, lost $1.5 billion this quarter, slightly less than in the same quarter last year. SpaceX made deals with Anthropic in May and Google in June to provide compute to the other two AI companies, putting it in competition with other neoclouds such as CoreWeave. The increased presence in AI is also driving the company to spend mor … Read the full story at The Verge.",
-      "url": "https://www.theverge.com/science/975335/spacex-made-more-money-as-a-neocloud",
-      "time": "2026-08-04T20:47:55.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "The Verge",
-      "sourceColor": "#e2127a",
-      "title": "SpaceX has more neocloud revenue",
-      "description": "SpaceX's AI revenue grew more than three times to $2.6 billion from the year before, mostly because of deals that the company made to provide compute to other AI companies, according to SpaceX's quarterly earnings. The AI division, which the company said in its documents to go public was the source of most of its value, lost $1.5 billion this quarter, slightly less than in the same quarter last year. SpaceX made deals with Anthropic in May and Google in June to provide compute to the other two AI companies, putting it in competition with other neoclouds such as CoreWeave. The increased presence in AI is also driving the company to spend mor … Read the full story at The Verge.",
-      "url": "https://www.theverge.com/science/975335/spacex-made-more-money-as-a-neocloud",
-      "time": "2026-08-04T20:47:55.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "I built a 126-page site optimised to be quoted by LLMs. Here is everything I shipped.",
-      "description": "A static Astro site built around one question — what does a page need to look like for a language model to quote it accurately? Separating the parts that definitely work from the parts that are still a bet. I built a website for a self-published book series recently. Small niche, unknown author, no existing audience, no backlinks, no budget. The kind of site that would normally take two years to rank for anything and might never rank at all. So I built it for a different surface. Not \"rank #4 for a keyword\", but \"be the thing ChatGPT quotes when someone asks the question\". This post is the whole approach: 126 pages, what I actually shipped, and — more useful — an honest split between the parts I know work and the parts that are still an educated guess. I have no results yet. The site is days old, not months, and Bing currently lists it as \"discovered but not crawled\" — exactly what you would expect for a domain with zero inbound links. So treat this as a build log, not a case study. I would rather post the method now and be told what I got wrong than post a victory lap in six months. Search and LLM retrieval reward different things. A search engine ranks documents. It wants to hand you ten links and let you decide. Authority, links and freshness dominate, which is why a new domain is stuck: the signals it lacks are the signals that matter most. A language model answering a question is doing something closer to extraction. It needs a passage that answers the question cleanly, that it can lift without mangling, and that it can attribute to an entity it recognises. Authority still matters — but extractability is a real, separate axis, and it's one you can control completely on day one. That's the bet. Not that structure beats authority. That structure is the part a new site can actually compete on. Astro in static mode, deployed to Cloudflare Workers static assets. Content in markdown via Astro's content collections, with typed frontmatter schemas. 126 pages, all pre-rendered at build time. Exactly one dynamic endpoint (/api/geo, which preselects an Amazon storefront). Everything else is a file on Cloudflare's edge. The content splits into: 42 Learn articles across four topic pillars 60 glossary entries, one term each 5 FAQ pages 19 hub, book and utility pages Total JavaScript on a content page: near zero. The navigation menu, the FAQ accordions and the glossary search are all built on / or degrade to plain visible content. This matters more than it sounds — see the \"boring things\" section. Nothing here is novel. It's all just done properly, which is the entire point. Some crawlers execute JavaScript. Many don't, or do it on a delayed second pass, or budget it heavily. A static build sidesteps the question entirely. The bytes that arrive contain the content. If you take one thing from this post, take this one. It's unglamorous and it dominates everything else. Every Learn and FAQ page is a single question. The title is the question. The H1 is the question. The first thing after the H1 is a 40–70 word direct answer that stands alone with no surrounding context. --- question: \"What is investing, actually?\" pillar: \"investing\" answer: \"Investing is buying a share of something productive — companies, property, loans — in the hope it earns money over time. Unlike saving, the value moves, and it can move down. You are being paid, on average and over long periods, for accepting that uncertainty rather than for being clever.\" description: \"Investing means owning a share of something productive and accepting that its value moves. The return is payment for uncertainty, not for skill.\" --- The answer field is enforced by the content schema, so a page cannot ship without one. Then the article goes deep underneath. The self-contained bit is the discipline. \"As we saw above, this means…\" is useless when lifted out of context. Every answer has to survive being quoted with nothing around it. This is the piece I see done badly most often. Most sites emit disconnected JSON-LD blobs — an Article here, an Organization there, no relationship between them. Instead, every page emits one @graph where nodes reference each other by @id: { \"@context\": \"https://schema.org\", \"@graph\": [ { \"@type\": \"Person\", \"@id\": \"https://example.com/#author\", \"name\": \"…\", \"knowsAbout\": [\"personal finance\", \"saving\", \"investing\", \"debt\"], \"sameAs\": [\"https://www.amazon.com/stores/author/…\", \"…\"] }, { \"@type\": \"WebSite\", \"@id\": \"https://example.com/#website\", \"publisher\": { \"@id\": \"https://example.com/#author\" } }, { \"@type\": \"Article\", \"@id\": \"https://example.com/learn/x#article\", \"author\": { \"@id\": \"https://example.com/#author\" }, \"abstract\": \"the same 40-70 word answer\" } ] } The Person and WebSite nodes are emitted by one component on every single page, so the entity facts are byte-identical site-wide. Pages add their own nodes on top. There is no way for one page to describe the author differently from another, because there is only one place the description exists. sameAs is the highest-value line in the whole graph. It's what tells a search engine that the profile on one platform and the profile on another are one entity rather than three coincidences. The 60 glossary pages were originally reachable only from the glossary index. To a crawler that reads as \"peripheral\", and to a reader it means never encountering a definition at the moment they need it. So there's a component that scans the page's rendered text and links the glossary terms that genuinely appear in it: const hit = names.find((n) => { const safe = n.toLowerCase().replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&'); return new RegExp(`\\\\b${safe}s?\\\\b`).test(haystack); }); Whole-word matching, so \"share\" doesn't fire inside \"shareholder\". Capped at five per page. Two deliberate choices. Nothing is injected into the prose — automatic inline linking produces awkward anchors and text that reads as over-optimised. It's an honest list at the foot of the page instead. And the cap started at eight; I dropped it to five because a long block of machine-matched links looks machine-made even when every match is legitimate. A 68-line script that reads the built sitemap and pings Bing, Yandex and Seznam on deploy. Verification is a single static file at the site root containing your key. That's it — no dashboard, no registration. Google has no equivalent, but Bing's index feeds ChatGPT and Copilot, which makes it disproportionately worth the twenty minutes. These I cannot justify with evidence. I shipped them because the cost is near zero and the asymmetry is good. Be appropriately sceptical — I am. abstract on every Article node The same 40–70 word answer that appears in the visible HTML also goes into schema as abstract. Honest assessment: I have no evidence any model reads abstract specifically. The argument for shipping it is that the marginal cost is one line in a component and the field is already in the visible text, so there's no cloaking risk and nothing to keep in sync. If it does nothing, it cost nothing. llms.txt A markdown file at the site root stating the plain facts about the entity, what each section is for, and the canonical URLs. Honest assessment: this is a proposed convention, not a standard. I'm not aware of evidence that major crawlers consume it today. It costs one file. The genuine side benefit is that writing it forces you to state, in one page, what your site actually claims to be — which surfaced two inconsistencies in my own copy. robots.txt This one is a deliberate inversion of the usual advice: User-agent: * Content-Signal: ai-train=yes, search=yes, ai-input=yes Allow: / Plus explicit Allow blocks for GPTBot, ClaudeBot, PerplexityBot, CCBot, Google-Extended and the rest. Most sites are busy blocking these. For an established publisher with traffic to protect, blocking is a coherent position. For an unknown author, absence from AI answers is a far bigger risk than inclusion in them. The calculus is genuinely different depending on who you are, and I think a lot of people are copying the default without doing that arithmetic. Two things worth knowing if you go this route: Edge rules are enforced before robots.txt is ever fetched. Your CDN's bot-protection settings can silently override every Allow: line you wrote. Your repo says one thing, your edge does another, and you have no idea. And some CDNs will manage robots.txt for you. If # BEGIN Cloudflare Managed content appears in the served file, it isn't yours any more. Diff what's served against what's in your repo, not what you think you deployed. Both are specific to Workers static assets, and neither is obvious from the docs. Redirects in Worker code never fire for files that exist. A request matching a static asset is served at the edge without invoking your script at all. I wrote a www → apex redirect in the Worker and it was dead code from the moment I shipped it — it only ran for URLs that didn't resolve to a file, which is to say never, for any real page. Host-level redirects belong in a Redirect Rule, which runs earlier in the pipeline. A wildcard route will eat your subdomains. This one cost a full day. I had *.example.com/* on the Worker. Later I put 60 video files in R2 behind media.example.com. Every single one returned 404. The bucket was fine. The files were fine, correct content types, correct sizes. The custom domain showed Active. The problem was that Worker routes take precedence over R2 custom domains, so the Worker was answering, finding no matching file, and serving the website's own 404 page. The tell was that the 404 was mine — my styling, my copy — on a URL that had nothing to do with the site. If you ever see your own error page on a subdomain that shouldn't be serving HTML at all, check your Worker routes before you touch anything else. I spent hours debugging a service that was working perfectly. If you have a new site and no authority, in order: Ship server-rendered HTML. Everything else is a rounding error next to this. One question per page, answered in the first 70 words, self-contained. One entity graph with @id references, emitted from one component, identical everywhere. Fill in sameAs. It's the cheapest strong signal available. Link internally based on what your text actually says, not on a keyword map. Then worry about the speculative stuff. Items 1–5 are just doing the fundamentals properly. If the LLM-extraction thesis turns out to be overblown, that work still pays off through ordinary search. That's the main reason I'd defend this approach even if the premise is wrong — the downside case is \"you built a well-structured site.\" Whether any of Part 2 does anything. Whether question-first structure measurably improves citation rates versus simply being a good page. Whether llms.txt will be a standard in a year or a footnote. I'll post numbers when I have them. If you've measured any of this properly, I'd genuinely like to hear it — particularly if you've found the structural stuff makes no difference and it really is authority all the way down. The site is edmundwarde.com if you want to look at the implementation. View source on any Learn page; the graph is all there.",
-      "url": "https://dev.to/lucian_tudor_303e1e12b9e5/i-built-a-126-page-site-optimised-to-be-quoted-by-llms-here-is-everything-i-shipped-38lp",
-      "time": "2026-08-04T20:46:14.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "Dev.to",
-      "sourceColor": "#4b3e99",
-      "title": "We measured the public security posture of 6,289 launched web apps. 76% ship without a Content-Security-Policy.",
-      "description": "We run a directory of launched software (web apps, SaaS, AI tools) and every listing gets the same deterministic 7-frame benchmark. No LLM in the scoring path, public surface only: the headers and policies a browser sees before you ever sign in. Across 6,289 launched products, here is the security baseline as measured on August 4, 2026: 76% ship with no Content-Security-Policy. CSP is the browser's front line against injected scripts (XSS). 39% have no Strict-Transport-Security header, leaving a window for protocol-downgrade attacks. 35% have no schema.org markup, which makes them invisible to AI answer engines and rich search results. 34% have no privacy policy reachable at a standard path. 33% fire non-essential trackers before any consent. 15% return \"200 OK\" for pages that don't exist, which confuses crawlers and hides broken links. Only 18% pass 6 or more of the 7 checks. 2% pass one or none. By category, no group escapes it: business and finance is lowest at 72%, AI and agent tools sit at 79%, and the rest fall in between. Shipping fast is universal; shipping with headers is not. One hopeful number: of the 2,405 tools we re-tested over the last 100 days, 65% improved, by an average of 2.6 points. These are mostly one-line fixes, and people do make them once they can see them. Method notes: every product in the sample is listed publicly, the full list is browsable, and every number is reproducible against the live report. We measure the public surface only, so this is a floor, not a full audit. The catalog grows daily, so the report carries the date it was generated: these figures are as of August 4, 2026. Full report with the complete sample and per-check breakdowns: https://legit.show/reports/web-security-baseline-2026",
-      "url": "https://dev.to/quantumadopter/we-measured-the-public-security-posture-of-6289-launched-web-apps-76-ship-without-a-p5m",
-      "time": "2026-08-04T20:44:48.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "Lobsters",
-      "sourceColor": "#b22222",
-      "title": "nixpkgs has a due-process problem",
-      "description": "Comments",
-      "url": "https://domenkozar.com/2026/08/04/nixpkgs-has-a-due-process-problem/",
-      "time": "2026-08-04T20:44:08.000Z",
-      "tags": []
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "比特币刚刚突破64000美元，现报64044.60美元，",
-      "description": "比特币刚刚突破64000美元，现报64044.60美元，日内涨幅0.55%,比特币",
-      "url": "https://www.163.com/dy/article/L3H17AMQ0512B07B.html",
-      "time": "2026-08-04 20:44",
-      "tags": [
-        "区块链/Web3"
-      ]
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "分析师电话会：马斯克说，SpaceX公司将在下一次星舰飞行中把首批V3版星链卫星送入轨道。星链V3卫星的能力比V2高出一个数量级，SpaceX预计发射的V3卫星数量将比V2...",
-      "description": "分析师电话会：马斯克说，SpaceX公司将在下一次星舰飞行中把首批V3版星链卫星送入轨道。星链V3卫星的能力比V2高出一个数量级，SpaceX预计发射的V3卫星数量将比V2多一个数量级。星链在10年内为全球大部分地区提供互联网服务“并非不可能”。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3778694",
-      "time": "2026-08-04T20:40:54.000Z",
-      "tags": [
-        "互联网",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "魅视科技：磷化铟半导体材料业务对公司经营业绩未产生实质性影响 - 东方财富",
-      "description": "",
-      "url": "https://emwap.eastmoney.com/a/202608053832737872.html",
-      "time": "2026-08-04T20:40:16.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     }
   ]
 }
