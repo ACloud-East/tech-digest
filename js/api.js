@@ -407,13 +407,15 @@ const API = {
                 shardsResolve();
             })();
 
-            // 赛跑：分片先到且凑够 → 立刻返回（节省时间，整文件后台跑完会被丢弃）
+            // 赛跑：先凑够者胜出；都没凑够则等双方都结束，取较多者。
             const winner = await Promise.race([
                 shardsDone.then(() => enough(shardsResult && shardsResult.length) ? 'shards' : null),
                 wholeDone.then(() => enough(wholeResult && wholeResult.length) ? 'whole' : null),
             ]);
             if (winner === 'shards') return { articles: shardsResult, updateTime: (manifest && manifest.updateTime) || '' };
-            await wholeDone;
+            if (winner === 'whole') return { articles: wholeResult, updateTime: (manifest && manifest.updateTime) || '' };
+            // 双方都还没凑够：等两路都跑完，再选较长的（避免一方已结束、另一方还在跑就提前返回不完整数据）
+            await Promise.all([wholeDone, shardsDone]);
 
             if (enough(wholeResult && wholeResult.length)) {
                 return { articles: wholeResult, updateTime: (manifest && manifest.updateTime) || '' };
