@@ -460,8 +460,14 @@ const app = createApp({
             return blocks;
         }
 
-        // 将原文抽到的图片地址改写为「经本站代理」的 URL，绕过防盗链，使配图稳定显示
+        // 将原文抽到的图片地址改写为「经本站代理」的 URL，绕过防盗链，使配图稳定显示。
+        // 注意：AI 生成插图（通义万相/OpenAI）返回的是 data:image/png;base64,... 内联数据，
+        // 不能再走代理（代理只接受 http/https，且 data URI 体积极大、编码后代理会爆），
+        // 必须直接交给 <img src> / Word 导出使用；其它非 http(s) 协议也直接透传。
         function proxiedImageUrl(u) {
+            if (!u) return u;
+            if (/^data:/i.test(u)) return u;
+            if (!/^https?:\/\//i.test(u)) return u;
             try { return '/api/img-proxy?u=' + encodeURIComponent(u); } catch (_) { return u; }
         }
 

@@ -60,7 +60,7 @@ const AIGenerator = {
             stream: true,
         };
         // 把干净的原文一并带给服务端事实护栏（避免从 prompt 里反解原文导致误判）
-        if (form.content && form.content.trim()) body.content = form.content.trim();
+        if (form.content && form.content.trim()) body.content = this._cleanParseText(form.content.trim());
         // 社媒平台标记：让云端事实护栏在纠正时保留小红书/微博语气，而非抹平为新闻稿
         if (form.platform) body.platform = form.platform;
         if (form.sources && form.sources.trim()) {
@@ -1449,7 +1449,7 @@ const AIGenerator = {
             if (form.content.trim().replace(/\s+/g, '').length < 120) {
                 p += `注意：原文信息很少（可能只是一句评价或短讯），请据此写一条简短笔记即可，绝不要把原文没有的参数、成绩或细节补进去。`;
             }
-            p += `\n${form.content.trim().slice(0, 2500)}\n`;
+            p += `\n${this._cleanParseText(form.content.trim()).slice(0, 2500)}\n`;
         } else if (form.keywords) {
             p += `\n可围绕这些关键词展开：${form.keywords}\n`;
         }
@@ -1474,7 +1474,7 @@ const AIGenerator = {
             if (form.content.trim().replace(/\s+/g, '').length < 120) {
                 p += `注意：素材信息很少，请据此写一条简短爆料即可，绝不要把原文没有的细节补进去。`;
             }
-            p += `\n${form.content.trim().slice(0, 2500)}\n`;
+            p += `\n${this._cleanParseText(form.content.trim()).slice(0, 2500)}\n`;
         } else if (form.keywords) {
             p += `\n可围绕这些关键词展开：${form.keywords}\n`;
         }
@@ -1574,9 +1574,9 @@ const AIGenerator = {
 
         if (form.content && form.content.length > 50) {
             if (isEnglish) {
-                prompt += `\nBelow is YOUR OWN draft (the MAIN SUBJECT). Treat it as the spine of the article — rewrite it in a natural, human-editor voice, keeping its core facts, opinions and narrative flow. Do NOT just chop it up and pad with generic filler.\nFORBIDDEN: hollow openers ("In today's...", "With the rapid development of..."), template phrases ("First... Second... Finally", "In conclusion", "It is worth mentioning"), and mechanically breaking it into one-line bullet points. Write like a real columnist with natural transitions; never invent facts.\nABSOLUTELY NO FABRICATION: use ONLY the facts explicitly stated in the SOURCE above. Do NOT add any specs, model numbers, processor/chip names, interface versions (e.g. HDMI 1.4/2.0/2.1, USB versions), screen resolution/pixel counts, battery life, precise release dates, firmware features, or codec names from your own memory. If the source says "next month", write "next month" — do not infer a specific date. If the source omits the processor or screen, omit them too; never fill gaps with specs from similar products you know. Use exactly what the source gives, no more — adding even one spec not in the source is a failure.\nCOVERAGE RULE: the source may contain multiple sections (e.g. intro, sensor, recording specs, autofocus/stabilization, handling/expansion, software/ecosystem, pricing/availability). You MUST cover every major section of the source — do not stop after the first half or only expand one or two points.\nDraft:\n${form.content.substring(0, 16000)}\n`;
+                prompt += `\nBelow is YOUR OWN draft (the MAIN SUBJECT). Treat it as the spine of the article — rewrite it in a natural, human-editor voice, keeping its core facts, opinions and narrative flow. Do NOT just chop it up and pad with generic filler.\nFORBIDDEN: hollow openers ("In today's...", "With the rapid development of..."), template phrases ("First... Second... Finally", "In conclusion", "It is worth mentioning"), and mechanically breaking it into one-line bullet points. Write like a real columnist with natural transitions; never invent facts.\nABSOLUTELY NO FABRICATION: use ONLY the facts explicitly stated in the SOURCE above. Do NOT add any specs, model numbers, processor/chip names, interface versions (e.g. HDMI 1.4/2.0/2.1, USB versions), screen resolution/pixel counts, battery life, precise release dates, firmware features, or codec names from your own memory. If the source says "next month", write "next month" — do not infer a specific date. If the source omits the processor or screen, omit them too; never fill gaps with specs from similar products you know. Use exactly what the source gives, no more — adding even one spec not in the source is a failure.\nCOVERAGE RULE: the source may contain multiple sections (e.g. intro, sensor, recording specs, autofocus/stabilization, handling/expansion, software/ecosystem, pricing/availability). You MUST cover every major section of the source — do not stop after the first half or only expand one or two points.\nDraft:\n${this._cleanParseText(form.content).substring(0, 16000)}\n`;
             } else {
-                prompt += `\n以下是**你自己写的主体草稿（核心素材）**，请把它当作文章的骨架：用自然、像真人编辑一样的口吻重写，保留原文的核心事实、观点与叙事脉络，不要丢点、不要臆造。\n【严禁 AI 套话】禁止以下写法：用「在当今……」「随着……的快速发展」「近年来……」等空泛开场；用「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」等模板词；把原文硬拆成要点罗列、每段只用一两句空话填字数。要像专栏随笔/真实媒体成稿，有起承转合、过渡自然。\n【覆盖要求】原文通常包含多个章节（如引言/发布背景、核心参数、传感器与画质、对焦与防抖、操控与扩展、配套软件/生态、价格与上市时间等）。你必须覆盖原文的**每一个主要章节**，不要只写前半部分，也不要只挑其中一两点展开。\n草稿正文：\n${form.content.substring(0, 16000)}\n`;
+                prompt += `\n以下是**你自己写的主体草稿（核心素材）**，请把它当作文章的骨架：用自然、像真人编辑一样的口吻重写，保留原文的核心事实、观点与叙事脉络，不要丢点、不要臆造。\n【严禁 AI 套话】禁止以下写法：用「在当今……」「随着……的快速发展」「近年来……」等空泛开场；用「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」等模板词；把原文硬拆成要点罗列、每段只用一两句空话填字数。要像专栏随笔/真实媒体成稿，有起承转合、过渡自然。\n【覆盖要求】原文通常包含多个章节（如引言/发布背景、核心参数、传感器与画质、对焦与防抖、操控与扩展、配套软件/生态、价格与上市时间等）。你必须覆盖原文的**每一个主要章节**，不要只写前半部分，也不要只挑其中一两点展开。\n草稿正文：\n${this._cleanParseText(form.content).substring(0, 16000)}\n`;
             }
         }
 
