@@ -231,12 +231,14 @@ const API = {
         const LIVE_MS = 18000;   // /api/news：服务端整体预算 12s、冷启动可能到 ~18s，给 18s 余量即止。
                                  // 实测实时接口常因上游 RSS 慢源拖到 7~13s，过长会让进度条卡在「实时抓取」阶段；
                                  // 实时数据体小、非必需，宁可快速超时回退到历史归档，也不阻塞看板主体。
-        // 归档各路超时（已收紧）：整条归档链路最坏情况必须在「看门狗」之前 resolve，
-        // 否则无痕等弱网环境会卡到看门狗触发 → 白屏「暂无资讯」。
-        const FUNCTION_MS = 60000; // /api/archive Function 代理：12MB 经服务端流式返回，正常 2~5s；
-                                   // 弱网/冷启动可能到几十秒，给 60s 余量；超时就回退分片/整文件。
-        const PART_MS = 10000;     // 单个分片：静态小文件正常 <1s；无痕等静态被掐的环境会很快失败，不重试拖时间
-        const WHOLE_MS = 25000;    // 整文件兜底：流式 + 普通 fetch 各 25s
+        // 归档各路超时（已收紧）：整条归档链路最坏 ~60s、典型 3~8s，远在看门狗 150s 之前。
+        // 关键调整：全部改用「标准 fetch + resp.json()」，不再用 getReader 流式读取——
+        // 不同浏览器对流式 gzip 分块响应的处理有差异（Edge 尤其不稳，会拖到超时），
+        // 标准 json() 由浏览器在 fetch 层统一解压，是跨浏览器最稳的通路。
+        const ARCHIVE_SHARD_MS = 15000; // 单个 Function 分片 ~1.6MB，正常 <1s；15s 足够，失败快速放弃并重试 1 次
+        const ARCHIVE_WHOLE_MS = 20000; // Function 整文件 9.7MB：并行兜底，20s 不到即放弃
+        const PART_MS = 15000;          // 静态分片（备用路径）
+        const WHOLE_MS = 20000;         // 静态整文件兜底
 
         // ---- 进度状态机：实时抓取(小/快) 与 历史归档(大/慢) 并行，各自回报，合成统一进度 ----
         const prog = { liveDone: false, archStarted: false, archLoaded: 0, archTotal: 0, archKnown: false, merging: false };
@@ -300,11 +302,10 @@ const API = {
         })();
 
         // 3) 历史语料库（用户长期搜集的 news.json，必须完整保留）。
-        //    加载顺序（容错递进）：
-        //    A) /api/archive —— 经 Cloudflare Function 服务端代理读取归档，绕过「浏览器直连静态大文件被中断」
-        //       的问题（与能正常工作的 /api/news 同一条通路），最稳；
-        //    B) 分片归档 data/news-parts/ —— 静态小文件并行加载，单片失败重试 3 次；
-        //    C) 整文件 data/news.json —— 流式 + 普通 fetch 两层兜底。
+        //    设计：全部走「标准 fetch + resp.json()」（不用 getReader 流式，跨浏览器最稳），
+        //    超时收紧（分片 15s / 整包 20s），并发贴合浏览器同源上限（6），单片最多重试 1 次。
+        //    整文件 Function 与 分片 并行赛跑，谁先凑够 90% 用谁；进度按「分片完成数 N/8」
+        //    单调累加，绝不回退。整条链路最坏 ~60s、典型 3~8s，远在看门狗 150s 之前。
         const archiveTask = (async () => {
             // 等 meta（最多 500ms，不阻塞首屏）
             await Promise.race([metaTask, new Promise(r => setTimeout(r, 500))]);
@@ -322,82 +323,58 @@ const API = {
                 } catch (e) { console.warn('静态清单读取失败:', e.message); }
             }
             const expectedTotal = (manifest && manifest.total) || 0;
-            const partSizes = (manifest && Array.isArray(manifest.sizes)) ? manifest.sizes : null;
             const parts = (manifest && Array.isArray(manifest.parts)) ? manifest.parts : [];
-            const haveBytes = parts.length > 0 && partSizes && partSizes.length === parts.length;
-            const totalShardBytes = haveBytes ? partSizes.reduce((a, b) => a + b, 0) : 0;
-            // 完整度阈值：达到 90% 才算成功；否则视为「加载不完整」（无痕/Edge 常被打断成几百篇）
+            // 完整度阈值：达到 90% 才算成功；否则视为「加载不完整」，继续用另一路兜底
             const enough = (n) => n >= Math.max(100, (expectedTotal || n) * 0.9);
 
-            // 进度：整文件与分片各自累积字节；显示取「已下载比例更高」者。
-            // 各自单调递增 + 比例也单调，切换显示时百分比不会回退，彻底解决 Chrome「进度倒退」。
-            prog.archStarted = true; prog.archIsParts = !!totalShardBytes; prog.archIsByte = haveBytes;
-            prog.archKnown = !!totalShardBytes; prog.archLoaded = 0; prog.archTotal = totalShardBytes || 0;
+            // 进度：按「已完成的片数」单调累加（N/8），失败也算完成推进，绝不停滞、绝不回退。
+            prog.archStarted = true; prog.archIsParts = !!parts.length; prog.archIsByte = false;
+            prog.archKnown = !!parts.length; prog.archLoaded = 0; prog.archTotal = parts.length || 1;
             emit();
-            let _wholeLoaded = 0, _wholeTotal = 0;
-            const _perShard = new Array(parts.length).fill(0);
-            let _shardLoaded = 0;
-            const updateDisplay = () => {
-                const wholeFrac = _wholeTotal > 0 ? _wholeLoaded / _wholeTotal : -1;
-                const shardFrac = totalShardBytes > 0 ? _shardLoaded / totalShardBytes : -1;
-                if (wholeFrac >= shardFrac && _wholeTotal > 0) {
-                    prog.archIsParts = false; prog.archTotal = _wholeTotal; prog.archLoaded = _wholeLoaded; prog.archKnown = true;
-                } else if (totalShardBytes > 0) {
-                    prog.archIsParts = true; prog.archIsByte = haveBytes; prog.archTotal = totalShardBytes; prog.archLoaded = _shardLoaded; prog.archKnown = true;
-                }
+            let _shardDone = 0;
+            const bumpShardDone = () => {
+                _shardDone++;
+                prog.archLoaded = Math.min(_shardDone, parts.length || 1);
+                prog.archTotal = parts.length || 1;
+                prog.archKnown = true; prog.archIsParts = true; prog.archIsByte = false;
                 emit();
             };
-            const bumpWhole = (loaded, total) => {
-                if (total && total > _wholeTotal) _wholeTotal = total;
-                if (loaded > _wholeLoaded) _wholeLoaded = loaded;
-                updateDisplay();
-            };
-            const bumpShard = (idx, loaded) => {
-                _perShard[idx] = loaded;
-                let s = 0; for (let k = 0; k < _perShard.length; k++) s += _perShard[k] || 0;
-                _shardLoaded = s;
-                updateDisplay();
-            };
 
-            // ── A) 整文件 Function（基线，最稳，始终在跑） ──
+            // ── A) 整文件 Function（并行兜底；标准 fetch+json，最稳） ──
             let wholeResult = null;
             let wholeResolve;
             const wholeDone = new Promise(r => { wholeResolve = r; });
             (async () => {
                 try {
-                    const data = await this.streamFetchJSON('/api/archive', FUNCTION_MS, bumpWhole, expectedSize);
+                    const data = await this.fetchJSON('/api/archive', ARCHIVE_WHOLE_MS);
                     if (data && Array.isArray(data.articles) && data.articles.length) wholeResult = data.articles;
                 } catch (e) { console.warn('整文件 Function 读取失败:', e.message); }
                 wholeResolve();
             })();
 
-            // ── B) Function 分片（快路径；并发 4——不超浏览器同源连接上限 6，Edge/Chrome 都稳） ──
+            // ── B) Function 分片（快路径）：并发 6（贴合浏览器同源连接上限），单片超时 15s、重试 1 次 ──
             let shardsResult = null;
             let shardsResolve;
             const shardsDone = new Promise(r => { shardsResolve = r; });
             (async () => {
                 if (!parts.length) { shardsResolve(); return; }
-                const concurrency = 4;
+                const concurrency = 6;
                 const collected = new Array(parts.length).fill(null);
                 let cursor = 0;
                 const loadOne = async (idx) => {
                     const name = parts[idx];
-                    const sizeExp = haveBytes ? partSizes[idx] : 0;
-                    const onProg = haveBytes ? (loaded) => bumpShard(idx, loaded) : null;
                     let lastErr;
-                    for (let attempt = 0; attempt < 3; attempt++) {
+                    for (let attempt = 0; attempt < 2; attempt++) { // 最多 2 次（含首次）
                         try {
-                            const arr = await this.streamFetchJSON(
-                                `/api/archive?part=${encodeURIComponent(name)}`,
-                                FUNCTION_MS, onProg, sizeExp, true
-                            );
+                            const arr = await this.fetchJSON(`/api/archive?part=${encodeURIComponent(name)}`, ARCHIVE_SHARD_MS);
                             collected[idx] = Array.isArray(arr) ? arr : (arr && arr.articles) || [];
-                            bumpShard(idx, haveBytes ? sizeExp : 1); // 完成：按大小占满（或计数 +1）
+                            bumpShardDone();
                             return;
-                        } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 250 * (attempt + 1))); }
+                        } catch (e) { lastErr = e; await new Promise(r => setTimeout(r, 200)); }
                     }
-                    console.warn('Function 分片失败(已重试3次):', name, lastErr && lastErr.message);
+                    console.warn('Function 分片失败(已重试1次):', name, lastErr && lastErr.message);
                     collected[idx] = [];
+                    bumpShardDone(); // 失败也算「完成」，进度照常推进，不停滞
                 };
                 const workers = Array.from({ length: concurrency }, async () => {
                     while (true) { const i = cursor++; if (i >= parts.length) break; await loadOne(i); }
@@ -407,7 +384,7 @@ const API = {
                 shardsResolve();
             })();
 
-            // 赛跑：先凑够者胜出；都没凑够则等双方都结束，取较多者。
+            // 赛跑：先凑够者胜出；都没凑够则等两路都结束，取较多者。
             const winner = await Promise.race([
                 shardsDone.then(() => enough(shardsResult && shardsResult.length) ? 'shards' : null),
                 wholeDone.then(() => enough(wholeResult && wholeResult.length) ? 'whole' : null),
@@ -427,16 +404,31 @@ const API = {
             const cands = [wholeResult, shardsResult].filter(a => a && a.length).sort((a, b) => b.length - a.length);
             if (cands.length) return { articles: cands[0], updateTime: (manifest && manifest.updateTime) || '' };
 
-            // ── C) 静态兜底（Function 全挂时） ──
+            // ── C) 静态兜底（Function 全挂时）：静态分片 → 静态整文件 ──
             try {
-                const data = await this.streamFetchJSON('data/news.json', WHOLE_MS, bumpWhole, expectedSize);
-                if (data && Array.isArray(data.articles) && data.articles.length) {
-                    return { articles: data.articles, updateTime: data.updateTime || '' };
+                if (parts.length) {
+                    const concurrency = 6;
+                    const collected = new Array(parts.length).fill(null);
+                    let cursor = 0;
+                    const loadOne = async (idx) => {
+                        const name = parts[idx];
+                        for (let attempt = 0; attempt < 2; attempt++) {
+                            try { collected[idx] = await this.fetchJSON(`data/news-parts/${name}`, PART_MS); return; }
+                            catch (_) { await new Promise(r => setTimeout(r, 200)); }
+                        }
+                        collected[idx] = [];
+                    };
+                    const workers = Array.from({ length: concurrency }, async () => {
+                        while (true) { const i = cursor++; if (i >= parts.length) break; await loadOne(i); }
+                    });
+                    await Promise.all(workers);
+                    const articles = collected.flat();
+                    if (articles.length) return { articles, updateTime: (manifest && manifest.updateTime) || '' };
                 }
-            } catch (e) { console.warn('静态整文件流式失败:', e.message); }
+            } catch (e) { console.warn('静态分片失败:', e.message); }
             try {
                 const r = await this.fetchJSON('data/news.json', WHOLE_MS);
-                if (r && Array.isArray(r.articles)) return { articles: r.articles, updateTime: r.updateTime || '' };
+                if (r && Array.isArray(r.articles) && r.articles.length) return { articles: r.articles, updateTime: r.updateTime || '' };
             } catch (e) { console.warn('静态整文件 fetch 失败:', e.message); }
             return null;
         })();
