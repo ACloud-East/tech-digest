@@ -117,7 +117,9 @@ const API = {
         // 让卡死的连接快速失败并换新连接，绝不无限等待。
         const STALL_MS = 8000;
         try {
-            const resp = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+            // cache:'default'：尊重 _headers 里 /data/news-chunks/* 的 max-age，让版本化分片 URL
+            // 被浏览器与 CF 边缘缓存（重复访问秒开）；重试时带唯一 ?_= 的 URL 不受影响仍走新边缘。
+            const resp = await fetch(url, { cache: 'default', signal: ctrl.signal });
             if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
             // useExpected=true 时忽略服务端 Content-Length，改用预期大小（如分片的未压缩字节数），
             // 避免「服务端已 gzip 压缩」导致 Content-Length 是压缩后大小、而 reader 拿到解压后字节的错位。
@@ -318,6 +320,7 @@ const API = {
                         } else {
                             label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}`;
                         }
+                        if (prog.archRetrying) label += `（已自动重试 ${prog.archRetrying} 次，正在换连接续传）`;
                     } else {
                         label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}`;
                     }
@@ -375,50 +378,81 @@ const API = {
         //    不会像 9.4MB 整段卡死；每下一片就存 Cache Storage；已下的块跨重启/重开浏览器不丢，
         //    下次从断点续传。多窗口共享同一份块缓存、各自认领未下块，自然并行填满。
         //    进度用 manifest.sizes 真实字节数，单调累加，不再有"模拟90%假死"。
+        // 分片数据可能是裸数组 [{...}]（生产静态分片）或包裹格式 {articles:[...]}（/api/archive）。
+        // 统一归一化，避免「下成功了却因形状不符被判失败、空转重试」导致只回退到实时 640 篇。
+        const toArticles = (data) => {
+            if (!data) return [];
+            if (Array.isArray(data)) return data;
+            if (Array.isArray(data.articles)) return data.articles;
+            return [];
+        };
         const readChunksArchive = async (need) => {
             let articles = [];
             // 扫描到 80（上限，容错中间断层）：已下载块可能不连续
             for (let i = 0; i < 80; i++) {
                 const c = await this.getChunkCache(i);
-                if (c && c.articles) articles.push(...c.articles);
+                const a = toArticles(c);
+                if (a.length) articles.push(...a);
             }
             if (articles.length >= (need || 1)) return { articles, updateTime: '' };
             return null;
         };
         const downloadChunks = async () => {
-            const manifest = await this.fetchJSON('data/news-chunks/manifest.json', 15000);
+            // manifest 极小但决定整批版本：每次都带 ?_= 强制取最新，避免重新部署数据后还读旧的 updateTime
+            const manifest = await this.fetchJSON('data/news-chunks/manifest.json?_=' + Date.now(), 15000);
             if (!manifest || !Array.isArray(manifest.chunks)) throw new Error('分块清单缺失');
             const names = manifest.chunks, sizes = manifest.sizes;
             const totalBytes = sizes.reduce((a, b) => a + b, 0);
-            // 先统计已缓存块的字节，作为进度起点
+            // 数据随部署更新，用 updateTime 做版本号：同一份数据 URL 稳定 → 浏览器/CF 边缘可长期缓存；
+            // 重新部署数据后 updateTime 变化 → URL 变化 → 自动取新数据。彻底去掉「每片都 ?_= 绕缓存」的浪费。
+            const ver = (manifest.updateTime || '').replace(/[^0-9]/g, '').slice(0, 14);
+            const verQ = ver ? ('?v=' + ver) : '';
+            const collected = new Array(names.length).fill(null);
             const done = new Array(names.length).fill(false);
             let loadedBytes = 0;
+            // 先统计已缓存块（跨重启/重开浏览器不丢），作为进度起点 + 瞬间首屏
             for (let i = 0; i < names.length; i++) {
                 const c = await this.getChunkCache(i);
-                if (c && c.articles) { done[i] = true; loadedBytes += sizes[i]; }
+                const a = toArticles(c);
+                if (a.length) { done[i] = true; collected[i] = a; loadedBytes += sizes[i]; }
             }
             prog.archStarted = true; prog.archIsParts = true; prog.archIsByte = true; prog.archKnown = true;
             prog.archTotal = totalBytes; prog.archLoaded = loadedBytes; emit();
-            const touch = () => { prog.archLoaded = loadedBytes; emit(); };
-
-            const collected = new Array(names.length).fill(null);
+            const touch = () => { prog.archLoaded = Math.min(loadedBytes, totalBytes); emit(); };
+            // 并发 2：在「单连接互不拖累」与「重叠等待隐藏延迟」间取平衡；配合 8s 流 stall 检测，
+            // 假死连接会快速失败并换新边缘，不会像旧版那样多个窗口一起 0B 死等。
             const concurrency = 2;
             let cursor = 0;
             const workers = Array.from({ length: concurrency }, async () => {
                 while (true) {
                     const i = cursor++; if (i >= names.length) break;
-                    if (done[i]) { collected[i] = (await this.getChunkCache(i)).articles; continue; }
+                    if (done[i]) continue;
                     let ok = false;
-                    for (let at = 0; at < 3 && !ok; at++) {
+                    // 每块最多重试 6 次；首次用稳定版本 URL（可走缓存），仅重试加 ?_= 换 CF 边缘/连接。
+                    for (let at = 0; at < 6 && !ok; at++) {
+                        let chunkLoaded = 0;
                         try {
-                            const arr = await this.fetchJSON('data/news-chunks/' + names[i], 45000, 'default');
-                            if (arr && Array.isArray(arr.articles)) {
-                                collected[i] = arr.articles; await this.setChunkCache(i, arr);
-                                done[i] = true; loadedBytes += sizes[i]; touch(); ok = true;
+                            const url = 'data/news-chunks/' + names[i] + (at === 0 ? verQ : (verQ + '&_=' + Date.now() + '_' + at));
+                            // streamFetchJSON：边下边回报字节 + 8s 无数据即掐断换新连接 → 进度条持续前进、绝不卡死。
+                            const arr = await this.streamFetchJSON(url, 20000, (ld) => {
+                                const delta = ld - chunkLoaded; chunkLoaded = ld; loadedBytes += delta; touch();
+                            }, sizes[i], true);
+                            const list = toArticles(arr);
+                            if (arr && list.length) {
+                                collected[i] = list;
+                                await this.setChunkCache(i, { articles: list });
+                                done[i] = true;
+                                loadedBytes += (sizes[i] - chunkLoaded); touch(); // 补齐本片剩余字节
+                                ok = true;
                             }
-                        } catch (e) { console.warn(`[chunk ${i}] 第${at + 1}次失败:`, e.message); await new Promise(r => setTimeout(r, 300)); }
+                        } catch (e) {
+                            loadedBytes -= chunkLoaded; chunkLoaded = 0; // 回滚本片已计字节，避免进度虚高
+                            prog.archRetrying = (prog.archRetrying || 0) + 1; emit();
+                            console.warn(`[chunk ${i}] 第${at + 1}次失败，换连接重试:`, e.message);
+                            await new Promise(r => setTimeout(r, 300));
+                        }
                     }
-                    if (!ok) console.warn(`[chunk ${i}] 三次均失败，留待下次/刷新续传`);
+                    if (!ok) console.warn(`[chunk ${i}] 多次失败，留待下次/刷新续传`);
                 }
             });
             await Promise.all(workers);
@@ -439,9 +473,7 @@ const API = {
                 console.warn(`[archive] 分块缓存已齐 ${cached.articles.length} 篇，秒开`);
                 return { articles: cached.articles, updateTime: cached.updateTime || '' };
             }
-            // ── 下载：分块主路径（可靠/续传）+ 整文件并行兜底（好网络秒出）──
-            let wholeP = this.fetchJSON('/api/archive', 60000)
-                .then(d => (d && d.articles && d.articles.length >= 7000) ? d : null).catch(() => null);
+            // ── 主路径：分块下载（可缓存 + 续传 + 8s stall 快速失败）──
             let result = null;
             try {
                 result = await downloadChunks();
@@ -453,10 +485,15 @@ const API = {
                 await this.setArchiveCache({ articles: result.articles, updateTime: result.updateTime || '' });
                 return result;
             }
-            const w = await wholeP;
-            if (w && w.articles.length >= 7000) {
-                await this.setArchiveCache({ articles: w.articles, updateTime: w.updateTime || '' });
-                return w;
+            // 分块几乎没凑齐：最后试一次整文件兜底（顺序执行，不并行抢带宽）
+            if (!result || result.articles.length < 1000) {
+                try {
+                    const w = await this.fetchJSON('/api/archive', 90000);
+                    if (w && Array.isArray(w.articles) && w.articles.length >= 7000) {
+                        await this.setArchiveCache({ articles: w.articles, updateTime: w.updateTime || '' });
+                        return { articles: w.articles, updateTime: w.updateTime || '' };
+                    }
+                } catch (e) { console.warn('[archive] 整文件兜底失败:', e.message); }
             }
             // 分块部分到位（<7000，个别块失败）：返回已有块，下次刷新/重启自动续传补齐
             if (result && result.articles.length) {

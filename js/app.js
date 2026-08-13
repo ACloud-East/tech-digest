@@ -135,6 +135,48 @@ const app = createApp({
         const contentDragover = ref(false); // 拖拽悬停态
         const hoveredCite = ref(null);    // 当前鼠标悬停的内联引用编号
         const hoveredSource = ref(null);  // 当前悬停的来源列表项编号
+
+        // ====== 新增：编辑 / 对话修改 / 校对面板 ======
+        // 1) 编辑态
+        const aiEditing = ref(false);
+        const aiEditDraft = ref('');        // 当前正在编辑的tab文本副本
+        const aiEditTitleDraft = ref('');
+        const aiEditTarget = ref('structured'); // 'structured' | 'plain'
+        const aiEditPreview = ref(false);   // 编辑区是否显示实时预览
+        // 2) 对话式修改（豆包式）
+        const aiChatOpen = ref(false);
+        const aiChatMessages = ref([]);     // [{role:'user'|'assistant'|'system', text}]
+        const aiChatInput = ref('');
+        const aiChatBusy = ref(false);
+        // 3) 校对面板
+        const aiProofOpen = ref(false);
+        const aiProofBusy = ref(false);
+        const aiProofStatus = ref({});      // { factId: { status:'ok'|'doubt'|'wrong'|'', note:'' } }
+        const aiProofRefined = ref(false);  // 是否由 AI 精校覆盖（标记来源）
+        const aiProofError = ref('');
+        const aiProofAIFacts = ref(null);   // AI 精校返回的结构化事实（优先于前端正则）
+        // 校对抽取结果：优先 AI 精校结果，否则由当前结果文本正则派生
+        const aiProofFacts = computed(() => {
+            if (aiProofRefined.value && aiProofAIFacts.value) return aiProofAIFacts.value;
+            const text = (aiTab.value === 'plain') ? aiResultPlain.value : aiResult.value;
+            if (!text) return [];
+            const refs = aiResultReferences.value || [];
+            return extractFacts(text, refs);
+        });
+        const aiProofSummary = computed(() => {
+            const facts = aiProofFacts.value;
+            const st = aiProofStatus.value || {};
+            const s = { total: facts.length, pending: 0, ok: 0, doubt: 0, wrong: 0, nocite: 0 };
+            facts.forEach(f => {
+                if (!f.cite || f.cite === '?') s.nocite++;
+                const v = st[f.id];
+                if (v && v.status === 'ok') s.ok++;
+                else if (v && v.status === 'doubt') s.doubt++;
+                else if (v && v.status === 'wrong') s.wrong++;
+                else s.pending++;
+            });
+            return s;
+        });
         const citationTooltip = ref({ visible: false, cite: null, source: '', top: 0, left: 0 }); // 引用上标 tooltip
 
         // ====== API 设置（BYOK：用户自带 key，仅存本机 localStorage） ======
@@ -219,6 +261,11 @@ const app = createApp({
             activePanel.value = 'ai-image';
             aiImageError.value = '';
             alert('已从「AI文案生成 · 参考原文」导入内容到画面描述。可补充细节后点击「生成 4 张插图」。');
+        }
+        // 填了核心关键词就自动开启「联网搜索」：让领导期望的「给几个关键词→AI 联网找素材→生成文章」
+        // 开箱即用，避免只填关键词却忘了开联网、导致模型只凭记忆写出过时内容。
+        function onKeywordsInput() {
+            if (aiForm.value.keywords && aiForm.value.keywords.trim()) aiForm.value.webSearch = true;
         }
         async function generateImages() {
             const text = (aiImageText.value || '').trim();
@@ -883,6 +930,253 @@ const app = createApp({
             generateArticle();
         }
 
+        // ================= 新增：编辑 / 对话修改 / 校对 =================
+
+        // ---- 1) 编辑态 ----
+        function enterEdit() {
+            aiEditTarget.value = aiTab.value;
+            aiEditDraft.value = (aiTab.value === 'plain') ? aiResultPlain.value : aiResult.value;
+            aiEditTitleDraft.value = aiResultTitle.value;
+            aiEditPreview.value = false;
+            aiEditing.value = true;
+        }
+        function saveEdit() {
+            const draft = aiEditDraft.value;
+            if (aiEditTarget.value === 'plain') aiResultPlain.value = draft;
+            else aiResult.value = draft;
+            aiResultTitle.value = (aiEditTitleDraft.value || '').trim();
+            // 同步本机历史最新一条，刷新后保留修改
+            if (aiHistory.value.length) {
+                const last = aiHistory.value[0];
+                if (aiEditTarget.value === 'plain') last.resultPlain = draft; else last.resultContent = draft;
+                last.resultTitle = aiResultTitle.value;
+                try { localStorage.setItem('td_ai_history_v1', JSON.stringify(aiHistory.value.slice(0, 50))); } catch (_) {}
+            }
+            aiEditing.value = false;
+        }
+        function cancelEdit() { aiEditing.value = false; }
+
+        // ---- 2) 对话式修改（豆包式改稿）----
+        async function sendChatRevise() {
+            const instruction = (aiChatInput.value || '').trim();
+            const article = aiResult.value;
+            if (!article) { alert('请先生成一篇文章，再对它提修改指令。'); return; }
+            if (!instruction) return;
+            if (aiChatBusy.value) return;
+            aiChatBusy.value = true;
+            aiChatMessages.value = [...aiChatMessages.value, { role: 'user', text: instruction }];
+            aiChatInput.value = '';
+            // 临时 assistant 占位，流式填充
+            const placeholder = { role: 'assistant', text: '' };
+            aiChatMessages.value = [...aiChatMessages.value, placeholder];
+            const msgIndex = aiChatMessages.value.length - 1;
+            try {
+                const payload = {
+                    mode: 'revise',
+                    article,
+                    instruction,
+                    history: aiChatMessages.value.filter(m => m.role !== 'assistant' || m.text).map(m => ({ role: m.role, text: m.text })),
+                    references: aiResultReferences.value,
+                    apiKey: aiApi.value.key || '',
+                    base: aiApi.value.base || '',
+                    model: aiApi.value.model || '',
+                    max_tokens: 4000,
+                };
+                const resp = await fetch('/api/ai-generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+                if (!resp.ok) {
+                    const d = await resp.json().catch(() => ({}));
+                    throw new Error(d.error || ('服务错误 ' + resp.status));
+                }
+                const reader = resp.body.getReader();
+                const dec = new TextDecoder();
+                let buf = '', acc = '';
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buf += dec.decode(value, { stream: true });
+                    let idx;
+                    while ((idx = buf.indexOf('\n\n')) >= 0) {
+                        const chunk = buf.slice(0, idx); buf = buf.slice(idx + 2);
+                        const line = chunk.split('\n').find(l => l.startsWith('data:'));
+                        if (!line) continue;
+                        const d = line.slice(5).trim();
+                        if (!d || d === '[DONE]') continue;
+                        let p; try { p = JSON.parse(d); } catch (_) { continue; }
+                        if (p.content) {
+                            acc += p.content;
+                            const arr = aiChatMessages.value.slice();
+                            arr[msgIndex] = { role: 'assistant', text: acc };
+                            aiChatMessages.value = arr;
+                        }
+                    }
+                }
+                // 改稿完成：用整篇修订稿替换当前结构式结果（并去除非结构式引用编号兜底）
+                const revised = acc.trim();
+                if (revised) {
+                    aiResult.value = revised;
+                    aiResultPlain.value = revised.replace(/\[(\d+|\?)\]/g, '');
+                    aiResultTime.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' }) + '（对话修改）';
+                    if (aiHistory.value.length) {
+                        const last = aiHistory.value[0];
+                        last.resultContent = revised; last.resultPlain = aiResultPlain.value; last.resultTitle = aiResultTitle.value;
+                        try { localStorage.setItem('td_ai_history_v1', JSON.stringify(aiHistory.value.slice(0, 50))); } catch (_) {}
+                    }
+                }
+            } catch (e) {
+                const arr = aiChatMessages.value.slice();
+                arr[msgIndex] = { role: 'assistant', text: '⚠️ 修改失败：' + (e.message || e) };
+                aiChatMessages.value = arr;
+            } finally {
+                aiChatBusy.value = false;
+            }
+        }
+
+        // ---- 3) 校对面板：前端正则抽取（零成本、即时、离线可用）----
+        // 从文章文本中抽取「参数/数据类」事实，并带来源[引用]归属，供人工核查。
+        function extractFacts(text, references) {
+            if (!text) return [];
+            const blocks = parseCitedText(text);
+            const facts = [];
+            const seen = new Set();
+            // 各品类的正则（按优先级匹配，命中即归类）
+            const rules = [
+                { cat: '价格', re: /(\d+(?:\.\d+)?\s*(?:元|万元|￥|\$|USD|美元|万日元|日元|欧元|英镑))/g },
+                { cat: '百分比', re: /(\d+(?:\.\d+)?\s*%)/g },
+                { cat: '日期', re: /((?:20\d{2}年\d{1,2}月\d{1,2}日?)|(?:20\d{2}-\d{1,2}(?:-\d{1,2})?)|(?:20\d{2}年))/g },
+                { cat: '版本', re: /((?:iOS|Android|HarmonyOS|Windows|macOS)\s*\d+(?:\.\d+)*)/gi },
+                { cat: '型号', re: /((?:[A-Z][A-Za-z0-9]*(?:\s?(?:Pro|Max|Ultra|Plus|III|II|Mini|Air|AirPods)?)){1,3}\s?(?:Gen\s*\d+)?)/g },
+                { cat: '尺寸', re: /(\d+(?:\.\d+)?\s*(?:mm|cm))/gi },
+                { cat: '重量', re: /(\d+(?:\.\d+)?\s*(?:g|kg|克|千克))(?![Bb])/gi },
+                { cat: '电池', re: /(\d+(?:\.\d+)?\s*(?:mAh|毫安时))/gi },
+                { cat: '屏幕', re: /(\d+(?:\.\d+)?\s*(?:英寸|inch|in\b|K\b|MP|万像素|像素))/gi },
+                { cat: '性能', re: /(\d+(?:\.\d+)?\s*(?:Hz|KHz|MHz|GHz|W|kW|MB\/s|Gbps|TOPS|fps|万次\/秒))/gi },
+                { cat: '容量', re: /(\d+(?:\.\d+)?\s*(?:GB|TB|万))/g },
+                { cat: '温度', re: /(\d+(?:\.\d+)?\s*(?:°C|℃|摄氏度))/g },
+                { cat: '时长', re: /(\d+(?:\.\d+)?\s*(?:小时|分钟|天))/g },
+                { cat: '其他', re: /(\d+(?:\.\d+)?\s*(?::\d{1,2})?)/g }, // 比例(16:9)等兜底
+            ];
+            const pushFact = (cat, value, context, cites) => {
+                value = value.trim();
+                if (!value) return;
+                const cite = (cites && cites.length && cites[0] !== '?') ? String(cites[0]) : (cites && cites[0] === '?' ? '?' : '');
+                const key = cat + '|' + value + '|' + context.slice(0, 40);
+                if (seen.has(key)) return;
+                seen.add(key);
+                const refObj = (cite && cite !== '?' && references && references[parseInt(cite, 10) - 1])
+                    ? references[parseInt(cite, 10) - 1] : null;
+                facts.push({ id: cat + '_' + facts.length + '_' + Math.abs(hashStr(key)), cat, value, context: context.trim(), cite, ref: refObj });
+            };
+            blocks.forEach(block => {
+                if (block.type === 'image') return;
+                const ctx = (block.segments || []).map(s => s.text || '').join('');
+                const cites = (block.segments || []).flatMap(s => s.cites || []);
+                if (!ctx.trim()) return;
+                rules.forEach(rule => {
+                    rule.re.lastIndex = 0;
+                    let m;
+                    while ((m = rule.re.exec(ctx)) !== null) {
+                        let v = m[1] || m[0];
+                        // 兜底「其他」只保留带冒号的比例或纯大数，避免把普通计数也捞进来
+                        if (rule.cat === '其他') {
+                            if (!/:\d/.test(v)) continue; // 仅 16:9 这类比例
+                        }
+                        // 去重邻近匹配（型号规则易把普通单词也吃进去，要求至少含数字才留）
+                        if (rule.cat === '型号' && !/\d/.test(v)) {
+                            // 仅保留像 RTX 5090 / A19 这样含数字的；纯字母型号跳过
+                            continue;
+                        }
+                        pushFact(rule.cat, v, ctx, cites);
+                    }
+                });
+            });
+            return facts;
+        }
+        function hashStr(s) {
+            let h = 0; for (let i = 0; i < s.length; i++) { h = (h << 5) - h + s.charCodeAt(i); h |= 0; }
+            return h;
+        }
+
+        // 校对状态读写 + 持久化（按内容 hash 恢复核查进度）
+        function proofKey() {
+            const t = (aiTab.value === 'plain') ? aiResultPlain.value : aiResult.value;
+            return 'td_proof_' + hashStr(t.slice(0, 4000));
+        }
+        function loadProofStatus() {
+            try { const raw = localStorage.getItem(proofKey()); aiProofStatus.value = raw ? JSON.parse(raw) : {}; }
+            catch (_) { aiProofStatus.value = {}; }
+        }
+        function setProofStatus(id, status, note) {
+            const cur = aiProofStatus.value[id] || { status: '', note: '' };
+            const next = { status: status !== undefined ? status : cur.status, note: note !== undefined ? note : cur.note };
+            aiProofStatus.value = { ...aiProofStatus.value, [id]: next };
+            try { localStorage.setItem(proofKey(), JSON.stringify(aiProofStatus.value)); } catch (_) {}
+        }
+        function openProof() {
+            aiProofOpen.value = !aiProofOpen.value;
+            if (aiProofOpen.value) loadProofStatus();
+        }
+        function exportProof() {
+            const facts = aiProofFacts.value; const st = aiProofStatus.value || {};
+            const lines = ['# 校对清单（数据/参数类事实人工核查）', ''];
+            lines.push(`时间：${new Date().toLocaleString('zh-CN')}`, `标题：${aiResultTitle.value || '未命名'}`, `共 ${facts.length} 条`, '');
+            facts.forEach((f, i) => {
+                const s = st[f.id] || {};
+                const stTxt = s.status === 'ok' ? '✅正确' : s.status === 'doubt' ? '❓存疑' : s.status === 'wrong' ? '❌错误' : '⬜待核';
+                const src = f.cite && f.cite !== '?' ? `来源[${f.cite}] ${f.ref ? (f.ref.title || f.ref.url) : ''}` : '⚠️无来源标注';
+                lines.push(`${i + 1}. [${f.cat}] ${f.value} — ${stTxt}`);
+                lines.push(`   上下文：${f.context}`);
+                lines.push(`   ${src}${s.note ? ' ｜备注：' + s.note : ''}`);
+            });
+            const md = lines.join('\n');
+            navigator.clipboard.writeText(md).then(() => alert('校对清单已复制到剪贴板，可粘贴给人工核查。')).catch(() => alert(md));
+        }
+        // AI 精校：调用服务端 mode:'proofread' 返回更准的结构化事实，覆盖前端正则结果
+        async function aiProofreadRefine() {
+            const text = aiResult.value || aiResultPlain.value;
+            if (!text) { alert('请先生成文章。'); return; }
+            aiProofBusy.value = true; aiProofError.value = '';
+            try {
+                const resp = await fetch('/api/ai-generate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        mode: 'proofread', article: text, references: aiResultReferences.value,
+                        apiKey: aiApi.value.key || '', base: aiApi.value.base || '', model: aiApi.value.model || '',
+                    }),
+                });
+                if (!resp.ok) { const d = await resp.json().catch(() => ({})); throw new Error(d.error || ('服务错误 ' + resp.status)); }
+                const data = await resp.json();
+                const arr = Array.isArray(data.facts) ? data.facts : [];
+                if (!arr.length) { aiProofError.value = 'AI 未返回可核对的事实，已保留正则抽取结果。'; return; }
+                // 用 AI 结果覆盖：转成前端 fact 结构（带来源归属）
+                const refs = aiResultReferences.value || [];
+                const facts = arr.slice(0, 120).map((f, i) => {
+                    const cite = (f.cite && f.cite !== 0 && f.cite !== '0') ? String(f.cite) : '';
+                    const refObj = (cite && refs[parseInt(cite, 10) - 1]) ? refs[parseInt(cite, 10) - 1] : null;
+                    return {
+                        id: 'ai_' + i + '_' + Math.abs(hashStr((f.value || '') + (f.context || ''))),
+                        cat: f.category || '其他', value: String(f.value || '').trim(),
+                        context: String(f.context || '').trim(), cite, ref: refObj,
+                    };
+                });
+                // 用 computed 不可直接赋值：临时切换 aiProofFacts 来源——这里直接覆盖抽取结果需改写实现。
+                // 简化：把 AI 结果写回 aiResult 文本不可行；改为挂到独立 ref。
+                aiProofAIFacts.value = facts;
+                aiProofRefined.value = true;
+                // 重置核查状态（新来源）
+                aiProofStatus.value = {};
+                try { localStorage.removeItem(proofKey()); } catch (_) {}
+            } catch (e) {
+                aiProofError.value = 'AI 精校失败：' + (e.message || e) + '（已保留正则结果）';
+            } finally {
+                aiProofBusy.value = false;
+            }
+        }
+
         async function copyResult() {
             try {
                 const text = (aiResultTitle.value ? aiResultTitle.value + '\n\n' : '') +
@@ -1182,9 +1476,9 @@ const app = createApp({
             techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
             // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
-            // 必须晚于 api.js 归档链路最坏耗时（下载 60s + 重试 60s + 等领袖窗口 ≈ 130s），
-            // 否则会在归档还在传输时提前把转圈关掉，导致白屏/「暂无资讯」。故设为 240s。
-            const watchdog = setTimeout(() => { techLoading.value = false; }, 240000);
+            // 必须晚于 api.js 归档链路最坏耗时：v3101 分块下载每块超时 20s×4 重试 + 续传，
+            // 首轮在国内慢网下可能到 ~250s；已下块存 Cache Storage，下次秒开，故给 300s 余量。
+            const watchdog = setTimeout(() => { techLoading.value = false; }, 300000);
             try {
                 const res = await API.fetchAllTechNews((p) => { techLoadProgress.value = p; });
                 techNews.value = res.articles || [];
@@ -1556,10 +1850,16 @@ const app = createApp({
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
             aiResultSources, aiResultSourcesMeta, aiResultReferences, aiResultFactChecked, aiResultImages, aiImageCaptionOn, aiHistory, aiHistoryOpen, hoveredCite, hoveredSource, citationTooltip,
             contentFileInput, contentParsing, contentDragover,
-            isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource,
+            isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource, parseCitedText,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,
             triggerContentFile, onContentFile, onContentDrop,
             generateArticle, regenerateArticle, copyResult, downloadResult,
+            // 新增：编辑 / 对话修改 / 校对面板
+            aiEditing, aiEditDraft, aiEditTitleDraft, aiEditTarget, aiEditPreview,
+            enterEdit, saveEdit, cancelEdit,
+            aiChatOpen, aiChatMessages, aiChatInput, aiChatBusy, sendChatRevise,
+            aiProofOpen, aiProofBusy, aiProofStatus, aiProofRefined, aiProofError, aiProofAIFacts,
+            aiProofFacts, aiProofSummary, openProof, setProofStatus, exportProof, aiProofreadRefine,
             // AI 文案生成 - API 设置（BYOK）
             aiApi, aiApiStatus, saveApiSettings, clearApiSettings, applyApiSettings, visibleCharCount, wordCountLikeWord,
             // AI 生成插图

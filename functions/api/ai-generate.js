@@ -168,16 +168,22 @@ async function fetchSourceText(url, timeoutMs = 10000) {
     }
 }
 
-// 单次检索（一�? query）：优先 Tavily（直接返�? cleaned 正文，最契合 RAG），否则 Brave，再�? Wikipedia�?
+// 单次检索（一个 query）：优先 Tavily（直接返回 cleaned 正文，最契合 RAG），否则 Brave，再 Wikipedia 兜底。
+// 为减少"去年的旧新闻"问题：对含"最新/新/发布/更新"等词的查询追加当前年份，并限制 Tavily 只取近一年结果。
 async function searchOnce(query, env, n = 5) {
     if (!query || !query.trim()) return [];
+    const nowYear = new Date().getFullYear();
+    const wantsLatest = /最新|新|发布|更新|推出|上线|news|update|release|latest|new\s/i.test(query);
+    const hasYear = /\b20\d{2}\b/.test(query);
+    const biasedQuery = (wantsLatest && !hasYear) ? `${query} ${nowYear}` : query;
+
     // 1) Tavily
     if (env.TAVILY_API_KEY) {
         try {
             const resp = await fetch('https://api.tavily.com/search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + env.TAVILY_API_KEY },
-                body: JSON.stringify({ query, search_depth: 'advanced', max_results: n, include_raw_content: true }),
+                body: JSON.stringify({ query: biasedQuery, search_depth: 'advanced', max_results: n, include_raw_content: true, time_range: 'year' }),
             });
             if (resp.ok) {
                 const j = await resp.json();
@@ -185,6 +191,7 @@ async function searchOnce(query, env, n = 5) {
                     title: r.title || '',
                     url: r.url,
                     content: (r.content || r.raw_content || '').slice(0, 3500),
+                    published_date: r.published_date || '',
                 })).filter(r => r.url);
                 if (results.length) return results;
             }
@@ -202,6 +209,7 @@ async function searchOnce(query, env, n = 5) {
                     title: r.title || '',
                     url: r.url,
                     content: (r.description || '').slice(0, 1200),
+                    published_date: r.published_date || r.page_age || '',
                 })).filter(r => r.url);
                 const top = results.slice(0, 3);
                 const fetched = await Promise.all(top.map(r => fetchSourceText(r.url)));
@@ -218,14 +226,14 @@ async function searchOnce(query, env, n = 5) {
         if (resp.ok) {
             const j = await resp.json();
             const items = (j.query && j.query.search) || [];
-            const results = [];
-            for (const it of items) {
-                const title = it.title;
-                const url = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
-                const f = await fetchSourceText(url);
-                results.push({ title, url, content: f.text || (it.snippet || '').replace(/<[^>]+>/g, ''), images: f.images || [] });
-            }
-            if (results.length) return results;
+                const results = [];
+                for (const it of items) {
+                    const title = it.title;
+                    const url = 'https://en.wikipedia.org/wiki/' + encodeURIComponent(title.replace(/ /g, '_'));
+                    const f = await fetchSourceText(url);
+                    results.push({ title, url, content: f.text || (it.snippet || '').replace(/<[^>]+>/g, ''), images: f.images || [], published_date: '' });
+                }
+                if (results.length) return results;
         }
     } catch (_) {}
     return [];
@@ -296,6 +304,96 @@ async function correctDraft(src, bad, opts) {
     } catch (_) { return null; }
 }
 
+// 将引用编号按文章中的首次出现顺序重新编号，并把 references 列表同步重排。
+// 模型可能先引用 [3] 再引用 [1]，这会让读者/审稿人困惑。重排后：第一个出现的引用就是 [1]，第二个是 [2]……
+function renumberCitations(text, references) {
+    if (!text || !references || references.length === 0) return { text, references };
+    // 按文本中首次出现的顺序收集原编号
+    const seen = new Set();
+    const order = [];
+    const regex = /\[(\d+)\]/g;
+    let m;
+    while ((m = regex.exec(text))) {
+        const n = parseInt(m[1], 10);
+        if (n >= 1 && n <= references.length && !seen.has(n)) {
+            seen.add(n);
+            order.push(n);
+        }
+    }
+    if (order.length === 0) return { text, references };
+    // 生成映射：原编号 -> 新编号
+    const map = {};
+    order.forEach((oldN, idx) => { map[oldN] = idx + 1; });
+    // 未在文中出现的引用放到最后（保持原相对顺序）
+    for (let i = 1; i <= references.length; i++) {
+        if (!map[i]) { map[i] = order.length + 1; order.push(i); }
+    }
+    // 重排 references
+    const newRefs = order.map(oldN => references[oldN - 1]);
+    // 替换文中所有 [N]
+    const newText = text.replace(/\[(\d+)\]/g, (_, n) => {
+        const nn = parseInt(n, 10);
+        return '[' + (map[nn] || nn) + ']';
+    });
+    return { text: newText, references: newRefs };
+}
+
+// 调用上游模型并缓冲完整正文（兼容流式/非流式、以及不同模型的内容字段路径）。
+// 上游返回非 200 时抛错；返回 200 但正文为空时返回 ''（由调用方决定重试）。
+async function generateText(augmentedPrompt, opts) {
+    const { apiKey, base, model, maxTokens, temperature } = opts;
+    // v3103：给上游模型调用加 20s 客户端超时。不加重试拖垮 Pages Functions 执行时间上限（触发 1102）。
+    const ctrl = new AbortController();
+    const to = setTimeout(() => ctrl.abort(), 20000);
+    let upstream;
+    try {
+        upstream = await fetch(base + '/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey, 'Accept': 'text/event-stream' },
+            body: JSON.stringify({ model, messages: [{ role: 'user', content: augmentedPrompt }], temperature, max_tokens: maxTokens, stream: true }),
+            signal: ctrl.signal,
+        });
+    } finally { clearTimeout(to); }
+    if (!upstream.ok) {
+        const txt = await upstream.text().catch(() => '');
+        throw new Error('上游 API 调用失败（' + upstream.status + '）：' + txt.slice(0, 300));
+    }
+    const pickContent = (j) => {
+        if (!j) return '';
+        const ch = j.choices && j.choices[0];
+        if (ch) {
+            if (ch.delta && ch.delta.content) return ch.delta.content;
+            if (ch.message && ch.message.content) return ch.message.content;
+            if (ch.text) return ch.text;
+            if (ch.content) return ch.content;
+        }
+        return j.content || j.output || j.text || '';
+    };
+    let text = '';
+    if (upstream.body) {
+        const dec = new TextDecoder();
+        const reader = upstream.body.getReader();
+        let buf = '';
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buf += dec.decode(value, { stream: true });
+            let idx;
+            while ((idx = buf.indexOf('\n\n')) >= 0) {
+                const raw = buf.slice(0, idx); buf = buf.slice(idx + 2);
+                const dl = raw.split('\n').find(l => l.startsWith('data:')); if (!dl) continue;
+                const d = dl.slice(5).trim(); if (!d || d === '[DONE]') continue;
+                try { const c = pickContent(JSON.parse(d)); if (c) text += c; } catch (_) {}
+            }
+        }
+        if (!text && buf.trim()) { try { text = pickContent(JSON.parse(buf.trim())); } catch (_) {} }
+    } else {
+        const txt = await upstream.text();
+        try { text = pickContent(JSON.parse(txt)); } catch (_) { text = txt; }
+    }
+    return text;
+}
+
 // 将文本切成小段（按码点，避免切断 emoji），供前端打字机式渲�?
 function chunkText(s, size = 24) {
     const cps = Array.from(s || '');
@@ -311,6 +409,114 @@ export async function onRequestOptions({ request }) {
     return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
+// ===== 编辑态扩展：revise（对话式改稿）/ proofread（校对 AI 精校）=====
+// 复用下方统一的密钥/base/代理/重试逻辑，不另起端点，避免密钥与代理逻辑漂移。
+async function handleMode({ body, env, acao }) {
+    const apiKey = (body.apiKey && String(body.apiKey).trim()) || env.VECTOR_ENGINE_KEY || env.DEEPSEEK_API_KEY;
+    if (!apiKey) {
+        return new Response(JSON.stringify({ error: '未配置 API key：请在本页「API 设置」中填入你自己的 key，或联系站点管理员配置服务端默认 key' }), { status: 400, headers: acao });
+    }
+    const base = (body.base || env.VECTOR_ENGINE_BASE || 'https://api.vectorengine.cn/v1').trim().replace(/\/$/, '');
+    if (!/^https:\/\//.test(base)) {
+        return new Response(JSON.stringify({ error: 'base 必须为 https 开头的 API 地址' }), { status: 400, headers: acao });
+    }
+    const model = body.model || env.VECTOR_ENGINE_MODEL || 'deepseek-v4-flash';
+
+    // 通用：带重试地调用上游，缓冲完整结果
+    async function gen(promptText, maxTokens, temperature) {
+        let text = '', lastErr = null;
+        for (let attempt = 0; attempt < 2; attempt++) {
+            try { text = await generateText(promptText, { apiKey, base, model, maxTokens, temperature }); }
+            catch (e) { lastErr = e; }
+            if (text && text.trim().length > 0) break;
+            await new Promise(r => setTimeout(r, 300));
+        }
+        if (!text || !text.trim().length) throw new Error('模型返回为空（已重试 2 次）：' + (lastErr ? lastErr.message : '上游未返回任何内容'));
+        return text;
+    }
+
+    // —— revise：对话式改稿，流式返回整篇修订稿 ——
+    if (body.mode === 'revise') {
+        const article = (body.article || '').trim();
+        const instruction = (body.instruction || '').trim();
+        if (!article) return new Response(JSON.stringify({ error: '缺少 article（当前文章）' }), { status: 400, headers: acao });
+        if (!instruction) return new Response(JSON.stringify({ error: '缺少 instruction（修改指令）' }), { status: 400, headers: acao });
+        const maxTokens = Math.min(Math.max(parseInt(body.max_tokens, 10) || 4000, 50), 8192);
+        const userPrompt = generateRevisePrompt(article, instruction, body.history, body.references);
+        let revised;
+        try { revised = await gen(userPrompt, maxTokens, 0.5); }
+        catch (e) { return new Response(JSON.stringify({ error: '上游 API 调用失败：' + e.message }), { status: 502, headers: acao }); }
+        const chunks = chunkText(revised);
+        const sse = chunks.map(c => 'data: ' + JSON.stringify({ content: c }) + '\n\n').join('') + 'data: [DONE]\n\n';
+        return new Response(sse, {
+            status: 200,
+            headers: { ...acao, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-transform', 'Connection': 'keep-alive' },
+        });
+    }
+
+    // —— proofread：AI 精校，返回结构化事实清单（纯 JSON）——
+    if (body.mode === 'proofread') {
+        const article = (body.article || '').trim();
+        if (!article) return new Response(JSON.stringify({ error: '缺少 article（当前文章）' }), { status: 400, headers: acao });
+        const refs = Array.isArray(body.references) ? body.references : [];
+        const userPrompt = generateProofreadPrompt(article, refs);
+        let raw;
+        try { raw = await gen(userPrompt, 4000, 0.2); }
+        catch (e) { return new Response(JSON.stringify({ error: '上游 API 调用失败：' + e.message }), { status: 502, headers: acao }); }
+        const facts = parseFactsJson(raw);
+        if (!facts) return new Response(JSON.stringify({ error: '模型未返回有效的事实清单 JSON' }), { status: 502, headers: acao });
+        return new Response(JSON.stringify({ facts }), {
+            status: 200,
+            headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' },
+        });
+    }
+
+    return new Response(JSON.stringify({ error: '未知 mode' }), { status: 400, headers: acao });
+}
+
+// 拼装「对话式改稿」prompt：保持文体/结构/[n] 引用，按指令改并返回整篇。
+function generateRevisePrompt(article, instruction, history, references) {
+    const sys = '你是资深科技文案编辑。用户会给你一篇已生成的文章和一条修改指令，请严格按指令修改，并【返回完整修改后的全文】（不要只返回改动片段）。保持原文的文体、段落结构与引用标注 [1][2]；若指令涉及事实/数据，以原文已有内容为准，不要臆造新的参数、型号或价格。只输出正文，不要任何解释或「好的，已修改」之类前缀。';
+    let user = '';
+    if (Array.isArray(history) && history.length) {
+        user += '【对话历史】\n' + history.map(m => (m.role === 'user' ? '用户：' : '助手：') + (m.text || '')).join('\n') + '\n\n';
+    }
+    user += '【当前文章】\n' + article + '\n\n【修改指令】\n' + instruction + '\n\n请输出修改后的完整文章：';
+    if (Array.isArray(references) && references.length) {
+        user += '\n\n【可用参考文献】（如需调整引用，按编号对应；不要编造新来源）\n' + references.map((r, i) => `[${i + 1}] ${r.title || r.url || ''} ${r.url || ''}`).join('\n');
+    }
+    return sys + '\n\n' + user;
+}
+
+// 拼装「校对 AI 精校」prompt：让模型抽结构化事实清单（数值/型号/日期等）。
+function generateProofreadPrompt(article, refs) {
+    const sys = '你是严谨的事实核查员。请从下面的文章中抽取所有「参数/数据类」事实断言——包括价格、百分比、尺寸、重量、容量（mAh/GB/TB）、频率、分辨率、功率、速率、温度、时长、版本号、硬件型号、发布日期、屏幕比例、镜头数、代数等具体数值或型号。';
+    const fmt = `请严格只输出一个 JSON 数组，不要任何额外文字、不要 Markdown 代码块围栏。每条格式：
+{"value":"抽取到的数值或型号原文，如 4999 元 / 120Hz / A19 Pro / 2026年6月9日 / 16:9","category":"价格|百分比|尺寸|重量|电池|屏幕|性能|版本|型号|日期|其他","context":"包含该数值的整句原文（尽量完整）","cite":1}
+其中 cite 是该数值在文中对应的引用编号（[1]→1，[?] 或没有引用→0）；无法判断来源填 0。只输出 JSON 数组，不要输出其它内容。`;
+    let user = sys + '\n\n' + fmt + '\n\n【文章】\n' + article;
+    if (Array.isArray(refs) && refs.length) user += '\n\n【参考文献】\n' + refs.map((r, i) => `[${i + 1}] ${r.title || r.url || ''}`).join('\n');
+    return user;
+}
+
+// 从模型返回中解析事实清单 JSON（容忍 ```json 围栏与前后多余文字）。
+function parseFactsJson(raw) {
+    if (!raw) return null;
+    let s = String(raw).trim();
+    const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fence) s = fence[1].trim();
+    // 退一步：截取第一个 [ 到最后一个 ]
+    if (!s.startsWith('[')) {
+        const a = s.indexOf('['), b = s.lastIndexOf(']');
+        if (a >= 0 && b > a) s = s.slice(a, b + 1);
+    }
+    try {
+        const arr = JSON.parse(s);
+        if (Array.isArray(arr)) return arr;
+    } catch (_) {}
+    return null;
+}
+
 export async function onRequestPost({ request, env }) {
     const origin = request.headers.get('Origin');
     const acao = corsHeaders(origin);
@@ -324,6 +530,14 @@ export async function onRequestPost({ request, env }) {
     }
 
     const prompt = (body.prompt || '').trim();
+
+    // ===== 模式分支：revise / proofread（编辑态对话改稿 & 校对面板 AI 精校）=====
+    // 必须放在「缺少 prompt」校验之前：revise/proofread 不需要 prompt 字段。
+    // 复用统一的密钥/base/代理/重试/CORS 逻辑，避免在 ai-writer 之外再起一套端点。
+    if (body.mode === 'revise' || body.mode === 'proofread') {
+        return await handleMode({ body, env, acao });
+    }
+
     if (!prompt) {
         return new Response(JSON.stringify({ error: '缺少 prompt 字段' }), { status: 400, headers: acao });
     }
@@ -346,7 +560,7 @@ export async function onRequestPost({ request, env }) {
         const fetched = await Promise.all(sourceUrls.map(url => fetchSourceText(url)));
         fetched.forEach(s => {
             if (body.webSearch) {
-                references.push({ title: s.title || s.url, url: s.url, content: s.text || '', images: s.images || [], ok: !s.error, note: s.error || '' });
+                references.push({ title: s.title || s.url, url: s.url, content: s.text || '', images: s.images || [], ok: !s.error, note: s.error || '', published_date: '' });
             } else {
                 backgroundSources.push({ title: s.title || s.url, url: s.url, content: s.text || '', note: s.error || '' });
             }
@@ -359,7 +573,7 @@ export async function onRequestPost({ request, env }) {
         try {
             const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6, body.topicFallback);
             for (const r of found) {
-                references.push({ title: r.title || r.url, url: r.url, content: r.content || '', images: r.images || [], ok: !!r.content, note: r.content ? '' : '未检索到正文' });
+                references.push({ title: r.title || r.url, url: r.url, content: r.content || '', images: r.images || [], ok: !!r.content, note: r.content ? '' : '未检索到正文', published_date: r.published_date || '' });
                 addImages(r.images);
             }
         } catch (_) {
@@ -369,7 +583,7 @@ export async function onRequestPost({ request, env }) {
 
     // 注入正文（带编号与总量预算上限，降�? 502 概率�?
     if (references.length) {
-        const MAX_TOTAL = 40000;
+        const MAX_TOTAL = 16000;
         let budget = MAX_TOTAL;
         augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文（参考文献），请严格基于这些事实写作，并�? [1]、[2] 等编号标注对应来源：\n';
         references.forEach((s, i) => {
@@ -381,9 +595,9 @@ export async function onRequestPost({ request, env }) {
                 text = s.content.slice(0, allow);
                 budget -= text.length;
             }
-            augmentedPrompt += `\n[${i + 1}] URL: ${s.url}\n${text}\n`;
+            augmentedPrompt += `\n[${i + 1}] URL: ${s.url}${s.published_date ? '\n发布时间: ' + s.published_date : ''}\n${text}\n`;
         });
-        augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧�? [1]、[2] 等来源编号，与上�? URL 编号对应；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接�?';
+        augmentedPrompt += '\n引用规则：每个事实性断言后面都必须紧�? [1]、[2] 等来源编号，与上�? URL 编号对应；如果来源标注了「发布时间」，请在正文相应处一并写出该官方时间（例如「苹果于 2026 年 6 月 9 日发布……」），以增强可信度；如果某个事实无法从上述来源中确认，请在该句末尾标注 [?] 或省略该信息；绝对禁止捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接�?';
     }
 
     // 若最终没有任何可用参考文献（联网检索失败且无用户链接），禁止虚构引用编�?
@@ -429,67 +643,25 @@ export async function onRequestPost({ request, env }) {
     const maxTokens = Math.min(Math.max(reqMaxTokens || fallbackMaxTokens, 50), 8192);
 
     // 4) 转发到上游生成（先缓冲完整结果，做事实护栏校验，再向客户端做打字机式输出�?
+    // v3103：模型代理（vectorengine / deepseek）对大 prompt 偶发返回空流，做最多 3 次重试，
+    // 避免用户在联网检索成功、却拿到空白正文的情况。
     try {
-        const upstream = await fetch(base + '/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + apiKey,
-                'Accept': 'text/event-stream',
-            },
-            body: JSON.stringify({
-                model,
-                messages: [{ role: 'user', content: augmentedPrompt }],
-                temperature: (typeof body.temperature === 'number' ? body.temperature : 0.7),
-                max_tokens: maxTokens,
-                stream: true,
-            }),
-        });
-
-        // 上游异常：原样报�?
-        if (!upstream.ok) {
-            const txt = await upstream.text().catch(() => '');
-            return new Response(JSON.stringify({ error: '上游 API 调用失败�?' + upstream.status + '）：' + txt.slice(0, 300) }),
-                { status: 502, headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' } });
-        }
-
-        // 缓冲完整正文（兼容流式与非流式、以及不同模型的内容字段路径�?
-        const pickContent = (j) => {
-            if (!j) return '';
-            const ch = j.choices && j.choices[0];
-            if (ch) {
-                if (ch.delta && ch.delta.content) return ch.delta.content;
-                if (ch.message && ch.message.content) return ch.message.content;
-                if (ch.text) return ch.text;
-                if (ch.content) return ch.content;
-            }
-            return j.content || j.output || j.text || '';
-        };
-        let firstText = '';
-        if (upstream.body) {
-            const dec = new TextDecoder();
-            const reader = upstream.body.getReader();
-            let buf = '';
-            while (true) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                buf += dec.decode(value, { stream: true });
-                let idx;
-                while ((idx = buf.indexOf('\n\n')) >= 0) {
-                    const raw = buf.slice(0, idx); buf = buf.slice(idx + 2);
-                    const dl = raw.split('\n').find(l => l.startsWith('data:')); if (!dl) continue;
-                    const d = dl.slice(5).trim(); if (!d || d === '[DONE]') continue;
-                    try { const c = pickContent(JSON.parse(d)); if (c) firstText += c; } catch (_) {}
-                }
-            }
-            // 上游返回非流�? JSON（无 SSE 分隔）时，整体回退解析
-            if (!firstText && buf.trim()) {
-                try { firstText = pickContent(JSON.parse(buf.trim())); } catch (_) {}
-            }
-        } else {
-            const txt = await upstream.text();
-            try { firstText = pickContent(JSON.parse(txt)); } catch (_) { firstText = txt; }
-        }
+    const temperature = (typeof body.temperature === 'number' ? body.temperature : 0.7);
+    let firstText = '';
+    let lastErr = null;
+    // 重试上限设为 2：模型代理偶发空流通常很快返回（<1s），2 次足够对冲；
+    // 再多会叠加每次调用耗时，逼近 Cloudflare Pages Functions 执行时间上限（报错 1102）。
+    for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+            firstText = await generateText(augmentedPrompt, { apiKey, base, model, maxTokens, temperature });
+        } catch (e) { lastErr = e; }
+        if (firstText && firstText.trim().length > 0) break;
+        await new Promise(r => setTimeout(r, 300));
+    }
+    if (!firstText || !firstText.trim().length) {
+        return new Response(JSON.stringify({ error: '模型返回为空（已重试 2 次）：' + (lastErr ? lastErr.message : '上游未返回任何内容') }),
+            { status: 502, headers: { ...acao, 'Content-Type': 'application/json; charset=utf-8' } });
+    }
 
         // —�? 事实护栏：原文存在时，拦截「原文没有的具体参数/数字/规格/成就�? —�?
         const srcText = (body.content && body.content.trim().length > 20)
@@ -503,6 +675,13 @@ export async function onRequestPost({ request, env }) {
         if (suspicious) {
             const corrected = await correctDraft(srcText, firstText, { apiKey, base, model, maxTokens, temperature: 0.3, platform: body.platform });
             if (corrected && corrected.trim().length > 10) finalText = corrected;
+        }
+
+        // v3103：把引用编号按【文中首次出现顺序】重排，避免 [3] 出现在 [1][2] 之前这种不合常理的编号
+        if (references.length) {
+            const reordered = renumberCitations(finalText, references);
+            finalText = reordered.text;
+            references = reordered.references;
         }
 
         // 向客户端做打字机式输出（将最终正文切成小�? SSE 推送）

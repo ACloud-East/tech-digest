@@ -1511,7 +1511,7 @@ const AIGenerator = {
         const minChars = Math.round(wordCount * 0.85);
         if (isEnglish) {
             prompt += `Write a ${typeConfig.label} style tech article for a professional tech publication.\n`;
-            prompt += `Title: ${form.title || 'Please generate an engaging title based on the content'}\n`;
+            prompt += `Title: ${form.title || (form.keywords && form.keywords.trim() ? `Please generate a specific, engaging title based on the core keyword "${form.keywords.trim()}" — the real subject name MUST appear in the title, do NOT use generic placeholders like "new product"` : 'Please generate an engaging title based on the content')}\n`;
             prompt += isAuto
                 ? (form.content && form.content.replace(/\s/g, '').length >= 120
                     ? `Target length: base the body length on the length of the SOURCE TEXT you were given — aim for about ${this.computeAutoWordCount(form)} characters of actual text (excluding title, punctuation, spaces, and Markdown markers). A ±20% deviation is allowed: expand if the source is rich, trim if it is thin. Do not pad, and do not cut off core content.\n`
@@ -1537,9 +1537,16 @@ const AIGenerator = {
                 prompt += `【即使你"知道"也严禁写】即便你从训练数据中"知道"该产品/人物的参数、规格、历史表现或作品细节，也一律不得写入——因为你无法确认本次场景是否一致，且【原文】并未包含这些信息。只写原文白纸黑字给出的内容。\n`;
                 prompt += `【短引语/短讯写法】若【原文】只是一句人物引语或一条短讯（例如"某摄影师测试了 FX5 并称赞其机动性"），文章应写成一篇简短资讯：介绍人物身份、列出原文提到的其作品、原样呈现其评价，并做一句中性总结；绝对不要写"该产品拍了哪部电影""取得了什么测试成绩/参数（如 fps、ms、kg、像素、ISO、防抖、色彩科学等）""缩短了百分之多少工时"之类原文没有的内容。原文没给，就一个字都不要编。\n`;
             } else {
-                prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
+                if (form.keywords && form.keywords.trim() && !(form.content && form.content.trim().length > 50)) {
+                    // 仅给了核心关键词（无原文，标题可有可无）：关键词即强制写作主体，严禁套用数码评测模板或用「新品」占位
+                    prompt += `请围绕下方【核心关键词】撰写一篇科技文章。\n`;
+                    prompt += `【写作主体强制锁定】本文必须且只写关于「${form.keywords.trim()}」的内容。正文中必须明确、自然地出现该真实主体名称（如产品、系统、公司、技术名），绝对禁止用「新品」「某产品」「该产品」「这款设备」「这款机型」等泛称或占位词来替代真实主体——读者必须一看就知道你在写什么。\n`;
+                    prompt += `【体裁自适应】依据关键词自行判断最合适的体裁（资讯报道 / 产品解析 / 技术介绍 / 行业分析等），不要生硬套用「数码评测」模板；若关键词是系统升级 / 版本更新 / 发布会 / 行业资讯，就写成对应的资讯或解析稿。\n`;
+                } else {
+                    prompt += `请撰写一篇${typeConfig.label}类型的科技文章。\n`;
+                }
             }
-            prompt += `标题：${form.title || '请根据内容生成一个吸引人的标题'}\n`;
+            prompt += `标题：${form.title || (form.keywords && form.keywords.trim() ? `请根据核心关键词「${form.keywords.trim()}」生成一个具体、吸引人的标题，标题中必须包含该真实主体名称，禁止出现"新品"字样` : '请根据内容生成一个吸引人的标题')}\n`;
             prompt += isAuto
                 ? (form.content && form.content.replace(/\s/g, '').length >= 120
                     ? `目标字数：请参考你提供的【原文】篇幅，正文控制在约 ${this.computeAutoWordCount(form)} 字（不含标题、标点、空格、Markdown 标记）。允许 ±20% 偏差，但设有硬性下限——正文不得少于约 ${Math.round(this.computeAutoWordCount(form) * 0.85)} 字，未达标视为未完成；原文信息多可适度展开，信息少也须把核心要点写充实，不要硬凑空话，也不要截断核心内容。\n`
@@ -1611,9 +1618,19 @@ const AIGenerator = {
             } else {
                 // 仅开启联网搜索（未填 URL）：直接告知参考文献将由系统自动检索
                 if (isEnglish) {
-                    prompt += `\nREFERENCE LITERATURE will be auto-retrieved from the web by the system and appended at the end of this prompt, numbered [1], [2]... IF the system successfully retrieves sources, use those real specs/figures/data as your references and tag them inline. IF no sources are retrieved, DO NOT use [1]/[2] citation numbers and do not fabricate references; simply rewrite the draft in a natural human voice.\n- The draft above is the MAIN SUBJECT and is NOT a citable source.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n`;
+                    const noDraftEn = !(form.content && form.content.trim().length > 50);
+                    if (noDraftEn && form.keywords && form.keywords.trim()) {
+                        prompt += `\nREFERENCE LITERATURE will be auto-retrieved from the web by the system and appended at the end of this prompt, numbered [1], [2]... IF the system successfully retrieves sources, use those real specs/figures/data as your references, anchor the article on "${form.keywords.trim()}", and tag them inline. IF NO sources are retrieved, DO NOT use [1]/[2] citation numbers and DO NOT fabricate references; instead write a real, concrete article from your own knowledge about "${form.keywords.trim()}" — you MUST name the real subject (product/system/company), and you MUST NOT use generic placeholders like "new product" or write hollow filler (you have no draft to "rewrite").\n- The subject is "${form.keywords.trim()}", which is NOT a citable source.\n- ABSOLUTELY FORBIDDEN: fabricating unverifiable specs, model numbers, data, prices, release dates, test results, quotes, or URLs.\n`;
+                    } else {
+                        prompt += `\nREFERENCE LITERATURE will be auto-retrieved from the web by the system and appended at the end of this prompt, numbered [1], [2]... IF the system successfully retrieves sources, use those real specs/figures/data as your references and tag them inline. IF no sources are retrieved, DO NOT use [1]/[2] citation numbers and do not fabricate references; simply rewrite the draft in a natural human voice.\n- The draft above is the MAIN SUBJECT and is NOT a citable source.\n- ABSOLUTELY FORBIDDEN: fabricating specifications, model numbers, data, prices, release dates, test results, quotes, or URLs.\n`;
+                    }
                 } else {
-                    prompt += `\n系统会尝试自动从网络检索真实参数/数据，作为**参考文献**补充到本提示词末尾，编号 [1]、[2]…。若成功检索到资料，请基于这些真实数据写作，并在句末用对应编号标注来源，优先用其中的真实参数/数据充实文章；**若未检索到任何资料，则不要使用 [1]、[2] 等引用编号，直接基于上方草稿自然重写，不要虚构引用或来源**。\n- 上方草稿是**主体内容**，本身**不作为引用来源**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
+                    const noDraft = !(form.content && form.content.trim().length > 50);
+                    if (noDraft && form.keywords && form.keywords.trim()) {
+                        prompt += `\n系统会尝试自动从网络检索真实参数/数据，作为**参考文献**补充到本提示词末尾，编号 [1]、[2]…。若成功检索到资料，请基于这些真实数据写作，并以「${form.keywords.trim()}」为主体，在句末用对应编号标注来源；**若未检索到任何资料，则不要使用 [1]、[2] 等引用编号，直接用你自己的知识撰写一篇关于「${form.keywords.trim()}」的真实、具体的文章——必须点名该真实主体（如产品/系统/公司名），严禁用"新品"等泛称占位，严禁写"基于草稿重写"这类空话（因为你根本没有草稿）**。\n- 本文主体就是「${form.keywords.trim()}」，本身不作为引用来源。\n- 绝对禁止：捏造任何无法确认的规格参数、数据、价格、发布日期、测试结果、引语或链接；可以写广泛公开、确凿的事实，但主体名称必须真实明确。\n`;
+                    } else {
+                        prompt += `\n系统会尝试自动从网络检索真实参数/数据，作为**参考文献**补充到本提示词末尾，编号 [1]、[2]…。若成功检索到资料，请基于这些真实数据写作，并在句末用对应编号标注来源，优先用其中的真实参数/数据充实文章；**若未检索到任何资料，则不要使用 [1]、[2] 等引用编号，直接基于上方草稿自然重写，不要虚构引用或来源**。\n- 上方草稿是**主体内容**，本身**不作为引用来源**。\n- 绝对禁止：捏造任何规格参数、硬件型号、数据、价格、发布日期、测试结果、引语或链接。\n`;
+                    }
                 }
             }
         } else {
@@ -1631,9 +1648,9 @@ const AIGenerator = {
 
         // 通用「去 AI 味」硬性要求（无论是否提供原文、原文长短都生效）
         if (isEnglish) {
-            prompt += `\nWRITING TONE (hard rules): Write like a real human columnist. NEVER open with hollow era-phrases ("In today's...", "With the rapid development of...", "In recent years..."). NEVER use template filler ("First... Second... Finally", "In conclusion", "It is worth mentioning", "It goes without saying"). Avoid mechanically bullet-listing one-line padding. Use natural transitions.\n`;
+            prompt += `\nWRITING TONE (hard rules): Write like a real human columnist. NEVER open with hollow era-phrases ("In today's...", "With the rapid development of...", "In recent years..."). NEVER use template filler ("First... Second... Finally", "In conclusion", "It is worth mentioning", "It goes without saying"). Avoid mechanically bullet-listing one-line padding. Use natural transitions. NEVER refer to the real subject as a generic placeholder like "new product" / "the device" — always name the actual product/system/company.\n`;
         } else {
-            prompt += `\n【去 AI 味·硬性要求】像真人编辑/专栏作者一样写作。禁止用「在当今……」「随着……的快速发展」「近年来……」等空泛时代开场；禁止「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」「众所周知」等模板词；禁止评测类套话如「经过一段时间的深入体验」「客观来看/客观地说」「在发烧级使用中」「实际使用中」「给出了自己的解决方案」「并非简单的堆砌」；不要把内容硬拆成要点罗列、用一两句空话填字数。要有真实的人味与起承转合。\n`;
+            prompt += `\n【去 AI 味·硬性要求】像真人编辑/专栏作者一样写作。禁止用「在当今……」「随着……的快速发展」「近年来……」等空泛时代开场；禁止「首先……其次……最后……」「总而言之」「值得一提的是」「不可否认」「众所周知」等模板词；禁止评测类套话如「经过一段时间的深入体验」「客观来看/客观地说」「在发烧级使用中」「实际使用中」「给出了自己的解决方案」「并非简单的堆砌」；禁止使用「新品」「某产品」「该产品」「这款设备」等泛称替代真实的产品/系统/公司主体（必须写出真实名称，如「苹果 iOS 26」）；不要把内容硬拆成要点罗列、用一两句空话填字数。要有真实的人味与起承转合。\n`;
         }
 
         if (form.plain) {

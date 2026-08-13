@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=30">
+    <link rel="stylesheet" href="css/style.css?v=31">
     <link rel="stylesheet" href="vendor/fontawesome-all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -286,9 +286,10 @@
                                 <!-- 关键词 -->
                                 <div class="ai-field">
                                     <label class="ai-label">
-                                        <i class="fa-solid fa-tags"></i> 核心关键词（逗号分隔）
+                                        <i class="fa-solid fa-tags"></i> 核心关键词（逗号分隔，即联网检索词）
                                     </label>
-                                    <input type="text" class="ai-input" v-model="aiForm.keywords" placeholder="例如：iPhone 16, A18芯片, 评测, 对比">
+                                    <input type="text" class="ai-input" v-model="aiForm.keywords" @input="onKeywordsInput" placeholder="例如：苹果 iOS 26 系统更新, WWDC25, 新功能">
+                                    <span class="ai-hint">这些词就是 <strong>联网检索的查询词</strong>。填了关键词本框会自动开启上方「联网搜索」，AI 会用它们去网上找真实素材写文；若手动关掉联网，模型只凭记忆写（写不出刚发布的最新消息，如苹果新系统）。</span>
                                 </div>
                             </div>
 
@@ -462,6 +463,15 @@
                                     <button class="ai-action-btn" @click="regenerateArticle">
                                         <i class="fa-solid fa-rotate-right"></i> 重新生成
                                     </button>
+                                    <button class="ai-action-btn ai-edit-btn" :class="{ active: aiEditing }" @click="enterEdit" v-if="!aiEditing">
+                                        <i class="fa-solid fa-pen-to-square"></i> 编辑
+                                    </button>
+                                    <button class="ai-action-btn ai-chat-toggle" :class="{ active: aiChatOpen }" @click="aiChatOpen = !aiChatOpen">
+                                        <i class="fa-solid fa-comments"></i> 对话修改
+                                    </button>
+                                    <button class="ai-action-btn ai-proof-toggle" :class="{ active: aiProofOpen }" @click="openProof">
+                                        <i class="fa-solid fa-clipboard-check"></i> 校对
+                                    </button>
                                     <button class="ai-action-btn" @click="aiShowOutput = false; aiResult = ''; aiResultPlain = ''">
                                         <i class="fa-solid fa-xmark"></i> 清除
                                     </button>
@@ -477,6 +487,43 @@
                                 </button>
                             </div>
                             <div class="ai-output-content">
+                                <!-- 编辑态：标题输入 + 源码编辑 + 实时预览 -->
+                                <div class="ai-edit-area" v-if="aiEditing">
+                                    <div class="ai-edit-row">
+                                        <label class="ai-label">标题</label>
+                                        <input type="text" class="ai-input ai-edit-title" v-model="aiEditTitleDraft" placeholder="文章标题">
+                                    </div>
+                                    <div class="ai-edit-row ai-edit-main">
+                                        <div class="ai-edit-pane">
+                                            <div class="ai-edit-pane-head">
+                                                <span>编辑源码（保留 # 标题 与 [1][2] 引用）</span>
+                                                <button class="ai-action-btn" @click="aiEditPreview = !aiEditPreview">
+                                                    <i class="fa-solid fa-eye"></i> {{ aiEditPreview ? '隐藏预览' : '实时预览' }}
+                                                </button>
+                                            </div>
+                                            <textarea class="ai-edit-textarea" v-model="aiEditDraft" :placeholder="aiEditTarget === 'plain' ? '非结构式正文…' : '结构式正文（## 小标题 / - 列表）…'"></textarea>
+                                        </div>
+                                        <div class="ai-edit-pane ai-edit-preview" v-if="aiEditPreview">
+                                            <div class="ai-edit-pane-head"><span>预览</span></div>
+                                            <div class="ai-output-body" style="padding:0">
+                                                <template v-for="(block, bi) in parseCitedText(aiEditDraft)" :key="bi">
+                                                    <h2 v-if="block.type === 'h2'">{{ block.segments.map(s=>s.text).join('') }}</h2>
+                                                    <h3 v-else-if="block.type === 'h3'">{{ block.segments.map(s=>s.text).join('') }}</h3>
+                                                    <ul v-else-if="block.type === 'li'" class="ai-output-list"><li>{{ block.segments.map(s=>s.text).join('') }}</li></ul>
+                                                    <p v-else>{{ block.segments.map(s=>s.text).join('') }}</p>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ai-edit-actions">
+                                        <button class="ai-action-btn primary" @click="saveEdit"><i class="fa-solid fa-check"></i> 保存</button>
+                                        <button class="ai-action-btn" @click="cancelEdit"><i class="fa-solid fa-xmark"></i> 取消</button>
+                                        <span class="ai-edit-hint">保存后即时更新结果；引用与配图会保留。</span>
+                                    </div>
+                                </div>
+
+                                <!-- 只读渲染（非编辑态） -->
+                                <template v-if="!aiEditing">
                                 <div class="ai-output-meta">
                                     <span><i class="fa-solid fa-file-alt"></i> {{ aiForm.typeLabel }}</span>
                                     <span><i class="fa-solid fa-palette"></i> {{ aiForm.styleLabel }}</span>
@@ -544,7 +591,65 @@
                                         <i class="fa-solid fa-circle-info"></i> 以上为系统自动抓取的<strong>参考文献</strong>，正文中的 [1][2] 对应其编号。抓取失败的来源会标注「（无法抓取）」，相关事实标 [?]。关键数据请以来源原文为准核实。
                                     </div>
                                 </div>
+                                </template>
                             </div>
+                        </div>
+
+                        <!-- 对话修改面板（豆包式改稿，探索） -->
+                        <div class="ai-chat-panel" v-if="aiChatOpen && aiShowOutput">
+                            <div class="ai-chat-head">
+                                <i class="fa-solid fa-comments"></i> 对话修改 · 直接说指令让 AI 改这篇
+                                <button class="ai-chat-clear" @click="aiChatMessages = []" v-if="aiChatMessages.length">清空对话</button>
+                            </div>
+                            <div class="ai-chat-list">
+                                <div v-if="!aiChatMessages.length" class="ai-chat-empty">例如：「把第二段写得更口语化」「价格改成 9999 元」「加一段续航对比」——发送后 AI 会返回整篇改好的文章。</div>
+                                <div v-for="(m, i) in aiChatMessages" :key="i" class="ai-chat-msg" :class="m.role">
+                                    <div class="ai-chat-role">{{ m.role === 'user' ? '你' : 'AI' }}</div>
+                                    <div class="ai-chat-text">{{ m.text || '…' }}</div>
+                                </div>
+                                <div v-if="aiChatBusy" class="ai-chat-msg assistant"><div class="ai-chat-role">AI</div><div class="ai-chat-text"><i class="fa-solid fa-spinner fa-spin"></i> 修改中…</div></div>
+                            </div>
+                            <div class="ai-chat-input-row">
+                                <textarea class="ai-chat-input" v-model="aiChatInput" @keydown.enter.exact.prevent="sendChatRevise" placeholder="输入修改指令，回车发送（Shift+回车换行）"></textarea>
+                                <button class="ai-action-btn primary" @click="sendChatRevise" :disabled="aiChatBusy"><i class="fa-solid fa-paper-plane"></i> 发送</button>
+                            </div>
+                        </div>
+
+                        <!-- 校对面板：数据/参数类事实人工核查 -->
+                        <div class="ai-proof-panel" v-if="aiProofOpen && aiShowOutput">
+                            <div class="ai-proof-head">
+                                <div>
+                                    <i class="fa-solid fa-clipboard-check"></i> 校对面板 · 数据/参数类事实核查
+                                    <span class="ai-proof-sum" :class="{ warn: aiProofSummary.nocite }">共 {{ aiProofSummary.total }} 条｜待核 {{ aiProofSummary.pending }}｜<span class="ok">正确 {{ aiProofSummary.ok }}</span>｜<span class="doubt">存疑 {{ aiProofSummary.doubt }}</span>｜<span class="wrong">错误 {{ aiProofSummary.wrong }}</span>｜<span class="nocite">无来源 {{ aiProofSummary.nocite }}</span></span>
+                                </div>
+                                <div class="ai-proof-head-actions">
+                                    <button class="ai-action-btn" @click="aiProofreadRefine" :disabled="aiProofBusy"><i class="fa-solid fa-wand-magic-sparkles"></i> {{ aiProofBusy ? '精校中…' : 'AI 精校' }}</button>
+                                    <button class="ai-action-btn" @click="exportProof"><i class="fa-solid fa-copy"></i> 导出清单</button>
+                                </div>
+                            </div>
+                            <div class="ai-proof-note" v-if="aiProofRefined"><i class="fa-solid fa-circle-info"></i> 当前为 AI 精校结果（覆盖前端正则抽取）。</div>
+                            <div class="ai-proof-error" v-if="aiProofError">{{ aiProofError }}</div>
+                            <div class="ai-proof-list" v-if="aiProofFacts.length">
+                                <div class="ai-proof-item" v-for="f in aiProofFacts" :key="f.id">
+                                    <div class="ai-proof-item-main">
+                                        <span class="ai-proof-cat" :class="'cat-' + f.cat">{{ f.cat }}</span>
+                                        <span class="ai-proof-val">{{ f.value }}</span>
+                                        <span class="ai-proof-cite" :class="{ nocite: !f.cite || f.cite === '?' }" v-if="f.cite && f.cite !== '?'">来源 [{{ f.cite }}] <a v-if="f.ref" :href="f.ref.url" target="_blank" rel="noopener noreferrer">{{ f.ref.title || f.ref.url }}</a></span>
+                                        <span class="ai-proof-cite nocite" v-else>⚠️ 无来源标注，需重点核查</span>
+                                    </div>
+                                    <div class="ai-proof-ctx">{{ f.context }}</div>
+                                    <div class="ai-proof-item-foot">
+                                        <div class="ai-proof-status">
+                                            <button class="ai-proof-st" :class="{ on: (aiProofStatus[f.id]||{}).status === '' }" @click="setProofStatus(f.id, '')">待核</button>
+                                            <button class="ai-proof-st ok" :class="{ on: (aiProofStatus[f.id]||{}).status === 'ok' }" @click="setProofStatus(f.id, 'ok')">正确</button>
+                                            <button class="ai-proof-st doubt" :class="{ on: (aiProofStatus[f.id]||{}).status === 'doubt' }" @click="setProofStatus(f.id, 'doubt')">存疑</button>
+                                            <button class="ai-proof-st wrong" :class="{ on: (aiProofStatus[f.id]||{}).status === 'wrong' }" @click="setProofStatus(f.id, 'wrong')">错误</button>
+                                        </div>
+                                        <input class="ai-proof-note-input" :value="(aiProofStatus[f.id]||{}).note || ''" @input="setProofStatus(f.id, undefined, $event.target.value)" placeholder="备注（可选）">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ai-proof-empty" v-else>当前结果未抽取到明显的参数/数据类事实。可点击「AI 精校」让模型交叉核对参考文献后抽取。</div>
                         </div>
 
                         <!-- 空状态提示 -->
@@ -1006,10 +1111,10 @@
     <script src="vendor/pptxgen.bundle.js"></script>
     <script src="vendor/mammoth.browser.min.js"></script>
     <script src="vendor/pdf.min.js"></script>
-    <script src="js/api.js?v=2608123100"></script>
+    <script src="js/api.js?v=2608123105"></script>
     <script src="js/filter.js?v=2607121825"></script>
-    <script src="js/ai-generator.js?v=47"></script>
+    <script src="js/ai-generator.js?v=48"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608122900"></script>
+    <script src="js/app.js?v=2608131300"></script>
 </body>
 </html>

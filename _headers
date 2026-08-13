@@ -1,3 +1,19 @@
-# 数据文件每次都重新校验，避免 Cloudflare 边缘缓存 news.json 长达 7 天导致内容陈旧
-/data/*
+# 归档分片：用 manifest.updateTime 做 ?v= 版本号（见 js/api.js），同一份数据 URL 稳定，
+# 可放心的长缓存——浏览器与 Cloudflare 边缘命中后重复访问秒开，无需每次直连源站赌运气。
+# 重新部署数据后 updateTime 变化 → URL 变化 → 自动失效取新数据，不会陈旧。
+# 关键：必须「只用最具体路径」列出分片，绝不能用 /data/* 兜底——Cloudflare 会把所有匹配规则的
+# 同名 Cache-Control 头拼接合并，/data/* 的 no-cache 会泄漏到分片，使长缓存彻底失效。
+/data/news-chunks/*
+  Cache-Control: public, max-age=86400
+
+# 整包兜底 news.json（会随抓取持续增长）每次重新校验，避免边缘缓存导致内容陈旧。
+# 只针对这个具体文件，绝不能写成 /data/*，否则会合并泄漏到上面的分片规则。
+/data/news.json
+  Cache-Control: no-cache
+
+# 页面外壳与 JS 不使用长缓存：版本号已带 ?v= 查询串做缓存 bust，
+# 这里再强制 no-cache，避免浏览器/边缘缓存旧的 index.html 而继续加载有 bug 的旧 api.js
+/index.html
+  Cache-Control: no-cache
+/js/*
   Cache-Control: no-cache

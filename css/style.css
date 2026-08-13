@@ -1503,3 +1503,76 @@ ul { list-style: none; }
     .platform-buttons { flex-direction: column; }
     .platform-btn { width: 100%; justify-content: center; }
 }
+
+/* ================= 编辑 / 对话修改 / 校对 面板 ================= */
+.ai-action-btn.active { color: var(--accent-cyan); border-color: var(--accent-cyan); background: rgba(6,182,212,0.08); }
+
+/* 编辑态 */
+.ai-edit-area { padding: 4px 0 8px; }
+.ai-edit-row { margin-bottom: 10px; }
+.ai-edit-row.ai-edit-main { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.ai-edit-pane { display: flex; flex-direction: column; border: 1px solid var(--border-light); border-radius: 10px; overflow: hidden; background: rgba(15,28,46,0.6); }
+.ai-edit-pane-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; font-size: 0.78rem; color: var(--text-secondary); background: rgba(6,182,212,0.05); border-bottom: 1px solid var(--border-light); }
+.ai-edit-pane-head .ai-action-btn { padding: 3px 8px; font-size: 0.72rem; }
+.ai-edit-textarea { width: 100%; min-height: 360px; border: none; resize: vertical; padding: 12px; background: transparent; color: var(--text-primary); font-size: 0.9rem; line-height: 1.7; font-family: inherit; outline: none; }
+.ai-edit-preview { max-height: 460px; overflow: auto; padding: 12px; }
+.ai-edit-preview .ai-output-body { color: var(--text-secondary); }
+.ai-edit-actions { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+.ai-edit-actions .primary { background: var(--gradient-hero); color: #fff; border: none; }
+.ai-edit-actions .primary:hover { box-shadow: 0 4px 16px rgba(6,182,212,0.3); }
+.ai-edit-hint { font-size: 0.74rem; color: var(--text-secondary); }
+@media (max-width: 760px) { .ai-edit-row.ai-edit-main { grid-template-columns: 1fr; } }
+
+/* 对话修改 */
+.ai-chat-panel { margin-top: 14px; border: 1px solid var(--border-light); border-radius: 12px; background: rgba(15,28,46,0.5); overflow: hidden; }
+.ai-chat-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; font-size: 0.85rem; color: var(--text-primary); background: rgba(6,182,212,0.06); border-bottom: 1px solid var(--border-light); }
+.ai-chat-head i { color: var(--accent-cyan); margin-right: 6px; }
+.ai-chat-clear { background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.74rem; }
+.ai-chat-clear:hover { color: var(--accent-cyan); }
+.ai-chat-list { max-height: 320px; overflow: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.ai-chat-empty { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.6; }
+.ai-chat-msg { max-width: 88%; }
+.ai-chat-msg .ai-chat-role { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 3px; }
+.ai-chat-msg.user { align-self: flex-end; text-align: right; }
+.ai-chat-msg.user .ai-chat-text { background: rgba(14,165,233,0.16); border: 1px solid rgba(14,165,233,0.3); }
+.ai-chat-msg.assistant .ai-chat-text { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); }
+.ai-chat-text { display: inline-block; text-align: left; padding: 8px 12px; border-radius: 10px; font-size: 0.86rem; line-height: 1.6; color: var(--text-primary); white-space: pre-wrap; word-break: break-word; }
+.ai-chat-input-row { display: flex; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--border-light); }
+.ai-chat-input { flex: 1; min-height: 44px; max-height: 120px; resize: vertical; border: 1px solid var(--border-light); border-radius: 8px; padding: 8px 10px; background: rgba(15,28,46,0.6); color: var(--text-primary); font-size: 0.86rem; outline: none; font-family: inherit; }
+.ai-chat-input:focus { border-color: var(--accent-cyan); }
+.ai-chat-input-row .primary { background: var(--gradient-hero); color: #fff; border: none; align-self: flex-end; }
+
+/* 校对面板 */
+.ai-proof-panel { margin-top: 14px; border: 1px solid var(--border-light); border-radius: 12px; background: rgba(15,28,46,0.5); overflow: hidden; }
+.ai-proof-head { display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; font-size: 0.85rem; color: var(--text-primary); background: rgba(6,182,212,0.06); border-bottom: 1px solid var(--border-light); }
+.ai-proof-head > div:first-child i { color: var(--accent-cyan); margin-right: 6px; }
+.ai-proof-sum { display: block; margin-top: 4px; font-size: 0.78rem; color: var(--text-secondary); }
+.ai-proof-sum .ok { color: var(--accent-green); }
+.ai-proof-sum .doubt { color: #f59e0b; }
+.ai-proof-sum .wrong { color: #ef4444; }
+.ai-proof-sum .nocite { color: #ef4444; font-weight: 600; }
+.ai-proof-head-actions { display: flex; gap: 8px; }
+.ai-proof-note { padding: 6px 14px; font-size: 0.74rem; color: var(--text-secondary); background: rgba(245,158,11,0.08); }
+.ai-proof-error { padding: 6px 14px; font-size: 0.78rem; color: #fca5a5; background: rgba(239,68,68,0.12); }
+.ai-proof-list { max-height: 420px; overflow: auto; padding: 8px 14px; display: flex; flex-direction: column; gap: 8px; }
+.ai-proof-item { border: 1px solid var(--border-light); border-radius: 10px; padding: 10px 12px; background: rgba(15,28,46,0.6); }
+.ai-proof-item-main { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ai-proof-cat { font-size: 0.68rem; padding: 2px 8px; border-radius: 999px; background: rgba(6,182,212,0.15); color: var(--accent-cyan); border: 1px solid rgba(6,182,212,0.3); }
+.ai-proof-cat.cat-价格 { background: rgba(236,72,153,0.15); color: #f472b6; border-color: rgba(236,72,153,0.3); }
+.ai-proof-cat.cat-日期 { background: rgba(139,92,246,0.15); color: #a78bfa; border-color: rgba(139,92,246,0.3); }
+.ai-proof-cat.cat-型号, .ai-proof-cat.cat-版本 { background: rgba(16,185,129,0.15); color: #34d399; border-color: rgba(16,185,129,0.3); }
+.ai-proof-val { font-weight: 600; color: var(--text-primary); font-size: 0.92rem; }
+.ai-proof-cite { font-size: 0.74rem; color: var(--text-secondary); }
+.ai-proof-cite a { color: var(--accent-cyan); }
+.ai-proof-cite.nocite { color: #ef4444; font-weight: 600; }
+.ai-proof-ctx { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.6; margin: 6px 0; padding-left: 8px; border-left: 2px solid var(--border-light); }
+.ai-proof-item-foot { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ai-proof-status { display: flex; gap: 6px; }
+.ai-proof-st { font-size: 0.72rem; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--border-light); background: transparent; color: var(--text-secondary); cursor: pointer; }
+.ai-proof-st.ok.on { background: rgba(16,185,129,0.2); color: #34d399; border-color: rgba(16,185,129,0.4); }
+.ai-proof-st.doubt.on { background: rgba(245,158,11,0.2); color: #fbbf24; border-color: rgba(245,158,11,0.4); }
+.ai-proof-st.wrong.on { background: rgba(239,68,68,0.2); color: #f87171; border-color: rgba(239,68,68,0.4); }
+.ai-proof-st.on { box-shadow: inset 0 0 0 1px currentColor; }
+.ai-proof-note-input { flex: 1; min-width: 140px; border: 1px solid var(--border-light); border-radius: 8px; padding: 4px 8px; background: rgba(15,28,46,0.6); color: var(--text-primary); font-size: 0.76rem; outline: none; }
+.ai-proof-note-input:focus { border-color: var(--accent-cyan); }
+.ai-proof-empty { padding: 14px; font-size: 0.8rem; color: var(--text-secondary); }
