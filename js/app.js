@@ -130,6 +130,15 @@ const app = createApp({
         const aiImageCaptionOn = ref(false);   // 配图是否显示名称/说明（默认关：图片不显示标题）
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
+        const historyFilter = ref('all'); // 历史筛选：all | text | image
+        // 侧栏宽度（可拖动缩放）
+        const sidebarWidth = ref(300);
+        const sidebarResizing = ref(false);
+        // 登录态（user / 123，或访客跳过）
+        const loggedIn = ref(false);
+        const loginUser = ref('');
+        const loginPass = ref('');
+        const loginErr = ref('');
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
         const contentParsing = ref(false);  // 正在解析 Word/PDF
         const contentDragover = ref(false); // 拖拽悬停态
@@ -329,6 +338,18 @@ const app = createApp({
                             }
                         }
                     }
+                }
+                // 生成成功则存入「生成历史」（插图类型）
+                const _imgs = (aiImageResults.value || []).filter(x => typeof x === 'string');
+                if (_imgs.length) {
+                    saveToHistory({
+                        id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+                        time: new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                        kind: 'image',
+                        resultTitle: '',
+                        imageText: (aiImageText.value || '').slice(0, 120),
+                        images: aiImageResults.value,
+                    });
                 }
             } catch (e) {
                 aiImageError.value = '网络错误：' + (e.message || e);
@@ -691,6 +712,21 @@ const app = createApp({
             persistHistory();
         }
         function restoreHistory(item) {
+            // 插图历史：切到插图面板并回填结果，关闭抽屉并滚动到插图区
+            if (item.kind === 'image') {
+                activePanel.value = 'ai-image';
+                aiImageResults.value = (item.images && Array.isArray(item.images)) ? item.images : [];
+                aiImageText.value = item.imageText || '';
+                const ok = aiImageResults.value.filter(x => typeof x === 'string').length;
+                aiImageError.value = '';
+                aiImageProgress.value = { done: ok, total: 4 };
+                aiHistoryOpen.value = false;
+                setTimeout(() => {
+                    const el = document.querySelector('.ai-image-panel') || document.querySelector('.ai-image-body') || document.querySelector('.content');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 60);
+                return;
+            }
             aiForm.value.type = item.type || 'review';
             aiForm.value.style = item.style || 'professional';
             aiForm.value.audience = item.audience || 'tech_fans';
@@ -725,6 +761,73 @@ const app = createApp({
         }
         function toggleHistory() { aiHistoryOpen.value = !aiHistoryOpen.value; }
         function closeHistory() { aiHistoryOpen.value = false; }
+
+        // 历史列表按「文案 / 插图」筛选（默认全部；旧条目无 kind 视为文案）
+        const aiHistoryView = computed(() => {
+            if (historyFilter.value === 'text') return aiHistory.value.filter(h => h.kind !== 'image');
+            if (historyFilter.value === 'image') return aiHistory.value.filter(h => h.kind === 'image');
+            return aiHistory.value;
+        });
+
+        // ====== 侧栏宽度可拖动缩放 ======
+        const LS_SIDEBAR_KEY = 'td_sidebar_width_v1';
+        function initSidebarWidth() {
+            try {
+                const w = parseInt(localStorage.getItem(LS_SIDEBAR_KEY) || '', 10);
+                if (w >= 220 && w <= 460) {
+                    sidebarWidth.value = w;
+                    document.documentElement.style.setProperty('--sidebar-width', w + 'px');
+                }
+            } catch (_) {}
+        }
+        function startResizeSidebar(e) {
+            e.preventDefault();
+            sidebarResizing.value = true;
+            document.body.style.userSelect = 'none';
+            document.body.style.cursor = 'col-resize';
+            window.addEventListener('mousemove', onResizeMove);
+            window.addEventListener('mouseup', stopResizeSidebar);
+        }
+        function onResizeMove(e) {
+            if (!sidebarResizing.value) return;
+            const minW = 220, maxW = 460, ml = 40; // ml = .sidebar margin-left
+            let w = e.clientX - ml;
+            if (w < minW) w = minW;
+            if (w > maxW) w = maxW;
+            sidebarWidth.value = w;
+            document.documentElement.style.setProperty('--sidebar-width', w + 'px');
+        }
+        function stopResizeSidebar() {
+            if (!sidebarResizing.value) return;
+            sidebarResizing.value = false;
+            document.body.style.userSelect = '';
+            document.body.style.cursor = '';
+            window.removeEventListener('mousemove', onResizeMove);
+            window.removeEventListener('mouseup', stopResizeSidebar);
+            try { localStorage.setItem(LS_SIDEBAR_KEY, String(sidebarWidth.value)); } catch (_) {}
+        }
+
+        // ====== 登录 / 访客 ======
+        const LS_LOGIN_KEY = 'td_logged_in_v1';
+        function initLogin() {
+            try { if (localStorage.getItem(LS_LOGIN_KEY) === '1') loggedIn.value = true; } catch (_) {}
+        }
+        function submitLogin() {
+            if (loginUser.value === 'user' && loginPass.value === '123') {
+                loggedIn.value = true; loginErr.value = '';
+                try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
+            } else {
+                loginErr.value = '用户名或密码错误';
+            }
+        }
+        function skipLogin() {
+            loggedIn.value = true; loginErr.value = '';
+            try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
+        }
+        function logout() {
+            loggedIn.value = false; loginUser.value = ''; loginPass.value = ''; loginErr.value = '';
+            try { localStorage.removeItem(LS_LOGIN_KEY); } catch (_) {}
+        }
 
         // ====== 原文 Word / PDF 上传：前端提取文本填入「参考原文内容」 ======
         function triggerContentFile() { if (contentFileInput.value) contentFileInput.value.click(); }
@@ -886,6 +989,7 @@ const app = createApp({
                 saveToHistory({
                     id: Date.now() + '_' + Math.random().toString(36).slice(2, 7),
                     time: new Date().toLocaleString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                    kind: 'text',
                     resultTitle: aiResultTitle.value,
                     resultContent: aiResult.value,
                     resultPlain: aiResultPlain.value,
@@ -1821,6 +1925,9 @@ const app = createApp({
             // 仅加载一次：不注册任何自动刷新（用户要求「禁止自动更新，只手动更新」）
             fetchSocialHotlist();
             fetchTechNews();
+            // 恢复侧栏宽度（拖动缩放持久化）与登录态
+            initSidebarWidth();
+            initLogin();
             // 按 Esc 也可关闭生成历史面板
             window.addEventListener('keydown', onKeydown);
             // PDF.js worker 指向同源 CDN，避免跨域加载失败
@@ -1852,6 +1959,11 @@ const app = createApp({
             contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource, parseCitedText,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,
+            // 新增：侧栏可拖动缩放 + 历史筛选
+            sidebarWidth, sidebarResizing, historyFilter, aiHistoryView,
+            startResizeSidebar,
+            // 新增：登录 / 访客
+            loggedIn, loginUser, loginPass, loginErr, submitLogin, skipLogin, logout,
             triggerContentFile, onContentFile, onContentDrop,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // 新增：编辑 / 对话修改 / 校对面板

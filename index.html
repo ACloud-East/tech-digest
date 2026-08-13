@@ -5,12 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=31">
+    <link rel="stylesheet" href="css/style.css?v=32">
     <link rel="stylesheet" href="vendor/fontawesome-all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
 <body>
     <div id="app" v-cloak>
+        <!-- 登录遮罩（user / 123，或右下角访客跳过） -->
+        <div class="login-overlay" v-if="!loggedIn">
+            <div class="login-card">
+                <div class="login-logo"><i class="fa-solid fa-microchip"></i><span>TechDigest</span></div>
+                <h2>欢迎回来</h2>
+                <p class="login-sub">登录后体验全部 AI 创作功能</p>
+                <div class="login-field">
+                    <i class="fa-solid fa-user"></i>
+                    <input v-model="loginUser" @keyup.enter="submitLogin" type="text" placeholder="用户名" autocomplete="username">
+                </div>
+                <div class="login-field">
+                    <i class="fa-solid fa-lock"></i>
+                    <input v-model="loginPass" @keyup.enter="submitLogin" type="password" placeholder="密码" autocomplete="current-password">
+                </div>
+                <div class="login-err" v-if="loginErr"><i class="fa-solid fa-circle-exclamation"></i> {{ loginErr }}</div>
+                <button class="login-btn" @click="submitLogin">登 录</button>
+                <button class="login-guest" @click="skipLogin" title="以访客身份直接进入">跳过登录（访客登录）</button>
+            </div>
+        </div>
+
         <!-- 顶部导航栏 -->
         <header class="top-bar">
             <div class="logo">
@@ -24,6 +44,7 @@
                 <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="刷新">
                     <i class="fa-solid fa-rotate" :class="{ spinning: loading }"></i>
                 </button>
+                <button class="logout-btn" v-if="loggedIn" @click="logout" title="退出登录"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </header>
 
@@ -66,6 +87,9 @@
                     </div>
                 </div>
             </aside>
+
+            <!-- 侧栏 / 内容 分隔条（可拖动缩放，增强可用性） -->
+            <div class="sidebar-resizer" :class="{ active: sidebarResizing }" @mousedown="startResizeSidebar" title="拖动调整侧栏宽度"></div>
 
             <!-- 主内容区 -->
             <main class="content">
@@ -1087,13 +1111,27 @@
                     <button class="ai-history-close" @click="toggleHistory"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
-            <div class="ai-history-list" v-if="aiHistory.length">
-                <div class="ai-history-item" v-for="h in aiHistory" :key="h.id" @click="restoreHistory(h)">
-                    <div class="ai-history-item-title">{{ h.resultTitle || '未命名文章' }}</div>
+            <!-- 文案 / 插图 筛选（默认全部） -->
+            <div class="ai-history-filter">
+                <button :class="{ active: historyFilter === 'all' }" @click="historyFilter = 'all'">全部</button>
+                <button :class="{ active: historyFilter === 'text' }" @click="historyFilter = 'text'"><i class="fa-solid fa-file-lines"></i> 文案</button>
+                <button :class="{ active: historyFilter === 'image' }" @click="historyFilter = 'image'"><i class="fa-solid fa-image"></i> 插图</button>
+            </div>
+            <div class="ai-history-list" v-if="aiHistoryView.length">
+                <div class="ai-history-item" v-for="h in aiHistoryView" :key="h.id" :class="{ 'is-image': h.kind === 'image' }" @click="restoreHistory(h)">
+                    <div class="ai-history-item-title">
+                        <i class="fa-solid fa-image" v-if="h.kind === 'image'"></i>
+                        {{ h.resultTitle || (h.kind === 'image' ? 'AI 生成插图' : '未命名文章') }}
+                    </div>
                     <div class="ai-history-item-meta">
                         <span>{{ h.time }}</span>
-                        <span>{{ (aiOptions.types.find(t => t.value === h.type) || {}).label || h.type }}</span>
-                        <span>{{ h.wordCount }}字</span>
+                        <template v-if="h.kind === 'image'">
+                            <span>{{ (h.images ? h.images.filter(Boolean).length : 0) }} 张</span>
+                        </template>
+                        <template v-else>
+                            <span>{{ (aiOptions.types.find(t => t.value === h.type) || {}).label || h.type }}</span>
+                            <span>{{ h.wordCount }}字</span>
+                        </template>
                     </div>
                     <button class="ai-history-del" @click.stop="deleteHistory(h.id)" title="删除">
                         <i class="fa-solid fa-trash"></i>
@@ -1115,6 +1153,6 @@
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=48"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608131300"></script>
+    <script src="js/app.js?v=2608131400"></script>
 </body>
 </html>
