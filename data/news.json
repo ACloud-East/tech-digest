@@ -1,12 +1,224 @@
 {
-  "updateTime": "2026-08-13T21:46:56.544Z",
+  "updateTime": "2026-08-13T22:42:18.861Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "财报里的AI医生「大为」，撬动京东健康价值重估",
+      "description": "财报里的AI医生「大为」，撬动京东健康价值重估,大为,医生,刘慧,京东健康,医疗服务,京东集团,知名企业,太原市妇幼保健院",
+      "url": "https://www.163.com/dy/article/L48DEJIB0511AQHO.html",
+      "time": "2026-08-13 22:42",
+      "tags": [
+        "人工智能",
+        "互联网",
+        "大公司"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "刚刚，DeepSeek Harness震撼开源：一切皆插件",
+      "description": "刚刚，DeepSeek Harness震撼开源：一切皆插件,插件,调用,编程,工作流,json,显式标识,deepseek",
+      "url": "https://www.163.com/dy/article/L48D6K9N0511AQHO.html",
+      "time": "2026-08-13 22:38",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "The Safety Reckoning Inside OpenAI",
+      "description": "OpenAI’s rogue agent hack was a watershed moment for AI safety and cybersecurity. It also sparked internal questions about the culture that led to it.",
+      "url": "https://www.wired.com/story/openai-safety-security-ai-agents-culture/",
+      "time": "2026-08-13T22:37:19.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "比Model 3便宜9万！吉利银河TT预售：14.59万元起",
+      "description": "比Model 3便宜9万！吉利银河TT预售：14.59万元起",
+      "url": "https://news.mydrivers.com/1/1143/1143596.htm",
+      "time": "2026-08-13 22:23",
+      "tags": [
+        "汽车"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Investors sue Selena Gomez alleging fraud tied to her mental health startup",
+      "description": "The plaintiffs say they invested nearly $1.2 million in the company, and are accusing Gomez of failing to build and market the startup.",
+      "url": "https://techcrunch.com/2026/08/13/investors-sue-selena-gomez-alleging-fraud-tied-to-her-mental-health-startup/",
+      "time": "2026-08-13T22:12:40.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "高达100%，美国将对进口无人机及零部件征收关税",
+      "description": "当地时间8月13日，美国白宫发表声明称，美国总统特朗普当日签署公告，以应对国家安全威胁为由对进口无人机及零部件征收10%至100%的从价关税。 公告规定，对具有高度敏感性的特定尺寸或特定功能的无人机，以及此类无人机的停靠站和某些关键组件，征收100%的从价关税。该类别包括最大起飞重量超过25公斤的无人机以及具备热成像功能的无人机。 此外，对尺寸较小且不具备特定功能的某些无人机及其他无人机组件，征收25%的从价关税。 公告还规定，对来自欧盟、日本、列支敦士登、韩国和瑞士等的无人机及组件征收15%的从价关税。此外，对来自英国的无人机征收10%的从价关税，前提是其硬件、软件和技术基本上均源自上述国家和地区，以及美国。 规定称，上述关税将于签署之日起21天后生效。对于非高度敏感的无人机组件，关税将于签署之日起180天后生效。 本文来源：央视新闻 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779411",
+      "time": "2026-08-13T22:10:32.000Z",
+      "tags": [
+        "软件应用",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "Anthropic将以2万亿美元定价上市！？市场在赌什么？",
+      "description": "你每月付给Claude的那笔会员费，在Anthropic的营收里连零头都算不上。 据市场研究机构IDC估算，这家公司一年从消费者订阅中收取的全部收入不到20亿美元——还不够付它一个半月的算力账单。但8月13日，英国《金融时报》报道，六名Anthropic现有股东预计，该公司最快于今年10月以2万亿美元或更高估值上市，超越SpaceX今年6月1.77万亿美元的纪录，成为史上规模最大的首次公开募股。 一家年订阅收入不到20亿的公司，凭什么值2万亿？",
+      "url": "https://wallstreetcn.com/member/articles/3779410",
+      "time": "2026-08-13T22:10:13.000Z",
+      "tags": [
+        "人工智能",
+        "AI芯片",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "应用材料大跌！AI浪潮推升设备需求，财报全面超预期却难填市场“胃口”｜财报见闻",
+      "description": "全球最大半导体设备厂商之一应用材料交出强劲的第三季度业绩，并给出高于市场预期的第四季度指引。但在股价今年大幅上涨、市场对AI资本开支预期已经处于高位的背景下，这份“超预期”财报并未获得市场认可。 应用材料第三财季营收91.15亿美元，高于预期的90亿美元，同比增长25%，创历史新高；GAAP净利润25.38亿美元，同比增长43%，调整后每股收益为3.50美元，超出预期的3.42美元，同比增长41%，同样创纪录。 公司毛利率继续扩张，GAAP毛利率达到50.3%，同比提升1.5个百分点，已经连续13个季度同比改善。 公司预计第四财季营收约102.5亿美元，相比分析师平均预期高出约7%。调整后每股收益4.02美元，远高于市场预期的3.72美元。 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌近6%。在股价年内已翻逾一倍之后，市场已为超预期的业绩设定了更高的门槛。 业绩指引超预期 应用材料管理层对未来需求保持乐观。公司预计第四财季营收约102.5亿美元，调整后每股收益4.02美元，均高于市场此前预期。 公司CEO加里·迪克森表示，随着AI在全球快速普及，对材料工程解决方案的需求达到前所未有的水平，公司因此进一步上调了2026年日历年的半导体系统业务营收预期，并预计2027年仍将实现强劲增长。 CFO布莱斯·希尔则表示，今年下半年收入增长将继续保持强劲，尤其是DRAM、先进制程逻辑与晶圆代工以及先进封装业务。 这背后的核心逻辑是AI基础设施建设正在持续拉动先进芯片制造投资。应用材料生产的设备广泛用于DRAM等存储芯片制造，而DRAM又是高带宽内存（HBM）的关键组成部分，HBM被广泛应用于英伟达等公司的AI加速器。 随着AI芯片需求快速增长，SK海力士、美光等存储芯片厂商正在加快建设新的制造设施，进而推动半导体设备需求。 迪克森称，公司客户甚至在要求应用材料提高产能，以便更快获得设备；他表示，从客户提供的跨季度需求预测来看，公司对2027年继续保持强劲增长具有信心。 DRAM和先进封装成为增长亮点 从业务结构来看，半导体系统业务是本季度增长的核心。 第三财季该业务营收70.40亿美元，高于上年同期的55.64亿美元；其中Foundry、Logic及其他业务占67%，DRAM占26%，Flash占7%。半导体系统业务毛利率达到55.3%，同比提升1.9个百分点，营业利润率则从33.0%提升至37.7%。 应用材料本季度还推出了六款面向DRAM和先进封装的新系统，包括用于提升DRAM和HBM性能的Centura Prime Epi、面向混合键合的Opta Quad CMP，以及用于3D堆叠和高带宽内存先进封装的Nokota VMax 2 ECD等。 公司同时推出新的沉积和刻蚀设备，以支持下一代AI芯片的逻辑和存储芯片扩展。 这意味着，AI带来的设备需求已经不只是单纯增加晶圆厂产能，还正在向HBM、3D堆叠、先进封装以及更复杂的晶体管结构延伸。应用材料正试图通过材料工程和设备升级，在这些新技术环节中获得更多价值。 股价大幅上涨后，市场很难被满足 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌约6%。这反映的并非公司基本面突然恶化，而是投资者对这家公司已经设置了更高的业绩门槛。 今年以来，市场已经将应用材料视为AI资本开支浪潮的重要受益者，其股价经历大幅上涨。在这一背景下，单纯的“超预期”已经不足以带来强劲的股价反应，市场开始要求公司给出更高的增长幅度以及更明确的长期需求兑现。 类似情况此前也出现在竞争对手科磊身上。科磊公布财报后，其业绩总体符合预期，但由于自由现金流表现不佳，股价同样遭遇市场冷淡反应。 对于应用材料而言，真正值得关注的或许已经不是AI需求是否存在，而是公司能否以足够快的速度扩大设备产能，从而满足客户不断上升的需求。 迪克森表示，客户一直在推动公司提高产能，“他们不断要求我们增加产能”。与此同时，一些客户正在寻找新的洁净室空间，并加快设备交付需求。公司则表示，扩大制造和研发能力需要时间，目前正在加大制造产能投资，以支持持续到本世纪末的预期需求。 因此，这份财报释放出的核心信号是：AI芯片制造投资仍然强劲，尤其是DRAM、HBM和先进封装需求正在成为应用材料新的增长引擎；但在股价已经大幅上涨之后，市场对这家AI设备龙头的要求也同步提高。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779409",
+      "time": "2026-08-13T22:05:09.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "Apple proposes commissions of up to 15% for off-App Store purchases in the US",
+      "description": "Apple has submitted its proposal for the fees it should be allowed to charge for purchases made outside of the App Store system in the Epic Games case. Here are the details.",
+      "url": "https://9to5mac.com/2026/08/13/apple-proposes-commissions-of-up-to-15-for-off-app-store-purchases-in-the-us/",
+      "time": "2026-08-13T22:05:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Your MCP Server Needs a Capability Budget, Not Just Auth",
+      "description": "Most MCP security checklists stop at “is this caller authenticated?” That is necessary, but it does not answer the operational question: what is this tool allowed to do during this run? A useful boundary is a capability budget: a short-lived, explicit contract for each tool invocation. It should constrain the action, target, resource, quantity, and expiry. The model can request a tool, but the runtime decides whether the request fits the contract. Start with a deliberately boring schema: type CapabilityBudget = { runId: string; tool: string; actions: string[]; resources: string[]; maxCalls: number; maxBytes?: number; expiresAt: string; approval: \"none\" | \"human\"; policyVersion: string; }; For example, a code-review run might receive: { \"runId\": \"run_8f2\", \"tool\": \"github.create_comment\", \"actions\": [\"comment\"], \"resources\": [\"repo:acme/api:pull:481\"], \"maxCalls\": 1, \"expiresAt\": \"2026-08-14T03:00:00Z\", \"approval\": \"human\", \"policyVersion\": \"p17\" } The important part is what is absent: no repository-wide write permission, no issue creation, and no unbounded retry allowance. Do not check the budget only when the agent plans the call. The queue, worker, and tool adapter should all treat the budget as untrusted input and revalidate it. A dispatch decision can be reduced to: Load the current run and budget. Verify the budget is unexpired. Verify the requested action and resource match exactly. Atomically reserve one call and any byte quota. Recheck the current policy and credential version. Dispatch with the reservation ID. If steps 4 and 5 cannot be made durable, a worker crash can turn one approved call into several attempts. That is a reliability bug as well as a security bug. Let the model propose a sequence, but make the runtime spend from the budget one reservation at a time. A plan such as “inspect, patch, test, notify” should not silently inherit write capability from the first step. A minimal ledger makes this visible: reservation tool requested decision outcome r1 repo.read 1 call allowed confirmed r2 repo.write 1 call approval required pending r3 slack.send 1 call denied not dispatched Keep pending and unknown distinct. Pending means no dispatch has been recorded. Unknown means dispatch may have happened but confirmation was lost. Only the latter requires provider lookup or an idempotency-key reconciliation before retry. A capability budget is only real if it survives interruptions. Inject at least these cases: The worker pauses after reservation but before dispatch. The provider times out after accepting the request. The policy changes while a job is queued. The model changes the resource identifier between planning and dispatch. Two workers race for the last allowed call. A retry arrives after the budget expires. A child tool asks for a broader capability than its parent run owns. For every case, record the expected ledger state, whether a provider lookup is required, and whether a human must reapprove. A green test suite that never forces an unknown outcome is testing the happy path, not the boundary. If this runtime must stay available for queued work or browser-assisted tasks, hosting is part of the control plane. A managed runtime such as managed OpenClaw hosting on Ampere can be evaluated as one deployment option, but it does not replace capability checks, prompt-injection defenses, credential scoping, or reconciliation logic. The questions to verify are practical: where durable run state lives, how workers restart, how credentials are mounted, how logs are retained, and how you rebuild the same policy version on a clean host. Treat the hosting choice as an availability and recovery decision, not as an authorization decision. Before calling an MCP integration production-ready, verify: Every tool call has a run-bound, expiring capability budget. Action and resource are matched at dispatch, not only during planning. Call and byte limits are reserved atomically. Policy and credential versions are rechecked before execution. Parent and child tools cannot expand one another’s authority. Timeouts produce unknown, not an automatic retry. Provider IDs and idempotency keys support reconciliation. Expiry, revocation, and clean-host restore are tested. Authentication answers “who is asking?” A capability budget adds “what may happen, where, how often, and until when?” That is the boundary worth reviewing.",
+      "url": "https://dev.to/zira125/your-mcp-server-needs-a-capability-budget-not-just-auth-32p6",
+      "time": "2026-08-13T22:02:56.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "Flock says its new tool will help identify police abuse, but hasn’t explained how it works",
+      "description": "The surveillance company announced it's making a tool called \"Audit Assistance\" mandatory for all customers, claiming it's already helped catch abuse. But the company has yet to explain how the tool works in detail, raising questions about its effectiveness.",
+      "url": "https://techcrunch.com/2026/08/13/flock-says-its-new-tool-will-help-identify-police-abuse-but-hasnt-explained-how-it-works/",
+      "time": "2026-08-13T22:02:04.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "我国制备出0.72平方米钙钛矿光伏组件 光电转换",
+      "description": "我国制备出0.72平方米钙钛矿光伏组件 光电转换效率刷新世界纪录达22.0%,晶硅,钙钛矿,世界纪录,光伏组件,光电转换",
+      "url": "https://www.163.com/dy/article/L48AQG9305198CJN.html",
+      "time": "2026-08-13 21:54",
+      "tags": []
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "‘That is not acceptable’: Judge orders Google to make rival app store installs easier",
+      "description": "One month after Epic Games and Google seemingly stopped fighting over the future of Android app distribution, they were back in a San Francisco courtroom today - where Judge James Donato just ordered Google to make it easier to install rival app stores on Android. It's been nearly three years since a jury unanimously decided that Google had an illegal monopoly over Android apps, and almost two years since Judge Donato decided the best way of undoing that monopoly would be to crack open Android app distribution. Donato ordered Google to carry rival Android app stores inside its own Google Play Store, and to provide rivals with complecte acc … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/policy/979852/that-is-not-acceptable-judge-orders-google-to-make-rival-app-store-installs-easier",
+      "time": "2026-08-13T21:53:04.000Z",
+      "tags": [
+        "手机",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "TechCrunch",
+      "sourceColor": "#0f9d58",
+      "title": "If Apple sends you a push notification alerting you to a spyware attack, take it seriously",
+      "description": "Apple now sends out push notifications to iPhone lock screens when the company identifies government spyware targeting someone's devices.",
+      "url": "https://techcrunch.com/2026/08/13/if-apple-sends-you-a-push-notification-alerting-you-to-a-spyware-attack-take-it-seriously/",
+      "time": "2026-08-13T21:50:11.000Z",
+      "tags": [
+        "手机",
+        "软件应用",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "费城半导体指数涨1%",
+      "description": "费城半导体指数涨1%,费城,半导体",
+      "url": "https://www.163.com/dy/article/L48AHML30534A4SC.html",
+      "time": "2026-08-13 21:49",
+      "tags": [
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "It Works on Office WiFi: Shipping AR to People Who Will Not Install Anything",
+      "description": "Every AR project I have scoped eventually arrives at the same quiet question, usually about twenty minutes into the kickoff call. Someone wants customers to see a product in their own room, we sketch the happy path, and then a person at the far end of the table says it out loud: are we really going to ask people to download an app for this? That question deserves more weight than it usually gets, because the answer changes the entire build. And the trap on the other side of it is not the AR code. It is that your browser-based demo works perfectly on office wifi, on a flagship phone, with the asset already sitting in cache, and none of those three things are true for the person you built it for. When a client says web AR, they could mean any of three delivery routes, and they are not interchangeable. Route one: hand off to the phone's own viewer. You publish one optimized model, put a \"view in your space\" button on a page, and let the operating system do the AR. On iOS that path expects a USDZ file and opens AR Quick Look. On Android it expects glTF or GLB and opens Scene Viewer. The web component wraps both handoffs plus an inline 3D preview, which means a competent front-end dev can ship this in an afternoon once the asset exists. You get placement and inspection at true scale. You do not get an interactive experience, because you handed the session to someone else's viewer. Route two: run the AR session in the page. WebXR, your own render loop, your own interaction. Tapping objects, configuring a product, stepping through a sequence, reacting to what the user does. This is where web AR stops being a viewer and starts being an application. The catch is support. Browser AR capability differs across platforms and moves over time, so check what your actual target devices do at build time instead of trusting a feature table you read last year. My rule: anything that only works on some phones is an enhancement, never the thing the campaign depends on. Feature-detect, and have a real fallback that is not an apology page. Route three: a native app. Full platform capability, assets ship with the binary, sessions can be long. You pay for it in reach, because every single user has to install first. The mistake I see is almost never picking the wrong one of these. It is never comparing them, and defaulting to whichever route the first vendor happened to have built before. This is the part that separates web AR from every other 3D work you have done, and it is worth being blunt about. A native app downloads its assets once, from a store, usually over wifi, while the user is willing to wait because they made a decision to install. A web AR page pays the download every time someone opens the link, over whatever connection they have, while standing in a shop, having made no commitment to you whatsoever. That single difference sets a hard ceiling on your scene. Not a soft one you can optimize your way past later. So the engineering work is unglamorous and completely non-optional: Compress the geometry. Draco or meshopt on the glTF, and measure the decode cost on a mid-range phone, not just the transfer size. Compress the textures. KTX2 with Basis, so the GPU gets a compressed format instead of your app decoding a 4K PNG on a phone and holding the uncompressed result in memory. Ship the level of detail the moment needs. The 2 million triangle hero mesh is not the one that opens in an aisle. Put something meaningful on screen while it streams. A poster frame, a low-res proxy, a progress state that is not a spinner. People forgive loading. They do not forgive a blank camera view. Then test the way the user will actually experience it. Real phones, cellular data, throttled, cache cleared. Every megabyte you leave in is a slice of your audience who close the tab before the camera opens, and you will never see them in your analytics as anything except a bounce. The other thing that gets scoped at zero: your client already has models, so that part is done. It is not. A CAD file exists to manufacture an object. It carries exact surfaces, every internal fastener, every part nobody will ever see, and often the entire sub-assembly tree. A marketing render exists for one camera angle with lighting baked into the image. A photogrammetry scan arrives as one enormous messy lump of geometry with the lighting of the day it was captured burned in. All useful starting points. None of them is a deliverable. Getting from any of them to a web asset means retopology, sensible real-time materials, baked lighting where it helps, and export into the formats phones expect. Then multiply that by a product catalogue and asset preparation becomes the largest line in the budget, not the AR code. If a vendor has not asked how many products you have and what state the source files are in, they have not scoped the project. They have guessed at it. I am not writing this as a browser purist. Several of the builds I am proudest of had to be native, and it was not close. Tracking precision. Browser AR is good at putting an object on a floor and keeping it there while somebody walks around it. It is not the tool when an overlay has to stay locked to a specific piece of real machinery through movement and bad lighting. Persistence and shared anchors. Content that must hold a fixed real-world position across sessions, or that several people need to see in the same place at the same time, needs infrastructure a page load does not carry. MR Camera, a multiplayer mixed reality environment where several users place and interact with 3D models in one shared space, is on headsets for exactly that reason. Live data and deep platform access. Planes XR, which we built for ARCortex, runs real plane simulations in the real world using AR and live OpenSky data. Continuous sensor access, precise geolocation, a live data pipeline. That is a native build for good reasons. Measurement you will act on. Nystag, our VR eye-tracking diagnostics work, runs on a Vive Focus 3 because the number at the end has to be defensible. No browser experience competes there and it should not try. Run these in order and the decision usually makes itself: Is the audience the general public, or a known group you can equip? Public points at the browser. A known group can install something. Is this a look, or a task? Inspecting an object is web AR. Performing guided work on real equipment is not. Does anything need to persist or be shared live? If yes, you are in native or headset territory. How heavy is the scene, honestly? One product, fine. A detailed environment, no. How long does this need to live? A two-week campaign favours a link. A capability you will run for years justifies an app. One more that gets skipped: where does the trigger live? A web AR experience is a link, and links only work where people encounter them. The QR code on the packaging, the button on the product page, the code on a shelf edge. Decide that at the same time as the experience, because it changes what you should build. Someone scanning in a shop aisle has thirty seconds. Someone opening your product page at home has several minutes. Those are two different apps. Web AR is not a cut-down version of real AR. It is a different trade. You give up tracking precision, persistence, scene weight and platform depth, and in exchange you get every phone that can open a link. For product visualization, packaging, campaigns and public experiences that is a very good deal, and the missing install is frequently the only reason the project works at all. For guided work on real equipment, for measurement, for shared spaces, or for anything that has to hold its position across sessions, the browser is the wrong container and no amount of optimization changes that. Decide which one you have before you commission the assets. Everything after that gets much easier. The longer client-facing version of this, including how we scope the asset pipeline, is on the Null Studio blog.",
+      "url": "https://dev.to/nabeelbaghoor/it-works-on-office-wifi-shipping-ar-to-people-who-will-not-install-anything-k92",
+      "time": "2026-08-13T21:47:56.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "The fight over Flock and other ALPRs",
+      "description": "There are over 120,000 of Flock’s automatic license plate reader (ALPR) cameras installed all over the US. Flock’s cameras, and others like them, use AI to identify and track vehicles based on their license plate number, make, model, color, and other info, networked together to track vehicles and people’s movements throughout the day and across the country. Dozens of communities have canceled contracts for the cameras or turned them off, including Los Angeles, as officials have pushed for more limits on the data they collect, who has access to it, and how it can be used in the future. Earlier this year, Amazon-owned Ring canceled a partnership with Flock after online backlash. Flock CEO: ‘We got this one wrong’ Flock cameras? Target practice. Another grim portent for our AI policing future. The LAPD has suspended its use of Flock’s license plate readers, for now. No, Flock isn’t threatening people for debating surveillance The all-too-predictable Flock stalking problem. Let’s talk about Ring, lost dogs, and the surveillance state Ring’s Flock breakup doesn’t fix its real problem Flock is “pausing further exploration of a potential partnership with Ring.” Ring cancels its partnership with Flock Safety after surveillance backlash Dozens of Flock AI camera feeds were just out there AI annotators overseas may be reviewing Flock license plate camera footage from the US. Amazon’s Ring now works with video surveillance company Flock Unprotected license plate surveillance cameras let anyone with a web browser tune in",
+      "url": "https://www.theverge.com/tech/979869/flock-alpr-ai-surveillance-protest-privacy",
+      "time": "2026-08-13T21:46:21.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
     {
       "source": "The Verge",
       "sourceColor": "#e2127a",
       "title": "Microsoft’s Clippy-like Mico character is no longer the face of Copilot",
-      "description": "Mico is headed to Learn Live. | Image: Microsoft Microsoft Copilot will no longer show its emotive yellow blob Mico when you use the chatbot's voice mode. In a support page, Microsoft says it's going to move Mico to its Learn Live platform, where the avatar will have \"more to react to,\" as reported earlier by GeekWire. Mico launched in Copilot's voice mode last October, with Microsoft AI CEO Mustafa Suleyman pitching the avatar as a way to give the chatbot an \"identity.\" The blob would react to what you say in real-time, complete with facial expressions and animations. Mico joins the long list of virtual helpers that Microsoft has retired over the years, like Clippy, Cortana, and Rover. … Read the full story at The Verge.",
+      "description": "Mico is headed to Learn Live. | Image: Microsoft Microsoft Copilot will no longer show its emotive yellow blob, Mico, when you use the chatbot's voice mode. In a support page, Microsoft says it's going to move Mico to its Learn Live platform, where the avatar will have \"more to react to,\" as reported earlier by GeekWire. Mico launched in Copilot's voice mode last October, with Microsoft AI CEO Mustafa Suleyman pitching the avatar as a way to give the chatbot an \"identity.\" The blob would react to what you say in real-time, complete with facial expressions and animations. Mico joins the long list of virtual helpers that Microsoft has retired over the years, like Clippy, Cortana, and Rover … Read the full story at The Verge.",
       "url": "https://www.theverge.com/tech/979871/microsoft-copilot-mico-retired",
       "time": "2026-08-13T21:42:38.000Z",
       "tags": [
@@ -29,6 +241,19 @@
       ]
     },
     {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I built a free, open-source trading bot starter (Next.js)",
+      "description": "A minimal, open-source trading bot built on the Picckles Signals API — a read-only REST API for stock trading signals. It's Next.js (App Router) + TypeScript, and deploys to Vercel with a daily cron out of the box. The bot runs on a daily tick that: Checks the API for SELL/HOLD decisions on any open positions Pulls today's BUY signals, sized to your budget Persists state to Upstash Redis Shows everything on a dashboard — open positions, trade history, and a manual run trigger It ships in paper-trading mode by default. Wiring up a real broker is a single function — placeOrder in src/lib/bot.ts — everything else stays the same. Two strategies are available out of the box: double7-guarded (default) — buys strong uptrends on short-term lows, with a VIX-based crash filter. Typical hold: 2–3 weeks. rs-pullback — buys relative-strength leaders during fast dips. Typical hold: 2–5 days. Signals are the same for every subscriber on a given plan — no personalization, nothing account-specific, just \"here's what the strategy says to do today\": \\javascript Bearer ${KEY}` } } for (const s of feed.entries) { BUY ${s.suggestedQuantity} ${s.symbol} @ ~$${s.price}); \\ I've been trading these strategies on my own account and wanted something a developer could clone and have paper-trading running in a few minutes — without writing their own signal generation, position sizing, or scheduling from scratch. Setup needs a Picckles API key (free tier available) and an Upstash Redis instance — that's it. Repo: https://github.com/rkang30/open-trade-bot API docs: https://picckles.com/api-docs Would love feedback on the architecture, or holes in the strategies themselves — happy to answer questions in the comments.",
+      "url": "https://dev.to/rkang30/i-built-a-free-open-source-trading-bot-starter-nextjs-1m9n",
+      "time": "2026-08-13T21:39:00.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
       "source": "网易科技",
       "sourceColor": "#e60012",
       "title": "中国邮政与宁德时代达成战略合作",
@@ -37,6 +262,19 @@
       "time": "2026-08-13 21:39",
       "tags": [
         "新能源/电动车"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Arca Sophia Open-Core: Building Air-Gapped Local AI Inference for Industrial SCADA/PLC Systems",
+      "description": "Arca Sophia Open-Core: Building Air-Gapped Local AI Inference for Industrial SCADA/PLC Systems Integrating Artificial Intelligence into Operational Technology (OT) and Industrial Control Systems (ICS) presents a fundamental engineering trade-off: Cloud latency vs. Plant Security. In continuous industrial processing, sending telemetry to public cloud LLMs breaks air-gapped network designs and introduces non-deterministic network delays. To solve this, we designed Arca Sophia Open-Core—an open-source (AGPLv3) reference architecture for executing quantized LLMs directly at the edge, fully containerized and bound by physical safety rules. Strict Air-Gap Requirements: OT networks cannot expose open WAN ports or send raw telemetry to third-party endpoints. Resource Constraints: Edge nodes in industrial cabinets operate with capped hardware specifications (e.g., 4 vCPUs, 8GB RAM). Non-Deterministic Risk: Raw LLM output cannot directly trigger PLC actuators without a deterministic safety layer. Arca Sophia Open-Core resolves these constraints through a modular Docker setup: Inference Engine: Runs 4-bit quantized GGUF models (e.g., Qwen3-8B-Instruct) via local backends without internet access. PLC Simulation Layer: Isolated container simulating real-time SCADA telemetry and register reads. Deterministic Shield (SILIC-ETHIC): A rules-based containment layer that sanitizes model inferences against physical operational thresholds before any output is passed down the pipeline. yaml services: ics-core-sophia: build: . ports: - \"8080:8000\" environment: - SINTROPIC_SHIELD=active - NODE_ROLE=Architect - MODEL_PATH=/models/Qwen3-8B-Instruct-MTP-Q4_K_M.gguf - SPEC_TYPE=mtp - SPEC_DRAFT_N_MAX=2 - CTX_SIZE=65536 deploy: resources: limits: cpus: '4.0' memory: 8192M restart: unless-stopped",
+      "url": "https://dev.to/matiasmeza_09/arca-sophia-open-core-building-air-gapped-local-ai-inference-for-industrial-scadaplc-systems-5917",
+      "time": "2026-08-13T21:38:38.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
       ]
     },
     {
@@ -87,6 +325,19 @@
         "人工智能",
         "软件应用",
         "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "End-to-End Containerised Deployment: AWS EC2 Docker Docker Hub Kubernetes",
+      "description": "🚀 My First End-to-End Containerised Deployment: AWS EC2 → Docker → Docker Hub → Kubernetes I recently completed a hands-on DevOps project where I8 deployed a simple web application through the complete container workflow — from writing the application to running it inside a Kubernetes Pod. This project helped me understand how Docker and Kubernetes fit together in a real deployment workflow. 🛠️ What I Built The deployment flow looked like this: HTML Application → Dockerfile → Docker Image → Docker Hub → Kubernetes Pod → NodePort Service → Web Browser 🔹 Technologies Used ☁️ AWS EC2 🐳 Docker 📦 Docker Hub ☸️ Kubernetes 🌐 Kubernetes NodePort 💻 HTML 🐧 Linux 1️⃣ Created a Simple Web Application I started with a basic \"index.html\" file containing the web application's content. The goal wasn't to build a complex application. Instead, I wanted to focus on understanding the deployment and containerisation process. 2️⃣ Provisioned an AWS EC2 Instance I created an Amazon EC2 instance to provide the Linux environment for the project. After connecting to the instance through SSH, I prepared the environment required for Docker and Kubernetes. 3️⃣ Created a Dockerfile Next, I created a \"Dockerfile\" to package the web application into a Docker image. A simple example: FROM nginx:latest COPY index.html /usr/share/nginx/html/index.html EXPOSE 80 Here: \"FROM\" specifies the base image. \"COPY\" places my HTML file inside the Nginx web server directory. \"EXPOSE\" documents the port used by the application. 4️⃣ Built the Docker Image Once the Dockerfile was ready, I built the image using: docker build -t my-web-app . This converted the application and its required environment into a reusable Docker image. I could then verify the image using: docker images 5️⃣ Tested the Container Locally Before moving to Kubernetes, I tested the Docker container: docker run -d -p 8080:80 my-web-app This mapped: EC2 Port 8080 → Container Port 80 I then accessed the application through the EC2 instance's public IP and port. 6️⃣ Pushed the Image to Docker Hub After confirming that the container worked correctly, I pushed the image to Docker Hub. First, I tagged the image: docker tag my-web-app /my-web-app:latest Then logged in: docker login And pushed the image: docker push /my-web-app:latest This gave me a central container image that Kubernetes could pull and deploy. 7️⃣ Deployed the Application on Kubernetes Next, I created a Kubernetes Pod configuration. Example: apiVersion: v1 metadata: spec: I applied it using: kubectl apply -f pod.yaml Then checked the Pod: kubectl get pods 8️⃣ Exposed the Pod Using a NodePort Service A Pod alone isn't the most convenient way to expose an application externally. So I created a Kubernetes Service using NodePort. apiVersion: v1 metadata: spec: selector: ports: I then applied it: kubectl apply -f service.yaml And verified it with: kubectl get services 9️⃣ Accessed the Application Once the NodePort Service was running, I accessed the application through the EC2 instance's public IP and NodePort. For example: http://:30080 This allowed me to access the web application from my browser. 🔄 Complete Deployment Flow Web Application │ ▼ index.html │ ▼ Dockerfile │ ▼ Docker Image │ ▼ Docker Hub │ ▼ Kubernetes Pod │ ▼ NodePort Service │ ▼ EC2 Network │ ▼ Web Browser 🧠 What I Learned This project helped me understand several important DevOps concepts practically: 🐳 Containerisation Instead of running the application directly on the server, Docker packages the application into a portable container image. 📦 Container Registries Docker Hub provides a place to store and distribute container images. ☸️ Kubernetes Pods A Pod provides the basic execution environment for containers in Kubernetes. 🌐 Kubernetes Services Services provide a stable way to expose applications running inside Kubernetes. 🔌 NodePort NodePort allows a service to be accessed through a port on the Kubernetes node. 🔄 Container Lifecycle I also got a better understanding of the flow: Build → Package → Push → Pull → Deploy → Expose → Access 🚧 What's Next? This is only the beginning of my Kubernetes learning journey. My next steps are to move from manually managing a Pod to using Kubernetes resources designed for real deployments: Deployments ReplicaSets Rolling Updates ConfigMaps Secrets Ingress Persistent Volumes Kubernetes Networking Horizontal Pod Autoscaling CI/CD with GitHub Actions AWS EKS The goal is to gradually move from a simple single-container deployment towards a more production-oriented architecture. 💡 Final Takeaway This may be a small project, but it gave me something more valuable than just theory — hands-on understanding of how an application moves from source code to a running container and finally into Kubernetes. I'm continuing to learn by building, breaking, troubleshooting, and rebuilding. One project at a time. 🚀 devops #docker #kubernetes #aws",
+      "url": "https://dev.to/amankhan/end-to-end-containerised-deployment-aws-ec2-docker-docker-hub-kubernetes-j90",
+      "time": "2026-08-13T21:26:58.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
       ]
     },
     {
@@ -213,6 +464,18 @@
         "人工智能",
         "芯片/半导体",
         "软件应用"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Mark Zuckerberg’s AI Manifesto Is 6,500 Words—and Barely Says Anything",
+      "description": "AI is shifting the culture, from tech CEO manifestos to 1 am job interviews. We unpack some of the latest, along with the top findings from Black Hat and Defcon, this week on Uncanny Valley.",
+      "url": "https://www.wired.com/story/mark-zuckerbergs-ai-manifesto-is-6500-words-and-barely-says-anything/",
+      "time": "2026-08-13T21:14:43.000Z",
+      "tags": [
+        "人工智能",
+        "智能硬件"
       ]
     },
     {
@@ -635,6 +898,19 @@
     {
       "source": "IT之家",
       "sourceColor": "#e13b3f",
+      "title": "法拉第未来 2026 财年半年报归母亏损 7488.5 万美元，同比亏损收窄 44.51%",
+      "description": "IT之家 8 月 14 日消息，法拉第未来今日发布 2026 财年（2026 年 1 月～2026 年 12 月）半年报（2026 年 1 月～2026 年 6 月）及第二财季（2026 年 4 月～2026 年 6 月）报告： 2026 财年半年报 营业总收入：134.8 万美元（IT之家注：现汇率约合 910.83 万元人民币），同比下降 99.93% 毛利润：-2208 万美元（现汇率约合 -1.49 亿元人民币），同比亏损收窄 53.93% 毛利率：-1638%，同比亏损扩大 342.78 个百分点 归母净利润：-7488.5 万美元（现汇率约合 -5.06 亿元人民币），同比亏损收窄 44.51% 经营现金流：-5652.7 万美元（现汇率约合 -3.82 亿元人民币），同比亏损扩大 29.63% 基本每股收益：-42.74 美元（现汇率约合 -288.79 元人民币），同比亏损收窄 81.04% 稀释每股收益：-42.74 美元（现汇率约合 -288.79 元人民币），同比亏损收窄 81.04% 2026 财年第二财季 营业总收入：83.6 万美元（现汇率约合 564.88 万元人民币），同比增长 1400% 毛利润：-1070.2 万美元（现汇率约合 -7231.24 万元人民币），同比亏损收窄 60.15% 毛利率：-1280.14%，同比亏损收窄 3693.56 个百分点 归母净利润：-3602.9 万美元（现汇率约合 -2.43 亿元人民币），同比亏损收窄 71.1% 基本每股收益：-17.38 美元（现汇率约合 -117.44 元人民币），同比亏损收窄 90.36% 稀释每股收益：-17.38 美元（现汇率约合 -117.44 元人民币），同比亏损收窄 90.36% AI 解读 本次财报业绩超出市场预期，营收实现爆发式增长，净亏损大幅收窄，同时完成了大额债务削减，重新获得纳斯达克合规地位，战略升级成效显著。 财报亮点 上半年营收达到 135 万美元（现汇率约合 912.18 万元人民币），同比增长超 264.32%，第二季度单季营收 83.6 万美元（现汇率约合 564.88 万元人民币），同比增长超 1400%，机器人业务已实现正贡献毛利。 上半年净亏损 8128 万美元（现汇率约合 5.49 亿元人民币），同比收窄 40.1%；第二季度净亏损 3896 万美元（现汇率约合 2.63 亿元人民币），同比收窄 69%，成本控制成效显著，收入成本同比下降 57% 至 1154 万美元（现汇率约合 7797.47 万元人民币）。 截至二季度末，公司累计削减债务超 1 亿美元（现汇率约合 6.76 亿元人民币），总负债降至 2.78 亿美元（现汇率约合 18.81 亿元人民币） ，股东权益维持正值，达 141 万美元（现汇率约合 952.72 万元人民币）。 战略完成升级，正式推出“四芯全栈 AI”生态系统战略，整合 EAI Brain、EAI Devices、行业生产力解决方案与开发者平台、EAI Data Factory 四大板块，标志着业务从单一机器人硬件向全系统、生产力驱动的企业解决方案转型。 获得 7000 万美元（现汇率约合 4.73 亿元人民币） 美国机构累计新承诺资金，完成约 4990 万份 A 类认股权证注销，修订了可转换票据协议，消除了基于成交量加权平均价的定价条款和大多数认股权证发行，并重新获得纳斯达克完全最低买价合规。 机器人业务出货量快速增长，截至 2026 年 8 月 4 日累计出货 394 台，6 月单月出货 105 台，所有产品线均获得 FCC 全认证，并启动了三阶段“美国制造”加速计划。 未来展望 目标是在 2026 年底前累计出货超 2000 台 EAI 机器人，较之前 1500 台的目标上调。 计划在未来 3-4 个季度内将总负债进一步降至 1 亿美元（现汇率约合 6.76 亿元人民币） 以下。 EAI Data Factory 预计在 2026 年 8 月底达到每月 2100 小时合格真实世界数据采集能力，12 月底达到 20000 小时，全年总计 50000 小时。 预计在 2026 年底前构建 100 项技能组合，开发者社区规模达到 200 名成员。 正在探索机器人业务独立融资和潜在独立上市路径，以释放业务价值，减少股权稀释。 风险提示：本文内容由 AI 自动分析生成，仅供参考，不代表IT之家观点。如有出入请以证监会指定上市公司信息披露平台为准。本文内容不构成投资建议，如有投资者据此操作，风险自担，IT之家对此不承担任何责任。",
+      "url": "https://www.ithome.com/0/989/489.htm",
+      "time": "2026-08-13T20:23:31.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
       "title": "法拉第未来 2026 财年半年报归母亏损 7488.5 万美元，同比扭亏为盈",
       "description": "IT之家 8 月 14 日消息，法拉第未来今日发布 2026 财年（2026 年 1 月～2026 年 12 月）半年报（2026 年 1 月～2026 年 6 月）及第二财季（2026 年 4 月～2026 年 6 月）报告： 2026 财年半年报 营业总收入：134.8 万美元（IT之家注：现汇率约合 910.83 万元人民币），同比下降 99.93% 毛利润：-2208 万美元（现汇率约合 -1.49 亿元人民币），同比亏损收窄 53.93% 毛利率：-1638%，同比亏损扩大 342.78 个百分点 归母净利润：-7488.5 万美元（现汇率约合 -5.06 亿元人民币），同比扭亏为盈 经营现金流：-5652.7 万美元（现汇率约合 -3.82 亿元人民币），同比亏损扩大 29.63% 基本每股收益：-42.74 美元（现汇率约合 -288.79 元人民币），同比亏损收窄 81.04% 稀释每股收益：-42.74 美元（现汇率约合 -288.79 元人民币），同比亏损收窄 81.04% 2026 财年第二财季 营业总收入：83.6 万美元（现汇率约合 564.88 万元人民币），同比增长 1400% 毛利润：-1070.2 万美元（现汇率约合 -7231.24 万元人民币），同比亏损收窄 60.15% 毛利率：-1280.14%，同比亏损收窄 3693.56 个百分点 归母净利润：-3602.9 万美元（现汇率约合 -2.43 亿元人民币），同比增长 69% 基本每股收益：-17.38 美元（现汇率约合 -117.44 元人民币），同比亏损收窄 90.36% 稀释每股收益：-17.38 美元（现汇率约合 -117.44 元人民币），同比亏损收窄 90.36% AI 解读 本次财报业绩超出市场预期，营收实现爆发式增长，净亏损大幅收窄，同时完成了大额债务削减，重新获得纳斯达克合规地位，战略升级成效显著。 财报亮点 上半年营收达到 135 万美元（现汇率约合 912.18 万元人民币），同比增长超 264.32%，第二季度单季营收 83.6 万美元（现汇率约合 564.88 万元人民币），同比增长超 1400%，机器人业务已实现正贡献毛利。 上半年净亏损 8128 万美元（现汇率约合 5.49 亿元人民币），同比收窄 40.1%；第二季度净亏损 3896 万美元（现汇率约合 2.63 亿元人民币），同比收窄 69%，成本控制成效显著，收入成本同比下降 57% 至 1154 万美元（现汇率约合 7797.47 万元人民币）。 截至二季度末，公司累计削减债务超 1 亿美元（现汇率约合 6.76 亿元人民币），总负债降至 2.78 亿美元（现汇率约合 18.81 亿元人民币） ，股东权益维持正值，达 141 万美元（现汇率约合 952.72 万元人民币）。 战略完成升级，正式推出“四芯全栈 AI”生态系统战略，整合 EAI Brain、EAI Devices、行业生产力解决方案与开发者平台、EAI Data Factory 四大板块，标志着业务从单一机器人硬件向全系统、生产力驱动的企业解决方案转型。 获得 7000 万美元（现汇率约合 4.73 亿元人民币） 美国机构累计新承诺资金，完成约 4990 万份 A 类认股权证注销，修订了可转换票据协议，消除了基于成交量加权平均价的定价条款和大多数认股权证发行，并重新获得纳斯达克完全最低买价合规。 机器人业务出货量快速增长，截至 2026 年 8 月 4 日累计出货 394 台，6 月单月出货 105 台，所有产品线均获得 FCC 全认证，并启动了三阶段“美国制造”加速计划。 未来展望 目标是在 2026 年底前累计出货超 2000 美元（现汇率约合 1.35 万元人民币） 台 EAI 机器人，较之前 1500 台的目标上调。 计划在未来 3-4 个季度内将总负债进一步降至 1 亿美元（现汇率约合 6.76 亿元人民币） 以下。 EAI Data Factory 预计在 2026 年 8 月底达到每月 2100 小时合格真实世界数据采集能力，12 月底达到 20000 小时，全年总计 50000 小时。 预计在 2026 年底前构建 100 项技能组合，开发者社区规模达到 200 名成员。 正在探索机器人业务独立融资和潜在独立上市路径，以释放业务价值，减少股权稀释。 风险提示：本文内容由 AI 自动分析生成，仅供参考，不代表IT之家观点。如有出入请以证监会指定上市公司信息披露平台为准。本文内容不构成投资建议，如有投资者据此操作，风险自担，IT之家对此不承担任何责任。",
       "url": "https://www.ithome.com/0/989/489.htm",
@@ -646,6 +922,15 @@
       ]
     },
     {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "每经热评 | 算法里的红灯虽然“停了表”，但外",
+      "description": "每经热评 | 算法里的红灯虽然“停了表”，但外卖业破内卷的警钟仍需长鸣,内卷,算法,红灯,停表,外卖业",
+      "url": "https://www.163.com/dy/article/L485K3MG0512B07B.html",
+      "time": "2026-08-13 20:23",
+      "tags": []
+    },
+    {
       "source": "快科技",
       "sourceColor": "#ff6600",
       "title": "路天：比亚迪二代刀和闪充 与C919大飞机一样入选大国重器",
@@ -655,15 +940,6 @@
       "tags": [
         "新能源/电动车"
       ]
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "每经热评 | 算法里的红灯虽然“停了表”，但外",
-      "description": "每经热评 | 算法里的红灯虽然“停了表”，但外卖业破内卷的警钟仍需长鸣,内卷,算法,红灯,停表,外卖业",
-      "url": "https://www.163.com/dy/article/L485K3MG0512B07B.html",
-      "time": "2026-08-13 20:23",
-      "tags": []
     },
     {
       "source": "Dev.to",
@@ -756,7 +1032,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "NP-Overrated",
-      "description": "Article URL: https://gruhn.me/blog/2026-08-13/ Comments URL: https://news.ycombinator.com/item?id=49291268 Points: 54 # Comments: 19",
+      "description": "Article URL: https://gruhn.me/blog/2026-08-13/ Comments URL: https://news.ycombinator.com/item?id=49291268 Points: 83 # Comments: 34",
       "url": "https://gruhn.me/blog/2026-08-13/",
       "time": "2026-08-13T20:14:17.000Z",
       "tags": [
@@ -943,7 +1219,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Gödel's Proof Works (2020)",
-      "description": "Article URL: https://www.quantamagazine.org/how-godels-proof-works-20200714/ Comments URL: https://news.ycombinator.com/item?id=49290969 Points: 36 # Comments: 20",
+      "description": "Article URL: https://www.quantamagazine.org/how-godels-proof-works-20200714/ Comments URL: https://news.ycombinator.com/item?id=49290969 Points: 48 # Comments: 28",
       "url": "https://www.quantamagazine.org/how-godels-proof-works-20200714/",
       "time": "2026-08-13T19:44:46.000Z",
       "tags": [
@@ -1065,7 +1341,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Organizations Use AI: Evidence from ChatGPT [pdf]",
-      "description": "Article URL: https://cdn.openai.com/pdf/how-organizations-use-chatgpt.pdf Comments URL: https://news.ycombinator.com/item?id=49290768 Points: 31 # Comments: 13",
+      "description": "Article URL: https://cdn.openai.com/pdf/how-organizations-use-chatgpt.pdf Comments URL: https://news.ycombinator.com/item?id=49290768 Points: 43 # Comments: 20",
       "url": "https://cdn.openai.com/pdf/how-organizations-use-chatgpt.pdf",
       "time": "2026-08-13T19:25:38.000Z",
       "tags": [
@@ -1167,6 +1443,15 @@
         "软件应用",
         "网络安全"
       ]
+    },
+    {
+      "source": "Lobsters",
+      "sourceColor": "#b22222",
+      "title": "The SvelteKit 3 Release Candidate is here",
+      "description": "Comments",
+      "url": "https://svelte.dev/blog/sveltekit-3-release-candidate",
+      "time": "2026-08-13T19:08:29.000Z",
+      "tags": []
     },
     {
       "source": "Lobsters",
@@ -1365,7 +1650,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Understanding is the new bottleneck",
-      "description": "Article URL: https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck Comments URL: https://news.ycombinator.com/item?id=49290299 Points: 74 # Comments: 46",
+      "description": "Article URL: https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck Comments URL: https://news.ycombinator.com/item?id=49290299 Points: 112 # Comments: 66",
       "url": "https://www.geoffreylitt.com/2026/07/02/understanding-is-the-new-bottleneck",
       "time": "2026-08-13T18:47:19.000Z",
       "tags": [
@@ -1402,7 +1687,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Single log line is 49KB+ (ext4) / 110KB+ (btrfs) of systemd-journald disk writes",
-      "description": "Article URL: https://github.com/systemd/systemd/issues/40262 Comments URL: https://news.ycombinator.com/item?id=49290215 Points: 87 # Comments: 43",
+      "description": "Article URL: https://github.com/systemd/systemd/issues/40262 Comments URL: https://news.ycombinator.com/item?id=49290215 Points: 115 # Comments: 59",
       "url": "https://github.com/systemd/systemd/issues/40262",
       "time": "2026-08-13T18:41:01.000Z",
       "tags": [
@@ -1674,7 +1959,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Accelerating GPT-5.6 Sol Ultrafast",
-      "description": "Article URL: https://www.cerebras.ai/blog/accelerating-gpt-5-6-sol-ultrafast-with-openai Comments URL: https://news.ycombinator.com/item?id=49289844 Points: 286 # Comments: 114",
+      "description": "Article URL: https://www.cerebras.ai/blog/accelerating-gpt-5-6-sol-ultrafast-with-openai Comments URL: https://news.ycombinator.com/item?id=49289844 Points: 336 # Comments: 132",
       "url": "https://www.cerebras.ai/blog/accelerating-gpt-5-6-sol-ultrafast-with-openai",
       "time": "2026-08-13T18:10:02.000Z",
       "tags": [
@@ -1750,7 +2035,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "How Compaction Works in Pi",
-      "description": "Article URL: https://earendil.com/posts/compaction-in-pi/ Comments URL: https://news.ycombinator.com/item?id=49289654 Points: 45 # Comments: 6",
+      "description": "Article URL: https://earendil.com/posts/compaction-in-pi/ Comments URL: https://news.ycombinator.com/item?id=49289654 Points: 64 # Comments: 18",
       "url": "https://earendil.com/posts/compaction-in-pi/",
       "time": "2026-08-13T17:57:50.000Z",
       "tags": [
@@ -1836,7 +2121,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Where did the old web go? We followed 657,607 links to find out",
-      "description": "Article URL: https://0.mk/blog/link-rot Comments URL: https://news.ycombinator.com/item?id=49289532 Points: 93 # Comments: 60",
+      "description": "Article URL: https://0.mk/blog/link-rot Comments URL: https://news.ycombinator.com/item?id=49289532 Points: 100 # Comments: 68",
       "url": "https://0.mk/blog/link-rot",
       "time": "2026-08-13T17:49:18.000Z",
       "tags": [
@@ -1847,7 +2132,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Choose Boring Technology (2015)",
-      "description": "Article URL: https://mcfunley.com/choose-boring-technology Comments URL: https://news.ycombinator.com/item?id=49289512 Points: 169 # Comments: 87",
+      "description": "Article URL: https://mcfunley.com/choose-boring-technology Comments URL: https://news.ycombinator.com/item?id=49289512 Points: 196 # Comments: 104",
       "url": "https://mcfunley.com/choose-boring-technology",
       "time": "2026-08-13T17:48:13.000Z",
       "tags": [
@@ -1870,7 +2155,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Donkey.bas is 45 Years Old – 131 line of Glory",
-      "description": "Article URL: https://donkeybas.com/ Comments URL: https://news.ycombinator.com/item?id=49289465 Points: 137 # Comments: 56",
+      "description": "Article URL: https://donkeybas.com/ Comments URL: https://news.ycombinator.com/item?id=49289465 Points: 157 # Comments: 64",
       "url": "https://donkeybas.com/",
       "time": "2026-08-13T17:45:50.000Z",
       "tags": [
@@ -1963,17 +2248,6 @@
       "url": "https://domenkozar.com/2026/08/13/i-want-extern-fil-c/",
       "time": "2026-08-13T17:43:13.000Z",
       "tags": []
-    },
-    {
-      "source": "搜狐科技",
-      "sourceColor": "#d8402a",
-      "title": "OTA的黄昏，豆包的黎明",
-      "description": "在OTA上，用户说找酒店，平台看似给你铺了一堆列表供选择，但排序的决策权在平台；在豆包上，用户说“找一个带泳池、离故宫近、安静且不超过800元的酒店”，AI理解意图后直接给出答案。 OTA的使用场景是计划性…",
-      "url": "https://www.sohu.com/a/1062433591_116132?scm=10001.344_14-200000.0.0-0-0-0-0.",
-      "time": "2026-08-13 17:43",
-      "tags": [
-        "人工智能"
-      ]
     },
     {
       "source": "网易科技",
@@ -2155,7 +2429,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Gemini 3.7 Flash",
-      "description": "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flas... Comments URL: https://news.ycombinator.com/item?id=49289112 Points: 469 # Comments: 282",
+      "description": "https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flas... Comments URL: https://news.ycombinator.com/item?id=49289112 Points: 511 # Comments: 308",
       "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-3-7-flash/",
       "time": "2026-08-13T17:23:22.000Z",
       "tags": [
@@ -2166,7 +2440,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "JDK 27 G1/Parallel/Serial GC Changes",
-      "description": "Article URL: https://tschatzl.github.io/2026/08/10/jdk27-g1-serial-parallel-gc-changes.html Comments URL: https://news.ycombinator.com/item?id=49289101 Points: 32 # Comments: 9",
+      "description": "Article URL: https://tschatzl.github.io/2026/08/10/jdk27-g1-serial-parallel-gc-changes.html Comments URL: https://news.ycombinator.com/item?id=49289101 Points: 41 # Comments: 13",
       "url": "https://tschatzl.github.io/2026/08/10/jdk27-g1-serial-parallel-gc-changes.html",
       "time": "2026-08-13T17:22:39.000Z",
       "tags": [
@@ -2256,7 +2530,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Tocharian Online",
-      "description": "Article URL: https://lrc.la.utexas.edu/eieol/tokol/0 Comments URL: https://news.ycombinator.com/item?id=49289026 Points: 44 # Comments: 6",
+      "description": "Article URL: https://lrc.la.utexas.edu/eieol/tokol/0 Comments URL: https://news.ycombinator.com/item?id=49289026 Points: 51 # Comments: 8",
       "url": "https://lrc.la.utexas.edu/eieol/tokol/0",
       "time": "2026-08-13T17:15:46.000Z",
       "tags": [
@@ -2404,7 +2678,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Mistral OCR 4.1",
-      "description": "Article URL: https://docs.mistral.ai/models/ocr-4-1 Comments URL: https://news.ycombinator.com/item?id=49288889 Points: 198 # Comments: 71",
+      "description": "Article URL: https://docs.mistral.ai/models/ocr-4-1 Comments URL: https://news.ycombinator.com/item?id=49288889 Points: 216 # Comments: 84",
       "url": "https://docs.mistral.ai/models/ocr-4-1",
       "time": "2026-08-13T17:05:12.000Z",
       "tags": [
@@ -2718,7 +2992,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "GoAccess – Open-source real-time log analyzer and interactive viewer",
-      "description": "Article URL: https://goaccess.io/ Comments URL: https://news.ycombinator.com/item?id=49288296 Points: 37 # Comments: 8",
+      "description": "Article URL: https://goaccess.io/ Comments URL: https://news.ycombinator.com/item?id=49288296 Points: 44 # Comments: 9",
       "url": "https://goaccess.io/",
       "time": "2026-08-13T16:22:16.000Z",
       "tags": [
@@ -2730,7 +3004,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "AI At Home Part 1: A Box Of Scraps",
-      "description": "Article URL: https://jdagostino.github.io/ai-pt1-box-o-scraps/index.html Comments URL: https://news.ycombinator.com/item?id=49288293 Points: 64 # Comments: 35",
+      "description": "Article URL: https://jdagostino.github.io/ai-pt1-box-o-scraps/index.html Comments URL: https://news.ycombinator.com/item?id=49288293 Points: 72 # Comments: 39",
       "url": "https://jdagostino.github.io/ai-pt1-box-o-scraps/index.html",
       "time": "2026-08-13T16:22:05.000Z",
       "tags": [
@@ -5202,7 +5476,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Kubernetes on Oxide: How customer needs shaped our integrations",
-      "description": "Article URL: https://oxide.computer/blog/kubernetes-on-oxide Comments URL: https://news.ycombinator.com/item?id=49286485 Points: 131 # Comments: 59",
+      "description": "Article URL: https://oxide.computer/blog/kubernetes-on-oxide Comments URL: https://news.ycombinator.com/item?id=49286485 Points: 143 # Comments: 62",
       "url": "https://oxide.computer/blog/kubernetes-on-oxide",
       "time": "2026-08-13T14:26:41.000Z",
       "tags": [
@@ -5362,7 +5636,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Spaghettifying DRAM",
-      "description": "Article URL: https://github.com/xoreaxeaxeax/skitter-creek-bath-salts Comments URL: https://news.ycombinator.com/item?id=49286341 Points: 424 # Comments: 129",
+      "description": "Article URL: https://github.com/xoreaxeaxeax/skitter-creek-bath-salts Comments URL: https://news.ycombinator.com/item?id=49286341 Points: 453 # Comments: 131",
       "url": "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts",
       "time": "2026-08-13T14:17:13.000Z",
       "tags": [
@@ -5851,7 +6125,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "Gloomberb",
-      "description": "Article URL: https://gloom.sh/ Comments URL: https://news.ycombinator.com/item?id=49285982 Points: 351 # Comments: 176",
+      "description": "Article URL: https://gloom.sh/ Comments URL: https://news.ycombinator.com/item?id=49285982 Points: 364 # Comments: 182",
       "url": "https://gloom.sh/",
       "time": "2026-08-13T13:52:32.000Z",
       "tags": [
@@ -6089,7 +6363,7 @@
       "source": "Hacker News",
       "sourceColor": "#ff6600",
       "title": "I built a 500k-domain search engine for makers in a weekend for $10",
-      "description": "Article URL: https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html Comments URL: https://news.ycombinator.com/item?id=49285718 Points: 95 # Comments: 54",
+      "description": "Article URL: https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html Comments URL: https://news.ycombinator.com/item?id=49285718 Points: 135 # Comments: 72",
       "url": "https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html",
       "time": "2026-08-13T13:36:19.000Z",
       "tags": [
@@ -6587,20 +6861,6 @@
       "time": "2026-08-13T13:11:00.000Z",
       "tags": [
         "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "新品发布",
-      "sourceColor": "#ad1457",
-      "title": "首发体验 | DeepSeek Harness 来了，它不想做下一个Codex",
-      "description": "",
-      "url": "https://www.ifanr.com/1675083",
-      "time": "2026-08-13T13:10:32.000Z",
-      "tags": [
-        "人工智能",
-        "测评/新品",
-        "智能硬件"
       ],
       "topic": true
     },
@@ -7220,6 +7480,19 @@
       "tags": [
         "互联网",
         "大公司"
+      ]
+    },
+    {
+      "source": "爱范儿",
+      "sourceColor": "#d4233a",
+      "title": "首发体验 | DeepSeek Harness 来了，它不想做下一个Codex",
+      "description": "一切皆插件 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
+      "url": "https://www.ifanr.com/1675083?utm_source=rss&utm_medium=rss&utm_campaign=",
+      "time": "2026-08-13T12:46:11.000Z",
+      "tags": [
+        "人工智能",
+        "测评/新品",
+        "智能硬件"
       ]
     },
     {
@@ -10843,6 +11116,17 @@
     {
       "source": "钛媒体",
       "sourceColor": "#ff9800",
+      "title": "OTA的黄昏，豆包的黎明",
+      "description": "当“搜索”变成“对话”，你原有的流量护城河，还剩下几米深？",
+      "url": "https://www.tmtpost.com/8101999.html",
+      "time": "2026-08-13T09:43:44.000Z",
+      "tags": [
+        "专访"
+      ]
+    },
+    {
+      "source": "钛媒体",
+      "sourceColor": "#ff9800",
       "title": "腾讯从来不是赌徒",
       "description": "腾讯看到的确定性和回报到底是什么？",
       "url": "https://www.tmtpost.com/8102007.html",
@@ -11393,6 +11677,15 @@
     {
       "source": "新华网科技",
       "sourceColor": "#003d8c",
+      "title": "科学家发现宇宙黎明时期“黑洞星”",
+      "description": "科学家发现宇宙黎明时期“黑洞星”-&quot;研究人员发现，如果将类似MoM-BH*-1的天体置于早期星系中，其整体光谱可能与“小红点”高度相似。&quot;",
+      "url": "http://www.news.cn/tech/20260813/f882835716a547388bba66ac2e784ef4/c.html",
+      "time": "2026-08-13 09:19",
+      "tags": []
+    },
+    {
+      "source": "新华网科技",
+      "sourceColor": "#003d8c",
       "title": "我国陆上大兆瓦风电铸件领域取得关键性技术突破",
       "description": "我国陆上大兆瓦风电铸件领域取得关键性技术突破-&quot;这套铸件将配套当前全球单机功率最大的陆上风电机组，这一成果也意味着大连重工在陆上大兆瓦风电铸件领域取得关键性技术突破。&quot;",
       "url": "http://www.news.cn/tech/20260813/beea5b09e79e49b8a5b0a6343b4432d1/c.html",
@@ -11420,15 +11713,6 @@
       "tags": [
         "软件应用"
       ]
-    },
-    {
-      "source": "新华网科技",
-      "sourceColor": "#003d8c",
-      "title": "科学家发现宇宙黎明时期“黑洞星”",
-      "description": "科学家发现宇宙黎明时期“黑洞星”-&quot;研究人员发现，如果将类似MoM-BH*-1的天体置于早期星系中，其整体光谱可能与“小红点”高度相似。&quot;",
-      "url": "http://www.news.cn/tech/20260813/f882835716a547388bba66ac2e784ef4/c.html",
-      "time": "2026-08-13 09:19",
-      "tags": []
     },
     {
       "source": "AI大模型",
@@ -16756,6 +17040,17 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Jabra Promo Codes: 30% Off  Headphones, Headsets & More",
+      "description": "Unlock significant savings on Jabra headphones, headsets, and speakers with our verified promo codes, exclusive coupons, and limited-time deals.",
+      "url": "https://www.wired.com/story/jabra-promo-codes-coupons/",
+      "time": "2026-08-13T05:00:00.000Z",
+      "tags": [
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Herman Miller Promo Codes: 40% Off August 2026",
       "description": "Whether you’re looking for a Herman Miller promo code or discounts in their sale, here is how to save on the world's best ergonomic office furniture in August 2026.",
       "url": "https://www.wired.com/story/herman-miller-promo-code/",
@@ -16812,17 +17107,6 @@
       "url": "https://www.wired.com/story/visible-promo-code/",
       "time": "2026-08-13T05:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Jabra Promo Codes: 30% Off  Headphones, Headsets & More",
-      "description": "Unlock significant savings on Jabra headphones, headsets, and speakers with our verified promo codes, exclusive coupons, and limited-time deals.",
-      "url": "https://www.wired.com/story/jabra-promo-codes-coupons/",
-      "time": "2026-08-13T05:00:00.000Z",
-      "tags": [
-        "科技创投"
-      ]
     },
     {
       "source": "Wired",
@@ -29187,17 +29471,6 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "比Model 3便宜9万！吉利银河TT预售：14.59万元起",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqe4602960.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "汽车"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "闪充+云辇C+天神之眼B 比亚迪秦MAX上市：9.99万起",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqk3139906.shtml",
@@ -29493,19 +29766,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqk3097796.shtml",
       "time": "2026-08-12T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "刚刚，DeepSeek Harness震撼开源：一切皆插件",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqe4558061.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "智能硬件"
-      ]
     },
     {
       "source": "新浪科技",
@@ -34157,6 +34417,18 @@
     {
       "source": "ZDNet",
       "sourceColor": "#0066cc",
+      "title": "AT&T will give you the new Google Pixel 11 Pro for free with trade-in - any year, any condition",
+      "description": "Google just announced the new Pixel 11 line, and right now at AT&T, you can get one for free when you trade in any older phone.",
+      "url": "https://www.zdnet.com/article/google-pixel-11-pro-at-t-deal/",
+      "time": "2026-08-12T14:01:00.000Z",
+      "tags": [
+        "手机",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "ZDNet",
+      "sourceColor": "#0066cc",
       "title": "Pixel Watch 4 vs. Pixel Watch 5: Buy the old Android smartwatch or opt for the newest?",
       "description": "Considering an upgrade to the new Pixel Watch 5? It comes down to these factors.",
       "url": "https://www.zdnet.com/article/pixel-watch-4-vs-pixel-watch-5/",
@@ -34248,18 +34520,6 @@
       "time": "2026-08-12T14:01:00.000Z",
       "tags": [
         "手机"
-      ]
-    },
-    {
-      "source": "ZDNet",
-      "sourceColor": "#0066cc",
-      "title": "AT&T will give you the new Google Pixel 11 Pro for free with trade-in - any year, any condition",
-      "description": "Google just announced the new Pixel 11 line, and right now at AT&T, you can get one for free when you trade in any older phone.",
-      "url": "https://www.zdnet.com/article/google-pixel-11-pro-at-t-deal/",
-      "time": "2026-08-12T14:01:00.000Z",
-      "tags": [
-        "手机",
-        "智能硬件"
       ]
     },
     {
@@ -48888,6 +49148,15 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Nike Promo Codes and Discounts: 30% for August 2026",
+      "description": "Check out our deals for Nike this August 2026, including 15% off select purchases.",
+      "url": "https://www.wired.com/story/nike-promo-code/",
+      "time": "2026-08-12T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Chegg Coupon Codes August 2026: Save on Study, Textbooks, & More",
       "description": "Unlock Chegg promo codes, student discounts, and free trials for Chegg Study and Chegg Writing.",
       "url": "https://www.wired.com/story/chegg-coupon-code/",
@@ -48949,15 +49218,6 @@
       "title": "Vimeo Promo Codes and Discounts: Up to 40% Off This August 2026",
       "description": "Enjoy 25% off a membership, 40% off, plus an additional 10% off annual plans, and more deals to save at Vimeo.",
       "url": "https://www.wired.com/story/vimeo-promo-code/",
-      "time": "2026-08-12T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Nike Promo Codes and Discounts: 30% for August 2026",
-      "description": "Check out our deals for Nike this August 2026, including 15% off select purchases.",
-      "url": "https://www.wired.com/story/nike-promo-code/",
       "time": "2026-08-12T05:00:00.000Z",
       "tags": []
     },
@@ -97477,243 +97737,6 @@
       "tags": [
         "芯片/半导体"
       ],
-      "topic": true
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "特斯拉施压欧盟，FSD安全评估数据保密引争议 - 电子工程专辑",
-      "description": "",
-      "url": "https://www.eet-china.com/news/202608102990.html",
-      "time": "2026-08-10T01:42:17.000Z",
-      "tags": [
-        "新能源/电动车",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "ROG XG259QNSR绝梦二代显示器开启预售：FHD@420Hz，售价1699元起",
-      "description": "近日，华硕上架了全新绝梦25 二代显示器，这是一款针对专业电竞玩家的高刷产品，搭载了一块24.5英寸FHD@420Hz Fast IPS面板，响应时间低至0.3ms GtG。目前新品已经开启预售，提供黑白双色可选，并于8月14日晚上8点正式开卖，首发到手价为1699元起，9月前晒单还可返50E卡。 绝梦25 二代 XG259QNSR 黑色 游戏显示器，售价1699元，京东地址：点此前往>>> 绝梦25 二代 XG259QNSR-W 吹雪 游戏显示器，售价1799元，京东地址：点此前往>>> 绝梦25 二代显示器沿用了三面窄边框的设计，采用了24.5英寸的Fast IPS面板，可视角度为178度（水平和垂直），sRGB/DCI-P3色域分别为115%和90%，逐台出厂校色，对比度为1000:1，最大亮度为400尼特，支持NVIDIA G-SYNC、AMD FreeSync Premium、 VRR可变刷新率、ELMB-SYNC抗运动模糊技术，得到了VESA DisplayHDR 400和德国莱茵TÜV不闪屏/低蓝光认证。此外，该款显示器还提供基于AI驱动的动态准星、动态暗部增强等功能，直观的DisplayWidget Center软件可轻松调整画面设置，无需实体按键操作。 新产品配有可调节支架，具有0至160mm升降高度、-45°至45°水平旋转、-5°至20°前后俯仰、以及-90°至90°垂直旋转，另外还支持100 x 100 mm规格的VESA壁挂，便于玩家使用悬臂支架。接口配置方面，显示器带有一个DP 1.4端口、两个HDMI 2.1、以及音频插孔，附送一条DP线材，另外还具有集线器功能，提供了两个USB 3.2 Gen1 Type-A接口，内置电源设计。",
-      "url": "http://www.expreview.com/107480.html",
-      "time": "2026-08-10T01:39:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "游戏"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "为第三代半导体产业而生！国产光刻机获行业头部客户重复订单：已获验证 可大规模使用了",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1142/1142521.htm",
-      "time": "2026-08-10T01:30:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "为第三代半导体产业而生！国产光刻机获行业头部客户重复订单：已获验证 可大规模使用了 - news.mydrivers.com",
-      "description": "",
-      "url": "https://news.mydrivers.com/1/1142/1142521.htm",
-      "time": "2026-08-10T01:30:00.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "小众软件",
-      "sourceColor": "#2e7d32",
-      "title": "发现频道：10款大家发现的好评软件[2026年第32期]",
-      "description": "最近10日，来自小众软件论坛的发现频道的热门排行榜，由系统自动生成，直接列出来： 序号 主题 1️⃣ Linux Basics for Hackers —— 面向黑客的 Linux 基础课程：中文译本",
-      "url": "https://www.appinn.com/faxian-top10-2632/",
-      "time": "2026-08-10T01:00:36.000Z",
-      "tags": [
-        "软件应用",
-        "网络安全"
-      ]
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "N家入门单反新品！尼康D60卖场特别报道 - info.fengniao.com",
-      "description": "",
-      "url": "https://info.fengniao.com/85/pic_857848_5.html",
-      "time": "2026-08-10T01:00:25.000Z",
-      "tags": []
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "N家入门单反新品！尼康D60卖场特别报道",
-      "description": "",
-      "url": "https://info.fengniao.com/85/pic_857848_5.html",
-      "time": "2026-08-10T01:00:25.000Z",
-      "tags": []
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "虎嗅AI100闭门会将于8月18日探讨AI办公市场格局演变与创业机会 - beta.huxiu.com",
-      "description": "",
-      "url": "https://beta.huxiu.com/article/4880439.html",
-      "time": "2026-08-10T01:00:01.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "OpenAI关停AI浏览器ChatGPT Atlas，独立AI原生浏览器前景收缩",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4881855.html",
-      "time": "2026-08-10T00:59:40.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "OpenAI关停AI浏览器ChatGPT Atlas，独立AI原生浏览器前景收缩 - huxiu.com",
-      "description": "",
-      "url": "https://www.huxiu.com/article/4881855.html",
-      "time": "2026-08-10T00:59:40.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "爱范儿",
-      "sourceColor": "#d4233a",
-      "title": "早报｜国行苹果AI上线官网后被撤下/曝Apple Watch将迎来大升级/宇树科技今日开启科创板申购",
-      "description": "· 苹果测试长鑫存储芯片，拟用于中国市场 iPhone 和 MacBook · SpaceX 收购 Cursor 临近落地 · Pixel 11 Pro 真机曝光：沙丘色、哑光黑，改用圆形长焦开孔 #欢迎关注爱范儿官方微信公众号：爱范儿（微信号：ifanr），更多精彩内容第一时间为您奉上。",
-      "url": "https://www.ifanr.com/1674507?utm_source=rss&utm_medium=rss&utm_campaign=",
-      "time": "2026-08-10T00:44:04.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "芯片/半导体"
-      ]
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼PS在线商店新增提示：2028年起PS新作终止实体光盘发售 - t.cj.sina.cn",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1826017320/6cd6d02802001utng",
-      "time": "2026-08-10T00:11:36.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼PS在线商店新增提示：2028年起PS新作终止实体光盘发售 - 新浪财经",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1826017320/6cd6d02802001utng",
-      "time": "2026-08-10T00:11:36.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼PS在线商店新增提示：2028年起PS新作终止实体光盘发售 - 新浪网",
-      "description": "",
-      "url": "https://t.cj.sina.cn/articles/view/1826017320/6cd6d02802001utng",
-      "time": "2026-08-10T00:11:36.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼催促玩家：还没预购《GTA6》的人赶紧买 - 17173",
-      "description": "",
-      "url": "http://news.17173.com/content/08102026/080539517.shtml",
-      "time": "2026-08-10T00:05:39.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼催促玩家：还没预购《GTA6》的人赶紧买 - news.17173.com",
-      "description": "",
-      "url": "http://news.17173.com/content/08102026/080539517.shtml",
-      "time": "2026-08-10T00:05:39.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼将停止PlayStation实体游戏光盘生产 - DoNews",
-      "description": "",
-      "url": "https://www.donews.com/news/detail/8/6664338.html",
-      "time": "2026-08-09T23:43:03.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "索尼将停止PlayStation实体游戏光盘生产 - donews.com",
-      "description": "",
-      "url": "https://www.donews.com/news/detail/8/6664338.html",
-      "time": "2026-08-09T23:43:03.000Z",
-      "tags": [
-        "游戏"
-      ],
-      "topic": true
-    },
-    {
-      "source": "机器之心",
-      "sourceColor": "#512da8",
-      "title": "OpenAI研究员：我们都不读论文了",
-      "description": "OpenAI研究员：我们都不读论文了,论文,学术,科学,实验,研究员,openai",
-      "url": "https://www.163.com/dy/article/L3U6TMV50511AQHO.html",
-      "time": "2026-08-09 23:36",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "生产流程保密，玩家自制索尼 PlayStation 光盘几乎无可行空间 - QQ News",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260810A02U4800",
-      "time": "2026-08-09T23:35:00.000Z",
-      "tags": [],
-      "topic": true
-    },
-    {
-      "source": "索尼",
-      "sourceColor": "#1a1a2e",
-      "title": "生产流程保密，玩家自制索尼 PlayStation 光盘几乎无可行空间 - qq.com",
-      "description": "",
-      "url": "https://news.qq.com/rain/a/20260810A02U4800",
-      "time": "2026-08-09T23:35:00.000Z",
-      "tags": [],
       "topic": true
     }
   ]
