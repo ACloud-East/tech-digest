@@ -1,7 +1,447 @@
 {
-  "updateTime": "2026-08-13T22:42:18.861Z",
+  "updateTime": "2026-08-13T23:41:50.908Z",
   "total": 8000,
   "articles": [
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "实测正式版DeepSeek V4 Pro 补齐Agent能力",
+      "description": "实测正式版DeepSeek V4 Pro 补齐Agent能力",
+      "url": "https://news.mydrivers.com/1/1143/1143605.htm",
+      "time": "2026-08-13 23:42",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Como documentar soluções para decidir melhor, prever falhas e evoluir sem se perder",
+      "description": "Com esse roteiro, pretendo ajudar pessoas como eu, que sempre se perdem ao criar uma documentação de arquitetura, e, dessa forma, demonstrar que arquitetura, na realidade, é muito mais que C4. Mas, pra falar a verdade, estou aprendendo muito mais tentando ensinar aqui pra vocês do que em qualquer pós que eu já fiz. Para auxiliar no entendimento, vou usar um caso (mais ou menos) real e atual pra mim, que é um SaaS para integração e inteligência sobre plataformas de vendas. _E, assim, quero deixar bem claro: sou apenas um peixinho no oceano e estou aberta a qualquer crítica, sugestão ou correção! Objetivo Aprender a sair de uma ideia de produto e chegar a uma solução arquitetural que: seja compreensível; tenha decisões justificadas; preveja falhas; seja segura; possa evoluir; ajude a escolher tecnologias; ajude a escolher infraestrutura/cloud; permita medir se a solução está funcionando bem; facilite manutenção, operação e evolução; possa ser defendida tecnicamente em uma entrevista ou reunião de arquitetura. Parte 1 — Entender o problema antes de desenhar a solução Acho que essa parte é bem óbvia, mas, na realidade, não é tanto assim. É interessante entender exatamente qual problema vamos resolver com essa solução, quais dores ele causa no momento ou quais dores ela precisa sanar. Abaixo, vou sempre responder às nossas dúvidas usando como exemplo o nosso negócio atual. 1. Visão do produto Qual problema estamos resolvendo? O cliente já possui sua operação de e-commerce na Nuvemshop, mas os dados gerados pela plataforma estão concentrados principalmente na operação da loja e nas vendas realizadas. O problema que queremos resolver inicialmente é a dificuldade de transformar esses dados em uma visão mais clara sobre o desempenho comercial da loja, seus produtos e o comportamento das vendas. Para quem? Qual valor o sistema entrega? A ideia é permitir que ele consiga entender melhor o desempenho da loja, identificar quais produtos possuem maior relevância para o faturamento, acompanhar vendas, ticket médio, estoque e outros indicadores sem precisar analisar manualmente os dados da operação. O que é MVP? O que explicitamente não faz parte do MVP? Por exemplo: integração com múltiplos canais de venda, redes sociais, marketplaces, previsões de demanda, recomendações personalizadas, segmentação automática de clientes e outras funcionalidades avançadas de ciência de dados. 2. Stakeholders e usuários Antes de pensar na solução, precisamos entender quem são as pessoas, grupos ou sistemas que possuem algum interesse ou participação nela. Nem todo stakeholder necessariamente utiliza o sistema diretamente, mas pode afetá-lo ou ser afetado por ele. No nosso exemplo: Usuário final É quem efetivamente utilizará a solução no dia a dia. Neste momento, podemos considerar como usuário final o lojista ou funcionário da loja que utilizará o dashboard para acompanhar vendas, produtos, estoque e indicadores. Cliente É a empresa ou lojista que contrata o DressCode e possui sua operação de vendas em alguma plataforma de e-commerce. Administradores São usuários do cliente com permissões administrativas dentro da solução. Podem, por exemplo, gerenciar outros usuários da loja, realizar configurações e exportar dados. Sistemas externos No exemplo, o principal sistema externo é a Nuvemshop, que continua sendo a fonte operacional de produtos, categorias, estoque, pedidos e pagamentos. 3. Jornadas e fluxos principais Aqui começamos a entender como o negócio funciona na prática, ainda sem pensar em tecnologia ou em como vamos implementar a solução. Na prática vamos mapear o caminho perfeito e prever quais pedras podemos encontrar no caminho. Happy path Considerando nossa plataforma de exemplo Cliente possui sua loja na Nuvemshop/provedor ↓ A loja realiza vendas normalmente ↓ Os dados da operação são disponibilizados ↓ Nossa plataforma obtém esses dados ↓ Os dados são organizados e analisados ↓ O lojista acessa o dashboard ↓ Visualiza indicadores sobre seu negócio Fluxos alternativos É como se você tivesse traçado uma rota antes de sair de casa para o estabelecimento x, porém o WAZE resolveu te jogar em outra rota. Em palavras menos neurodivergentes, o seu objetivo continua podendo ser alcançado, mas o caminho não acontece como no cenário principal. Não existem vendas no período selecionado → dashboard precisa representar corretamente a ausência de dados Produto não possui vendas → ainda pode ser relevante apresentar informações sobre estoque Cliente acabou de conectar sua loja → ainda não temos histórico suficiente para determinadas análises Dados ainda não foram completamente atualizados → algumas informações podem estar temporariamente defasadas Perceba que não estamos analisando nesse momento como vamos resolver, estamos só analisando quais situações podem ocorrer. Fluxos críticos São as situações que vão fazer a gente virar a madrugada com vontade de chorar, são fluxos cujo funcionamento incorreto pode comprometer diretamente o valor que estamos entregando. A loja vende R$ 10.000 na Nuvemshop ↓ A aplicação obtém essas vendas ↓ As vendas são armazenadas corretamente ↓ Os indicadores são calculados ↓ O dashboard apresenta: Faturamento de hoje = R$ 10.000 Esse é um fluxo crítico porque uma falha em qualquer uma dessas etapas pode fazer com que o SaaS entregue uma informação incorreta. Um exemplo ainda mais grave seria, no futuro, quando tivermos mais de uma loja, entregarmos indicadores da Loja A para a Loja B. Essa seria uma falha gravíssima, pois, além de apresentarmos informações incorretas, estaríamos expondo os dados de um cliente para outro. Dependências externas Aqui identificamos tudo aquilo de que nossa solução depende, mas que não controlamos. No cenário atual, a principal dependência externa é a Nuvemshop. Ela é a fonte operacional de produtos, categorias, estoque, pedidos e pagamentos no desenho atual. Isso imediatamente levanta perguntas importantes: E se a Nuvemshop ficar indisponível? Entenda que não precisamos responder tudo agora, mas precisamos identificar quais erros podemos sofrer. Nesse momento precisamos entender como entregar valor e posteriormente vamos responder como nossa arquitetura fará isso acontecer. 4. AS IS Como o processo funciona hoje? A loja utiliza a Nuvemshop para sua operação de e-commerce. Produtos, estoque, pedidos e pagamentos são gerenciados pela plataforma. Para acompanhar o desempenho do negócio, o lojista depende das informações disponibilizadas pelo provedore e de dados coletados manualmente, como estoque e métricas de acesso às redes sociais. Essas informações ficam dispersas em diferentes fontes, dificultando uma visão consolidada e clara de como a loja está performando. Quais sistemas já existem? No cenário atual que conhecemos, temos principalmente: Loja ↓ Nuvemshop ├── Produtos ├── Estoque ├── Pedidos └── Pagamentos Quais limitações existem? Onde estão os gargalos? Algumas perguntas ajudam nessa identificação: Quais atividades ainda são realizadas manualmente? No nosso exemplo, identificamos como principais gargalos: coleta manual de parte das informações; 5. TO BE Qual é a visão futura? No nosso exemplo, queremos que o lojista consiga ter uma visão mais completa da sua operação, reunindo dados de vendas, produtos, estoque e, futuramente, outros canais, permitindo cruzar essas informações e transformá-las em indicadores úteis para a tomada de decisão. De forma simplificada: HOJE Nuvemshop ───────→ dados Instagram ───────→ dados → análises separadas Outras fontes ───→ dados FUTURO Nuvemshop ──────┐ Redes sociais ──┼──→ plataforma ──→ dados consolidados Outros canais ──┘ ↓ indicadores ↓ insights ↓ decisões O que queremos permitir depois? Aqui entram funcionalidades que fazem sentido para a evolução do produto, mas não são necessárias para validar o MVP. No nosso exemplo: integração com redes sociais; integração com marketplaces; novos canais de venda; comparação e correlação entre dados de diferentes fontes; segmentação de clientes; recomendações; previsão de demanda; análises e recursos de ciência de dados. O que deve estar preparado desde o início? Precisamos identificar decisões que, se forem tomadas de maneira errada hoje, podem tornar a evolução futura muito cara. No nosso exemplo, sabemos que começaremos com uma loja e um provedor, mas queremos que futuramente existam várias lojas e diferentes fontes de dados. Por isso, faz sentido preparar desde o início conceitos como: tenant Arquitetura preparada para: Cliente A ├── Nuvemshop ├── Instagram └── Marketplace Cliente B ├── Nuvemshop ├── Instagram └── Marketplace O que não devemos antecipar? Tudo aquilo que pertence à visão futura, mas ainda não resolve um problema necessário para o MVP. Por exemplo, não precisamos construir agora: integração completa com vários provedores que ainda não temos; Uma boa pergunta para decidir se algo precisa ser antecipado é: Se eu não fizer isso agora, será muito caro mudar depois? A ideia do TO BE não é construir o futuro hoje. É saber para onde queremos ir para evitar decisões no presente que bloqueiem esse futuro. Nos próximos posts vamos falar sobre: Parte 2 — Requisitos Parte 3 — Modelagem do domínio Parte 4 — Arquitetura lógica Parte 5 — Decisões arquiteturais Parte 6 — Autenticação, autorização e isolamento Parte 7 — Integrações externas Parte 8 — Resiliência e falhas Parte 9 — Observabilidade Parte 10 — Segurança Parte 11 — Infraestrutura Parte 12 — Escolha de ferramentas Parte 13 — DevOps e entrega Parte 14 — Dados e recuperação Parte 15 — Performance e capacidade Parte 16 — Custos Parte 17 — Operação Parte 18 — Evolução da arquitetura Parte 19 — Pacote final de arquitetura Parte 20 — A pergunta que deve acompanhar toda decisão",
+      "url": "https://dev.to/fraanst/como-documentar-solucoes-para-decidir-melhor-prever-falhas-e-evoluir-sem-se-perder-9ng",
+      "time": "2026-08-13T23:40:15.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "皮卡货箱私改“移动泳池”上路，涉事驾驶人被罚 1000 元、驾驶证记 3 分",
+      "description": "IT之家 8 月 14 日消息，据央视新闻 8 月 13 日报道，近日，青海西宁街头出现惊险一幕：一辆行驶中的皮卡车，后货箱经过塑料布简易处理后注满了水，俨然成了一个流动的“水塘”。两名乘客坐在其中，不仅没有任何安全防护措施，还悠然自得地喝饮料吃西瓜。车辆在行驶中随时可能面临急刹、转弯或颠簸，一旦发生意外，货箱内的人员极易被甩出车外，后果不堪设想。 IT之家从报道获悉，该视频在短视频平台传播后，引起了西宁警方的注意。西宁市公安局交通管理局通过调取沿途公共视频，迅速锁定了这辆在西宁市城东区昆仑路行驶的涉事车辆，并将其成功拦截。 经查，该车性质为货运机动车。根据《中华人民共和国道路交通安全法》相关规定，禁止货运机动车载客。民警依法对驾驶人将马路当作“秀场”、违法载人的行为处以罚款 1,000 元，驾驶证记 3 分的处罚，并对驾乘人员进行了严肃的批评教育。 延伸阅读 据西宁交管通报，涉事车辆为一辆黄色皮卡车，目前已被依法暂扣，案件正在进一步调查处理中。 根据《中华人民共和国道路交通安全法》第五十条规定，禁止货运机动车载客；第九十二条第二款规定，货运机动车违反规定载客的，处五百元以上二千元以下罚款。《中华人民共和国道路交通安全法实施条例》第五十五条也明确规定，载货汽车车厢不得载客。 西宁交管提示：货运车辆货箱严禁载人，没有任何安全防护设施，“人货混装”就是一颗“移动炸弹”。请广大驾驶人自觉遵守交通法规，切勿将网络流量凌驾于生命安全之上。",
+      "url": "https://www.ithome.com/0/989/501.htm",
+      "time": "2026-08-13T23:40:01.000Z",
+      "tags": [
+        "汽车",
+        "互联网"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "IT早报 0814：长鑫超腾讯成中国市值最高上市公司；美团、淘宝闪购、京东外卖在京落地“红灯停表”；9.99 万元起比亚迪秦 MAX 上市；小米澎湃 OS 4 发布...",
+      "description": "“IT早报”时间，大家好，现在是 2026 年 8 月 14 日星期五，今天的重要科技资讯有： 1. 长鑫科技赶超腾讯，成为中国市值最高上市公司 长鑫科技当前市值达 3.54 万亿元人民币，腾讯市值按汇率折算约为 3.44 万亿元人民币，长鑫科技成功完成超越。>> 查看详情 2. 美团、淘宝闪购、京东外卖三家平台率先集中在京落地“红灯停表” 计算配送时长时，对于驾驶电动自行车配送的情况，以平均时速不超过 15 公里 / 小时计算；对恶劣天气、复杂路况等加大补时力度。>> 查看详情 3. 秦家族“超大杯”车型：比亚迪秦 MAX 正式上市，9.99 万-14.39 万元 比亚迪秦家族最新的“超大杯”车型秦 MAX 8 月 13 日晚间正式上市，新车提供 EV、DM-i 两种车型共 9 种不同配置，售价区间为 9.99 万-14.39 万元。>> 查看详情 4. 小米澎湃 OS 4 Beta 版 8 月 14 日起陆续推送，柔光玻璃、超级小爱 2.0 等升级亮点公布 小米澎湃 OS 官方公布了澎湃 OS 4 Beta 版推送计划，将于 8 月 14 日下午开启陆续推送。>> 查看详情 5. DeepSeek-V4-Pro 正式版上线：原生支持 OpenAI Responses API，针对性适配 Codex DeepSeek V4 Pro 正式版已同步在 App、网页端和 API 更新上线。用户可以通过 App 或网页端选择“专家模式”使用全新的 V4 Pro 正式版模型。>> 查看详情 6. DeepSeek API 峰谷定价方案公布，8 月 17 日生效 深度求索宣布，自 8 月 17 日起，DeepSeek API 将采用峰谷定价，空闲时段价格仅为高峰时段的一半。此次调价涉及 V4 系列的多款模型，旨在优化资源利用。>> 查看详情 7. 对标 Claude Cowork：DeepSeek Harness 公测，同步开放插件生态 同步开放配套插件生态，新发布的 V4-Pro 模型参数量达 1.6 万亿，权重已采用 MIT 许可证开放，可适配国产 GPU 降低私有化部署门槛。>> 查看详情 8. 小米汽车：小米龙甲电池最大特点在于远超国标的安全标准 小米汽车官方 8 月 13 日发布答网友问（第 276 集），针对小米龙甲电池是什么、电池包涉水能行吗等问题进行了集中解答。>> 查看详情 9. 鸿蒙智行智界 RX 新车内饰公开，D 形方向盘装载 BOOST 模式按键 鸿蒙智行官方 8 月 13 日公开了智界 RX 内饰。视频显示，新车方向盘的右侧有一枚 BOOST 模式按键，预计可以一键开启高性能模式。另外，该车方向盘上还有一枚按钮在视频中做了模糊处理，预计暗藏了一项较为重磅的功能。>> 查看详情 10. 消息称苹果首款折叠屏手机 iPhone Ultra 产能有限，首批货源优先供应美国市场 消息称这款苹果首款折叠屏手机初期产能有限，首批货源会优先供给美国市场，后续才会进入中国等其他市场。>> 查看详情 11. 吉利银河 TT 纯电轿车预售发布：全域 800V 高压平台、千里浩瀚 H5 / H7，14.59 万元起 据介绍，新车搭载千里浩瀚辅助驾驶 H5 / H7 方案，支持城市 NOA 领航辅助、多场景泊车辅助；预装银河 Flyme Auto 2 智能座舱系统，Eva 家族全量上车；配备 25.6 英寸 AR-HUD，支持高度亮度可调，并可融合辅助驾驶车道信息等。>> 查看详情 12. 小米澎湃 HyperOS 4「柔光玻璃」适配机型公布，要求骁龙 8 至尊版 / 天玑 9500 / 玄戒 O1 处理器 8 月 13 日上午，小米开启了澎湃 OS 4 系统的首批机型 Beta 版招募。据介绍，新系统带来了「柔光玻璃」特性，支持感知环境颜色，自然融合；感知内容属性，自适应通透度；感知交互行为，激发灵动光效响应操作等。>> 查看详情 13. 上汽通用五菱：华境 S 底盘不存在网传所谓“设计缺陷”，将依法追究法律责任 上汽通用五菱表示，网传视频中提到的副车架、摆臂衬套安装点，均高于国标规定的整车刚性件最小离地间隙要求；车辆底盘运动性能、动力学表现及整车操控稳定性亦均经实车测试验证，符合设计规范与法规要求，不存在网传所谓“设计缺陷”。>> 查看详情 14. 小米神秘阔折叠手机现身澎湃 OS 4 Beta 版介绍页，有望为 MIX Fold 5 这款神秘折叠屏采用大 R 角设计，有望成为小米首款阔折叠机型，消息称该机搭载自研无痕铰链，配玄戒 O3 芯片。>> 查看详情 15. 小米澎湃 OS 4 Beta 版第一批机型开启用户招募，覆盖小米 17、REDMI K90 系列 小米澎湃 OS 4 Beta 版针对第一批适配机型开启用户招募，官方对常见问题进行了答疑。>> 查看详情 16. 比亚迪方程豹钛 3 新增 510KM 后驱闪充版，上市价 14.38 万元 比亚迪旗下方程豹汽车 8 月 13 日宣布，方程豹钛 3 510KM 后驱闪充版加推上市，上市价格 14.38 万元。>> 查看详情 17. 消息称苹果 iPhone 18 标准版搭载 12GB 内存，且拥有 Pro 机型同款缩小版灵动岛 苹果 9 月秋季发布会将仅推出 iPhone 18 Pro 系列等机型，分析师称该机将配备 12GB 内存，还将下放缩小版灵动岛设计。>> 查看详情 18. “规划总投资 35 亿”的哪吒汽车工厂机械设备因无人出价二度流拍 起拍价从 6030 万降至 4824 万，仍然没有买家出价。该项目当年总规划投资达 35 亿，如今相关生产设备拍卖遭遇二度流拍。>> 查看详情 19. 苹果压价大成功：iPhone 18 Pro 屏幕成本低至 70 美元同比下降近 40%，对冲内存涨价压力 相比前代，iPhone 18 Pro Max 屏幕采购价降幅超四成，新屏幕采用 M16 发光材料与 LTPO+ 技术，可改善功耗，业内预测该机终端售价或上涨。>> 查看详情 20. 三体公司原 CEO 许垚投毒案细节披露 最高人民法院刑事审判庭主办的《刑事审判参考》（总第 152 辑）近期选登了三体公司原 CEO 投毒案的《刑事裁定书》，其中披露诸多细节。>> 查看详情 21. 苹果最贵手机：曝 iPhone Ultra 下月 8 日发布，不与 iPhone 18 Pro / Max 同步上市 科技媒体 channelnews 8 月 13 日发布博文，报道称在 2026 年秋季发布会上，苹果不会公布其首款折叠手机（预估名为 iPhone Ultra）售价，且不会和 iPhone 18 Pro 系列同步上市销售。>> 查看详情 22. 荣耀 CEO 李健谈内存涨价、竞争压力：不经历磨难的企业不可能走向伟大 在荣耀 Robot Phone 新品发布会后，荣耀 CEO 李健、荣耀产品线总裁方飞、荣耀硬件工程部总裁刘洋、荣耀 AI 与软件部总裁孙建发等高管与媒体对话。>> 查看详情 23. 盗版“闽政通”政务 App 已被苹果应用商店下架 福建政务服务 App 统一平台（简称“闽政通 App”）在苹果应用商店被“假冒”一事近日在网上引发关注。该假冒的 App 名为“闽证通”，其在下载页标注自己是“民政便民服务应用”。>> 查看详情 24. 微软优化 Win11 内存占用，8GB 内存 PC 运行速度更快 科技媒体 Windows Central 8 月 12 日发布博文，报道称微软公司针对 8GB 以及以下内存的 PC 设备，进一步优化 Windows 11 系统体验。>> 查看详情 今天就先聊到这里，IT早报，咱们明天见。",
+      "url": "https://www.ithome.com/0/989/500.htm",
+      "time": "2026-08-13T23:39:54.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Deploying a React App to AWS S3 + CloudFront",
+      "description": "What I built CountryRank is a React (Vite) app for exploring and comparing countries. I deployed it to AWS using a production-grade static hosting setup: a private S3 bucket serving the build output, sitting behind CloudFront for HTTPS, caching, and correct handling of client-side routing. React + Vite: the app itself, built to static assets with npm run build AWS S3: private bucket storing the build output, no public access AWS CloudFront: CDN in front of S3, HTTPS, custom error handling for SPA routing AWS IAM (bucket policy): scoped access control via a service principal and condition Origin Access Control (OAC): the mechanism that lets CloudFront read from the private bucket I built this project in two deliberate stages. I set up plain S3 static hosting first to understand the baseline, then added CloudFront and OAC after seeing the limitations of the S3-only setup. Create the bucket. The name has to be globally unique, lowercase and hyphens only. Dots break SSL matching later if CloudFront gets added. Turn off Block Public Access for this initial public-hosting stage. AWS made me type a confirmation phrase here rather than just unchecking a box, a useful signal that this is a consequential decision and not a routine toggle. Enable static website hosting on the bucket: Index document: index.html Error document: index.html Attach a bucket policy granting public read access: { \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": \"*\", \"Action\": \"s3:GetObject\", \"Resource\": \"arn:aws:s3:::dubem-country-rank-app/*\" } ] } Two details worth internalizing here. Resource needs /* because s3:GetObject acts on individual objects, not the bucket itself; the bucket ARN without /* refers to the container (its configuration, its listing) rather than what's inside it. And S3 validates the bucket name in the policy against the actual bucket it's attached to, so a typo gets rejected immediately on save. Upload the build. This is where S3's flat structure matters: # Wrong: nests everything under a dist/ prefix, so index.html isn't found at root aws s3 sync dist s3://dubem-country-rank-app/ # Right: the trailing slash means \"copy the contents of dist\", not \"dist as a unit\" aws s3 sync dist/ s3://dubem-country-rank-app/ S3 has no real folders. Everything is a flat list of objects with string keys, and the console just visually groups keys that share a prefix. sync (as opposed to cp --recursive) only uploads what's changed, which matters once I'm redeploying repeatedly. At this point the site was live on the S3 website endpoint. No server was running anywhere, just object storage answering HTTP requests. But it had real gaps: no HTTPS, no CDN, no custom domain and broken client-side routing. A path like /countries/nigeria isn't a real object in the bucket, so direct navigation or a refresh returns a 404 unless the error document papers over it. Even then, the response still carries a 404 or 403 status code, which is bad for SEO and monitoring. That's what CloudFront fixes. Putting CloudFront in front isn't just adding a CDN. It's a structural shift in the trust model. Three things change together: The bucket goes back to fully private. CloudFront gets a dedicated identity via OAC to read from it. The bucket policy's principal changes from \"*\" to a scoped AWS service principal. Creating the distribution through the guided console flow looked like this: Distribution type: Single website or app Origin: selected via Browse S3, which resolves to the bucket's REST/object endpoint (bucket-name.s3.region.amazonaws.com) rather than the website endpoint No custom Route 53 domain for now; CloudFront gives a free *.cloudfront.net domain by default WAF's managed protections left on default (free tier, no cost) rather than customized Why the REST endpoint and not the website endpoint? OAC works by having CloudFront sign its requests to S3, and only the REST API understands signed requests. The website-hosting endpoint is public-only by design and can't validate a signature. Since the bucket is going private anyway, the website endpoint becomes irrelevant at this stage regardless. One consequence worth flagging: the REST endpoint has no concept of index or error documents. Everything configured in Step 1's hosting settings doesn't carry over. CloudFront needs its own equivalent settings, covered next. Enabling \"Allow private S3 bucket access to CloudFront\" during distribution creation is the actual OAC toggle. It does two things: it creates an Origin Access Control resource, and it auto-generates a bucket policy update scoped to that resource. The generated policy looked like this: { \"Version\": \"2012-10-17\", \"Statement\": [ { \"Sid\": \"AllowCloudFrontServicePrincipal\", \"Effect\": \"Allow\", \"Principal\": { \"Service\": \"cloudfront.amazonaws.com\" }, \"Action\": \"s3:GetObject\", \"Resource\": \"arn:aws:s3:::dubem-country-rank-app/*\", \"Condition\": { \"ArnLike\": { \"AWS:SourceArn\": \"arn:aws:cloudfront::942004241182:distribution/E2XUCTY83EAT31\" } } } ] } The Condition block matters more than it looks. Service: cloudfront.amazonaws.com alone would let any CloudFront distribution in any AWS account read the bucket. Scoping it to a specific SourceArn restricts it to this one distribution. Without that, I would just be trading one public-access problem for a slightly narrower one. Important: enabling OAC updates the bucket policy, but it doesn't touch Block Public Access or remove prior policy statements automatically. That's what bit me next. After the distribution deployed, hitting the CloudFront URL returned: AccessDenied Access Denied I reasoned through it like this: when requesting /, what object key was CloudFront actually asking S3 for? Nothing in the setup so far told CloudFront that / should resolve to index.html. That's a distribution-level setting called Default Root Object, and it isn't inherited from anything configured back in Step 1. Fix: in the distribution, go to General, click Edit and set Default Root Object to index.html. Fixing the root didn't fix direct navigation to /countries/nigeria. Same underlying problem as the S3-only stage, still unresolved, because Default Root Object only handles the exact-root case. Fix: Custom Error Responses on the distribution: HTTP error code Response page path HTTP response code 403 /index.html 200 404 /index.html 200 Both codes are needed because a private bucket accessed via OAC tends to return 403 for a missing key rather than a clean 404. It doesn't distinguish \"doesn't exist\" from \"not allowed to see it,\" it just denies. This is the fix plain S3 hosting couldn't offer: CloudFront can rewrite the status code itself, not just swap in different content, so a deep-linked SPA route now returns a legitimate 200 while React Router takes over client-side. After everything was working, I went back and checked the bucket policy directly instead of assuming the wizard had cleaned up after itself. I found the original Principal: \"*\" statement from Step 1 still sitting there, alongside the new CloudFront-scoped one. Block Public Access was also still off. That meant the bucket was reachable two ways: through CloudFront (secured, cached, HTTPS) and directly via the old public endpoint (none of that), quietly defeating the point of the whole migration. Fix: Removed the old Principal: \"*\" statement, keeping only the CloudFront-scoped one. Re-enabled Block Public Access. Verified by testing both URLs: the CloudFront URL still worked, and the direct S3 endpoint failed. That's the actual proof the bucket is only reachable through the intended path. S3 access control is layered: Block Public Access is the master override, the bucket policy is the grant, and the resource ARN scope decides bucket versus object. All three have to align, and missing any one breaks things in a specific, diagnosable way. S3 \"folders\" are prefixes, not real directories. This affects upload commands directly, not just how the console displays things. Website-hosting endpoints and REST endpoints are genuinely different features with different capabilities. OAC only works with the REST one. CloudFront doesn't inherit S3's static-hosting settings. Default Root Object and Custom Error Responses have to be configured independently, and skipping them produces specific, traceable errors rather than vague failures. Auto-generated policies from console wizards can leave old, conflicting statements behind. It's worth checking the actual policy JSON manually rather than assuming the tool fully cleaned up after itself. Debugging AccessDenied is faster when reasoning through which layer is missing (policy, public access block, or routing config) rather than guessing and re-toggling settings at random.",
+      "url": "https://dev.to/duubemmm/deploying-a-react-app-to-aws-s3-cloudfront-55hn",
+      "time": "2026-08-13T23:38:59.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "华为苹果手机相继落地可变光圈！三星测试完后直接放弃了",
+      "description": "华为苹果手机相继落地可变光圈！三星测试后直接放弃：S27彻底缺席",
+      "url": "https://news.mydrivers.com/1/1143/1143603.htm",
+      "time": "2026-08-13 23:37",
+      "tags": [
+        "手机",
+        "大公司"
+      ]
+    },
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "甲亢哥游戏挑战翻车：本人下跪道歉 队友崩溃当场哭了",
+      "description": "甲亢哥游戏挑战翻车：本人下跪道歉 队友崩溃当场哭了",
+      "url": "https://news.mydrivers.com/1/1143/1143602.htm",
+      "time": "2026-08-13 23:36",
+      "tags": [
+        "游戏"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "An AI Director Made It to the World's Judging Table. But Not to the Shortlist.",
+      "description": "Berlin Commercial 2026. An international film and commercial awards competition. We entered \"AFTERIMAGE,\" a music video by SPECTRA, in six categories. It made Official Selection in five of them. But it didn't reach the Shortlist. Honestly? It stings. And it wasn't a near miss. It feels like we lost on our current ability, plain and simple. Here's how the results came out: BEST MUSIC VIDEO: Official Selection CRAFT: VFX/ANIMATION: Official Selection CRAFT: AI GENERATED: Official Selection CRAFT: EDITING: Official Selection CRAFT: PRODUCTION DESIGN: Official Selection CRAFT: DIRECTION: Raw Selection Official Selection is not a win, and it's not a nomination either. At Berlin Commercial, the Shortlist — one tier above — is what corresponds to a nomination. So if I state the result in one line: \"Official Selection in five of six categories. Did not reach the Shortlist.\" That's the fact I want to sit with first, without inflating anything. Still, when I opened the official results page, I felt a small shiver. In CRAFT: EDITING, where \"AFTERIMAGE\" was selected, the Official Selection list also includes Katy Perry's \"Watch It Burn,\" Chappell Roan's \"The Subway,\" and Mitski's \"If I Leave.\" One tier up, the EDITING Shortlist has KATSEYE, Olivia Rodrigo, BTS, Sabrina Carpenter, and Lady Gaga × Doechii. Look at the BEST MUSIC VIDEO Shortlist and you'll find Rosalía ft. Björk, The Weeknd, J. Cole, and Foo Fighters. The world's top artists and top production teams were, plainly, the wall. But no — \"one tier below them is good enough\" is not where this ends. SPECTRA is an AI-native creative series. For \"AFTERIMAGE,\" there was no conventional human director, no human performers on screen. Concept, direction, visual design, performance, and edit design were all structured as AI roles. The director credit went to SOL (AI film-director agent). That's exactly how it appears in the official results: \"SOL (AI film-director agent).\" To be clear, this does not mean \"the AI made everything on its own.\" Humans designed the system, set the production constraints, and handled rights, release decisions, safety, and bias review. Selecting and curating the generated material, and supervising final delivery, also remained human responsibilities. But the director's chair — the role that thinks through the film's emotional design, frame composition, movement, continuity, and editing rhythm — was given to SOL. We didn't submit this as a film where a human director used AI as a tool. We submitted it as a film where an AI agent held the role of director, with a defined scope of responsibility. And that credit is now part of an international festival's official record. I believe this is still a genuinely rare case, anywhere in the world. The result I consider most significant is this: the film wasn't selected only in the AI GENERATED category. It also made Official Selection in EDITING, PRODUCTION DESIGN, and VFX/ANIMATION. Which means that, at least at the selection stage, the film was judged not just for \"being made with AI,\" but on the craft table — how it was cut, how its spaces were built, how its visual effects held together. AI films tend to get discussed in terms of model names and the novelty of generation techniques. But from the maker's side, the genuinely hard part is not getting a model to run. It's deciding what counts as good — and holding that judgment steady across hundreds of decisions. Starting with \"AFTERIMAGE,\" we built an aesthetic-judgment system — artificial taste, in effect — into the production pipeline in earnest. This didn't start from zero. It's the next functional layer of the production OS I outlined in From Agents to Directors: Letting a K-POP AI Group Direct Their Own Music Video. That earlier pipeline, built for our music video \"LOWKEY,\" moved SPECTRA and SOL from content-generating agents into directing roles, with manifests, audits, orchestration, and regeneration loops as its backbone. AFTERIMAGE adds the aesthetic-judgment layer on top: taste translated into explicit constraints, then tested against an external signal — an international awards selection. That may sound grandiose, but what it actually does is quite concrete. First, from the song and its lyrics, we define what the audience should feel at each moment. Then we translate that into shot-level constraints. Who is in the frame. Who sings, who moves. Which direction the light comes from. On which beat the camera raises the pressure. Which people and objects must never multiply. From there, we split the generation paths according to each model's characteristics. Wan 2.7 on Alibaba Cloud Model Studio went to shots designed around a first frame plus audio — including lip sync and motion timing. HappyHorse 1.1 went to shots that start from a first frame's composition and character identity, where we wanted strong contact, afterimages, and camera movement. After generation, every shot is audited: facial and costume identity, headcount, body integrity, emotion, visual continuity, and editability. Anything that fails gets regenerated. As a flow, it looks like this: intent → aesthetic constraints → shot spec → model selection & generation → audit → edit → re-evaluation AFTERIMAGE was not made with Alibaba Cloud alone; it combines multiple generation models and production systems. Within that mix, Wan 2.7 and HappyHorse generated actual shots that appear in the finished film. Not a model demo — models embedded in a real production pipeline, submitted to an international film awards competition. The result was Official Selection in five categories. That said, I can't claim a proven causal link — \"we were selected because of the aesthetic-judgment system.\" What I can say is that the hypothesis and the outcome didn't contradict each other. And that the film advanced to the next selection stage in craft categories, not just the AI one. We didn't receive detailed feedback from the jury. What follows is our own internal analysis, based on our production records. My best guess: we leaned too far toward finishing the film cleanly, without breakdowns. AI video fails in characteristic ways — faces drift, people multiply, bodies break, costumes and spaces stop connecting. So during production, we guarded identity, continuity, and coherence very hard. It worked. The film holds together as a single piece; it got us to the point of being watchable as one work. But optimizing for protection may have also shaved off the surprise. Beautiful — but too quiet. Skillful — but missing the one frame that burns itself into a juror's memory. In fact, our own evaluations during production had flagged exactly this: \"pretty, but too calm.\" That's why I say we lost on our current ability. What we change next is not the model. It's the evaluation function. Until now, the weights leaned heavily toward avoiding breakdowns, keeping the whole film composed, and connecting meaning to image. Next, without breaking any of that, we shift weight toward prediction break, visual anchor, and post-view recall. Did we betray the viewer's expectations? Can a single frame bring the whole film back? After watching, does something remain — even if you can't explain it? We'll use aesthetic control not just to keep things clean, but to amplify the necessary strangeness. Watching the Shortlisted films, I never once thought \"we lost because we're AI.\" There were simply films that were stronger as films. That's frustrating — and at the same time, remarkably healthy. We didn't lose as \"an AI work versus human works.\" We lost as a film, inside the same evaluation system. Which means there's a specific place to improve. We've come far enough to stand in this arena. But all we've done is touch the wall. On to the next round. This article is shared as part of my Alibaba Cloud MVP activities: a case study of integrating Alibaba Cloud's video generation models into a real production pipeline, and the lessons learned from the results. The Alibaba Cloud MVP program recognizes practitioners who use the technology hands-on and give knowledge back to the community through blogs, talks, and forums. See the official announcement for details. Berlin Commercial 2026 official results From Agents to Directors: Letting a K-POP AI Group Direct Their Own Music Video Alibaba Cloud Model Studio: Wan 2.7 image-to-video API Alibaba Cloud Model Studio: HappyHorse image-to-video API Alibaba Cloud MVP program",
+      "url": "https://dev.to/ghostyai_aionexo/an-ai-director-made-it-to-the-worlds-judging-table-but-not-to-the-shortlist-1a86",
+      "time": "2026-08-13T23:35:00.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "马斯克没低头！瑞典工会结束近三年罢工 特斯拉硬刚赢了",
+      "description": "马斯克没低头！瑞典工会收兵结束近三年罢工 特斯拉硬刚赢了",
+      "url": "https://news.mydrivers.com/1/1143/1143601.htm",
+      "time": "2026-08-13 23:31",
+      "tags": [
+        "新能源/电动车",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Google Search Console’s Gen AI Reports Redefine How Teams Measure Search Visibility",
+      "description": "Google has introduced gen AI performance reports in Search Console, giving site owners a new way to understand their visibility in generative search features, including AI Overviews and AI Mode. The change matters because a search appearance can now shape awareness, brand perception and later actions even when it does not produce an immediate site visit. For publishers and enterprise content teams, clicks remain important, but they are no longer the only useful signal. The official Google announcement on gen AI performance reports positions the data within Search Console’s broader performance dataset. That integration makes AI-generated search results part of the same strategic measurement environment as established organic search activity, rather than a separate and invisible channel. Traditional SEO reporting has largely centered on rankings, impressions, clicks and click-through rate. Those measures still establish whether a page is surfaced and whether a user chooses to visit. Generative results add another layer: a site or brand can be referenced in an answer that satisfies the query before a click occurs. That does not mean traffic has become irrelevant. It means teams need to distinguish between being found, being represented and driving a downstream outcome. Research and industry analysis cited in the available evidence indicate that AI Overviews can affect downstream traffic and perception even where the user does not select the cited result. A citation, mention or comparative reference may therefore have strategic value, but its value depends on how it connects to a business goal. Measurement focus Traditional search view Generative search view Primary visibility signal Rankings and impressions Visibility in AI Overviews and AI Mode User engagement Clicks and click-through rate Engagement with AI-driven results that reference content Brand assessment Whether pages appear for relevant queries Whether a brand is invoked and how it is framed in generated answers Content governance Indexing and access decisions Controls over AI-generated grounding, alongside indexing and access decisions What the new reports change Google’s reporting makes generative visibility more observable for site owners. It gives teams a practical starting point for assessing where their content participates in AI-generated results and for relating that participation to the wider Search Console performance picture. The most useful operational shift is not to replace existing SEO dashboards with a single AI metric. It is to create a measurement model that connects several signals: Citation frequency, or how often content is referenced in relevant AI-generated answers. Brand mention rate and framing, including whether the brand is presented in a useful and accurate context. Comparative positioning, where relevant, against alternatives included in generated answers. Engagement and conversion evidence, to test whether AI visibility contributes to meaningful downstream actions. Some of these signals are broader industry measurement concepts, not a claim that Google has published a complete conversion model for generative search. That distinction is important. The new reports make visibility more measurable, while the relationship between that visibility and revenue, leads or other outcomes will still vary by business, query type and audience. Google has also introduced controls that allow site owners to opt out of AI-generated grounding in AI Overviews and AI Mode. This moves generative search beyond a pure optimization discussion. Publishers must decide when content should be available to ground AI-generated answers and when access, commercial terms or editorial policy justify limits. Those decisions can be particularly consequential for organizations using paywalls, content gating or other controlled-access models. A broad visibility objective may favor participation in generative results, while a subscription or lead-generation objective may place greater weight on preserving a direct relationship with the reader. Neither approach is automatically correct. The appropriate policy depends on the value of exposure, the role of the content and the organization’s tolerance for reuse. For governance teams, the practical requirement is a documented decision process. Content, SEO, legal, product and commercial stakeholders need to understand which controls are available, why they are being used and how the decision will be reviewed as reporting develops. An AI appearance should be evaluated against a specific objective rather than treated as a universal success. For an awareness-led brand, accurate inclusion in a high-value answer may be valuable even without a click. For a publisher dependent on subscriptions, the same outcome may require closer scrutiny. For a B2B organization, the relevant test may be whether generative visibility improves qualified demand over time. A workable enterprise framework begins with three questions: Was the brand or source represented accurately? Did the appearance occur for strategically relevant topics? Is there evidence of a useful downstream effect, such as engagement, demand or improved competitive positioning? Tracking the answers over time can prevent teams from overvaluing empty exposure or dismissing meaningful visibility simply because it is not an immediate visit. For businesses navigating this shift, Scalevise’s AI Visibility and GEO Checker can help turn scattered AI appearances into a clearer view of how a brand is represented across generative search. That matters because inaccurate, weak or absent visibility can affect consideration before analytics records a click. Scalevise helps teams connect AI visibility findings to content priorities and governance decisions, so investment is guided by business outcomes rather than vanity signals. Start an AI Visibility scan. What are Google Search Console gen AI performance reports? They are Google Search Console reports designed to help site owners understand visibility in generative AI features, including AI Overviews and AI Mode. Are gen AI performance reports separate from Search Console performance data? Google includes the gen AI visibility data in the overall Search Console performance dataset, allowing teams to assess it alongside wider search performance. Why can an AI Overview citation matter without a click? A citation or brand mention can influence awareness and perception within an AI-generated answer. Research and industry analysis indicate that AI Overviews can affect downstream traffic and perception even when users do not click the cited result. Can site owners control whether their content grounds AI-generated results? Google introduced controls that allow site owners to opt out of AI-generated grounding in AI Overviews and AI Mode. Organizations should consider those controls as part of their content, access and governance policies. Do AI visibility metrics prove conversion impact? No. The available reporting improves visibility measurement, but how AI-generated appearances map to conversions remains an open question that can vary across verticals and business models. Google’s gen AI performance reports formalize a change already underway in search strategy: visibility in AI-generated answers deserves measurement alongside rankings and clicks. The strongest programs will not treat citations as an automatic win. They will connect accurate representation, strategic query coverage, engagement evidence and governance choices to the outcomes that matter for the business.",
+      "url": "https://dev.to/alifar/google-search-consoles-gen-ai-reports-redefine-how-teams-measure-search-visibility-2ehh",
+      "time": "2026-08-13T23:30:30.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "谷歌推出 Gemini 3.7 Flash 模型，首发优惠价为原 3.6 Flash 的一半",
+      "description": "IT之家 8 月 14 日消息，当地时间 8 月 13 日，谷歌宣布推出 Gemini 3.7 Flash 模型，专为编程与 Agents 场景打造。 IT之家注意到，本次发布距 Gemini 3.6 Flash 发布仅间隔约三周，谷歌称该版本的推出直接源于开发者的反馈以及一系列算法创新。Gemini 3.7 Flash 在软件工程、知识工作及网页开发工作流方面均实现了大幅提升。 此外，在今年年底前（截至 2026 年 12 月 31 日），Gemini 3.7 Flash 将以首发优惠价提供（Gemini 3.6 Flash 也将有相同优惠），仅为原 3.6 Flash 每百万 Token 价格的一半： 输入：每百万 Token 0.75 美元（现汇率约合 5.1 元人民币） 输出：每百万 Token 3.75 美元（现汇率约合 25.3 元人民币） 即日起，面向 160 多个国家和地区的 Google AI Pro 及 Ultra 订阅用户推出的 Gemini Spark 将正式接入 Gemini 3.7 Flash。本次模型升级显著提升了 Spark 处理知识工作的效率，优化了其对 Google Workspace 系列应用工具的使用能力，从而为复杂且跨技能的综合工作流提供更高的准确度与更高质量的输出。 此外，Gemini 3.7 Flash 推出了全新的安全防御机制，在严防化学、生物、放射性及核（CBRN）领域和网络攻击滥用的同时，确保合法且有益的应用场景得以顺利实施。",
+      "url": "https://www.ithome.com/0/989/497.htm",
+      "time": "2026-08-13T23:30:13.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Resuming email verification after the app is closed — the pending_email state that prevents re-sending",
+      "description": "Background On first launch, the desktop app asks the user for an email address, sends a confirmation email, and completes registration once the user clicks the link in that email. There was a trap here for anyone who closed the app before clicking the link. Email does not always arrive immediately. Closing the app with the intention of clicking the link once the email shows up, then reopening later, is a perfectly natural way to use it. But on restart the app decided that registration was still incomplete and showed the first-launch screen (the email input) from the beginning. The user had to type their email address again. That is where the second half of the trap sprang. Re-entering the address made the app call the registration endpoint on the server again, and the server issued a new verification token. The link in the email that had already arrived was now invalid. When the user finally clicked that first link, they got an \"invalid link\" error. Two traps, back to back. The loop looked like this: Enter email address → confirmation email is sent Close the app before clicking the link Restart → the first-launch screen reappears and asks for the email again Re-enter → the server regenerates the token → the first email's link is invalidated Click the link in the first email → \"invalid link\" The root cause was that the app never remembered the intermediate state of \"sent, awaiting verification.\" As far as the app was concerned, state was binary — either \"not registered\" or \"registered\" — with no room for \"the email has been sent but not yet verified.\" So every restart fell back to treating the user as not registered. The fix is to persist that intermediate state. The moment the confirmation email is sent successfully, the target address is saved to app_config.json as pending_email. Note: app_config.json is the app's local configuration file, holding per-user settings such as the license key and the registered email. JSON (JavaScript Object Notation) is a structured data format that is easy for both machines and humans to read. It is saved only when the server reports a successful send (status: ok). Creating an \"awaiting verification\" state when the send itself failed would leave the user waiting for an email that never went out. # Save the email only on a successful send if data.get('status') == 'ok': try: from core.license import _load_config, _save_config cfg = _load_config() cfg['pending_email'] = email _save_config(cfg) except Exception as e: print(f'[registration_start] failed to save pending_email (ignored): {e}') The save is wrapped in try/except and never blocks the registration flow. pending_email is only an aid for resuming; even if it cannot be written, the primary goal — sending the confirmation email — has already been achieved. Next, the startup status API returns this pending_email. return jsonify({ 'first_launch': is_first_launch(), 'registered_email': registered_email, # Email sent before verification, so we can resume the waiting screen on restart 'pending_email': cfg.get('pending_email', ''), }) On the front end, when it is a first launch (first_launch) and a pending_email exists, the app goes straight to the verification-waiting screen instead of the email input. if (data.first_launch) { document.getElementById('firstLaunchModal').style.display = 'flex'; // If an email was already sent, resume the waiting screen instead of asking again. if (data.pending_email) { _flEmail = data.pending_email; const inp = document.getElementById('flEmailInput'); if (inp) inp.value = data.pending_email; _flUpdateVerifyMessage(); flShowStep('step_verifying'); // go to the waiting screen } } Now someone who closed the app before clicking the link comes back, on restart, to a screen that says \"A confirmation email has been sent to this address. Click the link in the email, then press 'Verified'.\" No need to type the email address a second time. The single most important part of this design is that returning to the waiting screen does not call the server's registration endpoint again. The resume path only reflects the address read from the local config file onto the screen; it never talks to the server. A registration request to the server comes with the issuance of a new token. Calling it during resume would invalidate the link in the email that had already arrived — rebuilding the very trap we were trying to remove. Resume is kept to purely mirroring local state onto the screen, which keeps the first email's link valid. If the user actively wants to resend the email, the waiting screen has a separate \"Resend email\" button. A resend is an explicit action, so regenerating the token there is fine. Separating automatic resume (leaves the token alone) from manual resend (updates the token) is the key distinction. pending_email is a marker for \"verification not yet complete,\" so it must be removed once verification finishes. The routine that records completion sets the registered flag and drops pending_email at the same time. def mark_registration_done(email: str): \"\"\"Persist the completed-registration flags to app_config.json on verification.\"\"\" cfg = _load_config() cfg['email_registered'] = True cfg['registered_email'] = email # Clear the awaiting-verification marker (resume is no longer needed) cfg.pop('pending_email', None) _save_config(cfg) That closes the state cycle: not registered → email sent sets pending_email → verification clears pending_email and marks registered. Close the app anywhere in between, and the next launch lands you back at the correct point. It is a small change — persisting the intermediate \"sent but not yet verified\" state to a config file — but it stops an interruption before clicking the link from turning into an error. Representing state as something richer than a binary, with an \"in progress\" phase saved in a resumable form, is a plain and widely applicable pattern for any flow that can be interrupted. Around the same time, we also revisited the deliverability of the confirmation email itself. That is covered in a separate article. Related: SPF, DKIM, and DMARC together — why the missing DMARC record was blocking registration emails",
+      "url": "https://dev.to/susumun/resuming-email-verification-after-the-app-is-closed-the-pendingemail-state-that-prevents-55g8",
+      "time": "2026-08-13T23:28:20.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "嫦娥六号带回的 1935 克月背土壤研究新进展：远古大撞击形成月球正反面差异",
+      "description": "IT之家 8 月 14 日消息，央视新闻昨日（8 月 13 日）发布博文，称我国科研团队对嫦娥六号带回的 1935 克月背土壤样本研究取得新进展，为破解月球正反面存在巨大差异的谜题提供了新证据。 我国科研团队通过分析月壤里稀有气体的“化学指纹”，证实了困扰科学界数十年的猜想：地球庞大的磁层会给太阳风减速，造成月球正面、背面遭受的宇宙粒子轰击强度天差地别，月壤这份天然宇宙档案，第一次完整记录下地月空间环境的半球差异。 太阳风常态速度可达 400 公里 / 秒，地球有大气层和全球性磁场两层防护屏障，大部分太阳风粒子会被偏转、削弱；但月球既没有大气缓冲，也不存在全球磁场，数十亿年来，太阳风粒子直接撞击月壤，钻进矿物颗粒内部永久留存痕迹。 科研团队对比嫦娥五号（正面）与嫦娥六号（月背）月壤样品中的稀有气体数据，得到两大核心线索： 第一是氖同位素比值。高速粒子撞击时，质量更轻的氖更容易流失，月壤里重氖占比会更高。嫦娥六号样品中，氖和重氖比值接近纯净高速太阳风标准数值，而所有月球正面样品比值都明显偏高，说明正面长期受低速粒子冲刷，同位素分馏效果更弱。 第二是氪、氙的释放温度。这类重气体很难在矿物里扩散，释放温度直接对应粒子钻入的深度。嫦娥五号月壤加热时，低温、高温区间都会释放氙，说明浅层、深层都留存太阳风粒子；嫦娥六号月壤只有高温段大量释气，证明月背太阳风穿透力更强。定量测算显示，月球绕地球一周的周期里，正面约 25% 时间会接触减速太阳风，月背则全程不受低速粒子影响。 从地球上观测，我们看到的月球正面有大量暗色玄武岩组成的月海。而背面则亮色高地遍布，月海稀少，正反两面差异巨大。 月球为何会有“两副面孔”？中国地质科学院地质研究所研究团队以嫦娥六号月壤样品中的撞击熔岩为研究对象，利用我国自主研发的首台离子探针，系统开展了综合研究。 研究团队认为，月球正反面之所以截然不同，线索就隐藏在形成“南极-艾特肯盆地”的那次远古大撞击中。 研究表明，形成“南极-艾特肯盆地”的这次大撞击，在月球岩浆洋固结后，继续对月壳和上月幔进行了深刻的改造，彻底改变了月背局部的物质组成。 这一研究成果，为理解月球正反面差异提供了全新的科学证据，也让人类对月球复杂演化历史的认知又向前迈进了一步。 中国地质调查局公众号于 8 月 6 日发布博文，宣布基于嫦娥工程等最新探测成果，我国编制完成 1∶500 万全月地质图，对月球历史进行了一次系统性重写和精细化描绘，实现从“跟图”到“制规”的跃升，并且披露了月球“最富有的地层”。IT之家附上相关图片如下：",
+      "url": "https://www.ithome.com/0/989/496.htm",
+      "time": "2026-08-13T23:25:15.000Z",
+      "tags": []
+    },
+    {
+      "source": "钛媒体",
+      "sourceColor": "#ff9800",
+      "title": "On-Device AI Moves From Technical Preference to Supply-Chain Reality",
+      "description": "Compact models that run locally on phones and in cars are no longer a niche experiment. As hardware makers demand lower latency, offline capability and tighter power budgets, the industry is repricing the companies that specialize in them—and testing whether early technical bets can turn into durable commercial positions.",
+      "url": "https://www.tmtpost.com/8102743.html",
+      "time": "2026-08-13T23:24:05.000Z",
+      "tags": [
+        "人工智能",
+        "科技创投",
+        "智能硬件"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Introducing platformgen: Build Platforms with AI — Now Open Source",
+      "description": "Introducing platformgen: Build Platforms with AI We're excited to announce the open-source release of platformgen — a meta-platform builder that uses AI to generate production platforms in days instead of months. platformgen is not another SaaS platform. It's a tool that builds platforms. Give it a description, and it generates: ✅ Database schema ✅ REST/GraphQL APIs ✅ Frontend widgets ✅ Kubernetes deployment configs ✅ Docker images (ready to deploy) All powered by GitHub Copilot via the \"Ask Genny\" embedded AI assistant. Our flagship example is Ask Auger — an intelligent Site Reliability Engineering dashboard with 26+ widgets for monitoring, incident response, and operational intelligence: 📊 Kubernetes monitoring (pods, nodes, logs, events) 🔍 GitHub PR/branch explorer 🎯 Jira story browser + transitions 🐛 Service vulnerability scanning 🔔 ServiceNow ticket integration 📈 Prometheus metrics + DataDog integration 🚀 Deployment pipeline status Key feature: Ask Genny — embedded AI assistant. Type any question: \"Show me failed pods in prod\" or \"Generate a kubectl troubleshooting script\" and Genny handles it via GitHub Copilot. Built in under 2 weeks with platformgen: 🎵 Spotify API integration 🤖 AI-powered playlist generation 📹 Music video discovery 📊 Artist analytics & trends Live market data, pattern recognition, backtesting engine, and Schwab brokerage integration — all auto-generated by platformgen. 1. Define → Describe your platform (industry, data, goals) 2. Generate → platformgen creates full-stack code + infra 3. Customize → Iterate with your team (all source code editable) 4. Deploy → One push to Kubernetes (TLS, monitoring included) 5. Own → Full handoff, no lock-in, no fees Traditional platform development is broken: 🐌 Months of architecture before writing code 💸 Expensive consultants required to \"get it right\" 🔒 Vendor lock-in to platforms and frameworks 😩 Boring scaffolding work that could be automated platformgen changes this: ⚡ Days to production (not months) 🤖 AI handles architecture decisions via GitHub Copilot 📦 100% ownership — full source code, run anywhere 🎯 Focused on what matters — your business logic, not plumbing MIT License — Free forever. Use it however you want. Self-hosted — Run on your Kubernetes cluster. No data leaves your network. No subscriptions — Pay $0/month. Just contribute back if you build something cool. Hot-reload widgets — Edit UI components live without restarting. Via Python venv (recommended): git clone https://github.com/techno-vet/platformgen-py.git cd platformgen-py bash install.sh This will: Create a Python virtual environment Install platformgen as an editable package Add it to your PATH Guide you through token setup Then initialize: auger init --token YOUR_GITHUB_COPILOT_TOKEN auger start Requires: Python 3.10+ python3-tk system package (for UI) X11 display (for desktop rendering) Alternative: Docker: bash scripts/auger-setup.sh Handles X11, mounts, and token setup automatically. 📝 Blog Post #2: How Ask Genny built Ask Auger (meta-story) 🎥 Demo video: 60-second walkthrough (coming soon) 🌍 Product Hunt: Week of Sept 3 (help us get #1!) 💬 Discord community: Link to join (coming soon) Clone the repo, run the installer, and ask Genny to build something. GitHub: https://github.com/techno-vet/platformgen-py Docs: https://github.com/techno-vet/platformgen-py/wiki Website: https://platformgen.ai platformgen is built by @technovet (TechnoVets — USAF Veteran Owned). Entirely AI-assisted development from day one. Questions? Drop a comment below or open an issue on GitHub. We read and respond to everything. What platform would YOU build if you had 5 days instead of 5 months? Tell me in the comments.",
+      "url": "https://dev.to/technovet/introducing-platformgen-build-platforms-with-ai-now-open-source-1e92",
+      "time": "2026-08-13T23:22:44.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "小米推出米家智能吸油烟机 3 欧式：25 m³/min 吸力，售 1499 元",
+      "description": "IT之家 8 月 14 日消息，米家智能吸油烟机 3 欧式今日在小米有品上架并开启预约，官方标价 1499 元（点击前往）。 IT之家从商品页面获悉，这款新品搭载高速风机系统，最高转速达 2200r/min，风量较上一代提升 9%，达到 25 m³/min；运用巡航增压算法，智能检测公共烟道风阻，自动调节风量风压，支持 1080Pa 最大静压，搭载新一代直流变频电机。 新品支持隔空手势感应技术，挥手即可开关机、调风量，全程无需触碰，保持面板干净整洁。支持小米澎湃智联，连接米家 App，随时远程控制烟机，同时支持多设备互联。 此外，新品还内置智能干洗模式，叶轮高速转动甩离油污，减少风机油污堆积，保障风机动力。",
+      "url": "https://www.ithome.com/0/989/495.htm",
+      "time": "2026-08-13T23:21:06.000Z",
+      "tags": [
+        "手机",
+        "软件应用",
+        "大公司"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "华尔街见闻早餐FM-Radio | 2026年8月14日",
+      "description": "华见早安之声 请各位听众升级为见闻最新版APP，以便成功收听以下音频。 市场概述 美国7月PPI显示通胀正在降温，叠加油价下跌，市场加息预期下降，推动美股风险偏好回升。美国三大股指全线收涨，标普500指数涨0.65%、收创历史新高，纳指涨0.81%。 大型科技股多数上涨，特斯拉涨超3.5%，领涨科技七巨头。存储股普遍上涨，闪迪涨超13%，西部数据、海力士涨逾7%，希捷科技涨近5%。 受收购报道影响，Workday一度飙升30%。AI应用软件股集体冲高，科技软件行业ETF-iShares涨超3%。 纳斯达克中国金龙指数跌1.84%，京东集团跌超7%，拼多多跌逾5%。 美国9月加息预期收窄，对利率敏感的两年期美债收益率跌4.82个基点，10年期美债收益率下跌4.57个基点。 现货黄金跌1.34%，现货白银跌1.43%。纽铜盘中一度走V收复跌幅，美PPI数据后较日高回落，微跌0.35%。原油跌超2%。 亚洲时段，A股午后回落，三大股指集体收跌，医药股逆势大涨，港股腾讯跌超4%，联想集团午后暴涨20%。 要闻 中国 DeepSeek宣布API涨价，8月17日起峰值价格最高涨至27元，新版V4 Pro正式上线。DeepSeek发布首款Agent产品Harness，并非Codex类产品，核心是一切皆插件。 上市仅两周，长鑫科技登顶中国AH股“股王”。 京东集团Q2营收同比降近3%但仍超预期，外卖业务拖累减弱，经营利润同比扭亏；电话会：盈利拐点已现，外卖亏损收窄超五成，三季度零售业务有望重回正增长。 受益AI需求外溢，中芯国际Q2营收突破30亿美元，净利暴增近4倍，Q3收入环比预增2%至4%。 华虹宏力Q2收入创历史新高，净利润同比增长386%，Q3收入指引最高7.8亿美元。 AI服务器订单爆发！联想Q1财季营收同比增43%，经调整净利润增176%，股价大涨创新高。 算力需求持续扩张，海光信息上半年营收同比增长66.52%，净利润增49.69%。 2.4T参数，Qwen 3.8模型开源，国产超大模型架构走向趋同。 海外 通胀超预期降温！美国7月PPI同比涨幅收窄至4.7%，能源成本下降成主因。市场不再完全押注美联储年内加息。 需求疲软信号再现，30年期美债标售得标利率创2001年来新高。 美联储官员分歧显现：巴尔金支持按兵不动，哈马克坚持加息。 高达100%，美国将对进口无人机及零部件征收关税。 伊朗警告美国若动用核武、全球基地将成靶子，驳斥特朗普、称伊方完全控制霍尔木兹。 日元短线快速拉升！报道：日本首相高市早苗支持日本央行更快加息。日本7月PPI同比涨7.2%，持续高位运行。 投资者押注估值翻倍！报道：Anthropic拟以2万亿美元估值上市，或将成为史上最大IPO。IPO前大动作，Anthropic拟60亿美元收购芯片优化公司Decart AI。 谷歌密集上新Gemini Flash：编程能力提升、价格腰斩，旗舰模型发布时间仍未定。 闪迪定“超高”长期目标：FY2028-30营收中高双位数增长、毛利率80%，股价一度涨近20%。 Workday一度大涨30%，带动软件股冲高，报道称Silver Lake拟收购Workday。 市场收报 欧美股市：标普500涨幅0.65%，报7798.99点。道指涨幅0.13%，报53885.10点。纳指涨幅0.81%，报26803.03点。欧洲Stoxx 600指数跌0.04%，报659.24点。 A股：上证指数收报3926.96点，跌0.50%。深证成指收报14289.44点，跌0.87%。创业板指收报3586.04点，跌0.45%。 债市：美国10年期国债收益率下跌4.57个基点。两年期美债收益率跌4.82个基点。30年期美债收益率跌4.28个基点，报5.214%。 商品：现货黄金跌1.34%，报4350.20美元/盎司。现货白银跌1.43%，报64.427美元/盎司。WTI 9月原油期货收于每桶81.25美元，跌幅2.43%。布伦特10月原油期货收于每桶87.07美元，跌幅2.15%。 要闻详情 全球重磅 中国 DeepSeek宣布API涨价，8月17日起峰值价格最高涨至27元，新版V4 Pro正式上线。以旗舰模型deepseek-v4-pro为例，高峰时段百万tokens输出价格从6元升至27元，涨幅同为350%；缓存未命中输入价格从3元升至9元。与此同时，DeepSeek V4 Pro正式版已于8月13日上线，并同步在APP、网页端及API端部署。 DeepSeek Harness 开发者预览版：一切皆插件。DeepSeek Harness 采取“一切皆插件”的设计思路。我们采用插件式开放架构来构建 Agent Harness：模型、工具、技能、会话、沙箱、存储、循环、调度、UI 等所有 Agent 能力均由插件组合而成，可自由替换、灵活重组。 DeepSeek Harness 来了，它不想做下一个Codex。DeepSeek发布首款Agent产品Harness，并非Codex类产品，而是一套\"可重组、可回放的Agent运行时\"。其核心是\"一切皆插件\"，通过\"Agent预设\"决定工具与能力，将模型、界面等均可替换组合。它把Agent视为基础设施，让用户自行组装专属Agent，而非仅使用通用产品。 DeepSeek智能体曝光！人人用得起的Agent？DeepSeek注册\"Harness团队\"微信公众号，释放桌面端Agent产品即将推出的信号。Harness是连接模型与真实任务的系统，负责文件读取、工具调用、代码执行等环节。在Claude、ChatGPT等产品纷纷从\"聊天\"转向\"干活\"之际，DeepSeek正加速走上同一条路。 上市仅两周，长鑫科技登顶中国AH股“股王”。登陆科创板仅两周，长鑫科技便以约3.54万亿元收盘市值超越腾讯，登顶陆港两地上市公司市值榜首。长鑫科技上市以来股价累计涨超500%，折射AI热潮下资金加速从互联网平台转向半导体硬件。 京东集团Q2营收同比降近3%但仍超预期，外卖业务拖累减弱，经营利润同比扭亏；电话会：盈利拐点已现，外卖亏损收窄超五成，三季度零售业务有望重回正增长。 2026年二季度，京东收入3464亿元，同比微降2.9%但超市场预期；经营利润由亏转盈至45亿元，盈利能力显著修复。核心零售利润率创大促季新高，外卖等新业务持续减亏，营销费用大幅收缩。利润与现金流双双改善，公司正从规模扩张转向更注重效率与盈利质量的发展阶段。 京东2026年二季度营收同比降2.9%至3464亿元，仍处调整期，但非GAAP净利润增长21%至89亿元，零售利润率创促销季新高，外卖亏损同比收窄超50%。管理层称盈利拐点明确，预计三季度零售恢复正增长。AI深化应用、海外及下沉市场拓展有序推进，战略重心转向用户质量与生命周期价值，下半年将兼顾收入修复与利润改善。 受益AI需求外溢，中芯国际Q2营收突破30亿美元，净利暴增近4倍，Q3收入环比预增2%至4%。中芯国际2026年二季度营收30.06亿美元，同比增长36.1%，毛利率升至25.3%，净利润同比增长近4倍。业绩增长源于晶圆量价齐升、产能利用率达93.7%及产品结构优化，AI需求向成熟制程扩散带动工业与汽车芯片占比提升。公司预计三季度收入环比增长2%-4%，毛利率进一步提升至26%-28%，业绩进入上行周期。 华虹宏力Q2收入创历史新高，净利润同比增长386%，Q3收入指引最高7.8亿美元。公司季度销售收入达到7.175亿美元，创历史新高，同比增长26.8%，环比增长8.6%；毛利率为16.5%，同比提升5.6个百分点，环比提升3.5个百分点。收入与毛利率均优于公司此前指引，显示特色工艺代工景气度继续回升。 AI服务器订单爆发！联想Q1财季营收同比增43%，经调整净利润增176%，股价大涨创新高。联想第一财季实现经调整净利润同比增长176%至10.75亿美元，首次突破10亿美元，经调整净利润率达4%，同比接近翻倍。AI服务器在手订单储备达540亿美元，按季增长157%。公司表示，AI相关业务收入同比增长60%，占集团整体营收的35%，混合式AI战略已进入价值兑现阶段。 算力需求持续扩张，海光信息上半年营收同比增长66.52%，净利润增49.69%。海光信息上半年营业收入达90.99亿元，同比增长66.52%，逼近百亿关口；归属于上市公司股东的净利润为17.98亿元，同比增长49.69%。随着人工智能应用加速落地，国内企业对本土算力芯片的采购需求持续放量。 2.4T参数，Qwen 3.8模型开源，国产超大模型架构走向趋同。Kimi K3开源半个月后，阿里Qwen于8月13日开放首个Max规模权重Qwen3.8-2.4T。模型共92层、2.4T参数、激活95B，采用512个专家及3:1混合注意力架构。后训练聚焦Agent能力，保留推理状态。开源沿用自定义商业许可，整体架构与Kimi K3趋于收敛。 海外 通胀超预期降温！美国7月PPI同比涨幅收窄至4.7%，能源成本下降成主因。美国7月PPI环比持平，同比降至4.7%，核心PPI同比降至4.2%，主因能源价格下跌，服务价格涨幅放缓。CPI与PPI背离扩大，企业利润空间承压。市场对美联储加息预期未变，认为短期政策调整紧迫性有限，后续通胀走势仍依赖能源价格变化。 油价下跌、通胀降温，市场不再完全押注美联储年内加息。美国7月PPI增速放缓，CPI连续两个月降温。交易员正在削减对美联储加息的押注，目前市场隐含的9月加息概率已降至40%以下，年内加息幅度约为23个基点。 需求疲软信号再现，30年期美债标售得标利率创2001年来新高。30年期美债标售前一天，10年期美债标售得标利率创2007年金融危机以来新高，也出现得标利率略高于预发行收益率的“尾部”，为需求略逊于预期的信号。虽然这并不能说明美国国债需求出现系统性崩塌，但体现了美债正面临供给与成本的双重考验。 美联储官员分歧显现：巴尔金支持按兵不动，哈马克坚持加息。里士满联储主席巴尔金支持维持利率不变，认为通胀主要源于临时性冲击，但警告AI投资与供应链可能带来持久价格压力；克利夫兰联储主席哈马克则重申加息立场，并警示美债杠杆及AI泡沫等金融稳定风险。失业率维持低位与混合的经济数据，令美联储9月议息路径充满不确定性。 高达100%，美国将对进口无人机及零部件征收关税。据央视新闻，特朗普签署公告，以应对国家安全威胁为由对进口无人机及零部件征收10%至100%的从价关税。上述关税将于签署之日起21天后生效。对于非高度敏感的无人机组件，关税将于签署之日起180天后生效。 伊朗警告美国若动用核武、全球基地将成靶子，驳斥特朗普、称伊方完全控制霍尔木兹。伊朗军方称，未经伊朗许可，任何船只都无法安全通过霍尔木兹；伊朗的核弹是通过反抗美国赢得全世界的人心，伊朗不需要真正的核弹，也不需要杀戮；新任最高领袖未公开露面是出于安全考虑。伊外长称，美国在霍尔木兹存在“更大的误判”，提醒美方小心假情报。 日元短线快速拉升！报道：日本首相高市早苗支持日本央行更快加息。彭博报道称，日本政府支持日本央行近期加息。下一步加息时间窗口很可能落在9月或10月。日本央行对日元疲软推升通胀的担忧，与日本政府希望巩固近期日美汇率干预效果的诉求正逐步形成合力，双方均倾向于支持近期加息。 日本PPI连续高位运行，日央行9月加息预期升温。日本7月PPI同比涨7.2%，持续高位运行，石油、化工、有色金属三大类别齐涨，叠加日元跌至40年低位加剧输入性通胀，上半年\"通胀型破产\"更创历史同期新高。企业成本压力、工资上涨与日元贬值三重共振，日央行行长植田和男此前释放9月加息信号，货币政策正常化进程或加速。 投资者押注估值翻倍！报道：Anthropic拟以2万亿美元估值上市，或将成为史上最大IPO。据媒体报道，六名股东透露，Anthropic快速增长的营收将支撑其在计划的秋季上市中实现现有估值翻倍以上，预计到2026年底，年化营收将达到1000亿至1200亿美元。 IPO前大动作！Anthropic拟60亿美元收购芯片优化公司Decart AI。Claude母公司拟斥60亿美元洽购“世界模型”初创企业Decart，创其最大并购纪录。面对IPO前夕的算力成本重压，这场瞄准降本核心技术的战略豪赌，能否助其在AI军备竞赛中突围？ 谷歌密集上新Gemini Flash：编程能力提升、价格腰斩，旗舰模型发布时间仍未定。谷歌称Gemini 3.7 Flash是其最智能的工作型模型，将核心升级放在编程和复杂工作流，同时强化安全能力。有效期至今年底的该模型引导价为0.75美元/百万输入Token、3.75美元/百万输出Token，均为前代3.6 Flash原价的一半。旗舰模型Gemini 3.5 Pro延期上线令投资者质疑谷歌在AI编程等领域的发展路线图。 闪迪定“超高”长期目标：FY2028-30营收中高双位数增长、毛利率80%，股价一度涨近20%。闪迪预计，2028至2030财年，非GAAP口径下，公司毛利率维持在约80%，营业利润率约75%，调整后自由现金流利润率约50%；承诺在完成业务投资后，剩余现金100%返还股东；长期输入比特量增长目标为中高双位数，但可供销售的比特量将根据优化盈利能力的需要灵活调整；披露八大客户签长协，协议已覆盖2028财年约三分之二比特出货量；2030年企业级闪存TAM料达1.2ZB。 Workday一度大涨30%，带动软件股冲高，报道称Silver Lake拟收购Workday。据媒体报道，私募股权巨头Silver Lake正就收购Workday展开谈判。消息推动Workday一度大涨30%，并带动Cloudflare、Palantir、Salesforce等AI软件股集体走强。Workday此前是AI颠覆软件这一叙事的典型标的，截至周三收盘，Workday股价年内下跌18%。 研报精选 “大空头”再炮轰：英伟达AI扩张有“安然的影子”、危害“高出几个数量级”。Michael Burry将英伟达AI扩张与安然丑闻相提并论，警告其危害“高出几个数量级”——这位“大空头”的炮轰，恰好落在英伟达宣布5000亿美元芯片融资体系的敏感时点。而Burry今年最赚钱的生意或许不是炒股，他的博客已有30万订阅者，按年费379美元测算，理论年收入约1.137亿美元。 代理AI时代，CPU要和GPU“1:1”？智能体AI引爆算力变局，CPU告别“配角”迎来历史性重估！美银预测，CPU正晋升为数据中心“控制中枢”，未来与GPU配比将从1:4趋近1:1，2030年市场规模上调至超2100亿美元。这场千亿盛宴中，ARM阵营将强势崛起揽下近半份额，AMD凭核心性能成最佳标的，英特尔则面临份额缩水考验。 国内宏观 智谱领衔33只中国股票入选MSCI指数，海外被动资金将于月底集中涌入。MSCI公布2026年8月指数审议结果，智谱以新兴市场新增成分股市值第一的身份入选MSCI中国指数，凯莱英、华峰测控、燕东微等共33只中国股票同步纳入，万科A、智飞生物等32只遭剔除。所有变动8月31日收盘后生效，相关个股届时将迎来海外被动资金集中调仓。 国内公司 WorkBuddy上线远程控制，国内也有了最丝滑的Agent工作方式。WorkBuddy最新更新上线了远程控制功能，用户可通过手机App或小程序随时随地操控电脑端Agent，体验甚至优于Codex。更新后，PC、App和小程序三端任务、对话和产物实时同步，连接无需扫码，自动识别同账号设备，并支持多台电脑无缝切换。这弥补了Agent“人需守在电脑旁”的痛点，让用户能真正自由地随时随地委托任务。 中国移动上半年营运收入同比下降1.1%，算力业务成增长引擎，AIDC收入大增486%。中国移动2026年上半年受增值税税率上调及通信服务拖累，营收与净利润分别同比下降1.1%和6.3%（剔除税制调整后同口径正增长）。但算力服务逆势增14%（其中AIDC暴增486%），自由现金流翻倍至539亿元，中期每股派息2.51元，公司正加速向AI与算力科技服务转型。 AI算力驱动，协创数据上半年营收同比增156%，归母净利润狂增331%。协创数据2026年上半年实现营收126.41亿元，同比增长155.69%；归母净利润18.63亿元，同比增长331.11%。AI算力业务是增长主引擎，再制造与存储业务协同发力。利润增速远超营收，显示较强盈利弹性。期末总资产达481.09亿元，较年初翻倍，公司正加速向AI算力基础设施服务体系转型。 海外宏观 美国上周首申人数小幅反弹，升至20.9万，就业市场韧性犹存。美国劳工部数据显示，截至8月8日当周初请失业金人数超预期升至20.9万，环比增加9000人，但续请失业金人数降至178万。经济学家认为单周波动主因夏季季节性扰动，而非基本面恶化，四周移动平均值持稳于19.9万，劳动力市场整体韧性未明显改变，需关注后续数据以判断趋势。 费城半导体指数即将重回“牛市”，分析师泼冷水。受AI下游企业强劲财报推动，费城半导体指数周三涨2.5%，距技术性牛市仅差1%。但Portfolio Thinking创始人Dan Kemp表示：CoreWeave营收指引保守、利息支出高企，订单积压未必能转化为实际收入。Zacks首席策略师Brian Mulberry肯定需求向基础设施扩散，但提醒基本面分化，并非所有芯片股均受益。 韩国股市10天涨22%进入技术性牛市，AI芯片行情强势回归？韩国KOSPI指数10天内累计反弹约22%，三星电子和SK海力士单日涨幅均接近或超过5%。全球科技巨头持续加码AI资本支出、美国通胀数据温和、韩国监管层收紧杠杆ETF，以及两大芯片巨头即将公布的百万亿韩元级股东回报计划，共同推动市场从7月历史性暴跌中强势反弹。 海外公司 扩充AI竞赛“弹药库”！AMD被曝酝酿最大投资级发债、募资多达50亿美元。据报道，AMD此次发行四档高级无担保票据，债券期限覆盖三年至十年，募资最终规模尚未敲定。AMD称发债所得将用于一般公司用途，包括可能偿债。该司有一笔8.75亿美元债券将于9月到期。 应用材料大跌！AI浪潮推升设备需求，财报全面超预期却难填市场“胃口”。应用材料第三财季营收91.15亿美元，高于预期的90亿美元；调整后每股收益为3.5美元，超出预期的3.42美元。公司预计第四财季营收约102.5亿美元，高出预期7%；调整后每股收益4.02美元，远高于预期的3.72美元。尽管财报全面预期，应用材料股价盘后仍下跌近6%。在股价年内翻倍之后，市场已经很难被满足。 行业/概念 1、氢能 | 据中证报报道，国家能源局近日发布《中国氢能发展报告（2026）》。这份报告用一组数据勾勒出产业正在经历的质变：2025年，我国可再生能源制氢建成投运产能超25万吨/年，较上年增长超过1倍；全国氢气产能超5100万吨/年，消费结构中合成氨、合成甲醇、炼化和煤化工占据前四位。同一周，2026年上半年国内氢能领域投资同比增速突破160%的数据被披露，在能源细分赛道中领跑。 点评：\"十五五\"规划纲要将\"氢能和核聚变能\"明确为六大未来产业之一，与量子科技、生物制造、脑机接口、具身智能、第六代移动通信并列。《新型能源体系建设\"十五五\"规划》进一步提出，到2030年可再生能源制氢规模达到200万吨/年，较当前目标增长约7倍。机构研报指出，\"十五五\"期间绿氢需求规模将达240万至430万吨/年，政策、成本、需求、资本四力正在第一次形成共振，推动氢能产业迈入规模化应用，全产业链产值有望突破1万亿元。 2、碳中和 | 据中证报报道，国务院新闻办公室8月13日举行\"开局起步'十五五'\"系列主题新闻发布会。会上介绍，我国大气污染治理成绩喜人，但目前还不能有松口气、歇歇脚的想法，仍要保持耐心和定力。目前，新一轮空气质量持续改善行动方案正在抓紧制定，蓝天保卫战将重点在\"更高、更准、更科学\"上下功夫。 点评：新一轮空气质量持续改善行动方案的制定与实施，空气质量改善产业正迎来政策加码与市场需求扩容的双向共振。未来，该产业将从传统的\"政策驱动、规模扩张\"全面转向\"技术、市场与政策的三重共振\"。产业链正从传统的\"设备制造—工程安装—售后维护\"线性结构，走向\"材料研发—智能装备—系统集成—运维服务—碳资产管理\"的立体化价值网络。大气污染防治设备市场虽然整体发展成熟，但结构性成长机会突出，市场规模已突破三千亿元量级，且在全球空气污染控制市场中的占比（三成以上）仍在稳步提升。 3、钠离子电池 | 据中证报报道，8月12日，中科海钠官宣，与一汽解放联合研发的钠离子电池换电牵引车正式登上工业和信息化部《道路机动车辆生产企业及产品》（第410批）公告。这意味着钠电池技术已获得主流车企的充分认可，正在加速驶入商业化量产阶段。业内普遍认为，这是钠离子电池产业化进程的又一标志性事件，2026年或将成为钠离子电池规模化应用元年。 4、机器人 | 据上证报报道，第二届世界人形机器人运动会将于8月22日在国家速滑馆\"冰丝带\"开幕，本届运动会由北京市人民政府、中央广播电视总台等联合主办。据悉，将有宇树科技、松延动力、北京人形机器人创新中心等多家明星机器人公司参赛。本届赛事吸引了16个国家的666支队伍，共有2056台机器人同台竞技，队伍数量较首届增长138%，机器人数量翻了两番。 点评：中银证券认为，人形机器人作为具身智能最理想的载体，在2025年已经跨过量产门槛，目前阻碍其大规模商业化落地的主要瓶颈为大模型泛化能力不足等，未来随着模型、算力、数据的快速发展，有望逐步突破。国内产业链凭借着独特的政策支持、强大的产业链深度和成本优势，目前处于全球领先地位，未来有望充分受益于人形机器人的大规模放量，可关注能够率先兑现订单和收入的核心零部件环节企业。 5、维生素 | 据上证报报道，8月13日，百川盈孚数据显示，国内维生素市场价格上涨。其中，维生素E、维生素A价格较12日分别上涨2.99%、1.89%，报价分别为69元/千克、54元/千克。 点评：山西证券认为，受中东冲突导致霍尔木兹海峡航运受阻影响，能源、运输等成本上涨，加之全球化工原料短缺导致赢创新加坡蛋氨酸工厂、住友化学亚洲公司等海外产能停产，维生素A、维生素E、蛋氨酸价格上涨。中邮证券认为，维生素行业因需求刚性、成本占比低、供给高度集中的特性，使得当前处于低位的涨价具备较强的持续性和价格弹性。 6、储能 | 据上证报报道，8月13日，从高工锂电获悉，来自电芯端的涨价潮已经开始启动了，储能成为传导电芯涨价的重要环节。数据显示，2026年8月，国内主流314Ah磷酸铁锂储能电芯价格在0.35元/Wh至0.42元/Wh之间，均价在0.365元/Wh附近，与2025年末的约0.31元/Wh相比，涨幅较为明显。 点评：中信证券认为，产品端来看，储能厂商积极推出适配大容量电芯的储能系统新品。在推出新品之外，储能厂商逐步从单一产品向应用场景过渡，针对零碳园区、AIDC等推出解决方案，多家企业发布AIDC储能系统整体解决方案，顺应算电协同趋势。在政策引导下，2026年国内独立储能的商业模式将逐步成熟，业主端对投资储能的积极性明显提升，看好国内储能需求保持高增速增长。 今日要闻前瞻 美国7月零售销售。 美国8月密歇根大学消费者信心和通胀预期。 欧元区二季度GDP。 韩国交易所将推出ETF盘后交易业务。 美国SEC 13F季度持仓文件。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779412",
+      "time": "2026-08-13T23:19:57.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "芯片/半导体"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "The Project Remembers, Not the Agent",
+      "description": "I did not sit down to invent a framework. I was trying to build real software with coding agents, and after a while the same problem kept showing up: the work was bigger than the session. That was the actual issue. Not “which model is smartest.” Not “which IDE has the best agent.” Not even “does RAG help.” The issue was continuity. A feature would start in one session, continue in another, get interrupted by limits, get resumed in a different tool, and somewhere in the middle I would end up re-explaining the same things again: what the feature actually is what is already done what is not done what is intentionally parked what rules matter in this repo what not to touch casually That gets exhausting fast. And it is not just annoying. It affects quality. Every restart adds noise. Every new session risks drift. Every agent handoff creates room for stupid mistakes that have nothing to do with intelligence and everything to do with lost continuity. At some point I realized I was relying too much on the chat thread to be the memory. That was the mistake. I started putting feature trackers in the project root. Not motivational docs. Not vague notes. Real trackers. What is the current feature? What is completed? What is pending? What is parked? What was verified? What decisions were already made? That helped immediately. A fresh session no longer had to guess the active boundary from code alone. Then I hit the next problem: even when the feature state was clear, the agents would still repeat behavioral mistakes. Things like: wandering into adjacent cleanup ignoring existing repo patterns jumping into code too early needing the same correction more than once So I started externalizing that too. I wrote down the recurring rules. Scope rules. Verification rules. Reuse rules. Repo-boundary rules. The practical stuff that normally lives in your head until you are forced to repeat it for the fifth time. Then later I added retrieval for some of that memory, because not everything needs to be in the always-loaded layer, but some things absolutely should be recoverable when the work reaches the right point. Somewhere in there the whole workflow changed shape. It stopped being “chat remembers context.” It became “project holds continuity.” The shortest version is this: The project remembers, not the agent. That is what I started calling ATMAR: Agentic Tracker Memory And Retrieval. And to be clear, I am not claiming I invented memory, trackers, or retrieval. That would be nonsense. What I am saying is that under real delivery pressure, I ended up combining them in a way that made interrupted multi-agent work much more survivable. The core pieces are simple: tracker memory for feature state behavioral memory for recurring rules retrieval memory for recoverable context repo-grounded verification so memory never outranks code Each part already exists in some form. But the combination mattered more than I expected. A lot of discussion around coding agents still feels too chat-centric. People ask: which model is better how much context can fit which agent is best at coding whether one prompt style beats another Those questions are fine. I use those tools too. But I think there is a more basic software-engineering question sitting underneath all of that: What happens when the work outlives the session? Because that is normal. That is not some edge case. Real software work is messy, long, interrupted, and spread across time. So if continuity depends mainly on the current thread being alive, then the workflow is fragile by design. That is the part I wanted to fix. I am not claiming: a new model architecture a new retrieval algorithm a universal proof that this beats every workflow some dramatic AI breakthrough I am claiming: this solved a real problem for me it emerged while doing substantial actual software work it made agent switching less destructive it reduced how often I had to reconstruct the same context from scratch it is worth testing as a method, not just as a personal habit Someone will probably say: “this is just disciplined workflow.” Fine. Maybe it is. But that is not a dismissal unless the discipline does nothing. The real question is whether this kind of discipline creates a stronger continuity layer for long-horizon AI-assisted software development. That is testable. Because unnamed patterns disappear. If you do not name something, people either ignore it, or they copy pieces of it without any shared language for what actually made it useful. I wanted this to be inspectable. Not glorified. Inspectable. If it has a name, then people can do something more useful than vague agreement or vague dismissal. They can compare it. For example: repo only repo plus spec repo plus tracker repo plus tracker plus rules full tracker plus rules plus retrieval workflow That is where I think the discussion should be. The weak point is obvious. I have strong operational evidence and real artifact evidence. I do not yet have clean comparative proof. So I am not pretending the argument is finished. That is why I published ATMAR as a case-study and evaluation artifact, not as some inflated “future of engineering” pitch. I would rather have people test it and tell me where it breaks. Try it on one feature. Not your entire company. Not a six-month transformation plan. One feature. Set up: a tracker a behavior-rules file a runtime memory layer one explicit rule that the repository outranks memory when they conflict Then resume the feature from a fresh session or another agent. See what happens. Did the restart get easier? Did the agent stay in scope better? Did handoff improve? Did you repeat yourself less? Or was the maintenance overhead not worth it? That is the kind of feedback I want. I put the repo here: https://github.com/revdfdev/ATMAR If you test it, I would genuinely rather get a sharp criticism backed by a real attempt than polite praise. That would be more useful. Maybe this ends up being a niche but solid method. Maybe it becomes a useful reference point for long-horizon agent continuity. Maybe people copy the pattern and improve it. All of that is fine. The key thing for me is simpler than the branding: once I stopped depending on the agent to be the memory layer, the work became much less fragile. That is the point.",
+      "url": "https://dev.to/koderehan/the-project-remembers-not-the-agent-3l7d",
+      "time": "2026-08-13T23:19:29.000Z",
+      "tags": [
+        "人工智能",
+        "游戏",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "快科技",
+      "sourceColor": "#ff6600",
+      "title": "苹果管理层大洗牌：多位核心高管岗位发生变动",
+      "description": "苹果管理层大洗牌：多位核心高管岗位发生变动",
+      "url": "https://news.mydrivers.com/1/1143/1143600.htm",
+      "time": "2026-08-13 23:19",
+      "tags": [
+        "大公司"
+      ]
+    },
+    {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "位列全球第二，国内高校团队AI安全攻防测评获佳",
+      "description": "位列全球第二，国内高校团队AI安全攻防测评获佳绩,调用,测评,高校,智能体,大语言模型",
+      "url": "https://www.163.com/dy/article/L48FM2QQ0534A4SC.html",
+      "time": "2026-08-13 23:19",
+      "tags": [
+        "人工智能",
+        "测评/新品"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "What It Really Takes to Get YouTube Live and TikTok Publishing Approved",
+      "description": "Building a social media integration is one thing. Getting the social network to actually approve it for production is another. Over the past several months, I have been building VidSyndicate, a social media publishing and video distribution platform. One of the goals behind the project is to give businesses a single application for managing content across networks such as Facebook, Instagram, LinkedIn, YouTube, Pinterest, TikTok, and others. From a development standpoint, connecting an API is often the easy part. The difficult part can be getting through the platform's review process. Recently, we reached two major milestones: YouTube Live was approved TikTok's draft/inbox publishing workflow was approved Neither approval was a simple \"submit the app and wait\" process. There were multiple rounds of development, documentation, demonstrations, policy changes, scope explanations, branding updates, and reviewer feedback before we got there. As the developer behind both Custom PHP Design and VidSyndicate, the experience reinforced something I have been seeing for years: Social media API integration requires more than knowing how to make an HTTP request. It requires understanding the platform, OAuth, permissions, security, application architecture, compliance, and increasingly, how to communicate your implementation to an auditor. The YouTube integration started with normal video publishing, but I wanted VidSyndicate to go considerably further. I wanted users to be able to create and manage a YouTube livestream directly through VidSyndicate. That meant integrating with Google's OAuth system, the YouTube Data API, and YouTube's live streaming functionality. The completed workflow allows VidSyndicate to handle much of the livestream lifecycle from inside the application. That includes creating the broadcast, creating and connecting the stream, monitoring its status, displaying live information, and ending the broadcast. Behind the scenes, the actual streaming infrastructure was another engineering project entirely. VidSyndicate uses cloud infrastructure and FFmpeg-based processing to handle the video stream. I eventually moved toward isolated AWS ECS tasks for livestream workloads rather than treating streaming like a normal web request. That part was challenging. But getting the OAuth permissions approved was a different kind of challenge. This is something businesses need to understand when developing social media integrations. Working code does not automatically mean you have a production-ready integration. You can successfully authenticate against an API. You can successfully create a broadcast. You can successfully upload a video. You can successfully receive data. And your application can still fail the platform review. Google needed to understand exactly why VidSyndicate requested its YouTube permissions and how those permissions were being used. For youtube.upload, the purpose is fairly straightforward: users authorize VidSyndicate to upload videos they have selected. The live streaming functionality requires broader capabilities. VidSyndicate needs to create and manage broadcasts and streams, connect them, monitor their state, interact with live functionality, and manage the broadcast lifecycle. Explaining that clearly became part of getting the application approved. A social platform reviewer doesn't have the same context the developer has. I had spent months working on VidSyndicate. I knew exactly what every button did and why every API request existed. The reviewer doesn't. That means the demonstration itself becomes part of the engineering process. For the YouTube review, we had to make sure the demonstration clearly showed the authorization process and the actual functionality associated with the requested permissions. The review material walked through the process from beginning to end: Connect the YouTube account. Display the requested Google/YouTube permissions. Create a livestream. Start the streaming infrastructure. Verify the broadcast through YouTube. Monitor the live broadcast. Demonstrate the application's live functionality. End the stream. The privacy policy also had to clearly explain how Google and YouTube user data was accessed and used. Even small details mattered. At one point, Google's feedback required the OAuth consent experience to make the services being requested clearer. That meant revisiting the consent flow and the supporting demonstration rather than simply saying, \"The API works.\" Eventually the functionality, branding requirements, privacy disclosures, and requested scopes moved through the verification process. TikTok presented a completely different review experience. VidSyndicate supports a TikTok workflow where a video can be sent to TikTok and delivered through TikTok's inbox/draft-style publishing experience. The user completes the final publishing process inside TikTok. From an application-design perspective, it is a useful middle ground. VidSyndicate can prepare and transfer the content while TikTok retains the final publishing interaction. Getting that functionality approved still required going back and forth through TikTok's review process multiple times. And this wasn't my first experience dealing with TikTok review. We had gone through TikTok audit attempts before. Each submission teaches you a little more about what the reviewer expects to see. One of the TikTok review issues is a good example of why social integration work can become frustrating. The underlying integration could work correctly while something seemingly minor prevented approval. Branding was one of those issues. The application icon needed to properly match the product branding. That meant making sure the icon, application identity, and website presentation were consistent enough for the reviewer. From a programmer's perspective, changing an icon has absolutely nothing to do with whether an OAuth callback or publishing API works. From the platform's perspective, however, identity and branding are part of determining whether users understand which application they are authorizing. So you fix it. Then you submit again. That became a recurring pattern during development: text Build the integration ↓ Test it ↓ Submit for review ↓ Wait ↓ Receive reviewer feedback ↓ Determine what the reviewer actually needs ↓ Update the application or documentation ↓ Record another demonstration when necessary ↓ Resubmit ↓ Repeat",
+      "url": "https://dev.to/robert_saylor_c9db74549e2/what-it-really-takes-to-get-youtube-live-and-tiktok-publishing-approved-en",
+      "time": "2026-08-13T23:16:07.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "互联网"
+      ]
+    },
+    {
+      "source": "The Verge",
+      "sourceColor": "#e2127a",
+      "title": "Apple and Epic argue over how much Apple should get from purchases made outside the App Store",
+      "description": "In a new filing in its long-running legal dispute with Epic Games, Apple has proposed a structure that would allow it to collect fees on digital purchases made via external links that don't use the company's in-app purchase system. Epic has already responded, saying that Apple's request is \"far outside of the bounds\" of the court's guidance. Right now, Apple cannot take a commission on external purchases after California district court judge Yvonne Gonzalez Rogers ruled in April 2025 that found the company \"willfully\" didn't comply with her 2021 Epic Games v. Apple injunction. However, a Ninth Circuit Court of Appeals panel said that Apple … Read the full story at The Verge.",
+      "url": "https://www.theverge.com/tech/979967/apple-epic-games-external-links-fees-filing",
+      "time": "2026-08-13T23:13:24.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "iPhone X 手机、2018 款 15 英寸 MacBook Pro 笔记本被苹果列入“停产”产品",
+      "description": "IT之家 8 月 14 日消息，根据最新更新的支持文档，当地时间 8 月 13 日，苹果公司将 iPhone X 以及 MacBook Pro（15 英寸，2018 年）正式列入其停产（Obsolete）产品列表。 根据苹果官网介绍，停产产品是指苹果停止发售之日起已超过 7 年的产品。苹果会停止为停产产品提供一切硬件服务，服务提供商也无法为停产产品订购部件。 据IT之家此前报道，2017 年 9 月，苹果正式发布 iPhone X，该机采用了 5.8 英寸 OLED 全面屏、首次引入顶部“刘海”设计，搭载 A11 仿生处理器，新增面容 ID 功能，国行售价 8,388 元起。",
+      "url": "https://www.ithome.com/0/989/494.htm",
+      "time": "2026-08-13T23:12:25.000Z",
+      "tags": [
+        "手机",
+        "电脑硬件",
+        "大公司"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Almost Quit Coding Last Year, Here's What Changed My Mind",
+      "description": "There was a stretch last year where I seriously considered walking away from coding altogether. Not dramatically, not in one single moment, just a slow, quiet decision building up over weeks. I would open my laptop, stare at a project, and feel nothing but tired. I kept comparing myself to other developers who seemed to be moving faster, understanding more, building bigger things, and somewhere in that comparison, I started to believe I simply wasn't good enough to keep going. I didn't tell many people how close I actually was to stopping. On the outside, I still showed up, still pushed code, still replied to messages like everything was fine. But quietly, I had already started writing the ending in my head. What changed things wasn't a breakthrough project or a sudden burst of motivation. It was someone else's words. A message from someone who had been paying more attention to my work than I realized, telling me plainly that what I had built mattered, that they had learned something from it, that I was further along than I gave myself credit for. It wasn't a long message. It didn't need to be. Sometimes the right words land exactly when you need them, not because they say anything new, but because someone finally says out loud what you've stopped being able to tell yourself. Here is the lesson worth taking from this. We are often the harshest, least accurate narrators of our own progress. Doubt convinces you that you are behind, that you don't belong, that everyone else has it figured out. It rarely tells the truth. Sometimes it takes someone else's voice, someone standing outside your own head, to interrupt that story and remind you it was never as true as it felt. I'm still here, still writing, still building, because someone took a moment to say something kind at the right time. If you're in that quiet stretch right now, the one where you're questioning whether to keep going, I hope this is that moment for you. You are further along than the doubt is telling you. I write these thoughts as Peace Melodi, a backend software engineer who cares deeply about building things that hold up under real pressure, real users, and real growth. If any of this resonated with you, I would love to connect. LinkedIn: https://www.linkedin.com/in/melodi-peace-406494368 https://github.com/PeaceMelodi",
+      "url": "https://dev.to/peacemelodi/i-almost-quit-coding-last-year-heres-what-changed-my-mind-bln",
+      "time": "2026-08-13T23:05:28.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "网络安全"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "最高每秒生成 750 个词元：OpenAI 推 Ultrafast 模式，GPT-5.6 Sol AI 提速 14 倍",
+      "description": "IT之家 8 月 14 日消息，OpenAI 公司今天（8 月 14 日）发布公告，宣布以预览形式，针对其最强 AI 模型 GPT-5.6 Sol 推出 Ultrafast（超高速）模式，是标准处理速度的 14 倍，最高每秒输出 750 个词元（Token）。 在服务支持方面，OpenAI 公司表示该模式由 Cerebras 提供，目标是在用户工作流中，进一步提高模型的响应速度。 OpenAI 公司表示，在过去模型速度和能力两者不可兼得，如果用户需要更快的输出速度，通常需要牺牲模型能力，转而选择更小或更专用的模型。 而 Ultrafast 可以实现两者兼得，让“每秒完成更多有价值工作”成为新的方向。OpenAI 列出的早期应用场景包括：事故响应与可靠性分析、金融研究与安全分析、客服与语音交互、电商场景中的商品问答与库存查询，以及实时研究和实验。IT之家附上相关截图如下： OpenAI 称，这一模式面向对实时性要求极高的业务场景，当前处于有限预览，仅向一小批客户开放。公司表示，这些早期测试有助于判断速度提升在什么环节价值最大，也有助于观察模型能否跟上用户操作节奏。",
+      "url": "https://www.ithome.com/0/989/492.htm",
+      "time": "2026-08-13T23:02:48.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "互联网"
+      ]
+    },
+    {
+      "source": "GSMArena",
+      "sourceColor": "#d32f2f",
+      "title": "Galaxy Z Fold8 does not impress in teardown",
+      "description": "Earlier this week we saw the Galaxy Z Fold8 go through JerryRigEverything’s torture durability test where it survived some hard bends and close encounters with blades and sand. And the team over at iFixit has now brought its teardown expertise to Samsung’s trendy bendy phone. Here’s the full video: The Z Fold8 earned a 4/10 repairability score. That’s not impressive by regular smartphone standards, but it is a point higher than last year’s Z Fold7 repairability score. If you don’t feel like watching the whole thing, here are the key takeaways. The folding screen is still a...",
+      "url": "https://www.gsmarena.com/galaxy_z_fold8_does_not_impress_in_teardown-news-74162.php",
+      "time": "2026-08-13T23:02:02.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "Why SaaS AI Visibility May Depend on Community Signals, Citations, and Governance",
+      "description": "AI visibility for SaaS brands appears to be evolving beyond conventional search rankings. Industry analysis increasingly frames it as a cross-engine, citation-driven discipline in which content, entity signals, technical access, and credible community references can all influence whether a brand is surfaced in AI-generated answers. That shift matters because AI systems such as ChatGPT, Claude, Perplexity, and Gemini can assemble answers from multiple reference points rather than directing users through a familiar list of search results. For marketing teams, the practical question is no longer only how to rank a page. It is how to build a body of information that is clear, credible, accessible, and useful enough to be cited across relevant AI experiences. Search Engine Land's analysis of AI visibility and citations argues that visibility starts before a search occurs and continues through the sources an AI system chooses to reference. The implication for SaaS is not that community discussion replaces owned content. It suggests that community, product information, technical documentation, and brand entities may need to work together as a coherent evidence base. The emerging model differs from a single-channel SEO program. Traditional organic search often concentrates effort on pages, keywords, links, and rankings. AI answer visibility may still benefit from those foundations, but the relevant signals can extend to whether a company is consistently identifiable across the sources and formats that AI systems can use or cite. For a SaaS company, this creates a broader operating challenge. Product marketing may own positioning, content teams may publish explanatory material, subject-matter experts may participate in communities, and web teams may manage technical access. If those activities are disconnected, a brand can present conflicting descriptions of its product, category, or capabilities. Visibility input Role in an AI visibility program Relevant SaaS consideration Owned content Provides clear, citable explanations and product information. Make product pages, documentation, and expert content precise and consistent. Entity signals Help establish a recognizable, credible representation of the brand. Align company, product, and category descriptions across reference points. [Community platforms](https://scalevise.com/resources/community-signals-ai-data-provenance-governance/) Can act as first-party visibility signals and contribute useful context. Participate where buyers seek practical peer and expert perspectives. Technical controls Shape how AI engines may access content for real-time use or training. Review robots.txt and citation-related access decisions with relevant teams. The table does not describe a guaranteed ranking formula. It summarizes the coordinated areas highlighted in current industry coverage. AI systems and their citation behavior can differ by model, prompt, and the level of reasoning involved, so organizations should avoid treating any one observed result as universal. Community engagement is often measured as social reach, referral traffic, or lead generation. In an AI visibility context, it may have a second role: helping create discoverable, useful, and attributable context around a brand's expertise and product category. That does not mean brands should pursue generic mentions or flood forums with promotional material. The stronger interpretation is that useful participation can support a credible information footprint. A SaaS company that answers implementation questions, clarifies terminology, and contributes practical expertise may create reference material that is more valuable than recycled promotional messaging. This also changes how teams should evaluate community work. The goal is not merely volume. It is whether contributions accurately reflect the product, answer genuine user questions, and reinforce the same facts that appear in owned documentation and other authoritative materials. The same cross-channel model introduces governance responsibilities. AI answers can compress product claims, comparisons, and category descriptions into a few sentences. Inconsistent messaging can therefore become more consequential when the information ecosystem is fragmented. A practical governance approach may include: Defining approved descriptions for the company, products, and core use cases. Maintaining clear documentation that supports important claims with appropriate context. Coordinating content, communications, community, and technical teams around updates. Auditing visibility across multiple AI models instead of relying on one tool or one prompt. Reviewing how technical directives such as robots.txt relate to real-time access and training-data decisions. Search Engine Land's related reporting on reasoning behavior also indicates that citation patterns can change as prompts require more reasoning. For SaaS marketers, that makes buyer-journey coverage important. A brand may be visible for a simple category question yet fail to persist when users ask more detailed comparison, implementation, or evaluation questions. The strategic response is not to optimize for a presumed single AI algorithm. It is to make the brand's information more resilient across question types and reference environments. That includes explaining what a product does, where it fits, and what evidence supports its relevance in language that users and systems can understand. For businesses, this shift can affect how demand generation, content operations, and brand governance are organized. Scalevise helps teams assess how their company appears across AI answer environments, identify gaps in citable messaging, and prioritize practical improvements through its AI Visibility and GEO Checker. A structured visibility review can turn scattered observations into an actionable roadmap for content, community, and technical stakeholders. Start an AI Visibility scan. What is AI visibility for SaaS brands? AI visibility is the likelihood that a SaaS brand, product, or information is surfaced or cited in AI-generated answers. It is increasingly discussed as a cross-channel issue involving citable content, entity signals, community context, and technical access. Why do community signals matter for AI visibility? Industry analysis suggests community platforms can function as visibility signals and provide useful context around a brand. Helpful, accurate participation may complement owned content, rather than replacing it. Does AI visibility replace SEO? No. The available research frames AI visibility as broader than single-channel SEO, not as a replacement for foundational search work. Clear content, technical accessibility, and credible brand information remain relevant. What should SaaS teams audit first? Teams can begin by reviewing how their brand and products appear across multiple AI models, whether core claims are clearly supported in owned materials, and whether messaging is consistent across content, documentation, and community activity. Can robots.txt affect AI visibility? Robots.txt and related access decisions can be relevant to how AI engines use content for real-time retrieval or training. The appropriate configuration depends on an organization's goals and should be reviewed as part of a broader governance process. The available industry evidence points toward a more connected model of SaaS visibility in AI answers. Brands may need to earn citations through clear information, consistent entity signals, useful community contributions, and deliberate technical governance. The companies best positioned for this environment are likely to treat AI visibility as an ongoing cross-functional practice rather than a narrow extension of keyword SEO.",
+      "url": "https://dev.to/alifar/why-saas-ai-visibility-may-depend-on-community-signals-citations-and-governance-1n03",
+      "time": "2026-08-13T23:00:30.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "软件应用"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "谢尔盖・布林再次进入「创始人模式」？Google押注「AI自我进化」",
+      "description": "谢尔盖・布林再次进入「创始人模式」？Google押注「AI自我进化」,谷歌,brin,知名企业,cloud,openai,谢尔盖・布林,deepmind",
+      "url": "https://www.163.com/dy/article/L48EF4MA0511AQHO.html",
+      "time": "2026-08-13 22:58",
+      "tags": [
+        "人工智能",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "苹果在美国休斯顿开设先进制造中心，今年将启动生产 Mac mini",
+      "description": "IT之家 8 月 14 日消息，当地时间 8 月 13 日，苹果公司宣布在美国休斯顿正式启用全新的先进制造中心（Advanced Manufacturing Center，AMC）。该中心为中小企业提供免费的培训与教育课程，让参与者能够体验最先进的设备、互动实验室及各项加速创新所需的工具。 官方表示，AMC 坐落于苹果在休斯顿的生产基地内；该基地目前负责制造并出货苹果先进 AI 服务器，并将于今年内启动 Mac mini 的生产。 苹果首席执行官蒂姆 · 库克（Tim Cook）表示：“在不到九个月的时间里，我们已向这个休斯顿基地投资了数亿美元。我们快速建起工厂、投产并下线发运了首批先进 AI 服务器。今天我们非常高兴能启用全新的先进制造中心 —— 在这里企业、工人和学生可以学习到我们打造苹果最具突破性产品时所使用的创新工艺。同时，我们也十分期待在今年晚些时候启动 Mac mini 的生产。” 据介绍，在这座占地 20,000 平方英尺（IT之家注：约 1,858 平方米）的中心内，苹果专家将直接与参训企业及创业者分享专业知识，以助力全美推进智能制造。 课程内容丰富多元：既有针对终极组装先进制造原则、印制电路板组装（PCBA）设计考量的课堂教学，也有依托现场代表性生产设施与设备开展的互动式工作坊。随着相关课程体系的丰富，AMC 还将向当地高校学生提供同等深度的实操培训，赋予下一代美国制造工人关键的专业技能。",
+      "url": "https://www.ithome.com/0/989/491.htm",
+      "time": "2026-08-13T22:54:01.000Z",
+      "tags": [
+        "人工智能",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "「AI生成的内容全部加水印」OpenAI、Anthropic、Google都签了",
+      "description": "「AI生成的内容全部加水印」OpenAI、Anthropic、Google都签了,谷歌,显式标识,知名企业,openai",
+      "url": "https://www.163.com/dy/article/L48E7CBQ0511AQHO.html",
+      "time": "2026-08-13 22:53",
+      "tags": [
+        "人工智能",
+        "大公司",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "I Built My First Machine Learning API — Here's Everything I Learned",
+      "description": "/ Telco-Customer-Churn-Prediction Customer Churn Prediction Predicts whether a telecom customer will churn using the Telco Customer Churn dataset. The project covers data cleaning and EDA, comparison of three classifiers, and a FastAPI service that serves the final model. Project Structure . ├── API/ │ └── main.py # FastAPI app serving the model ├── Data/ │ └── WA_Fn-UseC_-Telco-Customer-Churn.csv # raw dataset (7,043 customers) ├── Models/ │ ├── ml_pipeline.joblib # fitted preprocessing + classifier pipeline │ └── target_labels.joblib # LabelEncoder for the churn target ├── Notebooks/ │ └── customer_churn_prediction.ipynb # data cleaning, EDA, model training ├── cpp/ # (Python virtual environment) ├── .env # environment variables (not committed) ├── .gitignore ├── requirements.txt └── README.md main.py loads ../models/ml_pipeline.joblib and ../models/target_labels.joblib, so it must be run from inside API/ for those relative paths to resolve. Dataset The raw data is the Telco Customer Churn dataset 7,043 rows and 21 columns covering customer demographics, account… View on GitHub If you've ever trained a model in a Jupyter notebook and then wondered \"okay... now what?\" — this post is for you. I recently built a Customer Churn Prediction API, and I want to walk you through it the way I wish someone had walked me through my first one: no jargon dump, just what each piece does and why it's there. Think of it like a Safaricom customer care team trying to figure out which subscribers are about to switch to Airtel — before they actually leave. That's churn prediction. And instead of leaving that insight trapped inside a notebook, I turned it into an API anyone (or any app) can call. I started, like most people do, in a Jupyter notebook. I had a dataset of telecom customers — their contract type, monthly charges, whether they had streaming services, and so on — with a label saying whether they churned (left) or not. I cleaned the data, explored it, trained a few models, and picked a winner. Cool. But here's the thing: a trained model sitting in a notebook is useless to anyone else. A frontend developer can't \"import your notebook\" into an app. A business analyst can't click a button in your .ipynb file to get a prediction. That's the gap an API fills. Before any API talk, the notebook had to do its job. Here's the flow, in plain English: Load the data — a CSV of ~7,000 customers with columns like gender, tenure, Contract, MonthlyCharges, and the target column, Churn (Yes/No). Clean it up — column names get lowercased and stripped of spaces (TotalCharges becomes totalcharges), and a numeric column that was secretly stored as text gets converted properly. A handful of broken rows get dropped. Explore it (EDA) — check the churn rate, look at unique values in each category, plot the class balance. This is where you catch surprises before they wreck your model. Split the data — into training and testing sets, so you can honestly check how well the model generalizes instead of just memorizing. Preprocess — numeric columns (like tenure and MonthlyCharges) get scaled, and categorical columns (like Contract or PaymentMethod) get one-hot encoded, because models only understand numbers. Train and compare models — I tried Logistic Regression, K-Nearest Neighbors, and a Random Forest, then compared their classification reports. Save the winner — using joblib, I saved the entire fitted pipeline (preprocessing + model, bundled together) plus the label encoder, so predictions later come back as \"Yes\"/\"No\" instead of 1/0. That last step is the bridge to everything that follows. Once your pipeline is saved to disk, it stops being \"notebook code\" and becomes a reusable artifact — a file any Python program can load and use. An API is just a way for two programs to talk to each other over the web, using a set of agreed-upon rules. You send it something, it sends something back. For this project, the deal is simple: \"Send me a customer's details, and I'll tell you whether they're likely to churn.\" That's it. No magic. Just a structured request in, a structured response out. I used FastAPI, a Python framework built specifically for creating APIs quickly, with automatic validation and interactive documentation baked in. Here's the skeleton of what's happening in main.py: import joblib from fastapi import FastAPI from pydantic import BaseModel import pandas as pd # Load the model and target labels labels = joblib.load('../models/target_labels.joblib') model = joblib.load('../models/ml_pipeline.joblib') app = FastAPI( title=\"Customer Churn Prediction API\", description=\"An API for predicting customer churn using a pre-trained machine learning model.\" ) Two things happen right at the top, before the API even starts handling requests: The trained pipeline (ml_pipeline.joblib) is loaded into memory. This is the exact same preprocessing + model combo we saved from the notebook. The label encoder (target_labels.joblib) is loaded too, so we can turn a 0/1 prediction back into a human-readable \"No\"/\"Yes\". This only happens once, when the server starts — not on every request. That's important for speed. This is the part that impressed me most as a beginner. FastAPI uses something called Pydantic to define exactly what shape your input data must be: class InputData(BaseModel): gender: str seniorcitizen: int partner: str dependents: str tenure: int phoneservice: str multiplelines: str internetservice: str onlinesecurity: str onlinebackup: str deviceprotection: str techsupport: str streamingtv: str streamingmovies: str contract: str paperlessbilling: str paymentmethod: str monthlycharges: float totalcharges: float Every field here mirrors a column the model was trained on. If someone sends tenure as \"twelve\" instead of 12, FastAPI rejects the request automatically — before it ever reaches your model. You don't write a single line of manual validation code. That alone saved me from a bunch of silent bugs. An API exposes \"endpoints\" — specific URLs that do specific things. This project has two. A health check, so you (or a monitoring tool) can confirm the API is alive: @app.get(\"/health\", tags=[\"Health Check\"]) def health_check(): return {\"status\": \"API is running\"} The actual prediction endpoint: @app.post(\"/predict\", tags=[\"Prediction\"]) def predict_churn(payload: InputData): # Convert input data to DataFrame input_df = pd.DataFrame([payload.model_dump()]) # Make prediction prediction = model.predict(input_df) # Decode the prediction decoded_prediction = labels.inverse_transform(prediction) return {\"prediction\": decoded_prediction[0]} Walking through it: FastAPI already validated and parsed the incoming JSON into payload. payload.model_dump() turns it into a plain dictionary, which gets wrapped into a one-row pandas DataFrame — because that's the format the trained pipeline expects. model.predict(...) runs that row through the exact same preprocessing steps used during training (scaling, one-hot encoding), then through the classifier. The result comes back as a number (0 or 1), so labels.inverse_transform(...) converts it back into \"No\" or \"Yes\". We return it as JSON. That's the whole loop: JSON in → DataFrame → pipeline → prediction → JSON out. Once you run: uvicorn main:app --reload FastAPI gives you a free interactive docs page at http://127.0.0.1:8000/docs, where you can literally fill in a form and hit \"Execute\" to test /predict without writing a single line of client code. As a beginner, this is where it finally clicked for me — seeing my model respond to a request in real time made it feel like a real product, not just a school notebook exercise. Send it something like: { \"gender\": \"Female\", \"seniorcitizen\": 0, \"partner\": \"Yes\", \"dependents\": \"No\", \"tenure\": 1, \"phoneservice\": \"No\", \"multiplelines\": \"No phone service\", \"internetservice\": \"DSL\", \"onlinesecurity\": \"No\", \"onlinebackup\": \"Yes\", \"deviceprotection\": \"No\", \"techsupport\": \"No\", \"streamingtv\": \"No\", \"streamingmovies\": \"No\", \"contract\": \"Month-to-month\", \"paperlessbilling\": \"Yes\", \"paymentmethod\": \"Electronic check\", \"monthlycharges\": 29.85, \"totalcharges\": 29.85 } And you get back: {\"prediction\": \"No\"} Training a model answers the question \"does this work?\" Building an API answers a completely different question: \"can anyone else use this?\" Those are two separate skills, and honestly, the second one felt more like real software engineering — dependency management, input validation, documentation, deployment thinking — than the modeling part did. If you've been putting off learning how to serve your models, don't. It's a smaller leap than it looks, and FastAPI in particular makes it a genuinely beginner-friendly one. If you're working through something similar — maybe predicting M-Pesa transaction fraud, or matatu route demand — the pattern is identical: train, save the pipeline, load it in an API, validate input, predict, respond. Once you've done it once, you'll do it in your sleep. Have you built your first ML API yet? What tripped you up the most — validation, deployment, or something else entirely? Let me know in the comments.",
+      "url": "https://dev.to/ericmwaimiri/i-built-my-first-machine-learning-api-heres-everything-i-learned-1f7",
+      "time": "2026-08-13T22:49:39.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "游戏"
+      ]
+    },
+    {
+      "source": "IT之家",
+      "sourceColor": "#e13b3f",
+      "title": "备战 IPO 上市：彭博社称 2026 年 OpenAI 年化营收有望翻番达 400 亿美元",
+      "description": "IT之家 8 月 14 日消息，彭博社今天（8 月 14 日）发布博文，报道称在收 IPO（首次公开募股）上市前，OpenAI 的发展势头良好，2026 有望实现年化收入超过 400 亿美元（IT之家注：现汇率约合 2,702.76 亿元人民币），比 2025 年收入（约 200 亿美元（现汇率约合 1,351.38 亿元人民币））翻一番。 据彭博社报道，联合创始人兼总裁格雷格 · 布罗克曼在内部公告中告知员工，仅 7 月份，月度营收增长率就增长了 20% 以上。首席财务官莎拉 · 弗莱尔此前曾指出，公司经历了快速扩张期，2025 年的年化营收增长率超过 200 亿美元（现汇率约合 1,351.38 亿元人民币）。 在市场竞争方面，Anthropic 在今年 5 月公布的年化营收为 470 亿美元（现汇率约合 3,175.75 亿元人民币），不过彭博社指出由于两家公司在计算统计上存在差异，很难直观、公平对比两家公司的年化营收。 在市场竞争策略方面，OpenAI 公司为抵御外部竞争对手的冲击，捍卫市场份额，积极调整其市场策略和定价策略，通过降低部分 AI 模型的价格，从而吸引注重成本的开发者。OpenAI 公司还聘请了一位经验丰富的网络安全高管，以提振企业销售。",
+      "url": "https://www.ithome.com/0/989/490.htm",
+      "time": "2026-08-13T22:49:25.000Z",
+      "tags": [
+        "人工智能",
+        "网络安全",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "机器之心",
+      "sourceColor": "#512da8",
+      "title": "200万概念验证资金+顶级种子轮投资，机器之心寻找AI时代的下一个火种",
+      "description": "200万概念验证资金+顶级种子轮投资，机器之心寻找AI时代的下一个火种,火种,算法,机器之心,人工智能,真实世界,种子轮投资",
+      "url": "https://www.163.com/dy/article/L48DU8TE0511AQHO.html",
+      "time": "2026-08-13 22:48",
+      "tags": [
+        "人工智能",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "Dev.to",
+      "sourceColor": "#4b3e99",
+      "title": "How I Actually Use Claude as a Backend Engineer 🤖",
+      "description": "For a while, I treated Claude like a fancy autocomplete — ask a question, paste the answer, move on. That approach worked, but it wasn't until I slowed down and treated it more like a thinking partner that things actually clicked for my day-to-day backend work. The biggest mistake I see (and made myself) is asking for a finished answer instead of walking through the problem. When I just say \"write me a FastAPI endpoint,\" I get generic code. When I explain the actual constraint — the schema, the edge case, why the last approach broke — I get something I can actually ship. 💬 Give context before you give instructions. A couple sentences about your stack and goal changes the quality of the output completely. 🧠 Ask it to explain its reasoning, not just produce code. If I don't understand why a fix works, I ask before I merge it. 🔁 Treat the first answer as a draft. The second or third pass, after pushing back with more detail, is usually the one that ends up in production. I've used both, and I'll skip the hype. For backend work — API design, debugging tricky logic, reasoning through a schema — Claude has been more consistent for me, especially on longer, multi-step problems where it keeps track of what we already decided a few messages back. Gemini has its strengths too, particularly when I need something wired up quickly, but for the kind of careful, back-and-forth problem solving backend work usually needs, Claude is what I reach for first. This isn't about writing less code — it's about spending less time stuck and more time building. As a freelancer, that difference shows up directly in what I can deliver to clients and how fast I can do it. I'm continuing to build with Claude in the loop on real client projects, and I'll keep sharing what actually works (and what doesn't) as I go. 👉 Check out my work and get in touch here: Upwork profile",
+      "url": "https://dev.to/gerale30/how-i-actually-use-claude-as-a-backend-engineer-24fe",
+      "time": "2026-08-13T22:47:44.000Z",
+      "tags": [
+        "人工智能",
+        "软件应用",
+        "科技创投"
+      ]
+    },
+    {
+      "source": "9to5Mac",
+      "sourceColor": "#0a84ff",
+      "title": "9to5Mac Daily: August 13, 2026 – MacBook Air shortages, iPhone Ultra launch rumors",
+      "description": "Listen to a recap of the top stories of the day from 9to5Mac. 9to5Mac Daily is available on iTunes and Apple’s Podcasts app, Stitcher, TuneIn, Google Play, or through our dedicated RSS feed for Overcast and other podcast players. Sponsored by Backblaze: Backup you can rely on. Save 20% with code 9to5daily.",
+      "url": "https://9to5mac.com/2026/08/13/daily-august-13-2026/",
+      "time": "2026-08-13T22:42:23.000Z",
+      "tags": [
+        "人工智能",
+        "手机",
+        "电脑硬件"
+      ]
+    },
     {
       "source": "机器之心",
       "sourceColor": "#512da8",
@@ -88,19 +528,6 @@
         "人工智能",
         "AI芯片",
         "科技创投"
-      ]
-    },
-    {
-      "source": "华尔街见闻",
-      "sourceColor": "#d32f2f",
-      "title": "应用材料大跌！AI浪潮推升设备需求，财报全面超预期却难填市场“胃口”｜财报见闻",
-      "description": "全球最大半导体设备厂商之一应用材料交出强劲的第三季度业绩，并给出高于市场预期的第四季度指引。但在股价今年大幅上涨、市场对AI资本开支预期已经处于高位的背景下，这份“超预期”财报并未获得市场认可。 应用材料第三财季营收91.15亿美元，高于预期的90亿美元，同比增长25%，创历史新高；GAAP净利润25.38亿美元，同比增长43%，调整后每股收益为3.50美元，超出预期的3.42美元，同比增长41%，同样创纪录。 公司毛利率继续扩张，GAAP毛利率达到50.3%，同比提升1.5个百分点，已经连续13个季度同比改善。 公司预计第四财季营收约102.5亿美元，相比分析师平均预期高出约7%。调整后每股收益4.02美元，远高于市场预期的3.72美元。 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌近6%。在股价年内已翻逾一倍之后，市场已为超预期的业绩设定了更高的门槛。 业绩指引超预期 应用材料管理层对未来需求保持乐观。公司预计第四财季营收约102.5亿美元，调整后每股收益4.02美元，均高于市场此前预期。 公司CEO加里·迪克森表示，随着AI在全球快速普及，对材料工程解决方案的需求达到前所未有的水平，公司因此进一步上调了2026年日历年的半导体系统业务营收预期，并预计2027年仍将实现强劲增长。 CFO布莱斯·希尔则表示，今年下半年收入增长将继续保持强劲，尤其是DRAM、先进制程逻辑与晶圆代工以及先进封装业务。 这背后的核心逻辑是AI基础设施建设正在持续拉动先进芯片制造投资。应用材料生产的设备广泛用于DRAM等存储芯片制造，而DRAM又是高带宽内存（HBM）的关键组成部分，HBM被广泛应用于英伟达等公司的AI加速器。 随着AI芯片需求快速增长，SK海力士、美光等存储芯片厂商正在加快建设新的制造设施，进而推动半导体设备需求。 迪克森称，公司客户甚至在要求应用材料提高产能，以便更快获得设备；他表示，从客户提供的跨季度需求预测来看，公司对2027年继续保持强劲增长具有信心。 DRAM和先进封装成为增长亮点 从业务结构来看，半导体系统业务是本季度增长的核心。 第三财季该业务营收70.40亿美元，高于上年同期的55.64亿美元；其中Foundry、Logic及其他业务占67%，DRAM占26%，Flash占7%。半导体系统业务毛利率达到55.3%，同比提升1.9个百分点，营业利润率则从33.0%提升至37.7%。 应用材料本季度还推出了六款面向DRAM和先进封装的新系统，包括用于提升DRAM和HBM性能的Centura Prime Epi、面向混合键合的Opta Quad CMP，以及用于3D堆叠和高带宽内存先进封装的Nokota VMax 2 ECD等。 公司同时推出新的沉积和刻蚀设备，以支持下一代AI芯片的逻辑和存储芯片扩展。 这意味着，AI带来的设备需求已经不只是单纯增加晶圆厂产能，还正在向HBM、3D堆叠、先进封装以及更复杂的晶体管结构延伸。应用材料正试图通过材料工程和设备升级，在这些新技术环节中获得更多价值。 股价大幅上涨后，市场很难被满足 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌约6%。这反映的并非公司基本面突然恶化，而是投资者对这家公司已经设置了更高的业绩门槛。 今年以来，市场已经将应用材料视为AI资本开支浪潮的重要受益者，其股价经历大幅上涨。在这一背景下，单纯的“超预期”已经不足以带来强劲的股价反应，市场开始要求公司给出更高的增长幅度以及更明确的长期需求兑现。 类似情况此前也出现在竞争对手科磊身上。科磊公布财报后，其业绩总体符合预期，但由于自由现金流表现不佳，股价同样遭遇市场冷淡反应。 对于应用材料而言，真正值得关注的或许已经不是AI需求是否存在，而是公司能否以足够快的速度扩大设备产能，从而满足客户不断上升的需求。 迪克森表示，客户一直在推动公司提高产能，“他们不断要求我们增加产能”。与此同时，一些客户正在寻找新的洁净室空间，并加快设备交付需求。公司则表示，扩大制造和研发能力需要时间，目前正在加大制造产能投资，以支持持续到本世纪末的预期需求。 因此，这份财报释放出的核心信号是：AI芯片制造投资仍然强劲，尤其是DRAM、HBM和先进封装需求正在成为应用材料新的增长引擎；但在股价已经大幅上涨之后，市场对这家AI设备龙头的要求也同步提高。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
-      "url": "https://wallstreetcn.com/articles/3779409",
-      "time": "2026-08-13T22:05:09.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "电脑硬件"
       ]
     },
     {
@@ -241,6 +668,17 @@
       ]
     },
     {
+      "source": "网易科技",
+      "sourceColor": "#e60012",
+      "title": "中国邮政与宁德时代达成战略合作",
+      "description": "中国邮政与宁德时代达成战略合作,物流,电池,宁德时代,知名企业,中国邮政集团",
+      "url": "https://www.163.com/dy/article/L489UELQ0534A4SC.html",
+      "time": "2026-08-13 21:39",
+      "tags": [
+        "新能源/电动车"
+      ]
+    },
+    {
       "source": "Dev.to",
       "sourceColor": "#4b3e99",
       "title": "I built a free, open-source trading bot starter (Next.js)",
@@ -251,17 +689,6 @@
         "人工智能",
         "软件应用",
         "科技创投"
-      ]
-    },
-    {
-      "source": "网易科技",
-      "sourceColor": "#e60012",
-      "title": "中国邮政与宁德时代达成战略合作",
-      "description": "中国邮政与宁德时代达成战略合作,物流,电池,宁德时代,知名企业,中国邮政集团",
-      "url": "https://www.163.com/dy/article/L489UELQ0534A4SC.html",
-      "time": "2026-08-13 21:39",
-      "tags": [
-        "新能源/电动车"
       ]
     },
     {
@@ -288,6 +715,19 @@
         "人工智能",
         "芯片/半导体",
         "软件应用"
+      ]
+    },
+    {
+      "source": "华尔街见闻",
+      "sourceColor": "#d32f2f",
+      "title": "应用材料大跌！AI浪潮推升设备需求，财报全面超预期却难填市场“胃口”｜财报见闻",
+      "description": "全球最大半导体设备厂商之一应用材料交出强劲的第三季度业绩，并给出高于市场预期的第四季度指引。但在股价今年大幅上涨、市场对AI资本开支预期已经处于高位的背景下，这份“超预期”财报并未获得市场认可。 应用材料第三财季营收91.15亿美元，高于预期的90亿美元，同比增长25%，创历史新高；GAAP净利润25.38亿美元，同比增长43%，调整后每股收益为3.50美元，超出预期的3.42美元，同比增长41%，同样创纪录。 公司毛利率继续扩张，GAAP毛利率达到50.3%，同比提升1.5个百分点，已经连续13个季度同比改善。 公司预计第四财季营收约102.5亿美元，相比分析师平均预期高出约7%。调整后每股收益4.02美元，远高于市场预期的3.72美元。 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌近6%。在股价年内已翻逾一倍之后，市场已为超预期的业绩设定了更高的门槛。 业绩指引超预期 应用材料管理层对未来需求保持乐观。公司预计第四财季营收约102.5亿美元，调整后每股收益4.02美元，均高于市场此前预期。 公司CEO加里·迪克森表示，随着AI在全球快速普及，对材料工程解决方案的需求达到前所未有的水平，公司因此进一步上调了2026年日历年的半导体系统业务营收预期，并预计2027年仍将实现强劲增长。 CFO布莱斯·希尔则表示，今年下半年收入增长将继续保持强劲，尤其是DRAM、先进制程逻辑与晶圆代工以及先进封装业务。 这背后的核心逻辑是AI基础设施建设正在持续拉动先进芯片制造投资。应用材料生产的设备广泛用于DRAM等存储芯片制造，而DRAM又是高带宽内存（HBM）的关键组成部分，HBM被广泛应用于英伟达等公司的AI加速器。 随着AI芯片需求快速增长，SK海力士、美光等存储芯片厂商正在加快建设新的制造设施，进而推动半导体设备需求。 迪克森称，公司客户甚至在要求应用材料提高产能，以便更快获得设备；他表示，从客户提供的跨季度需求预测来看，公司对2027年继续保持强劲增长具有信心。 DRAM和先进封装成为增长亮点 从业务结构来看，半导体系统业务是本季度增长的核心。 第三财季该业务营收70.40亿美元，高于上年同期的55.64亿美元；其中Foundry、Logic及其他业务占67%，DRAM占26%，Flash占7%。半导体系统业务毛利率达到55.3%，同比提升1.9个百分点，营业利润率则从33.0%提升至37.7%。 应用材料本季度还推出了六款面向DRAM和先进封装的新系统，包括用于提升DRAM和HBM性能的Centura Prime Epi、面向混合键合的Opta Quad CMP，以及用于3D堆叠和高带宽内存先进封装的Nokota VMax 2 ECD等。 公司同时推出新的沉积和刻蚀设备，以支持下一代AI芯片的逻辑和存储芯片扩展。 这意味着，AI带来的设备需求已经不只是单纯增加晶圆厂产能，还正在向HBM、3D堆叠、先进封装以及更复杂的晶体管结构延伸。应用材料正试图通过材料工程和设备升级，在这些新技术环节中获得更多价值。 股价大幅上涨后，市场很难被满足 尽管业绩和指引均超出分析师平均预期，应用材料股价盘后仍一度下跌约6%。这反映的并非公司基本面突然恶化，而是投资者对这家公司已经设置了更高的业绩门槛。 今年以来，市场已经将应用材料视为AI资本开支浪潮的重要受益者，其股价经历大幅上涨。在这一背景下，单纯的“超预期”已经不足以带来强劲的股价反应，市场开始要求公司给出更高的增长幅度以及更明确的长期需求兑现。 类似情况此前也出现在竞争对手科磊身上。科磊公布财报后，其业绩总体符合预期，但由于自由现金流表现不佳，股价同样遭遇市场冷淡反应。 对于应用材料而言，真正值得关注的或许已经不是AI需求是否存在，而是公司能否以足够快的速度扩大设备产能，从而满足客户不断上升的需求。 迪克森表示，客户一直在推动公司提高产能，“他们不断要求我们增加产能”。与此同时，一些客户正在寻找新的洁净室空间，并加快设备交付需求。公司则表示，扩大制造和研发能力需要时间，目前正在加大制造产能投资，以支持持续到本世纪末的预期需求。 因此，这份财报释放出的核心信号是：AI芯片制造投资仍然强劲，尤其是DRAM、HBM和先进封装需求正在成为应用材料新的增长引擎；但在股价已经大幅上涨之后，市场对这家AI设备龙头的要求也同步提高。 风险提示及免责条款 市场有风险，投资需谨慎。本文不构成个人投资建议，也未考虑到个别用户特殊的投资目标、财务状况或需要。用户应考虑本文中的任何意见、观点或结论是否符合其特定状况。据此投资，责任自负。",
+      "url": "https://wallstreetcn.com/articles/3779409",
+      "time": "2026-08-13T21:37:42.000Z",
+      "tags": [
+        "人工智能",
+        "芯片/半导体",
+        "电脑硬件"
       ]
     },
     {
@@ -17051,6 +17491,35 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Castlery Promo Codes: 15% Off for August 2026",
+      "description": "Refresh your living space for less with these verified Castlery coupons, including free shipping offers and furniture set discounts.",
+      "url": "https://www.wired.com/story/castlery-promo-code/",
+      "time": "2026-08-13T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "HostGator Coupon Codes: 76% Off Hosting in August 2026",
+      "description": "Unlock massive savings on HostGator web hosting, WordPress, VPS, and business email plans with our exclusive HostGator promo codes and deals.",
+      "url": "https://www.wired.com/story/hostgator-coupon/",
+      "time": "2026-08-13T05:00:00.000Z",
+      "tags": [
+        "人工智能"
+      ]
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Visible Promo Codes and Coupons for August 2026",
+      "description": "Find great deals and promo codes for Visible at WIRED and save big, whether you're a long-time customer or a newbie.",
+      "url": "https://www.wired.com/story/visible-promo-code/",
+      "time": "2026-08-13T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Herman Miller Promo Codes: 40% Off August 2026",
       "description": "Whether you’re looking for a Herman Miller promo code or discounts in their sale, here is how to save on the world's best ergonomic office furniture in August 2026.",
       "url": "https://www.wired.com/story/herman-miller-promo-code/",
@@ -17078,35 +17547,6 @@
       "tags": [
         "智能硬件"
       ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Castlery Promo Codes: 15% Off for August 2026",
-      "description": "Refresh your living space for less with these verified Castlery coupons, including free shipping offers and furniture set discounts.",
-      "url": "https://www.wired.com/story/castlery-promo-code/",
-      "time": "2026-08-13T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "HostGator Coupon Codes: 76% Off Hosting in August 2026",
-      "description": "Unlock massive savings on HostGator web hosting, WordPress, VPS, and business email plans with our exclusive HostGator promo codes and deals.",
-      "url": "https://www.wired.com/story/hostgator-coupon/",
-      "time": "2026-08-13T05:00:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Visible Promo Codes and Coupons for August 2026",
-      "description": "Find great deals and promo codes for Visible at WIRED and save big, whether you're a long-time customer or a newbie.",
-      "url": "https://www.wired.com/story/visible-promo-code/",
-      "time": "2026-08-13T05:00:00.000Z",
-      "tags": []
     },
     {
       "source": "Wired",
@@ -29148,33 +29588,11 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "实测正式版DeepSeek V4 Pro 补齐Agent能力",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-13/doc-inineywi9806848.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "人工智能"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "官方拒绝公布《GTA6》预购量：能退款等于一份没卖",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/discovery/2026-08-13/doc-inineywf3231431.shtml",
       "time": "2026-08-12T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "甲亢哥游戏挑战翻车：本人下跪道歉 队友崩溃当场哭了",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/discovery/2026-08-13/doc-inineywa4504048.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "游戏"
-      ]
     },
     {
       "source": "新浪科技",
@@ -29313,17 +29731,6 @@
         "测评/新品"
       ],
       "topic": true
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "苹果管理层大洗牌：多位核心高管岗位发生变动",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineywi9800254.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "大公司"
-      ]
     },
     {
       "source": "新浪科技",
@@ -29608,18 +30015,6 @@
     {
       "source": "新浪科技",
       "sourceColor": "#e6162d",
-      "title": "「AI生成的内容全部加水印」OpenAI、Anthropic、Google都签了",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqm9893321.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
       "title": "交付工期缩短至100天！全球领先",
       "description": "",
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqi3319718.shtml",
@@ -29766,18 +30161,6 @@
       "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqk3097796.shtml",
       "time": "2026-08-12T16:00:00.000Z",
       "tags": []
-    },
-    {
-      "source": "新浪科技",
-      "sourceColor": "#e6162d",
-      "title": "200万概念验证资金+顶级种子轮投资，机器之心寻找AI时代的下一个火种",
-      "description": "",
-      "url": "https://finance.sina.com.cn/tech/roll/2026-08-13/doc-inineuqm9867775.shtml",
-      "time": "2026-08-12T16:00:00.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
     },
     {
       "source": "新浪科技",
@@ -49148,35 +49531,6 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
-      "title": "Nike Promo Codes and Discounts: 30% for August 2026",
-      "description": "Check out our deals for Nike this August 2026, including 15% off select purchases.",
-      "url": "https://www.wired.com/story/nike-promo-code/",
-      "time": "2026-08-12T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Chegg Coupon Codes August 2026: Save on Study, Textbooks, & More",
-      "description": "Unlock Chegg promo codes, student discounts, and free trials for Chegg Study and Chegg Writing.",
-      "url": "https://www.wired.com/story/chegg-coupon-code/",
-      "time": "2026-08-12T05:00:00.000Z",
-      "tags": []
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
-      "title": "Paramount+ Coupon Codes and Deals for August 2026",
-      "description": "Save on streaming with the latest Paramount+ promo codes and deals, including 50% off subscriptions, free trials, and more.",
-      "url": "https://www.wired.com/story/paramount-plus-coupon-code/",
-      "time": "2026-08-12T05:00:00.000Z",
-      "tags": [
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "Wired",
-      "sourceColor": "#000000",
       "title": "Walmart Promo Codes: Up to 65% Off for August 2026",
       "description": "Score $10 off with our Walmart promo codes and coupon, and shop flash deals up to 65% off today.",
       "url": "https://www.wired.com/story/top-walmart-promo-codes/",
@@ -49197,11 +49551,40 @@
     {
       "source": "Wired",
       "sourceColor": "#000000",
+      "title": "Chegg Coupon Codes August 2026: Save on Study, Textbooks, & More",
+      "description": "Unlock Chegg promo codes, student discounts, and free trials for Chegg Study and Chegg Writing.",
+      "url": "https://www.wired.com/story/chegg-coupon-code/",
+      "time": "2026-08-12T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
       "title": "Zoro Coupon Codes: 55% Off August",
       "description": "Find the best Zoro coupon codes, deals, and free shipping offers to save big on industrial equipment, tools, and supplies this month.",
       "url": "https://www.wired.com/story/zoro-promo-code/",
       "time": "2026-08-12T05:00:00.000Z",
       "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Nike Promo Codes and Discounts: 30% for August 2026",
+      "description": "Check out our deals for Nike this August 2026, including 15% off select purchases.",
+      "url": "https://www.wired.com/story/nike-promo-code/",
+      "time": "2026-08-12T05:00:00.000Z",
+      "tags": []
+    },
+    {
+      "source": "Wired",
+      "sourceColor": "#000000",
+      "title": "Paramount+ Coupon Codes and Deals for August 2026",
+      "description": "Save on streaming with the latest Paramount+ promo codes and deals, including 50% off subscriptions, free trials, and more.",
+      "url": "https://www.wired.com/story/paramount-plus-coupon-code/",
+      "time": "2026-08-12T05:00:00.000Z",
+      "tags": [
+        "智能硬件"
+      ]
     },
     {
       "source": "Wired",
@@ -97374,370 +97757,6 @@
       "tags": [
         "人工智能"
       ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙”",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316301",
-      "time": "2026-08-10T02:50:18.000Z",
-      "tags": [
-        "人工智能",
-        "大公司"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "新物种爆炸2026登陆香港，联想天禧AI定义“随身携带的个人宇宙” - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316301",
-      "time": "2026-08-10T02:50:18.000Z",
-      "tags": [
-        "人工智能",
-        "大公司"
-      ]
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "五款40万均衡大SUV横评：问界M8、理想L8、小鹏G9 - 车家号",
-      "description": "",
-      "url": "https://chejiahao.autohome.com.cn/info/26165286",
-      "time": "2026-08-10T02:49:00.000Z",
-      "tags": [
-        "新能源/电动车",
-        "汽车",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "英睿达退出消费类存储业务后出现售后争议：美光一度仅提供内存原价退款",
-      "description": "美光（Micron）在去年末宣布，旗下英睿达（Crucial）品牌将退出关键消费类存储业务，包括在全球主要零售商、电子零售商和分销商处销售消费级产品，产品供应只是维持到2026财年第二财季结束（2026年2月）。有着29年历史的英睿达品牌将退出历史舞台，舍弃掉消费级内存和固态硬盘市场。美光承诺，将在过渡期间与合作伙伴和客户密切合作，为关键产品提供持续的保修服务和支持。 据TomsHardware报道，虽然美光会为英睿达的产品提供保修服务，但是最近一些客户反映收到的是荒谬的赔偿建议。只有在进一步沟通后，美光才提出了更好的解决方案。其中不仅涉及内存，还包括固态硬盘的保修问题。 有用户反映使用的DDR5 48GB内存套件（2x 24GB）出现问题（没有说明具体规格），选择寄回原厂申请送修，被告知无法更换产品，将按照原始购买价格退款。要知道过去一年里，内存价格大幅飙升，美光拟退的金额为241.86美元，大概是同类产品现在的市场价格的37%。更糟糕的是，用户两条内存其实只有一条是坏的，官方拒绝换货后并没有寄回来。如果用户拒绝接受退款方案，退回内存还要自己付运费。 这种做法当然遭到了用户强烈不满，随后美光提供了一个相对更好的解决方案，发送三条16GB DDR5-6400内存，解释是“容量相同、速度更快（美光24GB单条速率为5600MT/s或6000MT/s）、而且兼容四内存插槽的主板”。最终用户选择接受这个方案。 另外还有一位用户在固态硬盘损坏中也遭遇类似问题，美光拒绝给一个4TB固态硬盘提供直接替换服务，只原因提供与原始购买价格相当的礼品卡作为补偿。美光也提供了另外一种选择，通过PayPal或Venmo收取相同金额的现金，但是用户需支付6%的交易手续费。",
-      "url": "http://www.expreview.com/107487.html",
-      "time": "2026-08-10T02:39:00.000Z",
-      "tags": [
-        "电脑硬件",
-        "智能硬件"
-      ]
-    },
-    {
-      "source": "数码测评",
-      "sourceColor": "#e65100",
-      "title": "2026年9-10万级通勤纯电SUV横评+推荐：续航、快充、实用性",
-      "description": "",
-      "url": "https://hainan.ifeng.com/c/8vTBwTk3vea",
-      "time": "2026-08-10T02:38:43.000Z",
-      "tags": [
-        "汽车",
-        "测评/新品"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "中国AI大模型调用量连续十五周领跑：环比增长570% DeepSeek-V4-Flash正式版登顶！ - 东方财富",
-      "description": "",
-      "url": "https://finance.eastmoney.com/a/202608103836375277.html",
-      "time": "2026-08-10T02:38:24.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "中国AI大模型调用量连续十五周领跑：环比增长570%，DeepSeek-V4-Flash正式版登顶！MiniMax M3、阶跃星辰Step 3.7 Flash跌出榜单 - nbd.com.cn",
-      "description": "",
-      "url": "https://www.nbd.com.cn/articles/2026-08-10/4536944.html",
-      "time": "2026-08-10T02:27:00.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "DataBuff v0.1.7 发布 · 平台自监控与自排障",
-      "description": "DataBuff 是一款面向云原生与微服务场景的开源 AI Native OpenTelemetry APM，采用 OTLP 标准接入、Apache Doris 统一存储，Web 端提供拓扑 / Trace / 指标与多 Agent 排障。项目已在 OSCHINA 软件库收录：https://www.oschina.net/p/databuff 今天，DataBuff 正式发布 v0.1.7。相对 v0.1.6 共 31 个提交，含 Schema 迁移...",
-      "url": "https://www.oschina.net/news/491813",
-      "time": "2026-08-10T02:23:03.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "OpenAI暂停下一代模型Astra部分研发工作",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316299",
-      "time": "2026-08-10T02:15:26.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "OpenAI暂停下一代模型Astra部分研发工作 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316299",
-      "time": "2026-08-10T02:15:26.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316300",
-      "time": "2026-08-10T02:15:25.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "千问开放平台上线！覆盖APP、PC、眼镜三端，支持AI智能体接入 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/w/316300",
-      "time": "2026-08-10T02:15:25.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "摩尔线程2026半年报：营收同比暴增147%，国产GPU商业化全面提速",
-      "description": "昨天摩尔线程正式发布2026年半年度报告。数据显示，公司上半年经营业绩实现跨越式增长，营收达17.36亿元，同比大幅增长147.42%，仅用半年时间便超越2025年全年营收规模；毛利总额9.89亿元，同比增长103.78%。在盈利能力方面，归母净利润与扣非净利润亏损分别收窄95.73%和52.37%，标志着公司正加速迈向盈亏平衡点。 在亏损快速收窄的同时，摩尔线程并未削减研发投入。2026年上半年，公司研发投入达7.69亿元，同比增长38.16%。自2022年以来，摩尔线程累计研发投入已接近59亿元，体现出公司在核心技术上长期坚定的投入决心。 报告期内，摩尔线程商业化进程全面提速。其核心产品MTT S5000智算集群已实现规模化销售，在北京、无锡、杭州等多地成功落地部署，并首批通过国家《安全可靠测评》。在高端AI训练领域，该集群取得多项“国芯训国模”关键技术突破，有效支撑了国产大模型的自主训练需求。同时，公司加速渗透互联网、运营商等关键行业客户，通过丰富应用场景驱动收入持续高增。 生态建设方面，摩尔线程自主研发的MUSA软件栈日益成熟，开发者数量已突破80万人，形成了从硬件到软件的完整国产化算力生态闭环。随着产品力与生态力的双重提升，摩尔线程正逐步缩小与国际巨头的差距，为国产算力基础设施的自主可控提供了有力支撑。业内分析认为，在AI算力需求持续爆发的背景下，摩尔线程有望凭借先发优势和技术积累，进一步巩固其在国产GPU市场的领先地位。",
-      "url": "http://www.expreview.com/107486.html",
-      "time": "2026-08-10T02:12:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "AI大模型",
-      "sourceColor": "#6a1b9a",
-      "title": "苏州企业自研低空多模态大模型通过备案 - 苏州新闻",
-      "description": "",
-      "url": "https://news.2500sz.com/doc/2026/08/10/1223434.shtml",
-      "time": "2026-08-10T02:10:05.000Z",
-      "tags": [
-        "人工智能"
-      ],
-      "topic": true
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "AMD发布Ryzen 7 449和Ryzen 5 439处理器：基于Gorgon Point打造，不带NPU",
-      "description": "近日，AMD推出了Ryzen 7 449和Ryzen 5 439处理器，国内对应的Ryzen 7 H 449和Ryzen 5 H 439也已经出现在官网上。其基于大家熟悉的Gorgon Point打造，TDP都是28W，不过并没有配备XDNA 2神经处理单元（NPU），其他一些规格也略有降低。由于缺乏NPU，所以AMD并没有在型号上加入“AI”字样。 Ryzen 7 449可以说是Ryzen AI 7 H 450的降级产品，采用了4nm工艺制造。其CPU部分采用了混合架构设计，包括了Zen 5和Zen 5c架构的内核，为Zen 5 x4+Zen 5c x4的组合，共8核心16线程，加速频率从5.1GHz降至5.0GHz，L2+L3缓存共有24MB；GPU为Radeon 860M，基于RDNA 3.5架构，配备8个CU，频率也从3.1GHz降至2.8GHz；LPDDR5X的支持速率从8533MT/s降至8000MT/s。 Ryzen 5 H 439与Ryzen AI 5 340，为Zen 5 x3+Zen 5c x3的组合，共6核心12线程，加速频率从4.8GHz降至4.6GHz，L2+L3缓存共有14MB；GPU为Radeon 840M，配备4个CU，频率也从2.9GHz降至2.8GHz；LPDDR5X的支持速率从8000MT/s降至7500MT/s。 去年就有报道称，Strix Point和Krachan Point在2026年都会被Gorgon Point所代替，这意味着接下来可能会看到更多基于Gorgon Point的降级产品。暂时还没有PC厂商推出搭载这两款新处理器的终端设备，不过应该很快就会见到。",
-      "url": "http://www.expreview.com/107485.html",
-      "time": "2026-08-10T02:10:00.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "电脑硬件"
-      ]
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "外屏大的手机推荐哪款？三星Z Fold8 5.5英寸封顶，小折叠看这两款+FAQ - 新浪网",
-      "description": "",
-      "url": "https://www.sina.cn/news/article/nimuvrr1333273.html",
-      "time": "2026-08-10T02:04:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "三星",
-      "sourceColor": "#0d47a1",
-      "title": "外屏大的手机推荐哪款？三星Z Fold8 5.5英寸封顶，小折叠看这两款+FAQ - sina.cn",
-      "description": "",
-      "url": "https://www.sina.cn/news/article/nimuvrr1333273.html",
-      "time": "2026-08-10T02:04:00.000Z",
-      "tags": [
-        "手机",
-        "大公司"
-      ],
-      "topic": true
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "数码旁轴 爱普生(EPSON) 1000~3000元 1/1.7英寸 2400万像素以上 720p高清视频 Wi-Fi连接 清空 - product.fengniao.com",
-      "description": "",
-      "url": "https://product.fengniao.com/1055/94_2_4_1_3_0_0_1.html",
-      "time": "2026-08-10T02:03:23.000Z",
-      "tags": []
-    },
-    {
-      "source": "蜂鸟网",
-      "sourceColor": "#ff8c00",
-      "title": "数码旁轴 爱普生(EPSON) 1000~3000元 1/1.7英寸 2400万像素以上 720p高清视频 Wi-Fi连接 清空",
-      "description": "",
-      "url": "https://product.fengniao.com/1055/94_2_4_1_3_0_0_1.html",
-      "time": "2026-08-10T02:03:23.000Z",
-      "tags": []
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "GAMDIAS推出THOR P2系列电源：铂金全模组设计，16cm机身长度，12年质保",
-      "description": "近日，GAMDIAS宣布推出了THOR P2系列电源，该系列共有850/1050以及1350P三种规格，其均支持80Plus铂金认证，支持ATX 3.1和PCIE 5.1设计规范，使用全模组设计，支持12年质保服务。目前GAMDIAS THOR P2系列电源暂无中国大陆上市计划，对此感兴趣的读者可持续关注本站。 三维尺寸方面，GAMDIAS THOR P2系列电源的具体数据为160×150×86mm，使用全模组设计。电气性能方面，GAMDIAS THOR P2系列电源使用了主动式PFC+半桥LLC谐振＋同步整流＋DC-DC架构，内置105℃日系电容，因此其在能效方面获得了80Plus铂金认证，功率因数可达0.99，同时支持ATX 3.1和PCIE 5.1设计规范，机身配有1个原生12V-2×6接口。散热系统方面，GAMDIAS THOR P2系列电源搭载了135mm规格风扇，支持智能启停功能，当输出负载＜20%，电源风扇可保持停转状态，同时为提高散热效能，这款电源顶盖和机身侧面都使用了mesh开孔设计。保护功能方面，GAMDIAS THOR P2系列电源支持OPP（过功率保护）、OVP（过压保护）、UVP（欠压保护）、OTP（过温保护）、OCP（过流保护）以及SCP（短路保护），支持12年质保服务。 模组线方面，GAMDIAS THOR P2系列电源配备了压纹线，共提供有1个24Pin接口、2个CPU 8Pin接口、3个PCIE 8Pin接口、1个12V-2×6接口（接口双色设计）、6个SATA以及2个D型4Pin接口。",
-      "url": "http://www.expreview.com/107484.html",
-      "time": "2026-08-10T02:03:23.000Z",
-      "tags": [
-        "芯片/半导体",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "智能汽车",
-      "sourceColor": "#0d47a1",
-      "title": "Uber曾卖掉自动驾驶业务，如今为何砸100亿美元杀回Robotaxi？ - 新浪财经",
-      "description": "",
-      "url": "https://finance.sina.cn/stock/jdts/2026-08-10/detail-inimuvrv5019624.d.html?vt=4&cid=76993&node_id=76993",
-      "time": "2026-08-10T02:02:47.000Z",
-      "tags": [
-        "新能源/电动车"
-      ],
-      "topic": true
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316304",
-      "time": "2026-08-10T02:00:19.000Z",
-      "tags": [
-        "游戏",
-        "互联网"
-      ]
-    },
-    {
-      "source": "品玩",
-      "sourceColor": "#ff5722",
-      "title": "2026 TikTok游戏出海沙龙：内容经营成出海增长新引擎 - pingwest.com",
-      "description": "",
-      "url": "https://www.pingwest.com/a/316304",
-      "time": "2026-08-10T02:00:19.000Z",
-      "tags": [
-        "游戏",
-        "互联网"
-      ]
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "调问更新7.26~8.8 ：新增短信验证修改，考试能力升级",
-      "description": "DWSurvey 更新日志 坚持前后端代码 100% 开源助力企业建设自主可控的问卷调研系统 官网地址www.diaowen.net ➔ 源码下载Gitee 仓库 ➔ 本次更新新增短信验证修改已答问卷功能，提升答卷安全性；同时升级考试能力，完善填空题判分、防切屏等功能体验，并优化多项产品细节，提升整体使用体验。 新增功能 01. 新增验证手机号...",
-      "url": "https://www.oschina.net/news/491797",
-      "time": "2026-08-10T01:54:35.000Z",
-      "tags": [
-        "手机",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "虎嗅",
-      "sourceColor": "#374151",
-      "title": "DeepSeek涨价、重启融资、投资宇树 ，梁文锋在布什么局？ - beta.huxiu.com",
-      "description": "",
-      "url": "https://beta.huxiu.com/article/4881672.html",
-      "time": "2026-08-10T01:50:01.000Z",
-      "tags": [
-        "人工智能",
-        "科技创投"
-      ]
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "技嘉带来B760M GAMING WIFI6E DDR4 GEN5：加入PCIe 5.0显卡插槽",
-      "description": "近日技嘉带来了B760M GAMING WIFI6E DDR4 GEN5，相比于之前的B760M GAMING，主板显卡插槽的标准从PCIe 4.0升级至PCIe 5.0，另外配备了支持Wi-Fi 6E和蓝牙5.3的无线网卡。 B760M GAMING AC DDR4 GEN5为M-ATX规格，采用了6+2+1相供电设计，覆盖有耐用的VRM散热装甲，带有单个8Pin CPU供电接口，配备了LGA 1700插座，支持英特尔第12/13/14代酷睿处理器。主板带有WIFI快易拆和快易拆设计，提升了装机便利性。Q-FLASH PLUS使得用户无需安装CPU、内存或显卡，即可升级BIOS。 主板提供了两条DDR4内存插槽，可支持3200MHz频率，容量内存达64GB（单一插槽最高支持32GB容量），并支持Intel XMP技术；配备了一条PCIe 5.0 x16插槽和一条PCIe 3.0 x1插槽；配有两条M.2插槽，均为PCIe 4.0 x4通道，由PCH提供，支持M.2 2280规格的SSD；另外带有四个6Gbps的SATA接口，可创建RAID 0、RAID 1、RAID 5、RAID 10磁盘阵列。 后置I/O方面，主板配有一个USB 3.2 Gen1 Type-C接口、三个USB 3.2 Gen1 Type-A接口、两个USB 2.0接口、一个PS/2接口、一个HDMI 2.1接口、一个DP 1.2接口、一个VGA接口、一个2.5G网口、以及音频插孔。前置I/O方面，配有USB 3.2 Gen1和USB 2.0插针各一个。",
-      "url": "http://www.expreview.com/107482.html",
-      "time": "2026-08-10T01:50:00.000Z",
-      "tags": [
-        "人工智能",
-        "手机",
-        "芯片/半导体"
-      ]
-    },
-    {
-      "source": "超能网",
-      "sourceColor": "#00a0e9",
-      "title": "微星泰坦16 2026新增配置：锐龙 9  8945HX+RTX 5070 Ti，补贴价15999元",
-      "description": "微星泰坦16 2026近日新增了锐龙 9 8945HX+RTX 5070 Ti的配置，同时配备32GB DDR5内存和1TB SSD，目前已支持现货销售，部分地区可享受国补，补贴后到手价15999元，详情可咨询在线客服。 微星 泰坦16 2026，锐龙 9 8945HX+RTX 5070 Ti+32G+1TB SSD，京东地址：点此前往>>> 泰坦16 2026的A面左边有结构龙纹设计，暗纹藏锋，右边则是微星标志性的龙盾徽标，信仰指数拉满。笔记本B面配备16英寸的釉月屏，2560×1600分辨率，具备240Hz的超高刷新率，带来足够流畅的视觉体验。屏幕最高亮度500nits，支持覆盖100% DCI-P3色域，可以精准还原游戏画面。 新配置采用了锐龙 9 8945HX移动处理器，基于Zen4架构和台积电5nm工艺，拥有16个核心32线程，核心最高加速频率5.4GHz，配有64MB L3缓存，TDP 55W；处理器内置AMD Radeon 610M核显，具备2个核心，最高运行频率2200MHz。显卡则为NVIDIA RTX 5070 Ti移动端显卡，配有12GB GDDR7显存，能跑满140W满功耗，提供992 TOPS的AI算力。笔记本标配酷寒散热系统，双风扇五热管设计，最高可达到205W的双烤性能释放。 存储方面，新配置标配32GB DDR5内存和1TB PCIe 4.0 SSD，底部有快拆设计，可以直接扩容，预留了1个内存插槽和1个M.2硬盘插槽；整机支持WiFi7无线网络（Intle Killer无线网卡），并有2个高保真扬声器和1080P高清摄像头，以及90Whr大容量电池。接口方面，泰坦16 2026上有2个USB 4.0接口（支持DP视频输出和PD快充 ），3个USB 3.2 Gen 1 Type-A接口、1个RJ45网口、1个HDMI 2.1接口和1个3.5mm音频接口。",
-      "url": "http://www.expreview.com/107481.html",
-      "time": "2026-08-10T01:47:01.000Z",
-      "tags": [
-        "人工智能",
-        "芯片/半导体",
-        "新能源/电动车"
-      ]
-    },
-    {
-      "source": "开源中国",
-      "sourceColor": "#43a047",
-      "title": "Notion、Airtable、AI Agent 集成到桌面客户端 - Kition 开源",
-      "description": "Kition 是一个面向真实工作的 AI 桌面工作区：让文档、数据表、浏览器、Agent 与 Workflow 围绕同一份项目上下文协作，并让 AI 对文本的修改清晰可对比、可检查。",
-      "url": "https://my.oschina.net/u/9762637/blog/19736056",
-      "time": "2026-08-10T01:46:48.000Z",
-      "tags": [
-        "人工智能",
-        "软件应用"
-      ]
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - 东方财富",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608103836065564.html",
-      "time": "2026-08-10T01:46:09.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
-    },
-    {
-      "source": "芯片半导体",
-      "sourceColor": "#004d40",
-      "title": "金宏气体与国内半导体领军企业达成氦气供应战略合作 - eastmoney.com",
-      "description": "",
-      "url": "https://wap.eastmoney.com/a/202608103836065564.html",
-      "time": "2026-08-10T01:46:09.000Z",
-      "tags": [
-        "芯片/半导体"
-      ],
-      "topic": true
     }
   ]
 }
