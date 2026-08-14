@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=34">
+    <link rel="stylesheet" href="css/style.css?v=35">
     <link rel="stylesheet" href="vendor/fontawesome-all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -13,11 +13,22 @@
     <div id="app" v-cloak>
         <!-- 登录遮罩（user / 123，或右下角访客跳过） -->
         <div class="login-overlay" v-if="!loggedIn">
+            <div class="login-grid" aria-hidden="true"></div>
             <div class="login-aurora" aria-hidden="true"></div>
+            <div class="login-orbs" aria-hidden="true">
+                <span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span>
+                <span class="orb orb-4"></span><span class="orb orb-5"></span><span class="orb orb-6"></span>
+            </div>
+            <div class="login-beam" aria-hidden="true"></div>
             <div class="login-card">
-                <div class="login-logo"><i class="fa-solid fa-microchip"></i><span>TechDigest</span></div>
+                <span class="login-card-ring" aria-hidden="true"></span>
+                <span class="login-card-shine" aria-hidden="true"></span>
+                <div class="login-logo">
+                    <span class="login-logo-badge"><span class="login-logo-pulse"></span><i class="fa-solid fa-microchip"></i></span>
+                    <span>TechDigest</span>
+                </div>
                 <h2>欢迎回来</h2>
-                <p class="login-sub">登录后体验全部 AI 创作功能</p>
+                <p class="login-sub">登录后体验全部 AI 创作功能，设置与历史自动云端同步</p>
                 <div class="login-field">
                     <i class="fa-solid fa-user"></i>
                     <input v-model="loginUser" @keyup.enter="submitLogin" type="text" placeholder="用户名" autocomplete="username">
@@ -27,8 +38,11 @@
                     <input v-model="loginPass" @keyup.enter="submitLogin" type="password" placeholder="密码" autocomplete="current-password">
                 </div>
                 <div class="login-err" v-if="loginErr"><i class="fa-solid fa-circle-exclamation"></i> {{ loginErr }}</div>
-                <button class="login-btn" @click="submitLogin">登 录</button>
+                <button class="login-btn" :class="{ busy: loginBusy }" :disabled="loginBusy" @click="submitLogin">
+                    <i class="fa-solid fa-spinner fa-spin" v-if="loginBusy"></i><span>{{ loginBusy ? '登录中' : '登 录' }}</span>
+                </button>
                 <button class="login-guest" @click="skipLogin" title="以访客身份直接进入">跳过登录（访客登录）</button>
+                <p class="login-guest-note"><i class="fa-solid fa-triangle-exclamation"></i> 访客数据仅保存在当前浏览器，换设备/清缓存会丢失</p>
             </div>
         </div>
 
@@ -42,8 +56,8 @@
                 <span class="update-time" v-if="dataAgeText" :title="dataUpdateAbsolute ? '点击右上角刷新按钮即实时抓取各科技源最新资讯；最近一次成功抓取于 ' + dataUpdateAbsolute : ''">
                     <i class="fa-solid fa-cloud-arrow-down"></i> {{ dataAgeText }}
                 </span>
-                <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" title="刷新">
-                    <i class="fa-solid fa-rotate" :class="{ spinning: loading }"></i>
+                <button class="refresh-btn" @click="refreshCurrentTab" :disabled="loading" :title="autoRefreshTitle">
+                    <i class="fa-solid fa-rotate" :class="{ spinning: loading, 'auto-pulse': techSilentBusy }"></i>
                 </button>
                 <button class="theme-btn" @click="toggleTheme" :title="theme === 'light' ? '切换到深色' : '切换到浅色'">
                     <i class="fa-solid" :class="theme === 'light' ? 'fa-moon' : 'fa-sun'"></i>
@@ -77,6 +91,13 @@
                         <span>风格分析</span>
                         <span class="badge badge-live">实时</span>
                     </div>
+                    <div class="nav-item" :class="{ active: activePanel === 'profile' }" @click="activePanel = 'profile'">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <span>个人中心</span>
+                        <span class="badge" :class="userState.mode === 'cloud' ? 'badge-cloud' : 'badge-local'">
+                            {{ userState.mode === 'cloud' ? '云端' : '本机' }}
+                        </span>
+                    </div>
                 </nav>
                 <div class="sidebar-footer">
                     <div class="sidebar-stats">
@@ -93,7 +114,20 @@
             </aside>
 
             <!-- 侧栏 / 内容 分隔条（可拖动缩放，增强可用性） -->
-            <div class="sidebar-resizer" :class="{ active: sidebarResizing }" @mousedown="startResizeSidebar" title="拖动调整侧栏宽度"></div>
+            <div class="sidebar-resizer"
+                 :class="{ active: sidebarResizing, 'at-min': sidebarShrink >= sidebarMax, 'at-max': sidebarShrink <= 0 }"
+                 role="separator" aria-orientation="vertical" tabindex="0"
+                 aria-label="调整侧栏宽度" :aria-valuenow="sidebarWidth" aria-valuemin="200" aria-valuemax="300"
+                 @pointerdown="startResizeSidebar" @mousedown="startResizeSidebar" @dblclick="resetSidebar" @keydown="onResizerKey"
+                 :title="sidebarShrink <= 0
+                    ? '已是默认尺寸（不能再拉宽）· 向左拖动可收窄 · 双击/Home 恢复默认'
+                    : (sidebarShrink >= sidebarMax
+                        ? '已收到最窄 · 向右拖动恢复 · 双击恢复默认'
+                        : '向左继续收窄 · 向右恢复默认 · 双击恢复默认')">
+                <span class="sidebar-resizer-badge" v-if="sidebarResizing">
+                    {{ sidebarPhase === 'margin' ? '左边距' : '宽度' }} · {{ sidebarWidth }}px<template v-if="sidebarMarginLeft !== 40"> / 边距 {{ sidebarMarginLeft }}px</template>
+                </span>
+            </div>
 
             <!-- 主内容区 -->
             <main class="content">
@@ -112,21 +146,21 @@
                     <!-- ===== 社交媒体热点看板 ===== -->
                     <div class="social-hotboard" v-show="hotboardTab === 'social'">
                         <div class="platform-buttons">
-                            <button class="platform-btn weibo" :class="{ active: socialPlatform === 'weibo' }" @click="switchSocialPlatform('weibo')">
-                                <i class="fa-brands fa-weibo"></i> 微博热搜
+                            <button v-for="p in socialPlatforms" :key="p.key" class="platform-btn" :class="[p.cls, { active: socialPlatform === p.key }]"
+                                    @click="switchSocialPlatform(p.key)">
+                                <i :class="p.icon"></i> {{ p.name }}
                             </button>
-                            <button class="platform-btn douyin" :class="{ active: socialPlatform === 'douyin' }" @click="switchSocialPlatform('douyin')">
-                                <i class="fa-brands fa-tiktok"></i> 抖音热搜
-                            </button>
-                            <button class="platform-btn toutiao" :class="{ active: socialPlatform === 'toutiao' }" @click="switchSocialPlatform('toutiao')">
-                                <i class="fa-solid fa-newspaper"></i> 今日头条热搜
-                            </button>
-                            <button class="platform-btn baidu" :class="{ active: socialPlatform === 'baidu' }" @click="switchSocialPlatform('baidu')">
-                                <i class="fa-solid fa-magnifying-glass"></i> 百度热搜
-                            </button>
-                            <button class="platform-btn zhihu" :class="{ active: socialPlatform === 'zhihu' }" @click="switchSocialPlatform('zhihu')">
-                                <i class="fa-brands fa-zhihu"></i> 知乎热榜
-                            </button>
+                        </div>
+
+                        <!-- 榜单来源条：官方完整榜单直达 + 聚合说明 + 条数 -->
+                        <div class="social-source-bar">
+                            <span class="social-source-label"><i class="fa-solid fa-link"></i> 榜单来源</span>
+                            <a class="social-source-link" :href="currentPlatform.home" target="_blank" rel="noopener noreferrer"
+                               :title="'在新标签页打开 ' + currentPlatform.homeName + ' 官方完整榜单'">
+                                {{ currentPlatform.homeName }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                            <span class="social-source-note">聚合接口取榜 + 科技相关性过滤，仅展示科技数码类条目</span>
+                            <span class="social-source-count" v-if="socialHotlist.length">共 {{ socialHotlist.length }} 条</span>
                         </div>
 
                         <div class="hot-list-container">
@@ -143,13 +177,29 @@
                                 <li class="hot-item" v-for="(item, index) in socialHotlist" :key="index">
                                     <span class="hot-rank" :class="{ 'top3': index < 3 }">{{ index + 1 }}</span>
                                     <div class="hot-content">
-                                        <a :href="item.url" target="_blank" class="hot-title">{{ item.title }}</a>
+                                        <a :href="itemOriginalUrl(item)" target="_blank" rel="noopener noreferrer" class="hot-title">{{ item.title }}</a>
+                                        <span class="hot-hot" v-if="item.hot"><i class="fa-solid fa-fire"></i> {{ item.hot }}</span>
                                     </div>
                                     <span class="hot-tag" v-if="item.tag" :class="getTagClass(item.tag)">{{ item.tag }}</span>
+                                    <div class="hot-actions">
+                                        <a class="hot-open" :class="{ 'is-search': !hasDirectUrl(item) }"
+                                           :href="itemOriginalUrl(item)" target="_blank" rel="noopener noreferrer"
+                                           :title="hasDirectUrl(item)
+                                                ? '打开原帖（' + currentPlatform.homeName + '）'
+                                                : '该条目未提供原文链接，将在' + currentPlatform.homeName + '内搜索此话题'">
+                                            <i class="fa-solid" :class="hasDirectUrl(item) ? 'fa-up-right-from-square' : 'fa-magnifying-glass'"></i>
+                                            <span>{{ hasDirectUrl(item) ? '打开原帖' : '站内搜索' }}</span>
+                                        </a>
+                                        <button class="hot-icon-btn" @click="copyHotLink(item)" title="复制链接"><i class="fa-solid fa-copy"></i></button>
+                                        <button class="hot-icon-btn" @click="sendHotToAI(item)" title="用这条热点写文案"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                                    </div>
                                 </li>
                             </ul>
                             <div class="hot-empty-note" v-if="!socialLoading && !socialError && socialHotlist.length === 0">
                                 <p>该平台暂无科技相关热搜</p>
+                                <a class="social-source-link" :href="currentPlatform.home" target="_blank" rel="noopener noreferrer">
+                                    去 {{ currentPlatform.homeName }} 看完整榜单 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -181,12 +231,20 @@
                         <div class="tech-list-container">
                             <div class="loading-overlay" v-if="techLoading">
                                 <div class="progress-card">
-                                    <div class="progress-track" :class="{ indeterminate: techLoadProgress.indeterminate }">
-                                        <div class="progress-fill" :style="techLoadProgress.percent >= 0 ? { width: techLoadProgress.percent + '%' } : {}"></div>
+                                    <div class="progress-track" :class="{ 'unknown-total': techLoadProgress.indeterminate }">
+                                        <div class="progress-fill" :style="{ width: Math.max(0, techLoadProgress.percentExact || 0) + '%' }"></div>
                                     </div>
                                     <div class="progress-meta">
                                         <span class="progress-label">{{ techLoadProgress.label || '正在加载科技资讯...' }}</span>
-                                        <span class="progress-percent" v-if="techLoadProgress.percent >= 0">{{ techLoadProgress.percent }}%</span>
+                                        <span class="progress-percent">{{ techLoadProgress.percent }}%</span>
+                                    </div>
+                                    <div class="progress-steps">
+                                        <span v-for="s in [{k:'live',t:'实时'},{k:'archive',t:'归档'},{k:'merge',t:'合并'},{k:'done',t:'完成'}]" :key="s.k"
+                                              class="progress-step"
+                                              :class="{ active: techLoadProgress.stage === s.k,
+                                                        done: ['live','archive','merge','finish','done'].indexOf(techLoadProgress.stage) > ['live','archive','merge','done'].indexOf(s.k) }">
+                                            <i class="fa-solid fa-circle"></i>{{ s.t }}
+                                        </span>
                                     </div>
                                     <div class="progress-bytes" v-if="techLoadProgress.loaded && techLoadProgress.byteMode !== false">
                                         {{ formatMB(techLoadProgress.loaded) }}<template v-if="techLoadProgress.total"> / {{ formatMB(techLoadProgress.total) }}</template>
@@ -206,9 +264,12 @@
                                                 {{ item.source }}
                                             </span>
                                             <span class="tech-time">{{ formatTime(item.time) }}</span>
+                                            <button class="tech-fav" :class="{ on: isFavorite(item) }" @click="toggleFavorite(item)" :title="isFavorite(item) ? '取消收藏' : '收藏'">
+                                                <i class="fa-solid" :class="isFavorite(item) ? 'fa-star' : 'fa-star-half-stroke'"></i>
+                                            </button>
                                         </div>
                                         <h3 class="tech-card-title">
-                                            <a :href="item.url" target="_blank">{{ item.title }}</a>
+                                            <a :href="item.url" target="_blank" rel="noopener noreferrer">{{ item.title }}</a>
                                         </h3>
                                         <p class="tech-card-desc" v-if="item.description">{{ truncate(item.description, 120) }}</p>
                                         <p class="tech-card-desc tech-card-desc-empty" v-else>点击阅读全文 ›</p>
@@ -1096,6 +1157,98 @@
                         </div>
                     </template>
                 </div>
+
+                <!-- ========== 个人中心 ========== -->
+                <div class="panel profile-panel" v-show="activePanel === 'profile'">
+                    <div class="profile-head">
+                        <div class="profile-avatar">{{ (userState.username || '访').slice(0,1).toUpperCase() }}</div>
+                        <div class="profile-id">
+                            <h2>{{ userState.username || '访客' }}</h2>
+                            <span class="profile-storage" :class="userState.mode">
+                                <i class="fa-solid" :class="userState.mode === 'cloud' ? 'fa-cloud' : 'fa-desktop'"></i>
+                                {{ userState.mode === 'cloud' ? '云端存储（Cloudflare KV，跨设备同步）' : '本机浏览器存储（不跨设备）' }}
+                            </span>
+                        </div>
+                        <div class="profile-actions">
+                            <span class="profile-sync" :class="{ busy: userState.syncing, err: userState.lastError }">
+                                <i class="fa-solid" :class="userState.syncing ? 'fa-cloud-arrow-up fa-fade' : (userState.lastError ? 'fa-triangle-exclamation' : 'fa-circle-check')"></i>
+                                <template v-if="userState.syncing">同步中…</template>
+                                <template v-else-if="userState.lastError">同步失败：{{ userState.lastError }}（联网后自动重试）</template>
+                                <template v-else-if="userState.lastSyncAt">已同步 · {{ userState.lastSyncAt }}</template>
+                                <template v-else>暂无改动</template>
+                            </span>
+                            <button class="profile-btn" v-if="userState.mode === 'cloud'" @click="syncNow"><i class="fa-solid fa-rotate"></i> 立即同步</button>
+                            <button class="profile-btn primary" v-else @click="logout"><i class="fa-solid fa-right-to-bracket"></i> 去登录以启用云端</button>
+                            <button class="profile-btn ghost" v-if="userState.mode === 'cloud'" @click="logout"><i class="fa-solid fa-right-from-bracket"></i> 退出</button>
+                        </div>
+                    </div>
+
+                    <div class="profile-warn" v-if="userState.mode !== 'cloud'">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div>
+                            <strong>你当前是访客身份，所有设置/收藏/生成历史仅保存在这台电脑的这个浏览器里。</strong>
+                            清理浏览数据、使用无痕窗口、换浏览器或换设备都会导致数据丢失，且无法跨设备同步。
+                            登录后会自动把当前本机配置迁移到云端（Cloudflare KV），此后任意设备登录都能拿到同一份配置。
+                        </div>
+                    </div>
+
+                    <div class="profile-grid">
+                        <section class="profile-card">
+                            <h3><i class="fa-solid fa-sliders"></i> 界面偏好</h3>
+                            <div class="profile-row"><span>主题</span>
+                                <div class="seg"><button :class="{on: theme==='light'}" @click="applyTheme('light')">浅色</button><button :class="{on: theme==='dark'}" @click="applyTheme('dark')">深色</button></div></div>
+                            <div class="profile-row"><span>启动默认面板</span>
+                                <select v-model="prefs.defaultPanel" @change="savePrefs">
+                                    <option value="hotboard">热点看板</option><option value="ai-writer">AI文案生成</option>
+                                    <option value="ai-image">AI生成插图</option><option value="ppt-maker">PPT生成</option>
+                                    <option value="style-analyzer">风格分析</option><option value="profile">个人中心</option>
+                                </select></div>
+                            <div class="profile-row"><span>默认社媒平台</span>
+                                <select v-model="prefs.defaultSocialPlatform" @change="savePrefs">
+                                    <option v-for="p in socialPlatforms" :key="p.key" :value="p.key">{{ p.name }}</option>
+                                </select></div>
+                            <div class="profile-row"><span>侧栏宽度 / 左边距</span>
+                                <span class="profile-val">{{ sidebarWidth }}px / {{ sidebarMarginLeft }}px
+                                    <button class="profile-mini" @click="resetSidebar">恢复默认</button></span></div>
+                        </section>
+
+                        <section class="profile-card">
+                            <h3><i class="fa-solid fa-key"></i> AI 接口同步</h3>
+                            <div class="profile-row"><span>文本模型</span><span class="profile-val">{{ aiApi.basePreset }} · {{ aiApi.model }}</span></div>
+                            <div class="profile-row"><span>图像模型</span><span class="profile-val">{{ aiImgApi.model }}</span></div>
+                            <label class="profile-check">
+                                <input type="checkbox" v-model="prefs.syncApiKey" @change="savePrefs">
+                                同时把 API Key 同步到云端
+                                <em>（Key 会以明文形式存放在你的 KV 命名空间中，仅限内部账号使用；不勾选则 Key 只留在本机）</em>
+                            </label>
+                        </section>
+
+                        <section class="profile-card">
+                            <h3><i class="fa-solid fa-star"></i> 我的收藏 <span class="profile-count">{{ favorites.length }}</span></h3>
+                            <div class="profile-fav-empty" v-if="!favorites.length">还没有收藏。在「科技资讯热点看板」的卡片右上角点 ☆ 即可收藏。</div>
+                            <ul class="profile-fav" v-else>
+                                <li v-for="f in favorites" :key="f.url">
+                                    <a :href="f.url" target="_blank" rel="noopener noreferrer">{{ f.title }}</a>
+                                    <span class="profile-fav-src">{{ f.source }}</span>
+                                    <button @click="toggleFavorite(f)" title="取消收藏"><i class="fa-solid fa-xmark"></i></button>
+                                </li>
+                            </ul>
+                        </section>
+
+                        <section class="profile-card">
+                            <h3><i class="fa-solid fa-database"></i> 数据管理</h3>
+                            <div class="profile-row"><span>云端版本号</span><span class="profile-val">v{{ userState.v }}<template v-if="userState.updatedAt"> · {{ new Date(userState.updatedAt).toLocaleString('zh-CN') }}</template></span></div>
+                            <div class="profile-btns">
+                                <button class="profile-btn" @click="exportProfile"><i class="fa-solid fa-download"></i> 导出 JSON</button>
+                                <button class="profile-btn" @click="$refs.profileFile.click()"><i class="fa-solid fa-upload"></i> 导入 JSON</button>
+                                <input ref="profileFile" type="file" accept=".json" class="ai-file-hidden" @change="importProfile">
+                                <button class="profile-btn danger" v-if="userState.mode === 'cloud'" @click="wipeProfile"><i class="fa-solid fa-trash"></i> 清空云端数据</button>
+                            </div>
+                            <p class="profile-note">同步内容：主题 / 默认面板 / 默认平台 / 侧栏尺寸 / AI 接口配置 / 收藏 / 生成历史（元数据）。
+                                为控制体积，<strong>AI 插图的 base64 图片与参考原文草稿不会上云</strong>（单用户配置上限 200KB）。</p>
+                        </section>
+                    </div>
+                </div>
             </main>
         </div>
 
@@ -1153,10 +1306,11 @@
     <script src="vendor/pptxgen.bundle.js"></script>
     <script src="vendor/mammoth.browser.min.js"></script>
     <script src="vendor/pdf.min.js"></script>
-    <script src="js/api.js?v=2608123105"></script>
+    <script src="js/api.js?v=2608141201"></script>
     <script src="js/filter.js?v=2607121825"></script>
     <script src="js/ai-generator.js?v=48"></script>
     <script src="js/ppt-generator.js?v=3"></script>
-    <script src="js/app.js?v=2608131500"></script>
+    <script src="js/user.js?v=2608141201"></script>
+    <script src="js/app.js?v=2608141201"></script>
 </body>
 </html>

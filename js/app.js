@@ -131,9 +131,15 @@ const app = createApp({
         const aiHistory = ref([]);        // 历史记录
         const aiHistoryOpen = ref(false); // 历史面板是否展开
         const historyFilter = ref('all'); // 历史筛选：all | text | image
-        // 侧栏宽度（可拖动缩放）
-        const sidebarWidth = ref(300);
+        // 侧栏两阶段拖拽（左拖先吃 40px 左边距，右拖只恢复默认 300px）
+        const SB = { DEF_W: 300, MIN_W: 200, DEF_ML: 40, MIN_ML: 0 };
+        const SB_ML_RANGE = SB.DEF_ML - SB.MIN_ML;                       // 40
+        const SB_MAX = SB_ML_RANGE + (SB.DEF_W - SB.MIN_W);              // 140
+        const sidebarWidth = ref(SB.DEF_W);
+        const sidebarMarginLeft = ref(SB.DEF_ML);
+        const sidebarShrink = ref(0);
         const sidebarResizing = ref(false);
+        const sidebarPhase = computed(() => sidebarShrink.value < SB_ML_RANGE ? 'margin' : 'width');
         // 登录态（user / 123，或访客跳过）
         const loggedIn = ref(false);
         const loginUser = ref('');
@@ -257,6 +263,7 @@ const app = createApp({
                 model: (aiImgApi.value.model || '').trim() || 'wanx2.1-t2i-turbo',
             };
             try { localStorage.setItem(LS_IMG_KEY, JSON.stringify(payload)); } catch (_) {}
+            if (window.UserStore) { UserStore.set('aiImgApi', { base: payload.base, model: payload.model }); if (prefs.value.syncApiKey) UserStore.set('aiImgApiKey', payload.key); syncTick(); }
             alert('已保存图像 API 设置（仅本机浏览器）。生成时将使用你配置的 Key。');
         }
         function clearImgApiSettings() {
@@ -457,6 +464,7 @@ const app = createApp({
                 model: (a.model || '').trim() || 'deepseek-v4-flash',
             };
             try { localStorage.setItem(LS_KEY, JSON.stringify(payload)); } catch (_) {}
+            if (window.UserStore) { UserStore.set('aiApi', { basePreset: payload.basePreset, customBase: payload.customBase, model: payload.model }); if (prefs.value.syncApiKey) UserStore.set('aiApiKey', payload.key); syncTick(); }
             applyApiSettings();
             alert('已保存：本次及之后的生成将使用你配置的 API。用完可在「我的 key」里直接更换。');
         }
@@ -698,6 +706,7 @@ const app = createApp({
         }
         function persistHistory() {
             try { localStorage.setItem(LS_HISTORY_KEY, JSON.stringify(aiHistory.value.slice(0, 50))); } catch (_) {}
+            if (window.UserStore) { try { UserStore.set('aiHistory', aiHistory.value.slice(0, 50)); syncTick(); } catch (_) {} }
         }
         function saveToHistory(item) {
             aiHistory.value.unshift(item);
@@ -771,71 +780,177 @@ const app = createApp({
             return aiHistory.value;
         });
 
-        // ====== 侧栏宽度可拖动缩放 ======
-        const LS_SIDEBAR_KEY = 'td_sidebar_width_v1';
+        // ====== 侧栏两阶段拖拽（单标量 s：左拖先吃 40px 左边距，再压宽到 200px；右拖只恢复默认 300/40） ======
+        const LS_SIDEBAR_V2 = 'td_sidebar_v2';
+        const LS_SIDEBAR_V1 = 'td_sidebar_width_v1';
+
+        function applyShrink(s) {
+            s = Math.max(0, Math.min(SB_MAX, Math.round(Number(s) || 0)));
+            sidebarShrink.value = s;
+            const mlShrink = Math.min(s, SB_ML_RANGE);
+            const wShrink  = s - mlShrink;
+            sidebarMarginLeft.value = SB.DEF_ML - mlShrink;
+            sidebarWidth.value      = SB.DEF_W  - wShrink;
+            const st = document.documentElement.style;
+            st.setProperty('--sidebar-margin-left', sidebarMarginLeft.value + 'px');
+            st.setProperty('--sidebar-width', sidebarWidth.value + 'px');
+        }
+
+        function persistSidebar() {
+            try { localStorage.setItem(LS_SIDEBAR_V2, JSON.stringify({ s: sidebarShrink.value })); } catch (_) {}
+            if (window.UserStore) { try { UserStore.set('sidebarShrink', sidebarShrink.value); syncTick(); } catch (_) {} }
+        }
+
         function initSidebarWidth() {
+            let s = 0;
             try {
-                const w = parseInt(localStorage.getItem(LS_SIDEBAR_KEY) || '', 10);
-                if (w >= 220 && w <= 460) {
-                    sidebarWidth.value = w;
-                    document.documentElement.style.setProperty('--sidebar-width', w + 'px');
+                const raw = localStorage.getItem(LS_SIDEBAR_V2);
+                if (raw) {
+                    s = Number(JSON.parse(raw).s) || 0;
+                } else {
+                    // v1 迁移：旧版只存 width（220~460）。新规则不允许 >300，故 >=300 一律回默认；
+                    // <300 视为"用户想更窄" → 先耗尽 40px 边距再压缩到该宽度。
+                    const w1 = parseInt(localStorage.getItem(LS_SIDEBAR_V1) || '', 10);
+                    if (w1 && w1 < SB.DEF_W) s = Math.min(SB_MAX, SB_ML_RANGE + (SB.DEF_W - Math.max(SB.MIN_W, w1)));
                 }
             } catch (_) {}
+            applyShrink(s);
         }
+
+        let sbStartX = 0, sbStartS = 0, sbPendingS = 0, sbRaf = 0, sbTarget = null;
         function startResizeSidebar(e) {
             e.preventDefault();
+            sbStartX = e.clientX; sbStartS = sidebarShrink.value; sbPendingS = sbStartS;
             sidebarResizing.value = true;
-            document.body.style.userSelect = 'none';
-            document.body.style.cursor = 'col-resize';
-            window.addEventListener('mousemove', onResizeMove);
-            window.addEventListener('mouseup', stopResizeSidebar);
+            document.documentElement.classList.add('sb-dragging');
+            sbTarget = e.currentTarget;
+            if (e.pointerId != null && sbTarget.setPointerCapture) {
+                // Pointer Capture：拖出窗口/快速甩动也不丢事件，且天然支持触屏与手写笔
+                try { sbTarget.setPointerCapture(e.pointerId); } catch (_) {}
+                sbTarget.addEventListener('pointermove', onResizeMove);
+                sbTarget.addEventListener('pointerup', stopResizeSidebar);
+                sbTarget.addEventListener('pointercancel', stopResizeSidebar);
+            } else {
+                window.addEventListener('mousemove', onResizeMove);
+                window.addEventListener('mouseup', stopResizeSidebar);
+            }
         }
         function onResizeMove(e) {
             if (!sidebarResizing.value) return;
-            const minW = 220, maxW = 460, ml = 40; // ml = .sidebar margin-left
-            let w = e.clientX - ml;
-            if (w < minW) w = minW;
-            if (w > maxW) w = maxW;
-            sidebarWidth.value = w;
-            document.documentElement.style.setProperty('--sidebar-width', w + 'px');
+            sbPendingS = sbStartS - (e.clientX - sbStartX);       // 左拖 dx<0 → s 增大
+            if (sbRaf) return;                                    // rAF 节流：每帧最多写一次 CSS 变量，避免布局抖动
+            sbRaf = requestAnimationFrame(() => { sbRaf = 0; applyShrink(sbPendingS); });
         }
         function stopResizeSidebar() {
             if (!sidebarResizing.value) return;
+            if (sbRaf) { cancelAnimationFrame(sbRaf); sbRaf = 0; }
+            applyShrink(sbPendingS);
             sidebarResizing.value = false;
-            document.body.style.userSelect = '';
-            document.body.style.cursor = '';
+            document.documentElement.classList.remove('sb-dragging');
+            if (sbTarget) {
+                sbTarget.removeEventListener('pointermove', onResizeMove);
+                sbTarget.removeEventListener('pointerup', stopResizeSidebar);
+                sbTarget.removeEventListener('pointercancel', stopResizeSidebar);
+                sbTarget = null;
+            }
             window.removeEventListener('mousemove', onResizeMove);
             window.removeEventListener('mouseup', stopResizeSidebar);
-            try { localStorage.setItem(LS_SIDEBAR_KEY, String(sidebarWidth.value)); } catch (_) {}
+            persistSidebar();
+        }
+        function resetSidebar() { applyShrink(0); persistSidebar(); }
+        function onResizerKey(e) {
+            const step = e.shiftKey ? 20 : 8;
+            if (e.key === 'ArrowLeft')  { applyShrink(sidebarShrink.value + step); persistSidebar(); e.preventDefault(); }
+            if (e.key === 'ArrowRight') { applyShrink(sidebarShrink.value - step); persistSidebar(); e.preventDefault(); }
+            if (e.key === 'Home')       { resetSidebar(); e.preventDefault(); }
+            if (e.key === 'End')        { applyShrink(SB_MAX); persistSidebar(); e.preventDefault(); }
         }
 
         // ====== 登录 / 访客 ======
         const LS_LOGIN_KEY = 'td_logged_in_v1';
+        const loginBusy = ref(false);
         function initLogin() {
             try { if (localStorage.getItem(LS_LOGIN_KEY) === '1') loggedIn.value = true; } catch (_) {}
         }
-        function submitLogin() {
-            if (loginUser.value === 'user' && loginPass.value === '123') {
-                loggedIn.value = true; loginErr.value = '';
-                try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
-            } else {
-                loginErr.value = '用户名或密码错误';
-            }
+        async function submitLogin() {
+            loginBusy.value = true; loginErr.value = '';
+            try {
+                // 个人中心就绪后（js/user.js 已加载）走后端登录；后端不可用则保留 user/123 本地兜底
+                if (window.UserStore) {
+                    try {
+                        await UserStore.login(loginUser.value, loginPass.value);
+                        loggedIn.value = true; loginPass.value = '';
+                        try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
+                        syncTick();
+                        return;
+                    } catch (err) {
+                        if (/Failed to fetch|NetworkError/i.test(err.message)) {
+                            // 后端不可达：本地兜底，不打断现有用户
+                        } else { throw err; }
+                    }
+                }
+                if (loginUser.value === 'user' && loginPass.value === '123') {
+                    loggedIn.value = true; loginErr.value = '';
+                    try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
+                } else {
+                    loginErr.value = '用户名或密码错误';
+                    const card = document.querySelector('.login-card');
+                    if (card) card.animate([{transform:'translateX(0)'},{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}], { duration: 280 });
+                }
+            } finally { loginBusy.value = false; }
         }
         function skipLogin() {
             loggedIn.value = true; loginErr.value = '';
             try { localStorage.setItem(LS_LOGIN_KEY, '1'); } catch (_) {}
         }
-        function logout() {
+        async function logout() {
+            if (window.UserStore) { try { await UserStore.logout(); } catch (_) {} syncTick(); }
             loggedIn.value = false; loginUser.value = ''; loginPass.value = ''; loginErr.value = '';
             try { localStorage.removeItem(LS_LOGIN_KEY); } catch (_) {}
         }
+
+        // ====== 个人中心（UserStore：云端 KV / 本机降级）======
+        const userState = ref({ ...(window.UserStore ? window.UserStore.state : { mode: 'guest', username: '', v: 0, updatedAt: '', syncing: false, lastError: '', lastSyncAt: '', loaded: false }) });
+        const prefs = ref({ defaultPanel: 'hotboard', defaultSocialPlatform: 'weibo', syncApiKey: false });
+        const favorites = ref([]);
+        const syncTick = () => { userState.value = { ...(window.UserStore ? window.UserStore.state : userState.value) }; };
+
+        function savePrefs() {
+            if (!window.UserStore) return;
+            UserStore.set('defaultPanel', prefs.value.defaultPanel);
+            UserStore.set('defaultSocialPlatform', prefs.value.defaultSocialPlatform);
+            UserStore.set('syncApiKey', prefs.value.syncApiKey);
+            syncTick();
+        }
+        function toggleFavorite(a) {
+            if (!window.UserStore) return;
+            const i = favorites.value.findIndex(f => f.url === a.url);
+            if (i >= 0) favorites.value.splice(i, 1);
+            else favorites.value.unshift({ url: a.url, title: a.title, source: a.source, time: a.time, savedAt: Date.now() });
+            if (favorites.value.length > 300) favorites.value = favorites.value.slice(0, 300);
+            UserStore.set('favorites', favorites.value); syncTick();
+        }
+        const isFavorite = (a) => favorites.value.some(f => f.url === a.url);
+        async function syncNow() { if (window.UserStore) { await UserStore.flush(true); syncTick(); } }
+        function exportProfile() {
+            const blob = new Blob([UserStore.exportJSON()], { type: 'application/json' });
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'techdigest-profile.json'; a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        }
+        async function importProfile(e) {
+            const file = e.target.files && e.target.files[0]; if (!file) return;
+            try { const text = await file.text(); await UserStore.importJSON(text); syncTick(); }
+            catch (err) { alert('导入失败：' + (err.message || '非法文件')); }
+            e.target.value = '';
+        }
+        async function wipeProfile() { if (!confirm('确定清空云端配置？此操作不可恢复。')) return; await UserStore.wipeCloud(); syncTick(); }
 
         // ====== 主题切换（浅色默认 / 深色） ======
         const LS_THEME_KEY = 'td_theme_v1';
         function applyTheme(t) {
             theme.value = t;
             document.documentElement.setAttribute('data-theme', t);
+            if (window.UserStore) { UserStore.set('theme', t); syncTick(); }
         }
         function initTheme() {
             let t = 'light'; // 老板偏好浅色，默认浅色
@@ -1444,8 +1559,55 @@ const app = createApp({
             } catch { return ''; }
         });
 
-        // 注意：按用户要求「禁止自动更新，只手动更新」——此处不再注册任何定时/切回标签页的自动重抓。
-        // 仅保留手动刷新按钮（refreshCurrentTab）触发 fetchTechNews / fetchSocialHotlist。
+        // ========== 静默自动刷新：每天 00:00 / 09:00 / 12:30（浏览器本地时区），无 UI 开关 ==========
+        // 1) 不用 setTimeout 定长定时器（休眠/唤醒、改时区都会失准）→ 30s 心跳 + 应触发窗口判定，抗休眠抗改时钟。
+        // 2) 5 分钟宽限：错过时段后才打开页面也会补跑一次（错过不丢）。
+        // 3) localStorage 记录已跑时段（多标签/多次刷新只跑一次），先占位再执行防竞态双跑。
+        // 4) 静默：不设 techLoading 遮罩、不切面板/标签、不重置分页、失败不弹错，全程零打扰。
+        const AUTO_REFRESH_SLOTS = [[0, 0], [9, 0], [12, 30]];
+        const AUTO_GRACE_MS = 5 * 60 * 1000;
+        const AUTO_TICK_MS  = 30 * 1000;
+        const LS_AUTO_LAST  = 'td_auto_refresh_last_v1';
+        let autoTimer = null;
+        const techSilentBusy = ref(false);
+        const silentRefreshedAt = ref('');
+
+        const pad2 = (n) => String(n).padStart(2, '0');
+        const slotKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+
+        function dueSlotKey(now) {
+            for (const [h, m] of AUTO_REFRESH_SLOTS) {
+                const t = new Date(now); t.setHours(h, m, 0, 0);
+                const diff = now.getTime() - t.getTime();
+                if (diff >= 0 && diff <= AUTO_GRACE_MS) return slotKey(t);
+            }
+            return null;
+        }
+        function autoRefreshTick() {
+            const key = dueSlotKey(new Date());
+            if (!key) return;
+            let last = '';
+            try { last = localStorage.getItem(LS_AUTO_LAST) || ''; } catch (_) {}
+            if (last === key) return;
+            try { localStorage.setItem(LS_AUTO_LAST, key); } catch (_) {}   // 先占位（跨标签页去重）
+            console.info('[auto-refresh] 触发静默刷新，计划时段 ' + key);
+            silentRefresh();
+        }
+        async function silentRefresh() {
+            if (techLoading.value || socialLoading.value || techSilentBusy.value) {
+                console.info('[auto-refresh] 已有加载在进行，本次跳过'); return;
+            }
+            techSilentBusy.value = true;
+            try {
+                await Promise.allSettled([ fetchTechNews({ silent: true }), fetchSocialHotlist({ silent: true }) ]);
+                silentRefreshedAt.value = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+                console.info('[auto-refresh] 静默刷新完成 ' + silentRefreshedAt.value);
+            } finally { techSilentBusy.value = false; }
+        }
+        function onVisibilityChange() { if (document.visibilityState === 'visible') autoRefreshTick(); }
+        const autoRefreshTitle = computed(() => '刷新（每天 00:00 / 09:00 / 12:30 自动静默更新'
+            + (silentRefreshedAt.value ? '；最近自动更新 ' + silentRefreshedAt.value : '') + '）');
+
         // nowTick 仅用于让「X 分钟前」等相对时间标签随当前时钟实时滚动（不重新拉取数据）。
 
         const techSources = API.techSourceConfig;
@@ -1569,12 +1731,37 @@ const app = createApp({
 
         function switchSocialPlatform(platform) {
             socialPlatform.value = platform;
+            if (window.UserStore) { try { UserStore.set('defaultSocialPlatform', platform); syncTick(); } catch (_) {} }
             fetchSocialHotlist();
         }
 
-        async function fetchSocialHotlist() {
-            socialLoading.value = true; socialError.value = '';
+        // 社媒平台元数据 + 原帖/站内搜索兜底
+        const socialPlatforms = API.socialPlatforms;
+        const currentPlatform = computed(() =>
+            socialPlatforms.find(p => p.key === socialPlatform.value) || socialPlatforms[0]);
+        const hasDirectUrl = (item) => /^https?:\/\//i.test(String(item && item.url || '').trim());
+        function itemOriginalUrl(item) {
+            if (hasDirectUrl(item)) return item.url;
+            return currentPlatform.value.search(String(item && item.title || ''));   // 无原文链接 → 平台内搜索兜底
+        }
+        async function copyHotLink(item) {
+            const u = itemOriginalUrl(item);
+            try { await navigator.clipboard.writeText(u); }
+            catch (_) { const t = document.createElement('textarea'); t.value = u; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+        }
+        function sendHotToAI(item) {          // 一键把热点带进 AI 文案面板
+            aiForm.value.title = item.title || '';
+            aiForm.value.keywords = item.title || '';
+            aiForm.value.sources = itemOriginalUrl(item);
+            aiForm.value.webSearch = true;
+            activePanel.value = 'ai-writer';
+        }
+
+        async function fetchSocialHotlist(opts) {
+            const silent = !!(opts && opts.silent);
+            if (!silent) { socialLoading.value = true; socialError.value = ''; }
             try {
+                if (silent) API.dropCache(['weibo_hot','douyin_hot','toutiao_hot','baidu_hot','zhihu_hot'].find(k => k.startsWith(socialPlatform.value)) || 'weibo_hot');
                 let data;
                 switch (socialPlatform.value) {
                     case 'weibo': data = await API.fetchWeiboHot(); break;
@@ -1584,35 +1771,39 @@ const app = createApp({
                     case 'zhihu': data = await API.fetchZhihuHot(); break;
                     default: data = await API.fetchWeiboHot();
                 }
-                socialHotlist.value = data;
-                updateTimestamp();
+                if (silent && (!data || !data.length)) return;   // 静默失败：保留旧榜单
+                socialHotlist.value = data; updateTimestamp();
             } catch(e) {
+                if (silent) { console.warn('[auto-refresh] 热搜静默刷新失败:', e.message); return; }
                 socialError.value = e.message || '数据加载失败';
                 socialHotlist.value = [];
-            } finally { socialLoading.value = false; }
+            } finally { if (!silent) socialLoading.value = false; }
         }
 
-        async function fetchTechNews() {
-            techLoading.value = true; techError.value = '';
-            techDisplayCount.value = techPageSize;
-            // 初始进度（覆盖上一次残留），让进度条从 0 起步
-            techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
+        async function fetchTechNews(opts) {
+            const silent = !!(opts && opts.silent);
+            if (!silent) {
+                techLoading.value = true; techError.value = '';
+                techDisplayCount.value = techPageSize;            // 静默模式绝不重置分页（否则用户"加载更多"白点）
+                techLoadProgress.value = { stage: 'start', label: '准备加载科技资讯…', percent: 0, indeterminate: false, loaded: 0, total: 0 };
+            }
             // 看门狗：最后兜底。即使底层 fetch 因任何原因未能在预算内结束，
             // 也保证超时后强制清除转圈（底层已并行+超时，正常情况下远早于此时限）。
-            // 必须晚于 api.js 归档链路最坏耗时：v3101 分块下载每块超时 20s×4 重试 + 续传，
-            // 首轮在国内慢网下可能到 ~250s；已下块存 Cache Storage，下次秒开，故给 300s 余量。
-            const watchdog = setTimeout(() => { techLoading.value = false; }, 300000);
+            const watchdog = setTimeout(() => { if (!silent) techLoading.value = false; }, 300000);
             try {
-                const res = await API.fetchAllTechNews((p) => { techLoadProgress.value = p; });
-                techNews.value = res.articles || [];
-                dataUpdateTime.value = res.updateTime || '';
+                const res = await API.fetchAllTechNews(silent ? () => {} : (p) => { techLoadProgress.value = p; });
+                const list = (res && res.articles) || [];
+                if (silent && !list.length) { console.warn('[auto-refresh] 拉到空结果，保留现有数据'); return; }
+                techNews.value = list;                            // :key="index" → Vue 原地 patch，滚动位置不跳
+                dataUpdateTime.value = (res && res.updateTime) || '';
                 updateTimestamp();
-            } catch(e) {
+            } catch (e) {
+                if (silent) { console.warn('[auto-refresh] 静默刷新失败（保留现有数据）:', e.message); return; }
                 techError.value = e.message || '科技资讯加载失败';
                 techNews.value = [];
             } finally {
                 clearTimeout(watchdog);
-                techLoading.value = false;
+                if (!silent) techLoading.value = false;
             }
         }
 
@@ -1939,9 +2130,8 @@ const app = createApp({
             }
         }
 
-        onMounted(() => {
+        onMounted(async () => {
             // 打开即加载两个 tab（social 来自外部热搜 API，tech 来自本地预抓取）
-            // 仅加载一次：不注册任何自动刷新（用户要求「禁止自动更新，只手动更新」）
             fetchSocialHotlist();
             fetchTechNews();
             // 恢复侧栏宽度（拖动缩放持久化）与登录态
@@ -1949,15 +2139,36 @@ const app = createApp({
             initLogin();
             // 主题：默认浅色（老板偏好）
             initTheme();
+            // 个人中心：登录态/配置回填（云端 KV 或本机降级）
+            if (window.UserStore) {
+                await UserStore.init();
+                syncTick();
+                prefs.value.defaultPanel = UserStore.get('defaultPanel', 'hotboard');
+                prefs.value.defaultSocialPlatform = UserStore.get('defaultSocialPlatform', 'weibo');
+                prefs.value.syncApiKey = !!UserStore.get('syncApiKey', false);
+                favorites.value = UserStore.get('favorites', []);
+                const cloudTheme = UserStore.get('theme'); if (cloudTheme) applyTheme(cloudTheme);
+                const cloudShrink = UserStore.get('sidebarShrink'); if (typeof cloudShrink === 'number') applyShrink(cloudShrink);
+                const cloudHist = UserStore.get('aiHistory'); if (Array.isArray(cloudHist) && cloudHist.length > aiHistory.value.length) aiHistory.value = cloudHist;
+                socialPlatform.value = prefs.value.defaultSocialPlatform;
+                activePanel.value = prefs.value.defaultPanel;
+                window.addEventListener('online', () => { if (window.UserStore) UserStore._flushPending().then(syncTick); });
+            }
             // 按 Esc 也可关闭生成历史面板
             window.addEventListener('keydown', onKeydown);
             // PDF.js worker 指向同源 CDN，避免跨域加载失败
             if (typeof pdfjsLib !== 'undefined') {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'vendor/pdf.worker.min.js';
             }
+            // 静默自动刷新调度：先补跑一次（覆盖"刚好错过时段才打开页面"），再起 30s 心跳
+            autoRefreshTick();
+            autoTimer = setInterval(autoRefreshTick, AUTO_TICK_MS);
+            document.addEventListener('visibilitychange', onVisibilityChange);   // 休眠唤醒/切回标签立刻补判
         });
         onBeforeUnmount(() => {
             window.removeEventListener('keydown', onKeydown);
+            if (autoTimer) clearInterval(autoTimer);
+            document.removeEventListener('visibilitychange', onVisibilityChange);
         });
         function onKeydown(e) { if (e.key === 'Escape') aiHistoryOpen.value = false; }
 
@@ -1972,7 +2183,9 @@ const app = createApp({
             loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, dataSources, themeSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech, styleAnalysis,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,
+            socialPlatforms, currentPlatform, hasDirectUrl, itemOriginalUrl, copyHotLink, sendHotToAI,
             refreshCurrentTab, loadMoreTech, getTagClass, getSourceColor, formatTime, formatMB, truncate,
+            techSilentBusy, silentRefreshedAt, autoRefreshTitle,
             // AI 文案生成
             aiForm, aiOptions, platformPresets, applyPlatformPreset, aiGenerating, aiResult, aiResultTitle, aiResultTime, aiResultBlocks,
             aiResultPlain, aiResultPlainBlocks, aiTab, aiTotalChars, aiShowOutput, aiGeneratingStructured, aiGeneratingPlain,
@@ -1980,11 +2193,14 @@ const app = createApp({
             contentFileInput, contentParsing, contentDragover,
             isUrl, parseSources, isCiteActive, showCiteTooltip, hideCiteTooltip, scrollToSource, parseCitedText,
             toggleHistory, closeHistory, restoreHistory, deleteHistory, clearHistory,
-            // 新增：侧栏可拖动缩放 + 历史筛选
-            sidebarWidth, sidebarResizing, historyFilter, aiHistoryView,
-            startResizeSidebar,
+            // 新增：侧栏两阶段拖拽 + 历史筛选
+            sidebarWidth, sidebarMarginLeft, sidebarShrink, sidebarResizing, sidebarPhase, sidebarMax: SB_MAX, historyFilter, aiHistoryView,
+            startResizeSidebar, resetSidebar, onResizerKey,
             // 新增：登录 / 访客
-            loggedIn, loginUser, loginPass, loginErr, submitLogin, skipLogin, logout,
+            loggedIn, loginUser, loginPass, loginErr, loginBusy, submitLogin, skipLogin, logout,
+            // 新增：个人中心（云端 KV / 本机降级）
+            userState, prefs, favorites, savePrefs, toggleFavorite, isFavorite,
+            syncNow, exportProfile, importProfile, wipeProfile, applyTheme,
             // 新增：主题切换（浅色默认 / 深色）
             theme, toggleTheme,
             triggerContentFile, onContentFile, onContentDrop,

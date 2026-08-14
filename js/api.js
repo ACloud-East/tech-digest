@@ -46,6 +46,8 @@ const API = {
     clearOldCache() {
         Object.keys(localStorage).filter(k => k.startsWith(this.cachePrefix)).forEach(k => localStorage.removeItem(k));
     },
+    // 精确删除单个缓存键（静默刷新时绕过 30s 短缓存拿新数据，不连带清掉归档整包缓存）
+    dropCache(key) { try { localStorage.removeItem(this.cachePrefix + key); } catch (_) {} },
 
     // ---- 归档大缓存：Cache Storage（配额数百 MB，localStorage 只有 ~10MB 存不下 8000 篇）----
     // 同一浏览器配置的所有窗口共享；无痕窗口各自独立（这正是无痕测试互不影响的原因）。
@@ -162,11 +164,16 @@ const API = {
     async fetchHotFromUApi(type) {
         const data = await this.fetchJSON(`https://uapis.cn/api/v1/misc/hotboard?type=${type}`);
         if (data && data.list && Array.isArray(data.list)) {
-            return data.list.map(item => ({
-                title: item.title || '',
-                url: item.url || '#',
-                tag: (item.extra && item.extra.label) ? item.extra.label : ''
-            }));
+            return data.list.map(item => {
+                const raw = String(item.url || '').trim();
+                return {
+                    title: item.title || '',
+                    // 非法/占位链接一律置空，交给前端"站内搜索"兜底，不再把 '#' 当合法链接
+                    url: /^https?:\/\//i.test(raw) ? raw : '',
+                    tag: (item.extra && item.extra.label) ? item.extra.label : '',
+                    hot: (item.extra && (item.extra.hot || item.extra.num)) || item.hot || ''
+                };
+            });
         }
         return [];
     },
@@ -226,6 +233,25 @@ const API = {
             return TechFilter.isRelevant(item.title);
         });
     },
+
+    // 平台元数据：按钮渲染、官方榜单主页直达、无原帖时的站内搜索兜底，三处共用一份配置
+    socialPlatforms: [
+        { key:'weibo',   name:'微博热搜', icon:'fa-brands fa-weibo',          cls:'weibo',
+          home:'https://s.weibo.com/top/summary?cate=realtimehot', homeName:'微博热搜榜',
+          search: t => 'https://s.weibo.com/weibo?q=' + encodeURIComponent('#' + t + '#') },
+        { key:'douyin',  name:'抖音热搜', icon:'fa-brands fa-tiktok',         cls:'douyin',
+          home:'https://www.douyin.com/hot', homeName:'抖音热点榜',
+          search: t => 'https://www.douyin.com/search/' + encodeURIComponent(t) },
+        { key:'toutiao', name:'今日头条热搜', icon:'fa-solid fa-newspaper',   cls:'toutiao',
+          home:'https://www.toutiao.com/trending/', homeName:'今日头条热榜',
+          search: t => 'https://so.toutiao.com/search?keyword=' + encodeURIComponent(t) },
+        { key:'baidu',   name:'百度热搜', icon:'fa-solid fa-magnifying-glass', cls:'baidu',
+          home:'https://top.baidu.com/board?tab=realtime', homeName:'百度热搜榜',
+          search: t => 'https://www.baidu.com/s?wd=' + encodeURIComponent(t) },
+        { key:'zhihu',   name:'知乎热榜', icon:'fa-brands fa-zhihu',          cls:'zhihu',
+          home:'https://www.zhihu.com/hot', homeName:'知乎热榜',
+          search: t => 'https://www.zhihu.com/search?type=content&q=' + encodeURIComponent(t) },
+    ],
 
     // ==========================================
     // 科技资讯 — 读取预抓取的静态 JSON
@@ -302,38 +328,85 @@ const API = {
         const FALLBACK_MS = 30000;       // 静态整文件兜底（Function 挂时）
 
 
-        // ---- 进度状态机：实时抓取(小/快) 与 历史归档(大/慢) 并行，各自回报，合成统一进度 ----
-        const prog = { liveDone: false, archStarted: false, archLoaded: 0, archTotal: 0, archKnown: false, merging: false };
+        // ---- 进度状态机（复合加权 + 单调钳制 + 涓流补间 + Worker 子进度）----
+        // 权重：live 12 / archive 82 / merge 5 / finish 1（合计 100）。各阶段独立配额、内部细颗粒推进，
+        // 整体天然单调；4%→96% 的死跳（缓存命中不 emit / Worker 黑盒）彻底消除。
+        const W = { live: 12, archive: 82, merge: 5, finish: 1 };
+        const prog = {
+            liveDone: false, liveFrac: 0,
+            archStarted: false, archLoaded: 0, archTotal: 0, archKnown: false,
+            archIsParts: false, archIsByte: false, archRetrying: 0, archFrac: 0,
+            merging: false, mergePhase: '', mergeFrac: 0,
+            finishing: false, finishFrac: 0, done: false, lastPct: 0,
+        };
+        const MERGE_LABEL = {
+            'dedupe-base': '正在按标题去重历史归档…',
+            'dedupe-live': '正在并入实时抓取的新文章…',
+            'clean':       '正在清洗标题/摘要中的 HTML 实体…',
+            'sort':        '正在按时间倒序排序…',
+            'trim':        '正在截断到上限并打包…',
+        };
         const fmtMB = (b) => b >= 1048576 ? (b / 1048576).toFixed(2) + ' MB'
             : b >= 1024 ? (b / 1024).toFixed(0) + ' KB' : b + ' B';
+        const composite = () => {
+            let p = 0;
+            if (prog.liveDone) p += W.live; else p += W.live * Math.max(0, Math.min(1, prog.liveFrac));
+            if (prog.archStarted) {
+                const af = prog.archKnown
+                    ? (prog.archTotal ? Math.min(1, prog.archLoaded / prog.archTotal) : prog.archFrac)
+                    : prog.archFrac;
+                p += W.archive * Math.max(0, Math.min(1, af));
+            }
+            if (prog.merging)   p += W.merge * Math.max(0, Math.min(1, prog.mergeFrac));
+            if (prog.finishing) p += W.finish * Math.max(0, Math.min(1, prog.finishFrac));
+            return p;
+        };
         const emit = () => {
-            let percent, label, indeterminate = false;
-            if (prog.merging) {
-                percent = 96; label = '正在合并文章、去重并排序…';
-            } else if (prog.archStarted) {
+            if (prog.done) {
+                prog.lastPct = 100;
+                onProgress({ stage: 'done', label: '加载完成', percent: 100, percentExact: 100, indeterminate: false, loaded: 0, total: 0, byteMode: false });
+                return;
+            }
+            let pct = composite();
+            if (pct < prog.lastPct) pct = prog.lastPct;   // 单调不回退（重试回滚字节时尤其重要）
+            if (pct > 99.4) pct = 99.4;                    // 只有 done 能到 100
+            prog.lastPct = pct;
+            let label, stage;
+            if (prog.merging)        { stage = 'merge';   label = MERGE_LABEL[prog.mergePhase] || '正在合并文章、去重并排序…'; }
+            else if (prog.finishing) { stage = 'finish';  label = '正在写入本地缓存，下次打开可秒开…'; }
+            else if (prog.archStarted) {
+                stage = 'archive';
                 if (prog.archKnown && prog.archTotal) {
-                    const frac = Math.min(1, prog.archLoaded / prog.archTotal);
-                    percent = Math.round(frac * 82) + (prog.liveDone ? 12 : 0); // 归档占 82%，实时占 12%，合并 6%
                     if (prog.archIsParts) {
-                        if (prog.archIsByte) {
-                            label = `正在加载历史归档分片 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}`;
-                        } else {
-                            label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}`;
-                        }
-                        if (prog.archRetrying) label += `（已自动重试 ${prog.archRetrying} 次，正在换连接续传）`;
+                        if (prog.archIsByte) label = `正在加载历史归档分片 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}`;
+                        else label = `正在加载历史归档分片 ${prog.archLoaded} / ${prog.archTotal}`;
                     } else {
                         label = `正在加载历史归档 ${fmtMB(prog.archLoaded)} / ${fmtMB(prog.archTotal)}`;
                     }
+                    if (prog.archRetrying) label += `（已自动重试 ${prog.archRetrying} 次，正在换连接续传）`;
                 } else {
-                    percent = -1; indeterminate = true; // 服务端分块压缩传输、拿不到总大小 → 走不确定动画 + 已下载量
-                    label = `正在加载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知）`;
+                    label = `正在加载历史归档 ${fmtMB(prog.archLoaded)}…（压缩分块传输，总大小未知，按已下载量估算）`;
                 }
             } else {
-                percent = prog.liveDone ? 12 : 4;
+                stage = 'live';
                 label = prog.liveDone ? '实时资讯已就绪，正在准备历史归档…' : '正在抓取实时科技资讯…';
             }
-            onProgress({ stage: prog.merging ? 'merge' : (prog.archStarted ? 'archive' : 'live'), label, percent, indeterminate, loaded: prog.archLoaded, total: prog.archTotal, byteMode: !!prog.archIsByte });
+            onProgress({
+                stage, label,
+                percent: Math.round(pct),          // 文字用整数
+                percentExact: +pct.toFixed(2),     // CSS width 用小数，视觉更连续
+                indeterminate: prog.archStarted && !prog.archKnown,
+                loaded: prog.archLoaded, total: prog.archTotal, byteMode: !!prog.archIsByte,
+            });
         };
+        // 涓流补间：任何等待窗口都让进度条缓慢逼近阶段上限，杜绝"静止=卡死"错觉
+        const creepTimer = setInterval(() => {
+            let moved = false;
+            if (!prog.liveDone && prog.liveFrac < 0.9)         { prog.liveFrac = Math.min(0.9, prog.liveFrac + 0.06); moved = true; }
+            if (prog.archStarted && !prog.archKnown && prog.archFrac < 0.85) { prog.archFrac = Math.min(0.85, prog.archFrac + 0.04); moved = true; }
+            if (prog.merging && prog.mergeFrac < 0.96)         { prog.mergeFrac = Math.min(0.96, prog.mergeFrac + 0.03); moved = true; }
+            if (moved && !prog.done) emit();
+        }, 200);
         emit();
 
         // 1) 实时抓取（小体积，先到先渲染；失败不影响历史语料）。完成后回报，让进度条推进到 12%
@@ -386,13 +459,14 @@ const API = {
             if (Array.isArray(data.articles)) return data.articles;
             return [];
         };
-        const readChunksArchive = async (need) => {
+        const readChunksArchive = async (need, onScan) => {
             let articles = [];
             // 扫描到 80（上限，容错中间断层）：已下载块可能不连续
             for (let i = 0; i < 80; i++) {
                 const c = await this.getChunkCache(i);
                 const a = toArticles(c);
                 if (a.length) articles.push(...a);
+                if (onScan) onScan(i + 1, 80, articles.length);
             }
             if (articles.length >= (need || 1)) return { articles, updateTime: '' };
             return null;
@@ -464,11 +538,23 @@ const API = {
             const whole = await this.getArchiveCache(ARCHIVE_TTL);
             if (whole && whole.articles && whole.articles.length >= 7000) {
                 console.warn(`[archive] 整包缓存 ${whole.articles.length} 篇，秒开`);
-                prog.archStarted = true; prog.archIsParts = false; prog.archIsByte = true;
-                prog.archKnown = true; prog.archTotal = whole.articles.length; prog.archLoaded = whole.articles.length; emit();
+                // 分 4 帧渐进，让 0%→82% 有动画而非瞬移
+                prog.archStarted = true; prog.archIsParts = false; prog.archIsByte = false;
+                prog.archKnown = true; prog.archTotal = whole.articles.length;
+                for (const f of [0.2, 0.5, 0.78, 1]) {
+                    prog.archLoaded = Math.round(whole.articles.length * f);
+                    emit();
+                    await new Promise(r => (typeof requestAnimationFrame === 'function' ? requestAnimationFrame(r) : setTimeout(r, 16)));
+                }
                 return { articles: whole.articles, updateTime: whole.updateTime || '' };
             }
-            const cached = await readChunksArchive(7000);
+            const cached = await readChunksArchive(7000, (scanned, total, count) => {
+                if (!count) return;   // 没扫到任何已缓存块就不打扰，交给 downloadChunks
+                prog.archStarted = true; prog.archKnown = true; prog.archIsParts = true; prog.archIsByte = false;
+                prog.archFrac = scanned / total;
+                prog.archLoaded = scanned; prog.archTotal = total;
+                emit();
+            });
             if (cached) {
                 console.warn(`[archive] 分块缓存已齐 ${cached.articles.length} 篇，秒开`);
                 return { articles: cached.articles, updateTime: cached.updateTime || '' };
@@ -515,6 +601,7 @@ const API = {
         if ((!live || !live.length) && (!base || !base.length) && cached) {
             this.setCache(cacheKey, cached, ARCHIVE_TTL); // 续命缓存 TTL
             onProgress({ stage: 'done', label: '联网拉取失败，已使用本地缓存展示', percent: 100, indeterminate: false, loaded: 0, total: 0 });
+            clearInterval(creepTimer);
             return cached;
         }
 
@@ -530,55 +617,74 @@ const API = {
         // 真正让数量增长的是服务端：scripts/fetch-news.js 已改为累加归档（每小时并入新文，
         // 上限 8000），data/news.json 会持续变大，前端总数随之自然增长。
         // 这里仍只去掉「同一次实时抓取内」的重复、允许与历史归档重复，以免总量被削。
-        prog.merging = true; emit();
+        prog.merging = true; prog.mergeFrac = 0; emit();
+        // 主线程回退合并（分片 + await 让出，带进度，不锁死 UI）
+        const mergeOnMainThread = async (b, lv) => {
+            const keyOf = (a) => (a && a.title ? String(a.title) : '').trim().toLowerCase();
+            const yieldUI = () => new Promise(r => setTimeout(r, 0));
+            const step = (phase, f) => { prog.mergePhase = phase; prog.mergeFrac = Math.max(prog.mergeFrac, f); emit(); };
+            const CH = 500;
+            const map = new Map();
+            const ba = (b && b.articles) || [];
+            for (let i = 0; i < ba.length; i += CH) {
+                for (let j = i; j < Math.min(i + CH, ba.length); j++) { const k = keyOf(ba[j]); if (k) map.set(k, ba[j]); }
+                step('dedupe-base', 0.40 * Math.min(1, (i + CH) / (ba.length || 1)));
+                await yieldUI();
+            }
+            for (const a of (lv || [])) { const k = keyOf(a); if (k) map.set(k, a); }
+            step('dedupe-live', 0.46);
+            let merged = Array.from(map.values());
+            for (let i = 0; i < merged.length; i += CH) {
+                for (let j = i; j < Math.min(i + CH, merged.length); j++) merged[j] = this._cleanArticle(merged[j]);
+                step('clean', 0.46 + 0.30 * Math.min(1, (i + CH) / (merged.length || 1)));
+                await yieldUI();
+            }
+            step('sort', 0.80); await yieldUI();
+            const ts = new Map(); for (const a of merged) ts.set(a, new Date((a && a.time) || 0).getTime() || 0);
+            merged.sort((x, y) => ts.get(y) - ts.get(x));
+            step('sort', 0.94);
+            if (merged.length > 8000) merged = merged.slice(0, 8000);
+            step('trim', 1);
+            return { articles: merged, updateTime: (lv && lv.length) ? new Date().toISOString() : (b ? b.updateTime : ''),
+                     live: !!lv, baseCount: ba.length, liveCount: lv ? lv.length : 0 };
+        };
         let payload;
         try {
-            // 优先在 Web Worker 中合并/清洗/排序，避免主线程被数千篇文章阻塞导致进度条卡顿
-            payload = await this._mergeInWorker(base && base.articles, live, base && base.updateTime, !!live && live.length > 0);
+            // 优先在 Web Worker 中合并/清洗/排序（带子进度回调），避免主线程被数千篇文章阻塞
+            payload = await this._mergeInWorker(base && base.articles, live, base && base.updateTime, !!live && live.length > 0,
+                (phase, frac) => { prog.mergePhase = phase; prog.mergeFrac = Math.max(prog.mergeFrac, frac); emit(); });
         } catch (err) {
             console.warn('Worker 合并失败，回退主线程:', err.message);
-            // 降级方案：主线程同步合并（老旧浏览器或不支持 Worker 时）
-            // 同样做 base+live 全局去重，实时抓取优先，避免"完全重复"的条目。
-            const keyOf = (a) => (a && a.title ? String(a.title) : '').trim().toLowerCase();
-            const map = new Map();
-            for (const a of ((base && base.articles) || [])) {
-                const k = keyOf(a);
-                if (k) map.set(k, a);
-            }
-            for (const a of (live || [])) {
-                const k = keyOf(a);
-                if (k) map.set(k, a);
-            }
-            let merged = Array.from(map.values()).map(a => this._cleanArticle(a));
-            merged.sort((x, y) => new Date(y.time || 0) - new Date(x.time || 0));
-            if (merged.length > 8000) merged = merged.slice(0, 8000);
-            const updateTime = (live && live.length) ? new Date().toISOString() : (base ? base.updateTime : '');
-            payload = { articles: merged, updateTime, live: !!live, baseCount: (base && base.articles) ? base.articles.length : 0, liveCount: live ? live.length : 0 };
+            payload = await mergeOnMainThread(base, live);
         }
+        prog.merging = false; prog.finishFrac = 0.5; emit();
         this.setCache(cacheKey, payload, ARCHIVE_TTL);
-        onProgress({ stage: 'done', label: `加载完成，共 ${payload.articles.length} 篇`, percent: 100, indeterminate: false, loaded: 0, total: 0 });
+        prog.finishing = true; prog.finishFrac = 1; prog.done = true; emit();
+        clearInterval(creepTimer);
         return payload;
     },
 
-    // 在独立 Worker 线程中合并，避免阻塞 UI 主线程
-    _mergeInWorker(baseArticles, liveArticles, baseUpdateTime, liveAvailable) {
+    // 在独立 Worker 线程中合并，避免阻塞 UI 主线程；onStep(phase, frac) 上报子进度
+    _mergeInWorker(baseArticles, liveArticles, baseUpdateTime, liveAvailable, onStep) {
         return new Promise((resolve, reject) => {
             let worker;
             try {
-                worker = new Worker('js/merge-worker.js?v=2608061001');
+                worker = new Worker('js/merge-worker.js?v=2608141201');
             } catch (e) {
                 reject(e);
                 return;
             }
-            let settled = false;
-            const cleanup = () => {
-                if (settled) return;
-                settled = true;
-                clearTimeout(timer);
-                try { worker.terminate(); } catch (_) {}
+            let settled = false, lastBeat = Date.now();
+            // 心跳看门狗：20s 内没有任何 progress/result 才判定挂死（原"总耗时 15s 就杀"会误杀慢机）
+            const hb = setInterval(() => { if (Date.now() - lastBeat > 20000) { cleanup(); reject(new Error('Worker 合并无响应超时')); } }, 2000);
+            worker.onmessage = (e) => {
+                const d = e.data || {};
+                lastBeat = Date.now();
+                if (d.type === 'progress') { if (onStep) onStep(d.phase, d.frac); return; }
+                cleanup();
+                if (d.type === 'result') resolve(d.payload);
+                else reject(new Error('Worker 返回格式异常'));
             };
-            const timer = setTimeout(() => { cleanup(); reject(new Error('Worker 合并超时')); }, 15000);
-            worker.onmessage = (e) => { cleanup(); resolve(e.data && e.data.payload); };
             worker.onerror = (err) => { cleanup(); reject(err); };
             worker.postMessage({ base: baseArticles, live: liveArticles, updateTime: baseUpdateTime, liveAvailable });
         });
