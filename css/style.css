@@ -1666,31 +1666,41 @@ ul { list-style: none; }
     position: fixed; inset: 0; z-index: 2000;
     display: flex; align-items: center; justify-content: center;
     background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(139,92,246,0.25), transparent 60%),
-        radial-gradient(1000px 500px at 90% 90%, rgba(6,182,212,0.22), transparent 55%),
-        linear-gradient(160deg, #070b14 0%, #0a0e17 45%, #0d1322 100%);
+        radial-gradient(1200px 600px at 20% 10%, rgba(139,92,246,0.30), transparent 60%),
+        radial-gradient(1000px 500px at 90% 90%, rgba(6,182,212,0.24), transparent 55%),
+        linear-gradient(160deg, #0a0714 0%, #0a0e1c 45%, #120a22 100%);
     overflow: hidden;
 }
+/* 第三层光晕（紫色为主，更炫酷，参考通义千问紫系） */
+.login-aurora {
+    position: absolute; inset: -10%; z-index: 1; pointer-events: none;
+    background:
+        radial-gradient(560px 560px at 50% 42%, rgba(139,92,246,0.18), transparent 62%),
+        radial-gradient(420px 420px at 72% 28%, rgba(6,182,212,0.14), transparent 60%),
+        radial-gradient(360px 360px at 28% 72%, rgba(236,72,153,0.12), transparent 60%);
+    animation: loginFloat 14s ease-in-out infinite;
+}
+@keyframes loginFloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-18px) scale(1.06); } }
 .login-overlay::before {
-    content: ''; position: absolute; width: 520px; height: 520px; border-radius: 50%;
-    background: conic-gradient(from 0deg, #0ea5e9, #8b5cf6, #ec4899, #0ea5e9);
-    filter: blur(90px); opacity: 0.28; top: -120px; left: -80px;
+    content: ''; position: absolute; width: 560px; height: 560px; border-radius: 50%;
+    background: conic-gradient(from 0deg, #8b5cf6, #06b6d4, #ec4899, #a855f7, #8b5cf6);
+    filter: blur(95px); opacity: 0.30; top: -130px; left: -90px;
     animation: loginSpin 18s linear infinite;
 }
 .login-overlay::after {
-    content: ''; position: absolute; width: 460px; height: 460px; border-radius: 50%;
-    background: conic-gradient(from 180deg, #ec4899, #0ea5e9, #8b5cf6, #ec4899);
-    filter: blur(90px); opacity: 0.22; bottom: -140px; right: -60px;
+    content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+    background: conic-gradient(from 180deg, #06b6d4, #8b5cf6, #a855f7, #06b6d4);
+    filter: blur(95px); opacity: 0.24; bottom: -150px; right: -70px;
     animation: loginSpin 22s linear infinite reverse;
 }
 @keyframes loginSpin { to { transform: rotate(360deg); } }
 .login-card {
-    position: relative; z-index: 2; width: 360px; max-width: 90vw;
-    padding: 34px 30px 28px; border-radius: 20px; text-align: center;
+    position: relative; z-index: 2; width: 420px; max-width: 92vw;
+    padding: 38px 36px 30px; border-radius: 22px; text-align: center;
     background: rgba(17, 24, 39, 0.55);
     border: 1px solid rgba(139, 92, 246, 0.35);
     backdrop-filter: blur(18px) saturate(140%);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 40px rgba(139,92,246,0.18);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.55), 0 0 46px rgba(139,92,246,0.20);
     animation: loginIn .5s ease both;
 }
 @keyframes loginIn { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
@@ -1734,6 +1744,42 @@ ul { list-style: none; }
     color: var(--text-muted); font-size: 0.76rem; transition: color .15s;
 }
 .login-guest:hover { color: var(--text-secondary); text-decoration: underline; }
+
+/* ================= 浅色主题下的登录页（默认）：更浅、更透气、紫系炫光 ================= */
+html[data-theme="light"] .login-overlay {
+    background:
+        radial-gradient(900px 520px at 12% 0%, rgba(139,92,246,0.26), transparent 60%),
+        radial-gradient(820px 480px at 100% 100%, rgba(6,182,212,0.20), transparent 55%),
+        radial-gradient(680px 420px at 82% 12%, rgba(236,72,153,0.16), transparent 55%),
+        linear-gradient(160deg, #f6f4ff 0%, #eef3fb 48%, #f4ecff 100%);
+}
+html[data-theme="light"] .login-aurora {
+    background:
+        radial-gradient(640px 560px at 50% 40%, rgba(139,92,246,0.16), transparent 62%),
+        radial-gradient(440px 420px at 74% 26%, rgba(6,182,212,0.13), transparent 60%),
+        radial-gradient(380px 360px at 26% 74%, rgba(236,72,153,0.11), transparent 60%),
+        linear-gradient(rgba(139,92,246,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+}
+html[data-theme="light"] .login-overlay::before {
+    background: conic-gradient(from 0deg, #8b5cf6, #06b6d4, #ec4899, #a855f7, #8b5cf6);
+    opacity: 0.38; filter: blur(105px);
+}
+html[data-theme="light"] .login-overlay::after {
+    background: conic-gradient(from 180deg, #06b6d4, #8b5cf6, #a855f7, #06b6d4);
+    opacity: 0.32; filter: blur(105px);
+}
+html[data-theme="light"] .login-card {
+    width: 440px;
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(139, 92, 246, 0.40);
+    box-shadow: 0 24px 70px rgba(76, 29, 149, 0.18), 0 0 50px rgba(139, 92, 246, 0.16);
+}
+html[data-theme="light"] .login-field {
+    background: rgba(255, 255, 255, 0.85); border: 1px solid rgba(139, 92, 246, 0.25);
+}
+html[data-theme="light"] .login-field:focus-within { border-color: var(--accent-purple); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.16); }
 
 /* 移动端隐藏可拖动分隔条 */
 @media (max-width: 900px) {

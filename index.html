@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>科技数码文案 - TechDigest</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2322d3ee'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%230b1220' font-family='Arial'%3E%F0%9F%94%A5%3C/text%3E%3C/svg%3E">
-    <link rel="stylesheet" href="css/style.css?v=33">
+    <link rel="stylesheet" href="css/style.css?v=34">
     <link rel="stylesheet" href="vendor/fontawesome-all.min.css">
     <style>[v-cloak]{display:none!important}</style>
 </head>
@@ -13,6 +13,7 @@
     <div id="app" v-cloak>
         <!-- 登录遮罩（user / 123，或右下角访客跳过） -->
         <div class="login-overlay" v-if="!loggedIn">
+            <div class="login-aurora" aria-hidden="true"></div>
             <div class="login-card">
                 <div class="login-logo"><i class="fa-solid fa-microchip"></i><span>TechDigest</span></div>
                 <h2>欢迎回来</h2>
