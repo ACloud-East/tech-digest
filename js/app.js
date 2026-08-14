@@ -139,6 +139,8 @@ const app = createApp({
         const loginUser = ref('');
         const loginPass = ref('');
         const loginErr = ref('');
+        // 主题：浅色（默认）/ 深色
+        const theme = ref('light');
         const contentFileInput = ref(null); // 原文上传的隐藏 file input
         const contentParsing = ref(false);  // 正在解析 Word/PDF
         const contentDragover = ref(false); // 拖拽悬停态
@@ -827,6 +829,23 @@ const app = createApp({
         function logout() {
             loggedIn.value = false; loginUser.value = ''; loginPass.value = ''; loginErr.value = '';
             try { localStorage.removeItem(LS_LOGIN_KEY); } catch (_) {}
+        }
+
+        // ====== 主题切换（浅色默认 / 深色） ======
+        const LS_THEME_KEY = 'td_theme_v1';
+        function applyTheme(t) {
+            theme.value = t;
+            document.documentElement.setAttribute('data-theme', t);
+        }
+        function initTheme() {
+            let t = 'light'; // 老板偏好浅色，默认浅色
+            try { const s = localStorage.getItem(LS_THEME_KEY); if (s === 'dark' || s === 'light') t = s; } catch (_) {}
+            applyTheme(t);
+        }
+        function toggleTheme() {
+            const next = theme.value === 'light' ? 'dark' : 'light';
+            applyTheme(next);
+            try { localStorage.setItem(LS_THEME_KEY, next); } catch (_) {}
         }
 
         // ====== 原文 Word / PDF 上传：前端提取文本填入「参考原文内容」 ======
@@ -1928,6 +1947,8 @@ const app = createApp({
             // 恢复侧栏宽度（拖动缩放持久化）与登录态
             initSidebarWidth();
             initLogin();
+            // 主题：默认浅色（老板偏好）
+            initTheme();
             // 按 Esc 也可关闭生成历史面板
             window.addEventListener('keydown', onKeydown);
             // PDF.js worker 指向同源 CDN，避免跨域加载失败
@@ -1964,6 +1985,8 @@ const app = createApp({
             startResizeSidebar,
             // 新增：登录 / 访客
             loggedIn, loginUser, loginPass, loginErr, submitLogin, skipLogin, logout,
+            // 新增：主题切换（浅色默认 / 深色）
+            theme, toggleTheme,
             triggerContentFile, onContentFile, onContentDrop,
             generateArticle, regenerateArticle, copyResult, downloadResult,
             // 新增：编辑 / 对话修改 / 校对面板

@@ -35,6 +35,37 @@
     --content-max-width: 1260px;
 }
 
+/* ================= 浅色主题（默认） ================= */
+/* 老板偏好浅色：默认 data-theme=light。变量覆盖后，绝大多数组件（用语义变量）自动翻转。 */
+html[data-theme="light"] {
+    --bg-primary: #f4f6fb;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #eef1f7;
+    --bg-card: #ffffff;
+    --bg-hover: #e8edf4;
+    --border-color: #d4dce8;
+    --border-light: #c2cee0;
+    --text-primary: #1b2435;
+    --text-secondary: #55617a;
+    --text-muted: #8b96ab;
+    --shadow-sm: 0 1px 3px rgba(20,30,50,0.08);
+    --shadow-md: 0 4px 12px rgba(20,30,50,0.12);
+    --shadow-lg: 0 8px 30px rgba(20,30,50,0.16);
+}
+/* 少量硬编码深色面板的浅色覆盖 */
+html[data-theme="light"] .top-bar { background: rgba(255,255,255,0.86); }
+html[data-theme="light"] .loading-overlay { background: rgba(244,246,251,0.92); }
+html[data-theme="light"] .ai-edit-pane { background: rgba(232,237,244,0.7); }
+html[data-theme="light"] .ai-chat-panel { background: rgba(232,237,244,0.6); }
+html[data-theme="light"] .ai-chat-input { background: #ffffff; }
+html[data-theme="light"] .ai-proof-panel { background: rgba(232,237,244,0.6); }
+html[data-theme="light"] .ai-proof-item { background: rgba(232,237,244,0.7); }
+html[data-theme="light"] .ai-proof-note-input { background: #ffffff; }
+html[data-theme="light"] .ai-cite:hover { color: #06222b; }
+/* 浅色下滚动条更柔和 */
+html[data-theme="light"] ::-webkit-scrollbar-thumb { background: #c2cee0; }
+html[data-theme="light"] ::-webkit-scrollbar-track { background: #eef1f7; }
+
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { font-size: 15px; }
@@ -1622,6 +1653,13 @@ ul { list-style: none; }
     cursor: pointer; transition: var(--transition); font-size: 0.9rem;
 }
 .logout-btn:hover { color: var(--accent-pink); border-color: var(--accent-pink); }
+/* 主题切换按钮（浅色/深色） */
+.theme-btn {
+    background: transparent; border: 1px solid var(--border-color);
+    color: var(--text-secondary); width: 34px; height: 34px; border-radius: 8px;
+    cursor: pointer; transition: var(--transition); font-size: 0.9rem;
+}
+.theme-btn:hover { color: var(--accent-cyan); border-color: var(--accent-cyan); }
 
 /* ================= 登录遮罩（玻璃拟态 + 渐变炫光） ================= */
 .login-overlay {
