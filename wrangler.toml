@@ -1,3 +1,10 @@
 name = "tech-digest"
 compatibility_date = "2024-07-01"
 pages_build_output_dir = "."
+
+# KV 绑定（云端个人中心 / 用户配置持久化）
+# 生产用 ccbfc156963e48ada487ea3163ce3c3d，预览用 4236d23cd7494b2cb026695d0f158284
+[[kv_namespaces]]
+binding = "TD_USERS"
+id = "ccbfc156963e48ada487ea3163ce3c3d"
+preview_id = "4236d23cd7494b2cb026695d0f158284"
