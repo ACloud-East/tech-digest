@@ -6,7 +6,7 @@
 
 const FEEDS = [
     { key: 'ithome',        name: 'IT之家',        color: '#e13b3f', url: 'https://www.ithome.com/rss/' },
-    { key: '36kr',          name: '36氪',          color: '#0066ff', url: 'https://36kr.com/feed', fallback: ['https://rsshub.rssforever.com/36kr/news', 'https://hub.slarker.me/36kr/news', 'https://rsshub.ktachibana.party/36kr/news'] },
+    { key: '36kr',          name: '36氪',          color: '#0066ff', url: 'https://www.36kr.com/feed', fallback: ['https://rsshub.rssforever.com/36kr/news', 'https://hub.slarker.me/36kr/news', 'https://rsshub.ktachibana.party/36kr/news'] },
     { key: 'netease',       name: '网易科技',      color: '#e60012', url: 'https://tech.163.com/', type: 'netease' },
     { key: 'oschina',       name: '开源中国',      color: '#e67e22', url: 'https://www.oschina.net/news/rss' },
     { key: 'leiphone',      name: '雷锋网',        color: '#0a8f3c', url: 'https://www.leiphone.com/feed' },
@@ -26,6 +26,11 @@ const FEEDS = [
     { key: 'devto',         name: 'Dev.to',        color: '#4b3e99', url: 'https://dev.to/feed' },
     { key: 'darkreading',   name: 'Dark Reading',  color: '#1a1a2e', url: 'https://www.darkreading.com/rss.xml' },
     { key: 'zdnet',         name: 'ZDNet',         color: '#0066cc', url: 'https://www.zdnet.com/news/rss.xml' },
+    // ── 用户反馈缺失的 5 大科技源（已逐一验证 RSS 可达且可解析）──
+    { key: 'geekpark',      name: '极客公园',       color: '#00c4ff', url: 'https://www.geekpark.net/rss' },
+    { key: 'dpreview',      name: 'DPReview',       color: '#0b66c2', url: 'https://www.dpreview.com/feed/' },
+    { key: 'cnet',          name: 'CNET',          color: '#1a73e8', url: 'https://www.cnet.com/rss/news/' },
+    { key: 'impresswatch',  name: 'Impress Watch', color: '#b71c1c', url: 'https://www.watch.impress.co.jp/data/rss/1.0/ipw/feed.rdf' },
 ];
 
 function decodeEntities(s) {
