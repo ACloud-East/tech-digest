@@ -6,6 +6,9 @@
 const UserStore = {
     LS_GUEST: 'td_profile_guest_v1',
     LS_PENDING: 'td_profile_pending_v1',
+    // 云端镜像：已登录时每次写入同时落地本机。作用——即使某次云端 PUT 因网络/冲突偶发失败，
+    // 强制刷新（Ctrl+Shift+R）后也能从镜像秒级恢复，绝不丢记录（云端恢复成功后再以云端为准合并）。
+    LS_MIRROR: 'td_profile_cloud_mirror_v1',
     // 白名单：只有这些键会被同步（防止把 base64 插图、临时草稿等误上云）
     SYNC_KEYS: [
         'theme', 'defaultPanel', 'defaultSocialPlatform', 'hotboardTab',
@@ -20,22 +23,47 @@ const UserStore = {
     _timer: null,
 
     async init() {
+        const mirror = this._loadMirror();          // 先取本机镜像（已写未落库的数据也在这里）
         try {
             const r = await fetch('/api/auth/me', { credentials: 'same-origin', cache: 'no-store' });
             const d = await r.json();
             if (d && d.ok) {
                 this.state.mode = 'cloud'; this.state.username = d.username;
                 await this.pull();
+                // 云端为准，但用镜像补回"已写但上次 PUT 未成功落库"的条目（favorites/aiHistory 取并集）
+                this.data = this._mergeMirrorInto(this.data, mirror);
+                this._saveMirror();
                 this.state.loaded = true;
                 this._flushPending();
                 return this.state;
             }
-        } catch (e) { console.warn('[UserStore] /api/auth/me 失败，降级访客模式:', e.message); }
-        // 后端未就绪（无 KV/AUTH_SECRET）→ 浏览器本地按用户命名空间
+        } catch (e) { console.warn('[UserStore] /api/auth/me 失败，降级镜像恢复:', e.message); }
+        // 后端未就绪（无 KV/AUTH_SECRET）或会话失效 → 本机镜像兜底，绝不丢记录
         this.state.mode = 'guest'; this.state.username = '';
-        try { this.data = JSON.parse(localStorage.getItem(this.LS_GUEST) || '{}') || {}; } catch { this.data = {}; }
+        this.data = mirror;
         this.state.loaded = true;
         return this.state;
+    },
+
+    _loadMirror() {
+        try { return JSON.parse(localStorage.getItem(this.LS_MIRROR) || '{}') || {}; } catch { return {}; }
+    },
+    _saveMirror() {
+        try { localStorage.setItem(this.LS_MIRROR, JSON.stringify(this._sanitize())); } catch (_) {}
+    },
+    // 云端优先；镜像仅在云端缺失该键/条目时补位（favorites/aiHistory 按 url/id 取并集，避免丢本地新增）
+    _mergeMirrorInto(data, mirror) {
+        const out = { ...mirror, ...data };
+        for (const k of ['favorites', 'aiHistory']) {
+            const c = Array.isArray(data[k]) ? data[k] : [];
+            const m = Array.isArray(mirror[k]) ? mirror[k] : [];
+            if (!c.length && m.length) out[k] = m;
+            else if (c.length && m.length) {
+                const seen = new Set(c.map(x => x.url || x.id));
+                out[k] = c.concat(m.filter(x => !seen.has(x.url || x.id)));
+            }
+        }
+        return out;
     },
 
     async pull() {
@@ -70,6 +98,7 @@ const UserStore = {
         if (this.SYNC_KEYS.indexOf(k) < 0) { console.warn('[UserStore] 未在 SYNC_KEYS 白名单内，忽略:', k); return; }
         this.data[k] = v;
         if (this.state.mode === 'guest') { this._saveGuest(); return; }
+        this._saveMirror();                          // 立即镜像，强制刷新也不丢
         clearTimeout(this._timer);
         this._timer = setTimeout(() => this.flush(), immediate ? 0 : 800);
     },
@@ -107,6 +136,7 @@ const UserStore = {
             if (!d.ok) throw new Error(d.error || ('HTTP ' + r.status));
             this.state.v = d.v; this.state.updatedAt = d.updatedAt;
             this.state.lastSyncAt = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            this._saveMirror();                       // 云端落库成功 → 镜像同步为权威快照
             try { localStorage.removeItem(this.LS_PENDING); } catch (_) {}
         } catch (e) {
             this.state.lastError = e.message || '同步失败';

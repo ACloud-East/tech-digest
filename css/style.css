@@ -551,9 +551,19 @@ html.sb-dragging .sidebar { transition: none !important; }     /* 拖拽中禁�
     transition: var(--transition); display: flex; flex-direction: column; gap: 8px;
 }
 .tech-card:hover { border-color: var(--accent-cyan); transform: translateY(-1px); box-shadow: var(--shadow-lg); }
-.tech-card-header { display: flex; align-items: center; justify-content: space-between; }
+.tech-card-header { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .tech-source-badge { font-size: 0.66rem; padding: 2px 8px; border-radius: 4px; color: #fff; font-weight: 600; }
-.tech-time { font-size: 0.7rem; color: var(--text-muted); }
+.tech-time { font-size: 0.7rem; color: var(--text-muted); margin-left: auto; }
+/* 热门度徽章 / 热度分 */
+.tech-hot-badge {
+    font-size: 0.62rem; padding: 2px 7px; border-radius: 4px; font-weight: 700; letter-spacing: .5px;
+    background: linear-gradient(135deg, #ff8a00, #ff5e3a); color: #fff; box-shadow: 0 1px 4px rgba(255,94,58,.35);
+}
+.tech-hot-badge.explode { background: linear-gradient(135deg, #ff3b3b, #ff0050); box-shadow: 0 1px 6px rgba(255,0,80,.45); }
+.tech-heat { font-size: 0.66rem; color: #ff7a18; font-weight: 600; padding: 1px 6px; border-radius: 4px; background: rgba(255,122,24,.1); }
+.tech-sort { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.hot-only { display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; color: var(--text-secondary); cursor: pointer; margin-left: 4px; user-select: none; }
+.hot-only input { accent-color: var(--accent-blue); cursor: pointer; }
 .tech-card-title { font-size: 0.9rem; font-weight: 600; line-height: 1.45; }
 .tech-card-title a {
     color: var(--text-primary);

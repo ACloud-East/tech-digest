@@ -28,6 +28,117 @@ const app = createApp({
         const techSearchQuery = ref('');
         const techPageSize = 50;
         const techDisplayCount = ref(50);
+        // 排序模式：latest=按时间（最新），hot=按热门度；techHotOnly=仅看热门池
+        const techSortMode = ref('latest');
+        const techHotOnly = ref(false);
+
+        // ========== 热门度（hotScore）算法 ==========
+        // 综合四项信号，权重经规划（sum=1）：
+        //   wBuzz    0.40 —— 跨源同主题热度（用户核心诉求：多平台同一天/相近时间发布同主题=热门）
+        //   wInter   0.30 —— 互动量（阅读/点赞/评论）；用户明确要求权重高过新鲜度，故置于次高。
+        //                        RSS 源大多不携带互动数，预留 a._interaction 钩子，源提供即生效
+        //                        （如 36氪 文章页阅读/评论数经抓取注入后自动参与打分）。
+        //   wRecency 0.15 —— 时效性：越新越热（指数衰减，半衰期≈24h）；已低于互动量权重。
+        //   wTopic   0.15 —— 当日热门话题权重（语料级：某实体当天被多少源报道）。
+        // 热门池：按 hotScore 取 Top N（默认 100）标「热门」徽章；Top 20 标「爆」。
+        const HOT_POOL_SIZE = 100;
+        const HOT_EXPLODE_SIZE = 20;
+        const W_RECENCY = 0.15, W_BUZZ = 0.40, W_TOPIC = 0.15, W_INTER = 0.30;
+        const RECENCY_TAU_H = 24;        // 时效半衰期基准（小时）
+        const BUZZ_REF_SOURCES = 4;      // 几个不同源同主题即达满 buzz
+        const DAY = 86400000;
+
+        // 热门实体/话题词典（跨源聚类与话题热度的连接键）：公司、产品、技术方向
+        const HOT_ENTITIES = [
+            'OpenAI','ChatGPT','GPT','Claude','Gemini','DeepSeek','通义千问','文心一言','豆包','Kimi','智谱','MiniMax',
+            'Anthropic','Sora','Copilot','Cursor','Midjourney','英伟达','NVIDIA','英特尔','AMD','高通','联发科','台积电','ASML',
+            '华为','苹果','Apple','小米','OPPO','vivo','荣耀','三星','Samsung','索尼','Sony','LG','松下','联想','戴尔','惠普',
+            '特斯拉','Tesla','比亚迪','蔚来','小鹏','理想','问界','小米汽车','小鹏汽车','长城汽车','吉利','上汽',
+            '宁德时代','寒武纪','地平线','海思','麒麟','昇腾','昆仑','鸿蒙','HarmonyOS','iOS','Android','Pixel','Galaxy',
+            'iPhone','iPad','MacBook','Vision Pro','Quest','RTX','麒麟芯片','骁龙','天玑','Mate','折叠屏',
+            '大模型','人工智能','AI','机器人','人形机器人','自动驾驶','智能驾驶','新能源','电动车','固态电池','储能','充电桩',
+            '半导体','芯片','显卡','CPU','GPU','NPU','HBM','光刻机','晶圆','3nm','5nm','AI芯片','算力',
+            '量子','量子计算','卫星','火箭','空间站','航天','星舰','SpaceX','商业航天',
+            '元宇宙','AR','VR','XR','Vision','智能眼镜','Apple Watch','可穿戴',
+            '谷歌','Google','微软','Microsoft','Meta','亚马逊','Amazon','阿里','阿里巴巴','腾讯','字节跳动','百度','京东','美团','网易','拼多多','快手','抖音','TikTok','B站','小红书',
+            '开源','Linux','Windows','macOS','Chrome','Docker','GitHub','Rust','Python',
+            '区块链','Web3','比特币','以太坊','NFT','Stable Diffusion','Diffusion',
+            '6G','5G','Wi-Fi','卫星互联网','脑机','脑机接口','生物医药','AI制药','基因','大模型推理','Agent','智能体'
+        ];
+        function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+        // 预编译：ASCII 实体加单词边界（避免 "ai" 误中 email/rain），中文实体用 includes。
+        // 用独立正则替代「80 项大正则」，8000 篇文章下性能从分钟级降到毫秒级。
+        const HOT_ENTITY_DEFS = HOT_ENTITIES.map(e => {
+            const lower = e.toLowerCase();
+            if (/[a-z0-9]/i.test(e) && !/[\u4e00-\u9fff]/.test(e)) {
+                return { re: new RegExp('\\b' + escapeRe(lower) + '\\b', 'i'), key: lower };
+            }
+            return { re: null, key: lower };
+        });
+        function extractHotEntities(text) {
+            if (!text) return [];
+            const tl = text.toLowerCase();
+            const set = new Set();
+            for (const d of HOT_ENTITY_DEFS) {
+                if (d.re ? d.re.test(tl) : tl.includes(d.key)) { set.add(d.key); if (set.size > 10) break; }
+            }
+            return [...set];
+        }
+
+        // 计算每篇文章的热门度并写入 _hot / _hotRank（不改动 techNews 数组顺序，最新视图仍按时间）
+        function computeHotScores() {
+            const arts = techNews.value;
+            if (!arts.length) return;
+            let refNow = Date.now();
+            for (const a of arts) { const t = new Date(a.time || 0).getTime(); if (!isNaN(t) && t > refNow) refNow = t; }
+            const win24 = refNow - DAY, win3 = refNow - 3 * DAY;
+
+            // 1) 当日热门话题频次（语料级）
+            const topicFreq = {};
+            for (const a of arts) {
+                const t = new Date(a.time || 0).getTime();
+                if (isNaN(t) || t < win24) continue;
+                for (const e of extractHotEntities((a.title || '') + ' ' + (a.description || ''))) topicFreq[e] = (topicFreq[e] || 0) + 1;
+            }
+            let maxFreq = 1;
+            for (const k in topicFreq) if (topicFreq[k] > maxFreq) maxFreq = topicFreq[k];
+
+            // 2) 近 3 天 inverted index：实体 -> [{src,time}]
+            const inv = {};
+            for (const a of arts) {
+                const t = new Date(a.time || 0).getTime();
+                if (isNaN(t) || t < win3) continue;
+                for (const e of extractHotEntities((a.title || '') + ' ' + (a.description || ''))) (inv[e] = inv[e] || []).push({ src: a.source, time: t });
+            }
+
+            // 3) 逐篇算分（仅改对象属性，不改数组顺序）
+            for (const a of arts) {
+                const t = new Date(a.time || 0).getTime();
+                const ageH = isNaN(t) ? 999 : Math.max(0, (refNow - t) / 3600000);
+                const R = Math.exp(-ageH / RECENCY_TAU_H);
+                const ents = extractHotEntities((a.title || '') + ' ' + (a.description || ''));
+                const srcSet = new Set();
+                for (const e of ents) {
+                    const arr = inv[e]; if (!arr) continue;
+                    for (const o of arr) {
+                        if (Math.abs(o.time - t) > DAY) continue;       // 同一天（±1 天窗口）
+                        if (o.src === a.source) continue;
+                        srcSet.add(o.src);
+                    }
+                }
+                const B = Math.min(1, srcSet.size / BUZZ_REF_SOURCES);
+                let T = 0;
+                for (const e of ents) T = Math.max(T, (topicFreq[e] || 0) / maxFreq);
+                T = Math.min(1, T);
+                // 互动量（预留接口：源提供点赞/评论时启用；RSS 默认 0）
+                const I = (typeof a._interaction === 'number' && a._interaction > 0) ? Math.min(1, a._interaction / 5000) : 0;
+                a._hot = Math.round(100 * (W_RECENCY * R + W_BUZZ * B + W_TOPIC * T + W_INTER * I) / (W_RECENCY + W_BUZZ + W_TOPIC + W_INTER) * 10) / 10;
+            }
+
+            // 4) 排名（热门池）：用索引副本排序，避免改动原数组顺序
+            const idx = arts.map((_, i) => i).sort((i, j) => (arts[j]._hot || 0) - (arts[i]._hot || 0));
+            idx.forEach((ai, rank) => { arts[ai]._hotRank = rank + 1; });
+        }
 
         // ========== AI 文案生成 ==========
         const aiForm = ref({
@@ -1559,12 +1670,12 @@ const app = createApp({
             } catch { return ''; }
         });
 
-        // ========== 静默自动刷新：每天 00:00 / 09:00 / 12:30（浏览器本地时区），无 UI 开关 ==========
+        // ========== 静默自动刷新：每天 09:00 / 12:30 / 22:00（浏览器本地时区），无 UI 开关 ==========
         // 1) 不用 setTimeout 定长定时器（休眠/唤醒、改时区都会失准）→ 30s 心跳 + 应触发窗口判定，抗休眠抗改时钟。
         // 2) 5 分钟宽限：错过时段后才打开页面也会补跑一次（错过不丢）。
         // 3) localStorage 记录已跑时段（多标签/多次刷新只跑一次），先占位再执行防竞态双跑。
         // 4) 静默：不设 techLoading 遮罩、不切面板/标签、不重置分页、失败不弹错，全程零打扰。
-        const AUTO_REFRESH_SLOTS = [[0, 0], [9, 0], [12, 30]];
+        const AUTO_REFRESH_SLOTS = [[9, 0], [12, 30], [22, 0]];
         const AUTO_GRACE_MS = 5 * 60 * 1000;
         const AUTO_TICK_MS  = 30 * 1000;
         const LS_AUTO_LAST  = 'td_auto_refresh_last_v1';
@@ -1605,7 +1716,7 @@ const app = createApp({
             } finally { techSilentBusy.value = false; }
         }
         function onVisibilityChange() { if (document.visibilityState === 'visible') autoRefreshTick(); }
-        const autoRefreshTitle = computed(() => '刷新（每天 00:00 / 09:00 / 12:30 自动静默更新'
+        const autoRefreshTitle = computed(() => '刷新（每天 09:00 / 12:30 / 22:00 自动静默更新'
             + (silentRefreshedAt.value ? '；最近自动更新 ' + silentRefreshedAt.value : '') + '）');
 
         // nowTick 仅用于让「X 分钟前」等相对时间标签随当前时钟实时滚动（不重新拉取数据）。
@@ -1795,6 +1906,7 @@ const app = createApp({
                 const list = (res && res.articles) || [];
                 if (silent && !list.length) { console.warn('[auto-refresh] 拉到空结果，保留现有数据'); return; }
                 techNews.value = list;                            // :key="index" → Vue 原地 patch，滚动位置不跳
+                computeHotScores();                              // 计算每篇热门度 + 热门池排名（写入 _hot/_hotRank）
                 dataUpdateTime.value = (res && res.updateTime) || '';
                 updateTimestamp();
             } catch (e) {
@@ -1829,12 +1941,15 @@ const app = createApp({
         const dataSources = computed(() => techSources.filter(s => s.group !== 'theme'));
 
         const filteredTechNews = computed(() => {
-            // 来源筛选和搜索在全部数据中进行，不受"显示前N条"的限制
             let articles = techNews.value;
+            // 仅看热门池（Top N）
+            if (techHotOnly.value) articles = articles.filter(a => a._hotRank && a._hotRank <= HOT_POOL_SIZE);
+            // 来源筛选
             if (techSourceFilter.value !== 'all') {
                 const srcName = techSources.find(s => s.key === techSourceFilter.value)?.name;
                 if (srcName) articles = articles.filter(a => a.source === srcName);
             }
+            // 搜索
             if (techSearchQuery.value.trim()) {
                 const q = techSearchQuery.value.toLowerCase();
                 articles = articles.filter(a =>
@@ -1842,8 +1957,12 @@ const app = createApp({
                     (a.description && a.description.toLowerCase().includes(q))
                 );
             }
-            // 分页在前：只展示前 N 条（用户主动筛选或搜索时取消分页限制）
-            if (techSourceFilter.value === 'all' && !techSearchQuery.value.trim()) {
+            // 最热排序：复制后按热度降序，不改动原数组
+            if (techSortMode.value === 'hot') {
+                articles = articles.slice().sort((a, b) => (b._hot || 0) - (a._hot || 0));
+            }
+            // 分页：全量（全部源 + 无搜索 + 非仅热门）视图下展示前 N 条，支持加载更多
+            if (techSourceFilter.value === 'all' && !techSearchQuery.value.trim() && !techHotOnly.value) {
                 articles = articles.slice(0, techDisplayCount.value);
             }
             return articles;
@@ -2180,6 +2299,7 @@ const app = createApp({
         return {
             activePanel, hotboardTab, socialPlatform, socialHotlist, socialLoading, socialError,
             techNews, techLoading, techError, techLoadProgress, techSourceFilter, techSearchQuery,
+            techSortMode, techHotOnly, hotPoolSize: HOT_POOL_SIZE, hotExplodeSize: HOT_EXPLODE_SIZE,
             loading, lastUpdate, dataUpdateTime, dataAgeText, dataUpdateAbsolute, techSources, dataSources, themeSources, totalArticles, sourcesCount, totalSourcesCount,
             filteredTechNews, displayedTechNews, hasMoreTech, styleAnalysis,
             switchHotboardTab, switchSocialPlatform, fetchSocialHotlist, fetchTechNews,

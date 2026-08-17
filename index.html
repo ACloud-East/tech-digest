@@ -91,7 +91,7 @@
                         <span>风格分析</span>
                         <span class="badge badge-live">实时</span>
                     </div>
-                    <div class="nav-item" :class="{ active: activePanel === 'profile' }" @click="activePanel = 'profile'">
+                    <div class="nav-item" v-if="loggedIn" :class="{ active: activePanel === 'profile' }" @click="activePanel = 'profile'">
                         <i class="fa-solid fa-circle-user"></i>
                         <span>个人中心</span>
                         <span class="badge" :class="userState.mode === 'cloud' ? 'badge-cloud' : 'badge-local'">
@@ -226,13 +226,21 @@
                             <div class="tech-search">
                                 <input type="text" v-model="techSearchQuery" placeholder="搜索科技资讯..." class="search-input">
                             </div>
+                            <div class="tech-sort">
+                                <span class="filter-label">排序：</span>
+                                <button class="source-tag" :class="{ active: techSortMode === 'latest' }" @click="techSortMode = 'latest'">最新</button>
+                                <button class="source-tag" :class="{ active: techSortMode === 'hot' }" @click="techSortMode = 'hot'">最热</button>
+                                <label class="hot-only" title="只看热门度 Top 100 的文章">
+                                    <input type="checkbox" v-model="techHotOnly"> 仅看热门
+                                </label>
+                            </div>
                         </div>
 
                         <div class="tech-list-container">
                             <div class="loading-overlay" v-if="techLoading">
                                 <div class="progress-card">
                                     <div class="progress-track" :class="{ 'unknown-total': techLoadProgress.indeterminate }">
-                                        <div class="progress-fill" :style="{ width: Math.max(0, techLoadProgress.percentExact || 0) + '%' }"></div>
+                                        <div class="progress-fill" :style="{ width: Math.max(0, techLoadProgress.percent || 0) + '%' }"></div>
                                     </div>
                                     <div class="progress-meta">
                                         <span class="progress-label">{{ techLoadProgress.label || '正在加载科技资讯...' }}</span>
@@ -263,6 +271,9 @@
                                             <span class="tech-source-badge" :style="{ background: getSourceColor(item.source) }">
                                                 {{ item.source }}
                                             </span>
+                                            <span class="tech-hot-badge explode" v-if="item._hotRank && item._hotRank <= hotExplodeSize" title="热度爆表 · 全站 Top 20">爆</span>
+                                            <span class="tech-hot-badge" v-else-if="item._hotRank && item._hotRank <= hotPoolSize" title="热门文章 · 全站热度 Top 100">热门</span>
+                                            <span class="tech-heat" v-if="item._hot != null" :title="'热度分 ' + item._hot + ' / 100（爆≤20，热门≤100）'">🔥 {{ item._hot }}</span>
                                             <span class="tech-time">{{ formatTime(item.time) }}</span>
                                             <button class="tech-fav" :class="{ on: isFavorite(item) }" @click="toggleFavorite(item)" :title="isFavorite(item) ? '取消收藏' : '收藏'">
                                                 <i class="fa-solid" :class="isFavorite(item) ? 'fa-star' : 'fa-star-half-stroke'"></i>

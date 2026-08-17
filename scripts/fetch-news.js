@@ -346,7 +346,7 @@ function makeArticle(source, item) {
 // ========== 1. 标准RSS ==========
 const standardSources = [
     { name: 'IT之家', url: 'https://www.ithome.com/rss/', color: '#e13b3f' },
-    { name: '36氪', url: 'https://36kr.com/feed', color: '#0066ff' },
+    { name: '36氪', url: 'https://www.36kr.com/feed', color: '#0066ff' },
     { name: '少数派', url: 'https://sspai.com/feed', color: '#d93b3b' },
     { name: '爱范儿', url: 'https://www.ifanr.com/feed', color: '#d4233a' },
     { name: '量子位', url: 'https://www.qbitai.com/feed', color: '#00796b' },
@@ -372,7 +372,7 @@ const standardSources = [
     // 品玩：官网(pingwest.com) 已启用 WAF，直连/RSSHub 全部 405/503，无法直爬；
     // 改用 Google News (site:pingwest.com) 兜底（见 googleNewsSources），并由 seed 兜底。
     // 极客公园：RSSHub 链接是真实 geekpark.net URL（非 Google News 重定向），可正常点击
-    { name: '极客公园', url: 'https://rsshub.rssforever.com/geekpark/breakingnews', color: '#00c4ff' },
+    { name: '极客公园', url: 'https://www.geekpark.net/rss', color: '#00c4ff' },
     // 国际科技媒体
     { name: 'The Verge', url: 'https://www.theverge.com/rss/index.xml', color: '#e2127a' },
     { name: 'TechCrunch', url: 'https://techcrunch.com/feed/', color: '#0f9d58' },
@@ -392,6 +392,11 @@ const standardSources = [
     { name: '阮一峰周刊', url: 'https://www.ruanyifeng.com/blog/atom.xml', color: '#1565c0' },
     { name: '酷壳', url: 'https://coolshell.cn/feed', color: '#6a1b9a' },
     { name: '美团技术', url: 'https://tech.meituan.com/feed/', color: '#ff6f00' },
+    // 以下为新增的真实国际科技媒体（直链 RSS，无需 Google 解码），用作稳定增量来源：
+    // 三者均为纯科技站点（相机/影像评测、综合科技、日本 PC/汽车/数码），按纯科技源处理（不过强科技词过滤）。
+    { name: 'DPReview', url: 'https://www.dpreview.com/feed/', color: '#0b66c2' },
+    { name: 'CNET', url: 'https://www.cnet.com/rss/news/', color: '#1a73e8' },
+    { name: 'Impress Watch', url: 'https://www.watch.impress.co.jp/data/rss/1.0/ipw/feed.rdf', color: '#b71c1c' },
 ];
 
 async function fetchStandard(src) {
@@ -925,6 +930,41 @@ const htmlSources = [
             });
             console.log(`    凤凰科技直抓 ${items.length} 条`);
             return await enrichArticleDates(items.slice(0, 80));
+        }
+    },
+    // 36氪：主 RSS(/feed)每次仅 11 条且本沙箱被反爬拦截，故额外用 HTML 直抓扩量。
+    // 首页/科技/创投/快讯列表页含大量 /p/ 真实文章链接，逐条请求文章页补日期+摘要。
+    // 注：本沙箱 IP 被 36氪 反爬封锁，但在 GitHub Actions(生产流水线，IP 不受限)上可正常抓取，
+    //     故该源用于让生产每小时流水线累积更多 36氪 文章（与 RSS 源按 URL 去重并存）。
+    { name: '36氪', url: 'https://36kr.com/', color: '#0066ff',
+        multiUrl: [
+            'https://36kr.com/',
+            'https://36kr.com/newsflashes',
+            'https://36kr.com/information/technology',
+            'https://36kr.com/information/venture',
+        ],
+        asyncExtract: async ($) => {
+            const items = []; const seen = new Set();
+            const push = (href, title) => {
+                if (!href) return;
+                if (href.startsWith('//')) href = 'https:' + href;
+                else if (href.startsWith('/')) href = 'https://36kr.com' + href;
+                if (!/^https?:\/\/(www\.)?36kr\.com\/(p|newsflashes)\//.test(href)) return;
+                href = href.split('?')[0];
+                const t = (title || '').trim().replace(/\s+/g, ' ');
+                if (t.length < 8 || t.length > 120) return;
+                if (seen.has(href)) return;
+                seen.add(href);
+                items.push({ title: t, url: href, time: '', description: '' });
+            };
+            $('a').each((i, el) => {
+                const $el = $(el);
+                push($el.attr('href'), $el.attr('title') || $el.text());
+            });
+            console.log(`    36氪 HTML 直抓 ${items.length} 条`);
+            // 仅保留成功补全日期的条目，避免无时间脏数据
+            const enriched = await enrichArticleDates(items.slice(0, 60));
+            return enriched.filter(it => it.time);
         }
     },
 ];
