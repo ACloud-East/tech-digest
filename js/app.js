@@ -817,7 +817,7 @@ const app = createApp({
         }
         function persistHistory() {
             try { localStorage.setItem(LS_HISTORY_KEY, JSON.stringify(aiHistory.value.slice(0, 50))); } catch (_) {}
-            if (window.UserStore) { try { UserStore.set('aiHistory', aiHistory.value.slice(0, 50)); syncTick(); } catch (_) {} }
+            if (window.UserStore) { try { UserStore.set('aiHistory', aiHistory.value.slice(0, 50), true); syncTick(); } catch (_) {} }
         }
         function saveToHistory(item) {
             aiHistory.value.unshift(item);
@@ -1039,7 +1039,7 @@ const app = createApp({
             if (i >= 0) favorites.value.splice(i, 1);
             else favorites.value.unshift({ url: a.url, title: a.title, source: a.source, time: a.time, savedAt: Date.now() });
             if (favorites.value.length > 300) favorites.value = favorites.value.slice(0, 300);
-            UserStore.set('favorites', favorites.value); syncTick();
+            UserStore.set('favorites', favorites.value, true); syncTick();
         }
         const isFavorite = (a) => favorites.value.some(f => f.url === a.url);
         async function syncNow() { if (window.UserStore) { await UserStore.flush(true); syncTick(); } }
@@ -2272,6 +2272,18 @@ const app = createApp({
                 socialPlatform.value = prefs.value.defaultSocialPlatform;
                 activePanel.value = prefs.value.defaultPanel;
                 window.addEventListener('online', () => { if (window.UserStore) UserStore._flushPending().then(syncTick); });
+                // 实时同步：远端变更自动合并到本地界面
+                UserStore.onChange((keys) => {
+                    if (keys.includes('favorites')) {
+                        const cloudFav = UserStore.get('favorites');
+                        if (Array.isArray(cloudFav)) favorites.value = cloudFav;
+                    }
+                    if (keys.includes('aiHistory')) {
+                        const cloudHist = UserStore.get('aiHistory');
+                        if (Array.isArray(cloudHist) && cloudHist.length > aiHistory.value.length) aiHistory.value = cloudHist;
+                    }
+                    syncTick();
+                });
             }
             // 按 Esc 也可关闭生成历史面板
             window.addEventListener('keydown', onKeydown);
