@@ -21,6 +21,8 @@ const UserStore = {
     state: { mode: 'guest', username: '', v: 0, updatedAt: '', syncing: false, lastError: '', lastSyncAt: '', loaded: false },
     data: {},
     _timer: null,
+    _syncTimer: null,
+    _changeListeners: [],
 
     async init() {
         const mirror = this._loadMirror();          // 先取本机镜像（已写未落库的数据也在这里）
@@ -66,10 +68,14 @@ const UserStore = {
         return out;
     },
 
-    async pull() {
+    async pull(silent) {
         const r = await fetch('/api/profile', { credentials: 'same-origin', cache: 'no-store' });
         const d = await r.json();
         if (!d.ok) throw new Error(d.error || '读取云端配置失败');
+        if (silent) {
+            const changed = await this._mergeRemote(d.data || {}, { v: d.v || 0, updatedAt: d.updatedAt || '' });
+            return changed;
+        }
         this.data = d.data || {}; this.state.v = d.v || 0; this.state.updatedAt = d.updatedAt || '';
         return this.data;
     },
@@ -101,6 +107,7 @@ const UserStore = {
         this._saveMirror();                          // 立即镜像，强制刷新也不丢
         clearTimeout(this._timer);
         this._timer = setTimeout(() => this.flush(), immediate ? 0 : 800);
+        this._notifyChanges([k]);
     },
 
     _saveGuest() { try { localStorage.setItem(this.LS_GUEST, JSON.stringify(this.data)); } catch (_) {} },
@@ -136,6 +143,7 @@ const UserStore = {
             if (!d.ok) throw new Error(d.error || ('HTTP ' + r.status));
             this.state.v = d.v; this.state.updatedAt = d.updatedAt;
             this.state.lastSyncAt = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            this._startRealtimeSync();
             this._saveMirror();                       // 云端落库成功 → 镜像同步为权威快照
             try { localStorage.removeItem(this.LS_PENDING); } catch (_) {}
         } catch (e) {
@@ -143,6 +151,57 @@ const UserStore = {
             try { localStorage.setItem(this.LS_PENDING, JSON.stringify(this._sanitize())); } catch (_) {}
             console.warn('[UserStore] 云端同步失败，已入队待重试:', this.state.lastError);
         } finally { this.state.syncing = false; }
+    },
+
+    /* ---------- 实时同步：关页前强制落库 + 每 15s 拉取云端变更 ---------- */
+    _startRealtimeSync() {
+        if (this.state.mode === 'guest' || this._syncTimer) return;
+        this._syncTimer = setInterval(() => this.pull(true), 15000);
+        const onVis = () => { if (!document.hidden) this.pull(true); };
+        document.addEventListener('visibilitychange', onVis);
+        const onBeforeUnload = () => { if (this._timer) { clearTimeout(this._timer); this.flush(true); } };
+        window.addEventListener('beforeunload', onBeforeUnload);
+        window.addEventListener('pagehide', onBeforeUnload);
+    },
+    _stopRealtimeSync() {
+        if (this._syncTimer) { clearInterval(this._syncTimer); this._syncTimer = null; }
+    },
+    _notifyChanges(keys) {
+        this._changeListeners.forEach(cb => { try { cb(keys); } catch (_) {} });
+    },
+    onChange(cb) {
+        this._changeListeners.push(cb);
+        return () => {
+            const i = this._changeListeners.indexOf(cb);
+            if (i >= 0) this._changeListeners.splice(i, 1);
+        };
+    },
+    async _mergeRemote(remoteData, remoteState) {
+        if (!remoteData || typeof remoteData !== 'object') return false;
+        let changed = false;
+        const mergeArray = (key) => {
+            const local = this.data[key] || [];
+            const remote = remoteData[key] || [];
+            if (!Array.isArray(local) || !Array.isArray(remote)) return;
+            const keyOf = (x) => (x && (x.id || x.url || x.title || x.uuid || JSON.stringify(x))) || JSON.stringify(x);
+            const seen = new Set(local.map(keyOf));
+            const added = remote.filter(x => !seen.has(keyOf(x)));
+            if (added.length) { this.data[key] = [...added, ...local].slice(0, key === 'aiHistory' ? 50 : 300); changed = true; }
+        };
+        mergeArray('favorites');
+        mergeArray('aiHistory');
+        ['preferences', 'readingVolume', 'theme', 'profile'].forEach(k => {
+            if (remoteData[k] !== undefined) {
+                const localTime = (this.data[k] && this.data[k].updatedAt) || 0;
+                const remoteTime = (remoteData[k] && remoteData[k].updatedAt) || 0;
+                if (JSON.stringify(this.data[k]) !== JSON.stringify(remoteData[k]) && remoteTime >= localTime) {
+                    this.data[k] = remoteData[k]; changed = true;
+                }
+            }
+        });
+        if (remoteState && remoteState.v > this.state.v) { this.state.v = remoteState.v; this.state.updatedAt = remoteState.updatedAt; }
+        if (changed) { this._saveMirror(); this._saveGuest(); this._notifyChanges(['favorites', 'aiHistory', 'preferences', 'readingVolume']); }
+        return changed;
     },
 
     async _flushPending() {
