@@ -37,10 +37,8 @@ const AIGenerator = {
                 if (p === 'deepseek' && this.config.deepseekKey) return await this.generateViaDeepSeek(form, onToken);
                 if (p === 'openai' && this.config.openaiKey) return await this.generateViaOpenAI(form, onToken);
             } catch (e) {
-                // 用户自带 key 出错：显式抛出，便于用户看到「key 失效/余额不足」并去更换
-                if (this.useOwnKey) throw e;
-                console.warn('[AI] 云端生成失败，回退本地模板：', e.message);
-                // 未配置自带 key 时，任何云端异常都回退到本地模板，保证按钮始终有产出
+                // 云端异常直接抛出，让上层显示真实错误，避免把用户误导成「模板案例库」
+                throw e;
             }
         }
         if (form.plain) {
