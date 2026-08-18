@@ -342,9 +342,9 @@ function renumberCitations(text, references) {
 // 上游返回非 200 时抛错；返回 200 但正文为空时返回 ''（由调用方决定重试）。
 async function generateText(augmentedPrompt, opts) {
     const { apiKey, base, model, maxTokens, temperature } = opts;
-    // v3103：给上游模型调用加 20s 客户端超时。不加重试拖垮 Pages Functions 执行时间上限（触发 1102）。
+    // v3103：给上游模型调用加 22s 客户端超时（预留 8s 给网络握手/重排，守住 Pages Functions 30s 墙钟上限）。
     const ctrl = new AbortController();
-    const to = setTimeout(() => ctrl.abort(), 20000);
+    const to = setTimeout(() => ctrl.abort(), 22000);
     let upstream;
     try {
         upstream = await fetch(base + '/chat/completions', {
@@ -571,7 +571,7 @@ export async function onRequestPost({ request, env }) {
     // (b) 联网自动检索（开启且未填 URL 时为主来源；已填 URL 时作为补充）
     if (body.webSearch) {
         try {
-            const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 6, body.topicFallback);
+            const found = await webSearch(topic || (body.prompt || '').slice(0, 80), env, 4, body.topicFallback);
             for (const r of found) {
                 references.push({ title: r.title || r.url, url: r.url, content: r.content || '', images: r.images || [], ok: !!r.content, note: r.content ? '' : '未检索到正文', published_date: r.published_date || '' });
                 addImages(r.images);
@@ -583,7 +583,7 @@ export async function onRequestPost({ request, env }) {
 
     // 注入正文（带编号与总量预算上限，降�? 502 概率�?
     if (references.length) {
-        const MAX_TOTAL = 16000;
+        const MAX_TOTAL = 7000;
         let budget = MAX_TOTAL;
         augmentedPrompt += '\n\n【附加来源内容】以下是你必须使用的来源网页正文（参考文献），请严格基于这些事实写作，并�? [1]、[2] 等编号标注对应来源：\n';
         references.forEach((s, i) => {
